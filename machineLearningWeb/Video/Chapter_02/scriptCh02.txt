@@ -1,0 +1,198 @@
+Slide 1: DỰ ÁN HỌC MÁY TỪ ĐẦU ĐẾN CUỐI
+Người 1: Chào các em sinh viên. Ở chương trước, chúng ta đã nắm được tổng quan về các phương pháp học máy. Hôm nay, trong Chương 2, chúng ta sẽ bắt tay vào thực hiện một Dự án Học máy từ đầu đến cuối, giống như cách một kỹ sư dữ liệu làm việc thực tế tại doanh nghiệp.
+Người 2: Dạ chào thầy. Được thực hành một dự án thực tế ngay sau phần lý thuyết sẽ giúp chúng em hiểu rõ hơn quy trình làm việc chuyên nghiệp ạ.
+
+Slide 2: Nội dung Chương trình
+Người 1: Bài học hôm nay sẽ đi qua 4 phần chính. Thứ nhất là Giới thiệu dự án và Khởi tạo dữ liệu. Thứ hai là Khám phá và Chuẩn bị dữ liệu. Thứ ba là Chọn, Huấn luyện, Tinh chỉnh mô hình. Và cuối cùng là Triển khai và Giám sát hệ thống.
+Người 2: Có vẻ như đây là một vòng đời trọn vẹn của một sản phẩm AI từ lúc hình thành ý tưởng đến lúc đưa ra thị trường phải không thầy?
+
+Slide 3: Mục tiêu bài học
+Người 1: Đúng vậy. Mục tiêu của chúng ta là các em phải nắm được quy trình (pipeline) chuẩn, biết cách xử lý dữ liệu thô (làm sạch, chuẩn hóa), biết cách huấn luyện, tinh chỉnh tham số mô hình bằng Grid Search hoặc Random Search, và hiểu cách đưa mô hình vào ứng dụng thực tế.
+Người 2: Vâng, em rất hào hứng muốn xem mã nguồn và cách xử lý dữ liệu thô sẽ diễn ra như thế nào.
+
+Slide 4: 1. Giới thiệu Dự án & Khởi tạo Dữ liệu
+Người 1: Chúng ta bắt đầu với Phần 1. Giả sử các em vừa được tuyển vào làm kỹ sư dữ liệu cho một công ty bất động sản. Nhiệm vụ đầu tiên là xây dựng mô hình dự đoán giá nhà.
+
+Slide 5: Làm việc với dữ liệu thực
+Người 1: Khi học máy, tốt nhất là dùng dữ liệu thực, không phải dữ liệu nhân tạo. Có rất nhiều kho dữ liệu mở như Kaggle, OpenML hay UCI Machine Learning Repository. 
+Người 2: Vậy trong dự án này, chúng ta sẽ lấy dữ liệu từ đâu ạ?
+Người 1: Chúng ta sẽ dùng tập dữ liệu giá nhà ở California, bao gồm các thông tin như dân số, thu nhập trung bình, và giá nhà trung bình của từng khu vực.
+
+Slide 6: Nhìn vào bức tranh lớn: Xác định vấn đề
+Người 1: Bước đầu tiên không phải là code, mà là "nhìn vào bức tranh lớn". Các em phải hỏi sếp xem mục tiêu kinh doanh chính xác là gì? Đầu ra của mô hình này (giá nhà dự đoán) sẽ được dùng làm gì?
+Người 2: Em hiểu rồi, nếu đầu ra chỉ để tham khảo thì làm đơn giản, còn nếu đầu ra được truyền vào một hệ thống đầu tư tự động thì mô hình phải cực kỳ chính xác.
+
+Slide 7: Pipeline hệ thống học máy
+Người 1: Chính xác! Đầu ra của mô hình các em sẽ trở thành đầu vào (tín hiệu) cho một hệ thống học máy khác đánh giá xem có nên đầu tư hay không. Quy trình nối tiếp các thành phần xử lý dữ liệu này được gọi là một Pipeline dữ liệu. Mỗi thành phần chạy độc lập và giao tiếp qua kho lưu trữ dữ liệu.
+Người 2: Nó giống như một dây chuyền lắp ráp trong nhà máy, mỗi cỗ máy đảm nhận một khâu riêng biệt.
+
+Slide 8: Chọn một Thước đo Hiệu suất
+Người 1: Sau khi biết bài toán này là bài toán Hồi quy (dự đoán giá trị số), ta cần chọn thước đo hiệu suất. Phổ biến nhất cho Hồi quy là RMSE (Căn bậc hai Sai số bình phương trung bình). 
+Người 2: Tại sao lại dùng bình phương rồi lại lấy căn bậc hai vậy thầy?
+Người 1: Bình phương giúp phạt nặng hơn những dự đoán sai lệch lớn. Sau đó lấy căn bậc hai để đưa giá trị đo lường về cùng đơn vị với dữ liệu gốc (ví dụ: đô la). Một độ đo khác cũng hay dùng là MAE (Sai số tuyệt đối trung bình).
+
+Slide 9: Kiểm tra các Giả định
+Người 1: Bước cuối cùng trước khi code là kiểm tra lại giả định với đồng nghiệp. Ví dụ, nếu hệ thống đầu tư tuyến dưới thực chất chỉ cần phân loại giá nhà thành "Đắt", "Rẻ", "Trung bình", thì bài toán hồi quy của ta thành vô nghĩa.
+Người 2: Dạ vâng, xác nhận lại ngay từ đầu sẽ tránh việc làm xong mô hình cực kỳ phức tạp rồi mới phát hiện ra bị sai yêu cầu bài toán.
+
+Slide 10: Lấy Dữ liệu & Môi trường làm việc
+Người 1: Bây giờ, ta đi vào thực hành. Chúng ta cần thiết lập không gian làm việc bằng Python, cùng các thư viện thiết yếu như Pandas, NumPy, Scikit-Learn và Matplotlib.
+
+Slide 11: Môi trường Google Colab
+Người 1: Để tiện lợi nhất, thầy khuyến khích các em dùng Google Colab. Đây là một môi trường Jupyter Notebook miễn phí trên đám mây của Google, chạy trực tiếp trên trình duyệt mà không cần cài đặt phức tạp.
+Người 2: Colab còn hỗ trợ GPU miễn phí để huấn luyện mô hình Học sâu (Deep Learning) nhanh hơn phải không ạ?
+Người 1: Chính xác.
+
+Slide 12: Minh họa: Môi trường Google Colab
+Người 1: Trên slide là giao diện của Google Colab. Các em có thể viết code Python xen kẽ với văn bản giải thích. Hãy thử tạo một sổ tay mới và bắt đầu tải dữ liệu.
+
+Slide 13: Tải và Xem dữ liệu
+Người 1: Thay vì tải file thủ công, ta nên viết một hàm Python để tự động tải và giải nén dữ liệu từ URL. Việc tự động hóa này rất hữu ích nếu dữ liệu cập nhật liên tục. Sau đó dùng thư viện Pandas hàm read gạch dưới csv để nạp dữ liệu vào một DataFrame.
+Người 2: DataFrame của Pandas giống như một bảng tính Excel nhưng mạnh mẽ hơn nhiều.
+
+Slide 14: Xem tóm tắt dữ liệu
+Người 1: Để hiểu nhanh về dữ liệu, các em dùng phương thức info hoặc describe. DataFrame sẽ cho ta biết có bao nhiêu dòng dữ liệu, loại dữ liệu là gì (số hay văn bản), và quan trọng nhất là có cột nào bị thiếu dữ liệu (missing values) hay không.
+Người 2: Nếu dữ liệu bị thiếu thì lát nữa ta phải làm sạch, điền giá trị vào đúng không thầy?
+
+Slide 15: Tạo tập kiểm thử (Test set): Tại sao cần thiết?
+Người 1: Rất đúng. Nhưng trước khi nhìn sâu hơn vào dữ liệu, các em phải tách ngay một phần dữ liệu làm Tập kiểm thử (Test set), thường là 20 phần trăm. Cất nó đi và tuyệt đối không bao giờ nhìn vào nó.
+Người 2: Việc này để tránh "thiên kiến dò xét" (data snooping bias), tức là não bộ chúng ta vô tình nhìn thấy mẫu trong tập kiểm thử rồi chọn mô hình ưu ái cho nó, dẫn đến việc mô hình dự đoán kém khi gặp dữ liệu thực.
+
+Slide 16: Phân phối Thu nhập
+Người 1: Khi lấy 20 phần trăm làm Test set, ta không thể lấy ngẫu nhiên nếu tập dữ liệu nhỏ. Hãy nhìn vào phân phối thu nhập. Hầu hết thu nhập tập trung ở mức 20 nghìn đến 50 nghìn đô la, rất ít người trên 100 nghìn.
+Người 2: Nếu lấy ngẫu nhiên, tập Test set có thể vô tình chỉ chứa toàn người giàu hoặc toàn người nghèo, như vậy sẽ bị sai lệch.
+
+Slide 17: Lấy mẫu phân tầng (Stratified Sampling) so với Ngẫu nhiên
+Người 1: Do đó, ta phải dùng "Lấy mẫu phân tầng". Ta chia thu nhập thành các tầng (strata). Hàm lấy mẫu sẽ bốc ngẫu nhiên sao cho tỷ lệ các tầng trong Test set giống hệt tỷ lệ trong toàn bộ dữ liệu.
+Người 2: Tức là nếu xã hội có 30 phần trăm thu nhập cao, thì trong Test set cũng phải có đúng 30 phần trăm dữ liệu thu nhập cao để đảm bảo tính đại diện. Rất hợp lý ạ.
+
+Slide 18: 2. Khám phá & Chuẩn bị Dữ liệu
+Người 1: Khi đã an toàn cất Test set đi, chúng ta chuyển sang phần 2: Thoải mái khám phá Tập huấn luyện.
+
+Slide 19: Trực quan hóa dữ liệu địa lý
+Người 1: Vì dữ liệu là về bất động sản California, ta có kinh độ và vĩ độ. Dùng lệnh plot dạng scatter (biểu đồ phân tán), ta sẽ vẽ được bản đồ các khu vực.
+Người 2: Nhìn biểu đồ này em nhận ra ngay hình dáng của bang California. 
+
+Slide 20: Phân tích mật độ địa lý
+Người 1: Chỉnh thông số alpha bằng 0.1, các điểm sẽ mờ đi, giúp ta thấy rõ những vùng màu đậm là nơi có mật độ dữ liệu (khu dân cư) dày đặc như Vùng Vịnh (Bay Area) hay Los Angeles.
+Người 2: Kỹ năng trực quan hóa này thật sự hữu ích để "cảm nhận" dữ liệu thay vì nhìn vào những con số khô khan.
+
+Slide 21: Giá nhà theo dân số & Vị trí
+Người 1: Ta thêm màu sắc đại diện cho Giá nhà (màu đỏ là đắt, xanh là rẻ), và kích thước vòng tròn đại diện cho dân số. Rõ ràng, nhà ở gần biển và ở các khu vực đông dân có giá đắt đỏ hơn nhiều.
+Người 2: Đặc trưng "khoảng cách tới bờ biển" chắc chắn sẽ là một biến cực kỳ quan trọng để dự đoán giá.
+
+Slide 22: Tìm kiếm các tương quan (Correlation)
+Người 1: Để xem đặc trưng nào có liên hệ mạnh nhất với Giá nhà, ta tính Hệ số tương quan Pearson. Hệ số này chạy từ trừ 1 đến 1. Bằng 1 là tương quan thuận hoàn toàn, bằng trừ 1 là tương quan nghịch hoàn toàn.
+Người 2: Nghĩa là nếu hệ số tương quan giữa "Thu nhập" và "Giá nhà" gần bằng 1, thì thu nhập càng cao, giá nhà sẽ càng cao?
+Người 1: Chính xác.
+
+Slide 23: Ma trận phân tán (Scatter Matrix)
+Người 1: Thay vì tính số, ta có thể dùng ma trận phân tán của Pandas để vẽ đồ thị tương quan chéo giữa tất cả các thuộc tính với nhau.
+Người 2: Có vẻ như thuộc tính "Thu nhập trung bình" có đường tương quan dốc lên rõ rệt nhất với "Giá nhà trung bình".
+
+Slide 24: Thu nhập trung bình vs Giá nhà trung bình
+Người 1: Phóng to biểu đồ đó lên, ta thấy xu hướng đi lên rất mạnh. Tuy nhiên, ta cũng phát hiện ra một số đường ngang kỳ lạ ở mốc 500 nghìn đô, 450 nghìn đô và 350 nghìn đô.
+Người 2: Những đường ngang này chắc là do dữ liệu bị cắt ngọn (cap) khi thu thập. Ta có thể sẽ phải xóa các khu vực này đi để thuật toán không học phải những điều kỳ lạ này.
+
+Slide 25: Phân phối và độ lệch chuẩn của dữ liệu
+Người 1: Tiếp theo, cần xem xét độ lệch của dữ liệu. Nếu biểu đồ phân phối bị "đuôi dài" (skewed) tức là lệch hẳn sang một bên, các thuật toán học máy sẽ rất khó phát hiện ra quy luật.
+Người 2: Để giải quyết đuôi dài, ta thường biến đổi dữ liệu, ví dụ lấy logarit của dữ liệu để nó trông giống phân phối chuẩn hình quả chuông hơn phải không ạ?
+
+Slide 26: Thử nghiệm với các kết hợp đặc trưng
+Người 1: Một mẹo cực kỳ quan trọng trước khi huấn luyện là "Kết hợp đặc trưng". Tổng số phòng trong một quận không có ý nghĩa bằng "số phòng tính trên mỗi hộ gia đình".
+Người 2: Tương tự, "số phòng ngủ trên tổng số phòng" cũng sẽ cho biết căn nhà to cỡ nào. Máy tính không tự biết kết hợp, con người phải tạo ra các cột dữ liệu mới này.
+
+Slide 27: Chuẩn bị dữ liệu cho học máy
+Người 1: Sau khi khám phá xong, chúng ta bước vào giai đoạn dọn dẹp dữ liệu. Lưu ý, mọi thao tác dọn dẹp phải được viết thành hàm (function) để ta có thể tái sử dụng dữ liệu mới một cách tự động.
+
+Slide 28: Làm sạch dữ liệu (Data Cleaning)
+Người 1: Với các thuộc tính bị thiếu dữ liệu (missing), ta có 3 cách: Bỏ dòng đó đi, bỏ hẳn cột đó đi, hoặc điền vào đó một giá trị (như trung vị, trung bình hoặc 0). Trong Scikit-Learn, ta dùng lớp SimpleImputer để tự động hóa việc điền trung vị.
+Người 2: Việc dùng hàm chuẩn của Scikit-Learn sẽ giúp ta tính toán trung vị trên tập Train, sau đó áp dụng chính con số trung vị đó cho tập Test hoặc dữ liệu mới. Không được tính lại trung vị trên tập Test!
+
+Slide 29: Xử lý các thuộc tính văn bản và phân loại
+Người 1: Hầu hết thuật toán học máy thích làm việc với con số. Vậy với cột văn bản như "Gần biển" hay "Đất liền", ta phải làm sao? 
+Người 2: Em nghĩ là gán "Gần biển" bằng 1, "Đất liền" bằng 2.
+Người 1: Cách đó gọi là Ordinal Encoder. Nhưng thuật toán sẽ lầm tưởng giá trị 2 lớn hơn 1 tức là hai giá trị đó gần nhau. Cách tốt hơn là dùng One-Hot Encoding: Tạo ra N cột nhị phân cho N danh mục. Nếu là "Gần biển", cột Gần biển bằng 1, các cột khác bằng 0.
+
+Slide 30: Co giãn Đặc trưng (Feature Scaling)
+Người 1: Một bước cực kỳ quan trọng khác là Co giãn đặc trưng (Scaling). Nếu số phòng dao động từ 1 đến 10, nhưng tổng thu nhập dao động từ 10.000 đến 100.000, thuật toán sẽ bỏ qua số phòng vì giá trị của nó quá nhỏ.
+Người 2: Để công bằng, ta phải ép tất cả các cột về cùng một thang đo. Phổ biến nhất là chuẩn hóa (Standardization) đưa trung bình về 0 và phương sai bằng 1.
+
+Slide 31: Biến đổi Đặc trưng để gần với phân phối Gaussian
+Người 1: Như đã nói ở phần đuôi dài, ta có thể dùng biến đổi Logarit hoặc hàm Bucketizing (chia dữ liệu thành các khoảng) để giúp phân phối của đặc trưng mượt mà hơn, giống phân phối Gaussian hình quả chuông.
+
+Slide 32: Biến đổi Đặc trưng bằng RBF
+Người 1: Khi cần tính sự tương đồng tới một điểm cụ thể, ta dùng hàm RBF (Radial Basis Function). Nó sẽ chuyển đổi khoảng cách thành một đặc trưng phân phối hình quả chuông.
+Người 2: Kỹ thuật này thường áp dụng cho đặc trưng tọa độ địa lý để tìm ra những "điểm nóng" trung tâm phải không thầy?
+
+Slide 33: Đặc trưng từ phân cụm bằng K-Means
+Người 1: Đúng. Tương tự RBF, ta có thể chạy thuật toán phân cụm K-Means trước để tìm ra 10 trung tâm, rồi tạo 10 đặc trưng mới đo lường khoảng cách từ nhà đến 10 trung tâm cụ thể đó.
+
+Slide 34: Bộ biến đổi tùy chỉnh (Custom Transformers)
+Người 1: Thỉnh thoảng ta cần các phép biến đổi không có sẵn trong thư viện. Ta có thể tự viết một class Transformer tùy chỉnh. Chỉ cần định nghĩa hai hàm fit và transform, ta có thể tích hợp nó mượt mà vào hệ thống của Scikit-Learn.
+Người 2: Code theo hướng đối tượng thế này giúp tái sử dụng và chia sẻ cho team rất tiện lợi.
+
+Slide 35: Các pipeline biến đổi (Transformation Pipelines)
+Người 1: Khi có quá nhiều bước biến đổi: imputer, thêm đặc trưng, chuẩn hóa, one-hot... ta gộp tất cả chúng lại bằng lớp Pipeline của Scikit-Learn.
+Người 2: Nhờ Pipeline, thay vì gọi 10 hàm rải rác, ta chỉ cần gọi một lệnh pipeline chấm fit gạch dưới transform (pipeline.fit_transform) là toàn bộ dữ liệu thô biến thành dữ liệu sạch ngay lập tức. Thật tuyệt vời!
+
+Slide 36: 3. Chọn, Huấn luyện, Tinh chỉnh & Triển khai
+Người 1: Tuyệt vời, dữ liệu đã sẵn sàng. Giờ ta sang bước 3: Huấn luyện và Tinh chỉnh mô hình.
+
+Slide 37: Huấn luyện trên Tập huấn luyện
+Người 1: Đầu tiên ta thử Hồi quy Tuyến tính (Linear Regression). Chạy rất nhanh, nhưng sai số RMSE khá lớn (ví dụ 68 nghìn đô la). Đây là hiện tượng Underfitting.
+Người 2: Mô hình tuyến tính quá đơn giản nên không nắm bắt được dữ liệu phức tạp. Ta có thể thử mô hình mạnh hơn như Cây Quyết định (Decision Tree) không ạ?
+Người 1: Có thể. Nhưng khi chạy Cây Quyết định, sai số bằng 0! Nó đã học thuộc lòng toàn bộ dữ liệu (Overfitting).
+
+Slide 38: Đánh giá tốt hơn bằng kiểm định chéo (Cross-Validation)
+Người 1: Để đánh giá mô hình khách quan khi bị overfitting, ta dùng K-Fold Cross Validation. Ta chia tập huấn luyện thành 10 phần. Lần lượt lấy 1 phần làm tập kiểm thử nhỏ (validation) và 9 phần còn lại để huấn luyện. Chạy 10 lần và lấy trung bình sai số.
+Người 2: Bằng cách này, ta biết ngay Cây quyết định thực chất đang dự đoán rất tệ trên dữ liệu chưa thấy, chứ không phải hoàn hảo với sai số bằng 0.
+
+Slide 39: Thử nghiệm với Rừng ngẫu nhiên (Random Forest)
+Người 1: Ta tiếp tục thử mô hình Rừng ngẫu nhiên (Random Forest) - kết hợp nhiều Cây quyết định lại với nhau. Kết quả RMSE tốt hơn rất nhiều. Ta nên thử nghiệm từ 2 đến 5 mô hình khác nhau (như SVM, Mạng Nơ ron) rồi chọn ra những ứng viên tiềm năng nhất.
+
+Slide 40: Tinh chỉnh mô hình
+Người 1: Sau khi chọn được mô hình Rừng ngẫu nhiên, ta cần tìm xem các siêu tham số (Hyperparameters) nào là tốt nhất. Không thể dò tay từng số một.
+Người 2: Siêu tham số giống như các núm vặn điều chỉnh trên radio phải không thầy?
+
+Slide 41: Tìm kiếm theo lưới (Grid Search)
+Người 1: Đúng. Ta dùng thuật toán Grid Search. Cung cấp cho nó các danh sách giá trị siêu tham số, nó sẽ tự động thử mọi tổ hợp chéo, huấn luyện và đánh giá Cross Validation để báo cho ta tổ hợp nào ngon nhất.
+
+Slide 42: Tìm kiếm ngẫu nhiên (Random Search)
+Người 1: Nhưng nếu số lượng tham số quá nhiều, Grid Search sẽ chạy mất vài năm. Lúc đó ta dùng Random Search (Tìm kiếm ngẫu nhiên). Nó sẽ lấy ngẫu nhiên các tổ hợp trong không gian siêu tham số với số vòng lặp ta quy định. Kết quả đôi khi tốt tương đương Grid Search nhưng tiết kiệm rất nhiều thời gian.
+Người 2: Một sự đánh đổi thông minh giữa thời gian tính toán và độ tối ưu.
+
+Slide 43: Các phương pháp tập hợp (Ensemble Methods)
+Người 1: Một cách khác để tinh chỉnh là kết hợp các mô hình tốt nhất với nhau, giống như Rừng ngẫu nhiên đã làm. Ý kiến của một tập thể (nhiều mô hình) thường tốt hơn ý kiến của một cá nhân, nhất là khi các mô hình mắc những loại lỗi khác nhau.
+
+Slide 44: Phân tích các mô hình tốt nhất và lỗi của chúng
+Người 1: Khi có mô hình cuối cùng, hãy xem độ quan trọng của từng đặc trưng (Feature Importance). Ta phát hiện ra đặc trưng "Chỉ số thu nhập" là quan trọng nhất, còn thuộc tính "Gần đại dương" không quá quan trọng, ta có thể xem xét loại bỏ để làm nhẹ mô hình.
+
+Slide 45: Đánh giá hệ thống trên tập kiểm thử
+Người 1: Cuối cùng, khi đã tinh chỉnh xong xuôi vắt kiệt mọi sức lực trên tập Huấn luyện và tập Xác thực (Cross Validation), bây giờ, và CHỈ BÂY GIỜ, ta mới đem tập Test set đã cất kỹ từ đầu ra.
+Người 2: Hồi hộp như thi tốt nghiệp thầy nhỉ! Nếu mô hình làm bài trên tập Test set này tốt thì chứng tỏ nó đã sẵn sàng ra mắt thị trường.
+Người 1: Đúng! Tuyệt đối không tinh chỉnh lại siêu tham số dựa trên kết quả Test set này, nếu không nó lại bị thiên kiến.
+
+Slide 46: Triển khai, Giám sát và Bảo trì hệ thống
+Người 1: Chúc mừng, ta đã có mô hình hoàn hảo. Nhưng dự án chưa kết thúc. Ta bước vào phần cuối: Triển khai và Bảo trì.
+
+Slide 47: Triển khai mô hình (Model Deployment)
+Người 1: Để đưa mô hình vào ứng dụng web, ta lưu mô hình bằng thư viện Joblib. Mã code production sẽ tải file mô hình này lên, gọi hàm predict mỗi khi người dùng trên app bấm nút "Dự đoán giá".
+Người 2: Vậy phần web có thể viết bằng ngôn ngữ khác, chỉ cần gọi mô hình qua REST API (Giao diện web) là được phải không ạ?
+Người 1: Hoàn toàn chính xác, đó là kiến trúc Microservices rất phổ biến.
+
+Slide 48: Kiến trúc Triển khai (Ví dụ)
+Người 1: Ta cũng có thể gói gọn toàn bộ mô hình và thư viện vào một Docker Image và triển khai lên các nền tảng đám mây như Google Cloud Vertex AI hay AWS SageMaker. Những đám mây này tự lo vấn đề mở rộng (scale) khi có hàng triệu người dùng truy cập.
+
+Slide 49: Giám sát hệ thống (Monitoring)
+Người 1: Khi hoạt động, hiệu suất mô hình sẽ tự động suy giảm theo thời gian. Nguyên nhân là thế giới luôn thay đổi: lạm phát tăng, luật đất đai đổi. Hiện tượng này gọi là "Data drift" (Trôi dạt dữ liệu).
+Người 2: Do đó, ta phải thường xuyên đánh giá lại mô hình cũ với dữ liệu thực tế mới để kịp thời phát cảnh báo?
+Người 1: Rất chuẩn. Đó là nhiệm vụ của hệ thống Giám sát.
+
+Slide 50: Tự động hóa quá trình bảo trì và cập nhật
+Người 1: Cuối cùng, quá trình bảo trì phải được tự động hóa. Khi hệ thống báo mô hình bị cũ, một pipeline tự động sẽ tải dữ liệu mới, chạy lại quy trình làm sạch, huấn luyện và nếu mô hình mới vượt mô hình cũ trên Test set, hệ thống sẽ tự động cập nhật lên app thực tế.
+
+Slide 51: Tổng kết Chương 2
+Người 1: Vậy là chúng ta đã kết thúc một vòng đời đầy đủ của Dự án Học máy: Khởi tạo, Làm sạch, Huấn luyện, Tinh chỉnh, Triển khai và Tự động hóa Giám sát. Những chương sau chúng ta sẽ đi sâu vào toán học của các thuật toán.
+Người 2: Một bức tranh quá tổng quan và chi tiết. Em cảm ơn thầy về buổi học hôm nay ạ!
+Người 1: Chào các em, chúc các em thực hành tốt bài tập về nhà! Hẹn gặp lại.

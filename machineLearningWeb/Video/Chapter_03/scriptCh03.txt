@@ -1,0 +1,183 @@
+Slide 1: PHÂN LOẠI (CLASSIFICATION)
+Người 1: Chào các em sinh viên. Ở chương trước, chúng ta đã thực hiện dự án Hồi quy (dự đoán giá nhà). Hôm nay, trong Chương 3, chúng ta sẽ chuyển sang một bài toán cực kỳ phổ biến khác trong Học máy: Bài toán Phân loại (Classification).
+Người 2: Chào thầy. Bài toán phân loại là dự đoán nhãn cho đối tượng, giống như bộ lọc thư rác đúng không ạ?
+
+Slide 2: Nội dung Chương trình
+Người 1: Đúng vậy. Bài học hôm nay gồm 3 phần chính. Phần 1: Giới thiệu Phân loại với bộ dữ liệu MNIST và các thước đo hiệu suất cơ bản. Phần 2: Đi sâu vào sự đánh đổi giữa Độ chính xác (Precision) và Độ nhạy (Recall), cùng các đường cong ROC. Phần 3: Chuyển từ Phân loại nhị phân sang Phân loại đa lớp, Phân tích lỗi và các biến thể nâng cao như Phân loại đa nhãn.
+Người 2: Nội dung rất phong phú thưa thầy, có vẻ đánh giá một mô hình phân loại phức tạp hơn Hồi quy rất nhiều.
+
+Slide 3: Mục tiêu bài học
+Người 1: Mục tiêu của chương là các em phải nằm lòng các khái niệm Precision, Recall, F1 Score. Hiểu tại sao Độ chính xác (Accuracy) lại có thể "đánh lừa" chúng ta, và biết cách áp dụng chiến lược OvR, OvO để phân loại nhiều hơn 2 lớp.
+Người 2: Dạ vâng, em đã sẵn sàng.
+
+Slide 4: 1. Giới thiệu Phân loại, MNIST & Đánh giá Hiệu suất cơ bản
+Người 1: Chúng ta vào Phần 1. Để thực hành, ta cần một bộ dữ liệu. Giống như Hello World trong lập trình, trong Máy học ta có bộ dữ liệu MNIST.
+
+Slide 5: Giới thiệu Bộ dữ liệu MNIST
+Người 1: MNIST là bộ dữ liệu gồm 70.000 hình ảnh nhỏ chụp lại các chữ số viết tay của học sinh trung học và nhân viên điều tra dân số Mỹ. Mỗi hình ảnh đều đã được gán nhãn là chữ số nào.
+Người 2: 70 ngàn ảnh thì đủ lớn để huấn luyện các thuật toán cơ bản rồi ạ.
+
+Slide 6: Hình ảnh chữ số MNIST
+Người 1: Các em nhìn lên slide, đây là một ví dụ. Mỗi ảnh có kích thước 28x28 pixel, tức là có 784 đặc trưng (pixels). Mỗi đặc trưng mang giá trị cường độ từ 0 (trắng) đến 255 (đen). 
+Người 2: Máy tính không nhìn thấy số 5 như ta, nó chỉ nhìn thấy một mảng 784 con số thôi đúng không thầy?
+Người 1: Chính xác.
+
+Slide 7: Sự đa dạng của chữ số MNIST
+Người 1: Và đây là sự đa dạng của nét chữ. Các em thấy cùng là số 5 nhưng mỗi người viết một kiểu. Độ khó là làm sao máy tính nhận diện được mọi nét chữ uốn lượn khác nhau.
+Người 2: Việc này đối với thuật toán truyền thống là bất khả thi vì không thể dùng lệnh If-Else để định nghĩa nét bút được.
+
+Slide 8: Phân chia tập huấn luyện và tập kiểm thử
+Người 1: Trước tiên, ta lấy 60.000 ảnh đầu tiên làm tập Huấn luyện và 10.000 ảnh sau làm tập Kiểm thử. Tập MNIST đã được xáo trộn sẵn nên ta yên tâm các nếp gấp Cross-validation sẽ có phân phối đồng đều các chữ số.
+
+Slide 9: Huấn luyện bộ phân loại nhị phân (Binary Classification)
+Người 1: Bắt đầu cho đơn giản, ta làm Phân loại nhị phân (Binary). Tức là chỉ phân biệt 2 lớp. Thay vì đoán số từ 0 đến 9, ta đoán xem số đó "Có phải là số 5" hay "Không phải số 5".
+Người 2: Tức là mình gộp tất cả các số 0, 1, 2, 3, 4, 6, 7, 8, 9 thành một nhóm chung là "Không phải số 5" ạ?
+Người 1: Rất chuẩn.
+
+Slide 10: Bài toán: Bộ phát hiện chữ số 5
+Người 1: Dữ liệu lúc này được chuyển thành dạng nhị phân: nhãn bằng True nếu ảnh là số 5, và False cho các số còn lại.
+
+Slide 11: Thuật toán Stochastic Gradient Descent (SGD)
+Người 1: Để phân loại, ta dùng thuật toán SGD (Stochastic Gradient Descent) của Scikit-Learn. Thuật toán này rất mạnh, có thể xử lý từng mẫu một cách độc lập (Online learning), rất phù hợp với dữ liệu lớn.
+Người 2: Sau khi huấn luyện SGDClassifier, nó có thể nhận một bức ảnh mới và phán đoán ngay đó có phải số 5 hay không.
+
+Slide 12: Các thước đo hiệu suất
+Người 1: Bây giờ, làm sao biết SGD tốt đến đâu? Đánh giá phân loại khó hơn hồi quy nhiều. 
+
+Slide 13: Đo độ chính xác bằng kiểm định chéo
+Người 1: Đầu tiên ta dùng Accuracy (Tỉ lệ đoán đúng). Ta áp dụng Cross-Validation 3 fold, kết quả máy tính báo độ chính xác là 95%. Tuyệt vời đúng không?
+Người 2: Chà, 95% là một con số rất ấn tượng thưa thầy!
+
+Slide 14: Sự đánh lừa của Độ chính xác (Accuracy)
+Người 1: Không hẳn đâu. Hãy xem sự đánh lừa ở đây. Nếu thầy viết một thuật toán "ngu ngốc" là lúc nào cũng đoán "KHÔNG PHẢI SỐ 5". Trong MNIST, số 5 chỉ chiếm khoảng 10%. Vậy nếu thầy cứ nhắm mắt đoán "Không", thầy vẫn đúng 90% số lần!
+Người 2: À, em hiểu rồi. Vì dữ liệu bị mất cân bằng (skewed dataset), độ chính xác Accuracy trở thành một con số vô nghĩa.
+
+Slide 15: Ma trận nhầm lẫn (Confusion Matrix)
+Người 1: Để có cái nhìn chân thực hơn, ta phải dùng Ma trận nhầm lẫn (Confusion Matrix). Ý tưởng là đếm xem có bao nhiêu lần số 5 bị phân loại nhầm thành số 3, hoặc số không phải 5 lại bị nhầm thành 5.
+Người 2: Giống như ma trận 2x2: True Positive, False Positive, True Negative và False Negative đúng không ạ?
+
+Slide 16: Cấu trúc của Ma trận nhầm lẫn
+Người 1: Đúng vậy. Dòng thể hiện lớp thực tế, Cột thể hiện lớp dự đoán. 
+- True Negative (TN): Thực tế không phải 5, đoán không phải 5 (Đoán đúng).
+- False Positive (FP): Thực tế không phải 5, lại đoán là 5 (Báo động giả).
+- False Negative (FN): Thực tế là 5, lại đoán không phải 5 (Bỏ sót).
+- True Positive (TP): Thực tế là 5, đoán là 5 (Bắt trúng).
+
+Slide 17: Độ chính xác (Precision) và Độ nhạy (Recall)
+Người 1: Từ ma trận đó, ta rút ra 2 chỉ số cực kỳ quan trọng. 
+Precision (Độ chính xác) = TP chia cho (TP + FP). Tức là trong tất cả những lần nó "phán" là số 5, thì có bao nhiêu % là thật?
+Recall (Độ nhạy) = TP chia cho (TP + FN). Tức là trong tất cả số 5 thực tế có trong tập dữ liệu, nó bắt được bao nhiêu %?
+Người 2: Rất rõ ràng ạ. Precision chống "Báo động giả", còn Recall chống "Bỏ sót lọt lưới".
+
+Slide 18: Sự kết hợp: Điểm F1 (F1 Score)
+Người 1: Để tiện so sánh 2 mô hình, ta gộp Precision và Recall thành một con số duy nhất gọi là Điểm F1. Nó là trung bình điều hòa của cả hai. F1 chỉ cao khi cả Precision và Recall cùng cao.
+
+Slide 19: 2. Sự đánh đổi Độ chính xác và Độ nhạy
+Người 1: Chúng ta sang Phần 2. Thật không may, em không thể tăng cả Precision và Recall cùng lúc. Cái này tăng thì cái kia giảm. Đó gọi là Sự đánh đổi (Trade-off).
+
+Slide 20: Ngưỡng quyết định (Decision Threshold)
+Người 1: Tại sao lại đánh đổi? Hãy nhìn vào cách SGD hoạt động. Nó tính toán một điểm số (score) cho bức ảnh. Nếu điểm này lớn hơn một "Ngưỡng" (Threshold), nó đoán là số 5, nhỏ hơn thì đoán là Không. Mặc định Threshold bằng 0.
+
+Slide 21: Minh họa sự đánh đổi (Trade-off)
+Người 1: Hình minh họa này cho thấy nếu ta tăng Ngưỡng lên cao (đòi hỏi rất khắt khe mới nhận là số 5), ta sẽ không bao giờ bắt nhầm (Precision tăng vọt 100%), nhưng bù lại ta bỏ sót rất nhiều số 5 mờ nhạt (Recall giảm thê thảm).
+Người 2: Ngược lại, nếu hạ Ngưỡng xuống thấp, ta "bắt nhầm hơn bỏ sót", Recall tăng 100% nhưng Precision lại thấp vì bắt vào cả số 3, số 8 đúng không thầy?
+Người 1: Tuyệt vời, em đã nắm được cốt lõi.
+
+Slide 22: Các biểu đồ phân tích Precision/Recall
+Người 1: Ta có thể dùng hàm precision_recall_curve để vẽ đồ thị của Precision và Recall theo các mức Ngưỡng khác nhau, từ đó chọn mức Ngưỡng phù hợp với nhu cầu bài toán.
+
+Slide 23: Minh họa: Đường cong Precision/Recall
+Người 1: Ở đồ thị PR này, ta thấy khi Recall tăng thì Precision sẽ tụt dốc.
+Người 2: Vậy mình nên chọn Ngưỡng ở đâu ạ?
+Người 1: Tùy bài toán. Nếu em làm ứng dụng bắt Video xấu cho trẻ em, em cần Precision cực cao (thà bỏ sót video tốt còn hơn cho lọt video xấu). Nếu em làm camera bắt trộm, em cần Recall cực cao (thà báo động giả còn hơn lọt lưới trộm).
+
+Slide 24: Đường cong ROC (Receiver Operating Characteristic)
+Người 1: Một công cụ phổ biến khác là đường cong ROC. Nó vẽ Recall (True Positive Rate) theo Trục Y, đối chiếu với False Positive Rate (Tỉ lệ báo động giả) theo Trục X. 
+Người 2: Đường cong này càng vồng lên góc trên cùng bên trái thì mô hình càng xịn phải không ạ?
+
+Slide 25: ROC AUC: So sánh các bộ phân loại
+Người 1: Chính xác! Diện tích nằm dưới đường cong ROC gọi là AUC (Area Under Curve). Một bộ phân loại hoàn hảo có AUC bằng 1. Bộ phân loại ngẫu nhiên (chỉ đoán bừa) có AUC bằng 0.5. Ta dùng AUC để so sánh các mô hình với nhau.
+
+Slide 26: Minh họa: Đường cong ROC của SGD và Random Forest
+Người 1: Nhìn vào hình, đường của Random Forest (màu xanh dương) gần góc trái trên hơn và có diện tích AUC lớn hơn đường của SGD (màu đỏ dấu chấm). Vậy Random Forest vượt trội hơn hẳn trên bài toán phân biệt số 5.
+
+Slide 27: Phân loại Đa lớp (Multiclass Classification)
+Người 1: Sang Phần 3, nếu ta muốn phân loại cả 10 chữ số từ 0 đến 9 thì sao? Đó là bài toán Phân loại đa lớp. Một số thuật toán như Random Forest hỗ trợ trực tiếp. Một số khác như SVM hay SGD chỉ là thuật toán Nhị phân, nên ta phải dùng Mẹo.
+Người 2: Mẹo đó là chia nhỏ bài toán ra thành nhiều bài toán nhị phân ạ?
+
+Slide 28: Chiến lược Một-đối-phần-còn-lại (OvR / OvA)
+Người 1: Đúng. Cách 1 là One-versus-Rest (OvR). Ta huấn luyện 10 bộ phân loại nhị phân: 1 bộ nhận diện số 0, 1 bộ nhận diện số 1,... Khi có ảnh mới, ta lấy điểm số của 10 bộ, bộ nào có điểm cao nhất thì chọn lớp đó.
+Người 2: Rất dễ hiểu. Nhưng như vậy phải train 10 mô hình trên toàn bộ tập dữ liệu.
+
+Slide 29: Chiến lược Một-đối-một (OvO)
+Người 1: Cách 2 là One-versus-One (OvO). Ta huấn luyện các bộ phân loại cho từng cặp số (0 và 1, 0 và 2,...). Với 10 lớp, ta cần tới N nhân (N-1) chia 2, tức là 45 mô hình!
+Người 2: Trời, 45 mô hình thì tốn kém quá thầy ơi.
+Người 1: Nghe nhiều, nhưng mỗi mô hình OvO chỉ train trên tập dữ liệu nhỏ xíu của 2 lớp đó thôi. Rất có lợi cho thuật toán sợ dữ liệu lớn như SVM.
+
+Slide 30: Phân loại đa lớp tự động trong Scikit-Learn
+Người 1: May mắn là Scikit-Learn sẽ tự động phát hiện khi em dùng thuật toán nhị phân cho bài toán đa lớp. Nó sẽ tự động áp dụng OvR hoặc OvO (tùy thuật toán) mà em không cần code tay.
+
+Slide 31: Phân loại đa lớp với thuật toán gốc
+Người 1: Đối với thuật toán đa lớp tự nhiên (như Decision Tree, KNN), ta chỉ việc gọi lệnh fit là xong, không cần OvR hay OvO.
+
+Slide 32: Điểm số quyết định cho dự đoán đa lớp
+Người 1: Sau khi fit, hàm decision_function sẽ trả về mảng điểm số của 10 lớp, và hàm predict sẽ chọn lớp có điểm cao nhất. 
+
+Slide 33: Đánh giá bộ phân loại đa lớp
+Người 1: Để đánh giá, ta dùng Cross Validation giống nhị phân, nhưng tính Accuracy trung bình trên tất cả các lớp. Nếu ta Scaling dữ liệu trước, độ chính xác có thể tăng vọt từ 89% lên 93%.
+
+Slide 34: 3. Phân tích Lỗi & Các bài toán nâng cao
+Người 1: Nếu đã hài lòng với mô hình đa lớp, ta sẽ soi kỹ xem nó hay làm sai ở đâu để cải thiện.
+
+Slide 35: Trực quan hóa Ma trận nhầm lẫn đa lớp
+Người 1: Ta vẽ Ma trận nhầm lẫn 10x10 bằng màu (Heatmap). Đường chéo chính sáng màu nghĩa là đoán đúng rất nhiều. Nhưng ta quan tâm đến các ô tối màu bên ngoài đường chéo, đó là những chỗ bị nhầm.
+
+Slide 36: Minh họa: Phân tích Ma trận nhầm lẫn
+Người 1: Bằng cách chuẩn hóa và bôi đen đường chéo chính, các ô nhầm lẫn sẽ nổi bật lên. Em thấy cột số 8 sáng rực, nghĩa là rất nhiều số khác bị nhận diện nhầm thành số 8.
+Người 2: À, số 8 và số 9 có vòng tròn giống nhau, hay số 3 và số 5 cũng hao hao nhau, mô hình dễ bị nhầm.
+
+Slide 37: Phân tích lỗi riêng lẻ và cách khắc phục
+Người 1: Khi phát hiện ra, ta có thể sửa bằng cách: thêm ảnh số 8 vào dữ liệu train, hoặc viết thêm thuật toán trích xuất vòng tròn kín (số 8 có 2 vòng, số 9 có 1 vòng) để giúp thuật toán học máy.
+
+Slide 38: So sánh lỗi giữa số 3 và 5
+Người 1: In trực tiếp các ảnh số 3 và 5 bị nhầm lẫn, ta thấy nguyên nhân là thuật toán SGD quá đơn giản, nó chỉ xét trọng số từng pixel một cách tuyến tính. Nếu người viết viết lệch một chút, pixel giao nhau bị thay đổi thì thuật toán bị "mù".
+Người 2: Vậy mình cần một thuật toán có khả năng nhìn được "cấu trúc hình ảnh" (như Mạng CNN) hoặc phải xử lý ảnh thật chuẩn giữa trung tâm trước khi cho máy học.
+
+Slide 39: Tăng cường dữ liệu (Data Augmentation)
+Người 1: Một mẹo tuyệt vời để làm mô hình mạnh hơn là Tăng cường dữ liệu. Từ 1 ảnh gốc, ta dịch trái, phải, lên, xuống để tạo ra 4 ảnh mới. Tập dữ liệu tăng gấp 5 lần mà không tốn công thu thập. Mô hình sẽ chịu lỗi tốt hơn rất nhiều khi gặp số viết lệch.
+
+Slide 40: Phân loại Đa nhãn (Multilabel Classification)
+Người 1: Bài toán nâng cao thứ nhất là Đa nhãn. 
+
+Slide 41: Phân loại Đa nhãn (Multilabel) là gì?
+Người 1: Cho đến nay, mỗi ảnh chỉ gán duy nhất 1 lớp. Nhưng nếu trong một bức ảnh Facebook có mặt cả Alice, Bob và Charlie. Mô hình phải trả về một bộ nhãn dạng [1, 0, 1] (Có Alice, không Bob, có Charlie). Đó là Đa nhãn.
+Người 2: Ứng dụng này rõ ràng rất thực tế cho xử lý ảnh.
+
+Slide 42: Ví dụ về hệ thống đa nhãn
+Người 1: Thay vì nhận diện khuôn mặt phức tạp, ví dụ đơn giản với MNIST: Trả về mảng 2 giá trị: Số đó có phải "lớn hơn bằng 7" không? và "Có phải là số lẻ" không? Với số 5, nhãn đúng sẽ là [False, True]. Thuật toán K-NeighborsClassifier hỗ trợ việc này trực tiếp.
+
+Slide 43: Đánh giá hệ thống phân loại đa nhãn
+Người 1: Đánh giá đa nhãn thì ta có thể tính điểm F1 cho từng nhãn (nhãn lẻ, nhãn lớn hơn 7) rồi lấy trung bình cộng.
+
+Slide 44: Phân loại đa nhãn với ClassifierChain
+Người 1: Nếu nhãn này phụ thuộc nhãn kia (ví dụ đã là con mèo thì khả năng cao là động vật có vú), ta dùng ClassifierChain. Nó liên kết các bộ phân loại nhị phân lại, đầu ra của bộ này làm đầu vào cho bộ kia.
+
+Slide 45: Phân loại Đa đầu ra (Multioutput Classification)
+Người 1: Nâng cao nhất là Phân loại Đa đầu ra. Nó là bản nâng cấp của Đa nhãn, trong đó mỗi nhãn có thể mang nhiều hơn 2 giá trị.
+Người 2: Tức là không chỉ True/False, mà có thể là từ 0 đến 255 ạ?
+
+Slide 46: Phân loại Đa đầu ra là gì?
+Người 1: Chính xác.
+
+Slide 47: Bài toán khử nhiễu hình ảnh
+Người 1: Ví dụ kinh điển là Khử nhiễu hình ảnh. Đầu vào là ảnh đầy nhiễu. Đầu ra là ảnh sắc nét. Ảnh đầu ra có 784 pixel, tương ứng với 784 "nhãn". Mỗi nhãn mang giá trị cường độ từ 0 đến 255. 
+Người 2: Vừa có 784 nhãn (Đa nhãn), vừa mỗi nhãn có 256 giá trị (Đa lớp). Sự kết hợp này thực sự mạnh mẽ!
+
+Slide 48: Minh họa: Quá trình khử nhiễu
+Người 1: Slide này cho thấy mô hình KNN nhận ảnh bị nhiễu bụi chấm bên trái và đã đoán ra ảnh sạch tinh tươm bên phải, rất gần với ảnh gốc.
+Người 2: Em không ngờ Học máy phân loại có thể làm được cả tác vụ chỉnh sửa ảnh như Photoshop.
+
+Slide 49: Tổng kết Chương 3
+Người 1: Tóm lại, các em đã biết cách xử lý bài toán Phân loại. Biết cách chọn độ đo đúng (Precision/Recall thay vì Accuracy khi dữ liệu lệch). Nắm được OvR, OvO cho Đa lớp. Và cách phân tích Ma trận nhầm lẫn để cải thiện.
+Người 2: Kiến thức chương này rất trọng tâm ạ. Đặc biệt là những khái niệm FPR, TPR trên đường cong ROC, em sẽ xem lại để nhớ kỹ hơn.
+Người 1: Cảm ơn các em đã theo dõi. Hẹn gặp lại!
