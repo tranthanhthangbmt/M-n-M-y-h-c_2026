@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{1. Autoencoder Cơ bản và Biểu diễn Dữ liệu}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Kỹ thuật nâng cao với Autoencoder}{11}{0}{2}
+\beamer@sectionintoc {3}{3. Autoencoder Biến phân (Variational Autoencoders - VAEs)}{20}{0}{3}
+\beamer@sectionintoc {4}{4. Mạng Đối kháng Sinh (GANs)}{25}{0}{4}
+\beamer@sectionintoc {5}{5. Mô hình Khuếch tán (Diffusion Models)}{34}{0}{5}

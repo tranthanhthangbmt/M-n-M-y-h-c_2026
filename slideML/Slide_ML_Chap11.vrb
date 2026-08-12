@@ -1,0 +1,9 @@
+\frametitle{Code: Tối Ưu Hóa RMSProp Keras}
+\begin{lstlisting}[language=Python]
+# Tinh chinh toc do doc bang RMSprop
+optimizer = keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
+\end{lstlisting}
+    \begin{itemize}
+        \item Tham số `rho` tương ứng với $\beta$ trong công thức lý thuyết (thường đặt là 0.9).
+        \item Ngoại trừ những kiến trúc cực kỳ phức tạp, RMSProp gần như luôn hoạt động tốt hơn hẳn so với AdaGrad.
+    \end{itemize}

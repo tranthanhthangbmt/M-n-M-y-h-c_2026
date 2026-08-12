@@ -1,0 +1,15 @@
+\frametitle{Sử dụng LocallyLinearEmbedding cho Swiss roll}
+\begin{lstlisting}[language=Python]
+from sklearn.datasets import make_swiss_roll
+from sklearn.manifold import LocallyLinearEmbedding
+
+# Tao du lieu Swiss roll 3D
+X_swiss, t = make_swiss_roll(n_samples=1000, noise=0.2, random_state=42)
+
+# Giam xuong 2D bang LLE, danh gia tren 10 lang gieng gan nhat
+lle = LocallyLinearEmbedding(n_components=2, n_neighbors=10, random_state=42)
+X_unrolled = lle.fit_transform(X_swiss)
+    \end{lstlisting}
+    \begin{center}
+        (Giả lập Hình 8-10: Dữ liệu Swiss Roll 3D được "mở cuộn" thành một mặt phẳng 2D thành công, duy trì quan hệ giữa các điểm bên cạnh nhau).
+    \end{center}

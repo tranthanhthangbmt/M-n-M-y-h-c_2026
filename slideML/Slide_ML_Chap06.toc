@@ -1,0 +1,8 @@
+\beamer@sectionintoc {1}{1. Khái quát về Cây Quyết định}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Huấn luyện và Trực quan hóa}{6}{0}{2}
+\beamer@sectionintoc {3}{3. Đưa ra dự đoán (Making Predictions)}{9}{0}{3}
+\beamer@sectionintoc {4}{4. Thuật toán Huấn luyện CART}{16}{0}{4}
+\beamer@sectionintoc {5}{5. Chính quy hóa Cây (Regularization)}{21}{0}{5}
+\beamer@sectionintoc {6}{6. Hồi quy bằng Cây quyết định}{24}{0}{6}
+\beamer@sectionintoc {7}{7. Các Điểm yếu của Cây Quyết Định}{30}{0}{7}
+\beamer@sectionintoc {8}{8. Tổng kết}{37}{0}{8}

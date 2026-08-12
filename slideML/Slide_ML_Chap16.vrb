@@ -1,0 +1,15 @@
+\frametitle{5.5 Ví dụ: Tích hợp AI bằng Hugging Face Pipeline}
+\begin{itemize}
+        \item Chỉ với 4 dòng code, bạn đã đưa được mô hình State-of-the-Art vào ứng dụng:
+    \end{itemize}
+\begin{lstlisting}[language=Python]
+from transformers import pipeline
+
+# Khoi tao pipeline phan tich cam xuc
+classifier = pipeline("sentiment-analysis")
+
+# Du doan (Tu dong tai mo hinh ve neu chua co)
+result = classifier("I really loved this movie, it was fantastic!")
+print(result)
+# Ket qua: [{'label': 'POSITIVE', 'score': 0.9998}]
+\end{lstlisting}

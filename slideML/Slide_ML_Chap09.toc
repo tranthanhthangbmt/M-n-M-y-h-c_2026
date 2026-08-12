@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Giới thiệu Học không giám sát \& K-Means}{3}{0}{1}
+\beamer@sectionintoc {2}{Điểm Silhouette, Ứng dụng K-Means \& DBSCAN}{16}{0}{2}
+\beamer@sectionintoc {3}{Mô hình Hỗn hợp Gaussian (GMM)}{31}{0}{3}
+\beamer@sectionintoc {4}{Mô hình Hỗn hợp Gaussian Bayes}{45}{0}{4}

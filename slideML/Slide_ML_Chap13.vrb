@@ -1,0 +1,14 @@
+\frametitle{Sử dụng TFDS}
+\begin{lstlisting}[language=Python]
+import tensorflow_datasets as tfds
+
+# Tu dong tai ve, tien xu ly va tra ve tf.data.Dataset
+dataset = tfds.load(name="mnist", split="train")
+
+# Truc tiep dua vao model
+dataset = dataset.shuffle(10000).batch(32).prefetch(1)
+for item in dataset:
+    images = item["image"]
+    labels = item["label"]
+    # ...
+\end{lstlisting}

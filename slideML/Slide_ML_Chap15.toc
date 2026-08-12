@@ -1,0 +1,9 @@
+\babel@toc {vietnamese}{}\relax 
+\beamer@sectionintoc {1}{1. Dữ liệu Chuỗi và Mạng nơ-ron hồi quy (RNN)}{3}{0}{1}
+\beamer@sectionintoc {2}{2. Ứng dụng và Kiến Trúc Dựa Trên Chuỗi}{9}{0}{2}
+\beamer@sectionintoc {3}{3. Huấn luyện RNN: BPTT}{12}{0}{3}
+\beamer@sectionintoc {4}{4. Dự báo Chuỗi Thời Gian (Time Series)}{17}{0}{4}
+\beamer@sectionintoc {5}{5. Mạng RNN Sâu (Deep RNNs)}{24}{0}{5}
+\beamer@sectionintoc {6}{6. Kiến trúc Tế bào Nhớ: LSTM và GRU}{28}{0}{6}
+\beamer@sectionintoc {7}{7. WaveNet (Mạng CNN 1D cho Chuỗi)}{36}{0}{7}
+\beamer@sectionintoc {8}{Tổng kết}{41}{0}{8}

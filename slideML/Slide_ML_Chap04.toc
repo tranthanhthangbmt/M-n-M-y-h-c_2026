@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{1. Hồi quy tuyến tính \& Phương trình chuẩn tắc}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Hạ Gradient (Gradient Descent)}{12}{0}{2}
+\beamer@sectionintoc {3}{3. Hồi quy đa thức, Đường cong học tập \& Chính quy hóa}{27}{0}{3}
+\beamer@sectionintoc {4}{4. Hồi quy Logistic \& Softmax}{45}{0}{4}

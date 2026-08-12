@@ -1,0 +1,17 @@
+\frametitle{Tối ưu hóa Vòng lặp với @tf.function}
+\begin{itemize}
+        \item Vòng lặp \texttt{for} Python qua DataBatches siêu chậm.
+        \item Lời khuyên: Đóng gói quá trình xử lý 1 Bước (1 Step) thành \texttt{@tf.function} để tăng tốc biên dịch toán học C++.
+    \end{itemize}
+    \begin{lstlisting}[language=Python]
+@tf.function
+def train_step(X_batch, y_batch):
+    with tf.GradientTape() as tape:
+        y_pred = model(X_batch, training=True)
+        main_loss = tf.reduce_mean(loss_fn(y_batch, y_pred))
+        loss = tf.add_n([main_loss] + model.losses)
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+
+# Trong vong lap chi goi train_step(X_batch, y_batch)
+    \end{lstlisting}

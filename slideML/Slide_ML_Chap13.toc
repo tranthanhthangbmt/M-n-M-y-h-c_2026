@@ -1,0 +1,9 @@
+\babel@toc {vietnamese}{}\relax 
+\beamer@sectionintoc {1}{1. Giới thiệu về API tf.data}{3}{0}{1}
+\beamer@sectionintoc {2}{2. Đọc và Tiền Xử Lý Dữ Liệu Lớn}{9}{0}{2}
+\beamer@sectionintoc {3}{3. TFRecord Format}{25}{0}{3}
+\beamer@sectionintoc {4}{4. Các Lớp Tiền Xử Lý của Keras}{28}{0}{4}
+\beamer@sectionintoc {5}{5. Tiền xử lý Biến Phân Loại (Categorical Features)}{32}{0}{5}
+\beamer@sectionintoc {6}{6. Embeddings (Nhúng)}{35}{0}{6}
+\beamer@sectionintoc {7}{7. TF Transform và TF Datasets}{38}{0}{7}
+\beamer@sectionintoc {8}{Tổng Kết}{41}{0}{8}

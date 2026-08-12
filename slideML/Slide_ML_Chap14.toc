@@ -1,0 +1,8 @@
+\babel@toc {vietnamese}{}\relax 
+\beamer@sectionintoc {1}{1. Vỏ Não Thị Giác và Nguồn Gốc CNN}{3}{0}{1}
+\beamer@sectionintoc {2}{2. Các thành phần của CNN (Tích chập \& Gộp)}{5}{0}{2}
+\beamer@sectionintoc {3}{3. Kiến trúc CNN Tiêu Biểu (Lịch sử \& Hiện đại)}{18}{0}{3}
+\beamer@sectionintoc {4}{4. Định Vị Đối Tượng (Object Localization)}{32}{0}{4}
+\beamer@sectionintoc {5}{5. Phát hiện Đối Tượng (Object Detection)}{36}{0}{5}
+\beamer@sectionintoc {6}{6. Phân đoạn Ngữ nghĩa (Semantic Segmentation)}{39}{0}{6}
+\beamer@sectionintoc {7}{Tổng Kết}{41}{0}{7}

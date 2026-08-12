@@ -1,0 +1,40 @@
+\frametitle{Học dựa trên thực thể và học dựa trên mô hình}
+\begin{lstlisting}[language=python
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression]
+# Tải và chuẩn bị dữ liệu
+data_root =
+"https://github.com/ageron/data/raw/main/"
+lifesat = pd.read_csv(data_root +
+"lifesat/lifesat.csv")
+X = lifesat[["GDP per capita
+(USD)"]].values
+y = lifesat[["Life satisfaction"]].values
+# Trực quan hóa dữ liệu
+lifesat.plot(kind='scatter', grid=True,
+            
+x="GDP per capita (USD)", y="Life satisfaction")
+plt.axis([23_500, 62_500, 4, 9])
+plt.show()
+# Chọn một mô hình tuyến tính
+model = LinearRegression()
+# Huấn luyện mô hình
+model.fit(X, y)
+# Dự đoán cho Síp
+X_new = [[37_655.2]] # GDP trên đầu người của Síp năm
+2020
+print(model.predict(X_new)) # đầu ra: [[6.30165767]]
+```
+LƯU Ý Nếu bạn sử dụng thuật toán học dựa trên trường
+hợp thay vào đó, bạn sẽ thấy rằng Israel có GDP trên đầu người gần nhất với Síp
+($38.341), và vì dữ liệu OECD cho chúng ta biết rằng sự hài lòng cuộc sống của
+người Israel là 7.2, bạn sẽ dự đoán sự hài lòng cuộc sống là 7.2 cho Síp. Nếu bạn
+phóng to một chút và nhìn vào hai quốc gia gần nhất tiếp theo, bạn sẽ tìm thấy
+Litva và Slovenia, cả hai đều có mức độ hài lòng cuộc sống là 5.9. Trung bình cộng
+ba giá trị này, bạn nhận được 6.33, khá gần với dự đoán dựa trên mô hình của bạn.
+Thuật toán đơn giản này được gọi là hồi quy k-láng giềng gần nhất (trong ví dụ
+này, k = 3). Thay thế mô hình hồi quy tuyến tính bằng hồi quy k-láng giềng gần
+nhất trong đoạn mã trước dễ dàng như việc thay thế các dòng này:
+\end{lstlisting}

@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{1. Phục vụ một mô hình TensorFlow (TF Serving)}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Triển khai AI lên Thiết bị Di động \& Web}{14}{0}{2}
+\beamer@sectionintoc {3}{3. Tăng tốc bằng GPU/TPU và Phân tán Tính Toán}{23}{0}{3}
+\beamer@sectionintoc {4}{4. Kiến trúc Đồng bộ và Bất đồng bộ}{32}{0}{4}
+\beamer@sectionintoc {5}{5. API Chiến lược Phân phối \& Huấn luyện Cụm}{34}{0}{5}
+\beamer@sectionintoc {6}{6. Tổng kết}{40}{0}{6}

@@ -1,0 +1,89 @@
+from bs4 import BeautifulSoup
+import re
+import os
+import shutil
+import urllib.parse
+
+html_path = r'd:\DongAUniversity\TÀI LIỆU DẠY HỌC_2024-2025\Môn Máy học_2026\Tài liệu\CHƯƠNG 11.htm'
+ch11_files_dir = r'd:\DongAUniversity\TÀI LIỆU DẠY HỌC_2024-2025\Môn Máy học_2026\Tài liệu\CHƯƠNG 11_files'
+ch11_dest_dir = r'd:\DongAUniversity\TÀI LIỆU DẠY HỌC_2024-2025\Môn Máy học_2026\machineLearningWeb\Figures\CH11'
+
+if not os.path.exists(ch11_dest_dir):
+    os.makedirs(ch11_dest_dir)
+
+with open(html_path, 'r', encoding='utf-8') as f:
+    html = f.read()
+
+soup = BeautifulSoup(html, 'html.parser')
+imgs = soup.find_all('img')
+
+mapping = []
+for img in imgs:
+    src = img.get('src', '')
+    if not src:
+        continue
+    img_name = src.split('/')[-1]
+    
+    # Only care about .png or .jpg
+    if not img_name.lower().endswith(('.png', '.jpg', '.jpeg')):
+        continue
+        
+    p = img.find_parent('p')
+    caption_text = ""
+    
+    # Look at the next few paragraphs
+    curr = p
+    for _ in range(5):
+        if curr:
+            curr = curr.find_next_sibling('p')
+            if curr:
+                text = curr.get_text(separator=' ').strip()
+                if re.search(r'Hình\s*11-\d+', text, re.IGNORECASE):
+                    caption_text = text
+                    break
+    
+    if caption_text:
+        match = re.search(r'(Hình\s*11-\d+)', caption_text, re.IGNORECASE)
+        if match:
+            hinh_name = match.group(1).replace(' ', '_').replace('\n', '')
+            mapping.append((img_name, hinh_name))
+
+print(f"Found {len(mapping)} mappings.")
+
+hinh_to_images = {}
+for img_name, hinh_name in mapping:
+    if hinh_name not in hinh_to_images:
+        hinh_to_images[hinh_name] = []
+    hinh_to_images[hinh_name].append(img_name)
+
+final_mapping = {}
+for hinh, imgs in hinh_to_images.items():
+    # Find the largest image file among imgs
+    max_size = 0
+    best_img = None
+    for img in imgs:
+        path = os.path.join(ch11_files_dir, img)
+        if not os.path.exists(path):
+             # Try unescaped name
+             import urllib.parse
+             path = os.path.join(ch11_files_dir, urllib.parse.unquote(img))
+        if os.path.exists(path):
+            size = os.path.getsize(path)
+            if size > max_size:
+                max_size = size
+                best_img = urllib.parse.unquote(img)
+    if best_img:
+        final_mapping[best_img] = hinh
+
+print("Final mapping:")
+for img, hinh in final_mapping.items():
+    print(f"{img} -> {hinh}")
+    
+    # Rename the file in CH11
+    src_path = os.path.join(ch11_files_dir, img)
+    ext = os.path.splitext(img)[1]
+    dst_path = os.path.join(ch11_dest_dir, hinh + ext)
+    if os.path.exists(src_path):
+        shutil.copy2(src_path, dst_path)
+
+print("Done copying renamed images.")

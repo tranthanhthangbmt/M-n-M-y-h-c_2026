@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <script>
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      var pass = prompt('Vui lòng nhập mật khẩu để truy cập:');
+      if (pass === 'UDA') {
+        localStorage.setItem('isLoggedIn', 'true');
+      } else {
+        alert('Mật khẩu không đúng!');
+        document.documentElement.innerHTML = '<body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background-color:#f8f9fa;"><h2>Truy cập bị từ chối. <a href="#" onclick="location.reload();return false;">Tải lại trang</a> để thử lại.</h2></' + 'body>';
+        throw new Error("Unauthorized");
+      }
+    }
+  </script>
+  <meta charset="UTF-8">
+  <title>Máy Học - Đại học Đông Á</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Tài liệu môn học Máy học">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Theme: Modern UI using Docsify Themeable -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+
+  <style>
+    :root {
+      --theme-color: #1a73e8;
+      --base-font-size: 16px;
+      --sidebar-width: 300px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    }
+
+    .markdown-section {
+      max-width: 1000px;
+      padding: 2rem 15px;
+    }
+  
+    /* ===== DOCSIFY TABS: PILL DESIGN ===== */
+    .docsify-tabs {
+      display: grid !important;
+      grid-auto-columns: max-content;
+      grid-auto-flow: column;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 0 !important;
+      margin-bottom: 5px !important;
+      border-bottom: none !important;
+      scrollbar-width: none;
+      container-type: inline-size;
+      justify-content: start;
+    }
+    .docsify-tabs::-webkit-scrollbar {
+      display: none;
+    }
+    .docsify-tabs__tab {
+      grid-row: 1 !important;
+      order: 1 !important;
+      text-align: center;
+      padding: 10px 16px !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      transition: all 0.2s ease-in-out !important;
+      border: 1px solid #eaeaea !important;
+      border-radius: 20px !important;
+      color: #555 !important;
+      background: #fff !important;
+      cursor: pointer;
+      margin: 0 8px 5px 0 !important;
+    }
+    .docsify-tabs__tab:hover {
+      background-color: #f8faff !important;
+      border-color: var(--theme-color) !important;
+      color: var(--theme-color) !important;
+    }
+    .docsify-tabs__tab--active {
+      color: #fff !important;
+      background-color: var(--theme-color) !important;
+      border-color: var(--theme-color) !important;
+      box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
+    }
+    .docsify-tabs__content {
+      grid-row: 2 !important;
+      grid-column: 1 / 999 !important;
+      width: 100cqw !important;
+      position: sticky !important;
+      left: 0 !important;
+      order: 99 !important;
+      padding-top: 15px !important;
+    }
+    /* Floating AI Button */
+    .ai-chat-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .ai-chat-btn:hover {
+      background-color: #1557b0;
+      box-shadow: 0 6px 16px rgba(26, 115, 232, 0.6);
+      transform: translateY(-2px);
+      color: white !important;
+      text-decoration: none !important;
+    }
+    .ai-chat-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+  
+    /* Style for object PDF to ensure it scales correctly */
+    .pdf-container {
+      width: 100%;
+      height: 100vh; /* Bằng chiều cao màn hình */
+      min-height: 1000px; /* Đảm bảo tối thiểu đủ lớn */
+      border: 1px solid #eee;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      background: #fafafa;
+    }
+
+  
+    /* Customize APlayer to blend with the premium theme */
+    .aplayer {
+      border-radius: 10px !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+      margin-bottom: 0 !important;
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    .aplayer .aplayer-info .aplayer-music .aplayer-title {
+      font-weight: 600 !important;
+    }
+
+    .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
+      background: var(--theme-color) !important;
+    }
+
+    .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played .aplayer-thumb {
+      background: var(--theme-color) !important;
+    }
+    
+    @media (max-width: 600px) {
+      .ai-chat-btn {
+        bottom: 90px; /* Safe area above mobile APlayer */
+      }
+    }
+
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+</head>
+
+<body>
+  <div id="app">Đang tải dữ liệu...</div>
+  <script>
+    window.$docsify = {
+      name: 'Môn Máy học',
+      repo: '',
+      loadSidebar: 'docs/_sidebar.md',
+      autoHeader: true,
+      subMaxLevel: 3,
+      sidebarDisplayLevel: 1,
+      search: 'auto',
+      themeColor: '#1a73e8',
+      formatUpdated: '{DD}/{MM}/{YYYY} {HH}:{mm}',
+      tabs: {
+        persist    : true,
+        sync       : true,
+        theme      : 'classic',
+        tabComments: true,
+        tabHeadings: true
+      },
+      plugins: [
+        function (hook, vm) {
+          hook.beforeEach(function (html) {
+            return html + '\n\n----\n\n*Tài liệu môn học - Đại học Đông Á*';
+          });
+        }
+      ]
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script><!-- Docsify Core -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+  <!-- Search Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  
+  <!-- Zoom image Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+
+  <!-- Copy to Clipboard -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+
+  <!-- Docsify Tabs -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+  <!-- APlayer Container -->
+  <div id="aplayer"></div>
+
+  <!-- APlayer Initialization & Docsify Sync Plugin -->
+  <script>
+    const audioFiles = ["Ch01_B\u1ea3n_ch\u1ea5t_to\u00e1n_h\u1ecdc_c\u1ee7a_m\u00e1y_h\u1ecdc.m4a", "Ch02_D\u1ef1_\u00e1n_m\u00e1y_h\u1ecdc_gi\u00e1_nh\u00e0_California.m4a", "Ch03_T\u1ea1i_sao_AI_90__v\u1eabn_v\u00f4_d\u1ee5ng.m4a", "Ch04_To\u00e1n_h\u1ecdc_trong_hu\u1ea5n_luy\u1ec7n_m\u00f4_h\u00ecnh.m4a", "Ch05_T\u01b0_duy_\u0111\u1ea1i_l\u1ed9_bi\u00ean_l\u1edbn_SVM.m4a", "Ch06_S\u1ee9c_m\u1ea1nh_\u0111\u00e1m_\u0111\u00f4ng_trong_h\u1ecdc_m\u00e1y.m4a", "Ch07_S\u1ee9c_m\u1ea1nh_\u0111\u00e1m_\u0111\u00f4ng_trong_h\u1ecdc_m\u00e1y.m4a", "Ch08_H\u00f3a_gi\u1ea3i_l\u1eddi_nguy\u1ec1n_s\u1ed1_chi\u1ec1u.m4a", "Ch09_T\u1ef1_tay_thi\u1ebft_k\u1ebf_\u0111\u1ed9ng_c\u01a1_TensorFlow.m4a", "Ch10_M\u1ea1ng_n\u01a1-ron_t\u1eeb_sinh_h\u1ecdc_\u0111\u1ebfn_Keras.m4a", "Ch11_B\u00ed_quy\u1ebft_hu\u1ea5n_luy\u1ec7n_m\u1ea1ng_n\u01a1-ron_s\u00e2u.m4a", "Ch12_T\u1ef1_tay_thi\u1ebft_k\u1ebf_\u0111\u1ed9ng_c\u01a1_TensorFlow.m4a", "Ch13_B\u00ed_quy\u1ebft_nh\u1ed3i_d\u1eef_li\u1ec7u_cho_GPU.m4a", "Ch14_C\u00e1ch_m\u00e1y_t\u00ednh_nh\u00ecn_qua_m\u1ea1ng_CNN.m4a", "Ch15_D\u1ef1_b\u00e1o_chu\u1ed7i_th\u1eddi_gian_b\u1eb1ng_RNN.m4a", "Ch16_T\u1eeb_Char-RNN_\u0111\u1ebfn_cu\u1ed9c_c\u00e1ch_m\u1ea1ng_Transformer.m4a", "Ch17_Autoencoder_GAN_v\u00e0_M\u00f4_h\u00ecnh_khu\u1ebfch_t\u00e1n.m4a", "Ch18_B\u1ea3n_n\u0103ng_t\u1ef1_h\u1ecdc_c\u1ee7a_AI.m4a", "Ch19_\u0110\u01b0a_AI_v\u00e0o_m\u00f4i_tr\u01b0\u1eddng_s\u1ea3n_xu\u1ea5t.m4a"];
+
+    const playlist = audioFiles.map((file, index) => {
+      let name = file.replace('.m4a', '').replace(/_/g, ' ');
+      return {
+        name: name,
+        artist: 'AI Audiobook',
+        url: encodeURI('TaiLieu/Audio/' + file),
+        cover: 'https://cdn-icons-png.flaticon.com/512/860/860142.png'
+      };
+    });
+
+    const ap = new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      lrcType: 0,
+      theme: '#1a73e8',
+      preload: 'auto',
+      audio: playlist
+    });
+
+    // Sync player with current chapter
+    window.$docsify.plugins = [].concat(
+      function (hook, vm) {
+        hook.doneEach(function () {
+          let hash = window.location.hash;
+          if (hash.includes('chuong_')) {
+            let match = hash.match(/chuong_(\d+)/);
+            if (match && match[1]) {
+              let chapterIndex = parseInt(match[1]) - 1; // 0-indexed
+              if (chapterIndex >= 0 && chapterIndex < playlist.length) {
+                if (ap.list.index !== chapterIndex) {
+                  ap.list.switch(chapterIndex);
+                }
+              }
+            }
+          }
+        });
+      },
+      window.$docsify.plugins || []
+    );
+  </script>
+
+  <!-- NotebookLM Floating Button -->
+  <a href="https://notebook.google.com/notebook/03495270-c47c-4092-a66e-630d5150357d?authuser=1&pageId=none" target="_blank" class="ai-chat-btn" id="aiChatBtn">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+    </svg>
+    Hỏi đáp với AI
+  </a>
+</body>
+
+</html>

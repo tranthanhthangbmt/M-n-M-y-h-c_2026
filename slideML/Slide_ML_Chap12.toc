@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Giới thiệu TensorFlow \& Kiến trúc}{3}{0}{1}
+\beamer@sectionintoc {2}{Sử dụng TensorFlow như NumPy}{9}{0}{2}
+\beamer@sectionintoc {3}{Tùy chỉnh mô hình và Thành phần (Custom Components)}{16}{0}{3}
+\beamer@sectionintoc {4}{Hàm và biểu đồ TensorFlow (AutoGraph)}{31}{0}{4}
+\beamer@sectionintoc {5}{Vòng lặp Huấn luyện Tùy chỉnh}{37}{0}{5}

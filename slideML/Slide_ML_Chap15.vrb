@@ -1,0 +1,18 @@
+\frametitle{Code: Xây dựng WaveNet với Keras}
+Ta dùng vòng lặp để tạo các lớp \texttt{Conv1D} giãn nở:
+\begin{lstlisting}[language=Python]
+model = keras.Sequential()
+model.add(keras.layers.InputLayer(input_shape=[None, 1]))
+
+# Cac lop tich chap gian no (1, 2, 4, 8) lap lai
+for rate in (1, 2, 4, 8) * 2:
+    model.add(keras.layers.Conv1D(
+        filters=20, kernel_size=2, padding="causal",
+        activation="relu", dilation_rate=rate))
+
+model.add(keras.layers.Conv1D(filters=10, kernel_size=1))
+model.add(keras.layers.Dense(1)) # Lop du doan
+\end{lstlisting}
+    \begin{itemize}
+        \item Tham số \texttt{padding="causal"} cực kỳ quan trọng ở Time Series, nó chèn 0 vào bên trái để Kernel không bao giờ với tới thông tin của "tương lai".
+    \end{itemize}

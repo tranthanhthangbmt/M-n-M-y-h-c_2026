@@ -1,0 +1,14 @@
+\frametitle{6.2 Code: Hồi quy dữ liệu Quadratic}
+\begin{lstlisting}[language=Python]
+import numpy as np
+from sklearn.tree import DecisionTreeRegressor
+
+# Tao du lieu mo phong y = x^2 + nhieu
+np.random.seed(42)
+X_quad = np.random.rand(200, 1) - 0.5
+y_quad = X_quad ** 2 + 0.025 * np.random.randn(200, 1)
+
+# Huan luyen cay hoi quy (Gioi han max_depth)
+tree_reg = DecisionTreeRegressor(max_depth=2, random_state=42)
+tree_reg.fit(X_quad, y_quad)
+\end{lstlisting}

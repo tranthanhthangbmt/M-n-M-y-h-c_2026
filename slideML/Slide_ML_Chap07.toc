@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Học tổ hợp (Ensemble Learning)}{3}{0}{1}
+\beamer@sectionintoc {2}{Bộ phân loại biểu quyết}{5}{0}{2}
+\beamer@sectionintoc {3}{Túi hóa (Bagging) và Dán nhãn (Pasting)}{15}{0}{3}
+\beamer@sectionintoc {4}{Rừng ngẫu nhiên (Random Forests)}{25}{0}{4}
+\beamer@sectionintoc {5}{Tăng cường (Boosting)}{33}{0}{5}
+\beamer@sectionintoc {6}{Phân lớp xếp chồng (Stacking)}{50}{0}{6}
+\beamer@sectionintoc {7}{Tổng kết Chương 7}{57}{0}{7}

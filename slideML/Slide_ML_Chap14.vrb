@@ -1,0 +1,17 @@
+\frametitle{Sử dụng Mô Hình Sẵn Có (Pretrained) trong Keras}
+Trong thực tế, hiếm khi chúng ta đào tạo mạng ResNet từ đầu (Scratch). Keras cung cấp sẵn \textbf{Transfer Learning}:
+\begin{lstlisting}[language=Python]
+from tensorflow.keras.applications import resnet50
+
+# Load model voi trong so (weights) da huan luyen tren ImageNet
+model = resnet50.ResNet50(weights="imagenet")
+
+# Xu ly anh ve dung kich thuoc yeu cau
+X_resized = tf.image.resize(images, [224, 224])
+X_input = resnet50.preprocess_input(X_resized)
+
+Y_proba = model.predict(X_input)
+\end{lstlisting}
+    \begin{itemize}
+        \item Mạng tải xuống đã có khả năng nhận dạng 1000 lớp đồ vật khác nhau vô cùng chính xác.
+    \end{itemize}

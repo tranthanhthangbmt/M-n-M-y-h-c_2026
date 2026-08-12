@@ -1,0 +1,8 @@
+\beamer@sectionintoc {1}{1. Nơ-ron Sinh học và Khởi nguồn}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Perceptron}{8}{0}{2}
+\beamer@sectionintoc {3}{3. Mạng Perceptron Đa lớp (MLP)}{12}{0}{3}
+\beamer@sectionintoc {4}{4. MLP Hồi quy \& Phân loại}{17}{0}{4}
+\beamer@sectionintoc {5}{5. Triển khai MLP với Keras}{21}{0}{5}
+\beamer@sectionintoc {6}{6. Functional API \& Subclassing API}{26}{0}{6}
+\beamer@sectionintoc {7}{7. Lưu Mô hình \& Kỹ thuật nâng cao}{32}{0}{7}
+\beamer@sectionintoc {8}{8. Tinh chỉnh Siêu Tham số}{36}{0}{8}

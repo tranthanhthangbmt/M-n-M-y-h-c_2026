@@ -1,0 +1,15 @@
+\frametitle{Sử dụng BGM bằng Scikit-Learn}
+\begin{lstlisting}[language=Python]
+from sklearn.mixture import BayesianGaussianMixture
+
+# Thiet lap k=10 du gia
+bgm = BayesianGaussianMixture(n_components=10, n_init=10, random_state=42)
+bgm.fit(X)
+
+# Kiem tra trong so cac cum
+np.round(bgm.weights_, 2)
+# Output: array([0.4 , 0.21, 0.4 , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ])
+    \end{lstlisting}
+    \begin{itemize}
+        \item Chỉ có 3 cụm đầu tiên có trọng số lớn hơn $0$. BGM đã triệt tiêu 7 cụm dư thừa và tự nhận ra bài toán chỉ có 3 cụm.
+    \end{itemize}

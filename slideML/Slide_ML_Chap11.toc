@@ -1,0 +1,8 @@
+\babel@toc {vietnamese}{}\relax 
+\beamer@sectionintoc {1}{1. Vấn Đề Gradient Biến Mất / Bùng Nổ}{3}{0}{1}
+\beamer@sectionintoc {2}{2. Các Hàm Kích Hoạt Nâng Cao}{7}{0}{2}
+\beamer@sectionintoc {3}{3. Batch Normalization và Gradient Clipping}{11}{0}{3}
+\beamer@sectionintoc {4}{4. Tái Sử Dụng Các Lớp (Transfer Learning)}{15}{0}{4}
+\beamer@sectionintoc {5}{5. Các Trình Tối Ưu Hóa Tốc Độ Học (Fast Optimizers)}{18}{0}{5}
+\beamer@sectionintoc {6}{6. Lịch Trình Tốc Độ Học (Learning Rate Scheduling)}{23}{0}{6}
+\beamer@sectionintoc {7}{7. Kỹ Thuật Chính Quy Hóa (Regularization)}{26}{0}{7}

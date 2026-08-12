@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{1. Tạo văn bản kiểu Shakespeare bằng cách sử dụng RNN ký tự}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Phân tích cảm xúc (Sentiment Analysis)}{13}{0}{2}
+\beamer@sectionintoc {3}{3. Mạng mã hóa-giải mã cho dịch máy thần kinh}{18}{0}{3}
+\beamer@sectionintoc {4}{4. Cơ chế chú ý (Attention Mechanisms)}{23}{0}{4}
+\beamer@sectionintoc {5}{5. Tuyết lở các mô hình Transformer \& Hugging Face}{32}{0}{5}

@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{1. Phân loại SVM Tuyến tính}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Phân loại SVM Phi tuyến}{12}{0}{2}
+\beamer@sectionintoc {3}{3. Lớp SVM \& Hồi quy SVM}{21}{0}{3}
+\beamer@sectionintoc {4}{4. Toán học: Bên trong Thuật toán SVM}{25}{0}{4}
+\beamer@sectionintoc {5}{5. Tổng kết chương}{34}{0}{5}

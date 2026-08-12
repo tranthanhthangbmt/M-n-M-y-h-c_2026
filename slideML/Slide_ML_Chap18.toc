@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{1. Học để tối ưu hóa phần thưởng \& Tìm kiếm chính sách}{4}{0}{1}
+\beamer@sectionintoc {2}{2. Markov Decision Processes (MDP)}{14}{0}{2}
+\beamer@sectionintoc {3}{3. Học Q (Q-Learning) Cổ điển}{19}{0}{3}
+\beamer@sectionintoc {4}{4. Học Q Sâu (Deep Q-Learning)}{23}{0}{4}
+\beamer@sectionintoc {5}{5. Độ dốc Chính sách (Policy Gradients)}{32}{0}{5}
+\beamer@sectionintoc {6}{6. Actor-Critic và Các Kiến trúc Hiện đại}{36}{0}{6}
+\beamer@sectionintoc {7}{7. Tổng kết}{40}{0}{7}
