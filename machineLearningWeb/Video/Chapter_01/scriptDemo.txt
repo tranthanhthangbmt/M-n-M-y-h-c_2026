@@ -1,0 +1,102 @@
+Slide 1: CHƯƠNG 1 - TRÍ TUỆ NHÂN TẠO: GIỚI THIỆU
+Người 1: Chào các bạn sinh viên. Chào mừng các em đến với môn học Trí tuệ nhân tạo (Artificial Intelligence - AI). Đây là một trong những lĩnh vực mũi nhọn và hấp dẫn nhất của khoa học máy tính hiện đại. Hôm nay chúng ta sẽ bắt đầu với Chương 1: Giới thiệu tổng quan về AI.
+Người 2: Chào các bạn. Như chúng ta đã thấy, AI ngày nay hiện diện ở khắp mọi nơi, từ điện thoại thông minh, xe tự lái đến y tế. Vậy cốt lõi của môn học này là gì? Chúng ta cùng đi vào chi tiết nhé.
+
+Slide 2: NỘI DUNG BÀI GIẢNG
+Người 1: Để bắt đầu, chúng ta hãy cùng lướt qua cấu trúc của bài học hôm nay gồm 5 phần chính. Chúng ta sẽ đi từ việc định nghĩa Trí tuệ nhân tạo là gì, tìm hiểu các nền tảng khoa học hình thành nên nó, điểm qua lịch sử phát triển đầy thăng trầm, đánh giá hiện trạng của AI hiện nay và cuối cùng là bàn về những rủi ro và lợi ích mà AI mang lại.
+Người 2: Việc nắm rõ bố cục này sẽ giúp các bạn sinh viên xây dựng được một bức tranh tổng thể trước khi chúng ta đi sâu vào các thuật toán lập trình phức tạp ở các chương sau.
+
+Slide 3: 1.1 TRÍ TUỆ NHÂN TẠO LÀ GÌ?
+Người 1: Đi vào phần đầu tiên, có một điều thú vị là con người tự gọi mình là "Homo sapiens" – tức là người thông thái. Trí thông minh là đặc trưng quan trọng nhất của loài người. Vậy khát vọng thực sự của AI là gì?
+Người 2: Đó không chỉ là việc tìm hiểu cách bộ não hoạt động, mà tham vọng lớn hơn là "xây dựng các thực thể thông minh". AI bao quát từ những vấn đề rất tổng quát như khả năng học hỏi, suy luận, cho đến các bài toán cụ thể như chơi cờ, chứng minh toán học, hay xe tự lái.
+
+Slide 4: BỐN GÓC ĐỘ ĐỊNH NGHĨA AI
+Người 1: Để làm rõ hơn khái niệm này, lịch sử khoa học máy tính đã phân loại AI thành một ma trận 2 nhân 2. Cụ thể, định nghĩa AI được xét trên 2 chiều: "Con người so với Hợp lý" và "Tư duy so với Hành động".
+Người 2: Nhìn vào bảng tóm tắt, các bạn có thể thấy 4 ô tương ứng: Suy nghĩ như con người, Suy nghĩ một cách hợp lý, Hành động như con người, và Hành động một cách hợp lý. Chúng ta sẽ cùng phân tích từng góc độ này ngay sau đây để hiểu cách các nhà khoa học tiếp cận AI.
+
+Slide 5: 1.1.1 HOẠT ĐỘNG NHƯ CON NGƯỜI: BÀI KIỂM TRA TURING
+Người 1: Góc độ đầu tiên là "Hành động như con người". Năm 1950, nhà toán học vĩ đại Alan Turing đã đề xuất "Bài kiểm tra Turing" để né tránh câu hỏi triết học mơ hồ "Máy móc có thể suy nghĩ không?".
+Người 2: Nguyên lý rất đơn giản: Một máy tính vượt qua bài kiểm tra nếu người thẩm vấn không thể phân biệt được câu trả lời đang nhận là từ con người hay từ máy. Để làm được điều này, máy tính phải có 4 kỹ năng cốt lõi: Xử lý ngôn ngữ tự nhiên để giao tiếp, Biểu diễn tri thức để lưu trữ, Suy luận tự động để trả lời, và Học máy để thích ứng.
+
+Slide 6: BÀI KIỂM TRA TURING TOÀN DIỆN (TOTAL TURING TEST)
+Người 1: Tuy nhiên, tương tác bằng văn bản thôi là chưa đủ. Bài kiểm tra Turing toàn diện yêu cầu máy móc phải có khả năng tương tác vật lý với thế giới thực.
+Người 2: Lúc này, máy móc cần thêm 2 kỹ năng cực kỳ quan trọng: Thị giác máy tính để "nhìn" và nhận thức thế giới, cùng với công nghệ Người máy, hay Robotics, để điều khiển vật thể. Sáu lĩnh vực này chính là nền móng cấu thành nên toàn bộ ngành AI ngày nay.
+
+Slide 7: 1.1.2 SUY NGHĨ NHƯ CON NGƯỜI: MÔ HÌNH NHẬN THỨC
+Người 1: Về góc nhìn thứ hai, "Suy nghĩ như con người", bài toán đặt ra là làm sao để lập trình cho máy suy nghĩ giống người nếu chúng ta chưa hiểu rõ bộ não?
+Người 2: Các nhà khoa học đã dùng 3 cách: Nội quan, tức là tự quan sát suy nghĩ; Thí nghiệm tâm lý, tức là quan sát hành vi; và Chụp ảnh não. Từ đó khai sinh ra Khoa học nhận thức, kết hợp mô hình AI và tâm lý học để kiểm chứng các lý thuyết về tâm trí con người.
+
+Slide 8: 1.1.3 SUY NGHĨ HỢP LÝ: CÁC QUY LUẬT CỦA TƯ DUY
+Người 1: Tiếp nối là góc nhìn "Suy nghĩ hợp lý", được xây dựng dựa trên Logic học, bắt nguồn từ các phép tam đoạn luận của Aristotle, đảm bảo luôn đưa ra kết luận đúng nếu tiền đề đúng.
+Người 2: Dù vậy, tiếp cận bằng logic thuần túy có nhược điểm chí mạng: nó rất khó biểu diễn sự không chắc chắn vì logic chỉ có đúng hoặc sai chứ không có xác suất. Thêm vào đó, nó tính toán quá chậm, trong khi thực tế có những tình huống yêu cầu máy móc phải phản xạ ngay lập tức thay vì suy luận chậm rãi.
+
+Slide 9: 1.1.4 HÀNH ĐỘNG HỢP LÝ: TÁC NHÂN HỢP LÝ (RATIONAL AGENT)
+Người 1: Vậy đâu là hướng đi chuẩn mực nhất của AI hiện đại? Câu trả lời chính là "Tác nhân hợp lý". Tác nhân, hay Agent, là thực thể tự chủ nhận thức môi trường và theo đuổi mục tiêu.
+Người 2: Tác nhân hợp lý luôn hành động để đạt kết quả tốt nhất. Toán học hóa điều này, chúng ta có một hàm số ánh xạ: "ép hai chấm, p sao, mũi tên a". Cụ thể hàm f này biến một chuỗi các tín hiệu nhận thức là P sao thành một hành động A. Cách tiếp cận này ưu việt vì nó tổng quát hơn và dễ dàng xây dựng dựa trên nền tảng toán học rõ ràng.
+
+Slide 10: TÍNH HỢP LÝ BỊ GIỚI HẠN (BOUNDED RATIONALITY)
+Người 1: Mặc dù mô hình trên rất hoàn hảo, nhưng trong thực tế, chúng ta phải đối mặt với giới hạn khốc liệt của tự nhiên: "Tính hợp lý hoàn hảo" là bất khả thi. Vì sao vậy?
+Người 2: Bởi vì máy tính luôn có giới hạn tính toán về bộ nhớ và thời gian. Khi đánh cờ, máy không thể xét hết hàng tỷ tỷ nước đi. Do đó, AI hiện tại hướng tới tính hợp lý bị giới hạn: đưa ra quyết định "tốt nhất có thể" trong khuôn khổ tài nguyên cho phép, dựa trên mục tiêu mà con người cung cấp.
+
+Slide 11: 1.1.5 MÁY MÓC HỮU ÍCH (BENEFICIAL MACHINES)
+Người 1: Liên quan đến câu chuyện mục tiêu, có một điểm mù vô cùng nguy hiểm. Đó là chuyện gì xảy ra nếu mục tiêu chúng ta cung cấp bị sai hoặc thiếu khía cạnh? Ví dụ, ra lệnh cho xe tự lái "phải an toàn tuyệt đối". Để đạt mục tiêu đó, chiếc xe có thể chọn cách... nằm yên mãi mãi trong ga ra!
+Người 2: Hoặc thảm họa hơn, một siêu AI có thể hủy diệt loài người nếu mục tiêu không được thiết lập chuẩn xác. Đó là lý do chúng ta cần "Căn chỉnh giá trị". AI phải hiểu rằng nó không nắm rõ mục tiêu cuối cùng, từ đó hành động thận trọng và luôn phải xin phép con người.
+
+Slide 12: 1.2 CÁC NỀN TẢNG CỦA TRÍ TUỆ NHÂN TẠO
+Người 1: Chuyển sang phần tiếp theo về nền tảng khoa học. Trí tuệ nhân tạo không tự nhiên sinh ra. Nó là sự hội tụ tinh hoa của 8 lĩnh vực bao trùm: Triết học, Toán học, Kinh tế học, Khoa học thần kinh, Tâm lý học, Kỹ thuật máy tính, Lý thuyết điều khiển và Ngôn ngữ học.
+
+Slide 13: 1.2.1 TRIẾT HỌC
+Người 2: Phân tích sâu hơn vào từng yếu tố, Triết học cung cấp nền móng tư tưởng. Chủ nghĩa duy vật khẳng định tâm trí tuân theo quy luật vật lý của não bộ, làm cơ sở cho việc máy móc có thể có trí tuệ. Trong khi đó, Chủ nghĩa kinh nghiệm và Nguyên tắc quy nạp dạy chúng ta cách máy tính có thể học từ dữ liệu bằng cách quan sát sự lặp đi lặp lại.
+
+Slide 14: 1.2.2 TOÁN HỌC
+Người 1: Kế tiếp, Toán học đóng vai trò là "công cụ sắc bén" của AI. Logic học cho phép biểu diễn tri thức. Lý thuyết tính toán của Gödel và Turing vạch ra ranh giới giới hạn của hệ thống máy tính. Và đặc biệt quan trọng, Lý thuyết Xác suất giúp AI xử lý những thông tin nhiễu loạn và không chắc chắn trong thế giới thực.
+
+Slide 15: 1.2.3 KINH TẾ HỌC
+Người 2: Về mặt hành vi, Kinh tế học đóng góp "Lý thuyết quyết định". Biểu thức trên màn hình là nền tảng cốt lõi: "a sao, bằng a-g-r max của a nhỏ thuộc tập A lớn, của giá trị kỳ vọng E, đối với hàm lợi ích U, mở ngoặc a nhỏ với điều kiện e nhỏ đóng ngoặc". 
+Người 1: Lời giải thích trực quan cho công thức này là: Hành động tối ưu, tức a sao, là hành động mang lại giá trị kỳ vọng cao nhất dựa trên những thông tin môi trường mà hệ thống nhận thức được, tức là e. Lý thuyết trò chơi cũng được áp dụng khi có nhiều hệ thống AI cùng tương tác hoặc cạnh tranh với nhau.
+
+Slide 16: 1.2.4 KHOA HỌC THẦN KINH (NEUROSCIENCE)
+Người 2: Quay lại góc độ sinh học, bức ảnh trên màn hình minh họa một mạng lưới cấu trúc của tế bào thần kinh, với các sợi trục và khớp thần kinh chằng chịt, mô phỏng cách bộ não con người truyền tải thông tin. Khoa học thần kinh nghiên cứu bộ não với hàng trăm tỷ nơ-ron này để tìm ra cơ chế hình thành ý thức.
+Người 1: Chính từ nguồn cảm hứng sinh học này, các kỹ sư AI đã tạo ra Mạng nơ-ron nhân tạo - cốt lõi của công nghệ Học sâu hiện nay, cũng như phát triển các giao diện kết nối trực tiếp não bộ con người với máy tính.
+
+Slide 17: 1.2.5 TÂM LÝ HỌC (PSYCHOLOGY)
+Người 2: Sự thấu hiểu tâm trí còn được củng cố bởi Tâm lý học. Bức ảnh trắng đen mộc mạc minh họa không gian của các phòng thí nghiệm tâm lý học thực nghiệm cổ điển. Tâm lý học nhận thức coi não bộ như một cỗ máy xử lý thông tin với 3 bước: tiếp nhận kích thích, xử lý biểu diễn nội bộ, và chuyển thành hành động. Chu trình này trùng khớp hoàn toàn với kiến trúc của một tác nhân AI.
+
+Slide 18: 1.2.6 - 1.2.8 KỸ THUẬT MÁY TÍNH, ĐIỀU KHIỂN, NGÔN NGỮ
+Người 1: Ba mảng ghép cuối cùng trong nền tảng AI bao gồm: Kỹ thuật máy tính chuyên cung cấp sức mạnh tính toán khổng lồ và ngôn ngữ lập trình; Lý thuyết điều khiển giúp tự động hóa và tối ưu hóa hệ thống; và Ngôn ngữ học tính toán giúp máy tính thấu hiểu cấu trúc, ngữ pháp cũng như ý nghĩa ẩn sâu trong câu nói của con người.
+
+Slide 19: 1.3 LỊCH SỬ CỦA TRÍ TUỆ NHÂN TẠO
+Người 2: Đã có nền móng vững chắc, vậy AI đã phát triển như thế nào qua thời gian? Giai đoạn 1943 đến 1955 là kỷ nguyên phôi thai với mô hình nơ-ron nhân tạo đầu tiên. Điểm bùng nổ thực sự là năm 1956 tại hội thảo Dartmouth, nơi thuật ngữ "Trí tuệ nhân tạo" chính thức ra đời. Sự kiện này kích hoạt hàng loạt những năm đầy kỳ vọng với các chương trình tự chơi cờ và chứng minh định lý tự động.
+
+Slide 20: DỰ ÁN ROBOT SHAKEY & ỨNG DỤNG LOGIC
+Người 1: Một đại diện tiêu biểu của thời kỳ đầu này là Shakey. Các em có thể thấy trong hình, đó là một con robot khá cồng kềnh, cao bằng con người, có bánh xe, camera và ăng-ten trên đầu đang di chuyển quanh các khối hộp. Đây là niềm tự hào của viện nghiên cứu SRI, là robot đầu tiên biết tích hợp cả suy luận logic để vạch kế hoạch và hoạt động vật lý di chuyển.
+Người 2: Thế nhưng, giai đoạn từ 1966 đến 1973 là "liều thuốc thử khắc nghiệt của thực tế". Khi bài toán mở rộng ra, sự "bùng nổ tổ hợp" số lượng phép tính đã làm sụp đổ các hệ thống AI vì sức mạnh phần cứng thời đó quá yếu. Sự bế tắc này dẫn đến làn sóng cắt giảm tài trợ nghiêm trọng, hay còn gọi là "Mùa đông AI".
+
+Slide 21: 1.3 LỊCH SỬ CỦA TRÍ TUỆ NHÂN TẠO (TIẾP)
+Người 1: Bước sang thập niên 70 và 80, AI đánh dấu sự trỗi dậy với Hệ thống chuyên gia, sử dụng các tập luật logic kiểu If-Then để chẩn đoán bệnh tật. Đáng chú ý nhất, từ năm 1986, Mạng nơ-ron hồi sinh mạnh mẽ nhờ sự xuất hiện của thuật toán Lan truyền ngược.
+Người 2: Cũng từ năm 1987, cộng đồng khoa học AI bắt đầu rũ bỏ những hướng đi thiếu cơ sở để tập trung áp dụng toán học khắt khe như Xác suất và Machine Learning, tạo ra những mô hình thực dụng và chính xác vượt bậc.
+
+Slide 22: KỶ NGUYÊN DỮ LIỆU LỚN VÀ DEEP LEARNING
+Người 1: Hành trình lịch sử đưa chúng ta đến kỷ nguyên đương đại. Bắt đầu từ 2001, khái niệm Dữ liệu lớn bùng nổ. Các nhà nghiên cứu nhận ra rằng thuật toán dù tuyệt vời đến mấy cũng trở nên vô nghĩa nếu không có hàng tỷ hình ảnh và văn bản để huấn luyện.
+Người 2: Chạm đỉnh cao từ năm 2011 đến nay, công nghệ Học sâu, hay Deep Learning, đã bứt phá ngoạn mục nhờ sức mạnh phần cứng như GPU và TPU. Sự ra đời của các mạng như mạng nơ-ron tích chập và Transformer đã đưa AI vượt qua cả năng lực con người trong nhiều tác vụ cụ thể.
+
+Slide 23: 1.4 TRẠNG THÁI CỦA NGHỆ THUẬT (HIỆN TRẠNG AI)
+Người 1: Phản chiếu lại thời điểm hiện tại, sức mạnh của AI thực sự đáng kinh ngạc. Hàng triệu dặm đường đã được xe tự lái của các hãng lớn chinh phục. Những cô trợ lý ảo như Siri, Alexa thực hiện dịch thuật và xử lý giọng nói với tốc độ thời gian thực.
+Người 2: Chạm tới những lĩnh vực khó khăn nhất như y tế, phần mềm AI ngày nay phân tích ảnh X-quang để phát hiện tế bào ung thư với tốc độ nhanh và độ chính xác đáng nể, thậm chí vượt qua cả một hội đồng bác sĩ chuyên môn dày dặn kinh nghiệm.
+
+Slide 24: CÁC HỆ THỐNG AI MANG TÍNH BIỂU TƯỢNG
+Người 1: Nói về những biểu tượng của quyền lực AI hiện đại, cột mốc lịch sử không thể không nhắc tới là năm 2016 khi hệ thống AlphaGo đánh bại nhà vô địch thế giới cờ vây Lee Sedol. Nhờ áp dụng kỹ thuật Học củng cố, AI đã tự chơi với chính mình hàng triệu ván để kiến tạo nên những nước cờ điêu luyện mà con người chưa từng nghĩ tới.
+
+Slide 25: 1.5 RỦI RO VÀ LỢI ÍCH CỦA AI
+Người 2: Dù những thành tựu ấy rất tráng lệ, nhưng bức tranh tương lai không chỉ có màu hồng. Việc tích hợp AI sâu vào đời sống kéo theo những rủi ro cực lớn: từ vũ khí tự động có khả năng tự sát thương không cần con người can thiệp, nạn tin giả Deepfake làm lũng đoạn thông tin, cho đến nguy cơ nhãn tiền về thất nghiệp hàng loạt do máy móc thay thế cả lao động chân tay lẫn trí óc.
+
+Slide 26: BẢO ĐẢM AN TOÀN AI
+Người 1: Trước những nguy cơ đó, giới khoa học đã phải thống nhất lại định hướng tương lai. Lợi ích mà AI mang lại là vô giá, nhưng nó phải được đảm bảo bằng 4 giá trị cốt lõi: An toàn, Minh bạch, Công bằng và Đáng tin cậy. 
+Người 2: Việc "Căn chỉnh giá trị" để AI hiểu và tôn trọng lợi ích con người không chỉ là một lời hứa suông về đạo đức, nó phải được mã hóa thành những dòng code cốt lõi chạy sâu bên trong mọi thuật toán thông minh để làm màng lọc bảo vệ nhân loại.
+
+Slide 27: TÓM TẮT CHƯƠNG 1
+Người 1: Để chốt lại hành trình hôm nay, có những điểm trọng tâm mà các bạn sinh viên cần ghi nhớ. Cốt lõi của AI là khoa học xây dựng các Tác nhân hợp lý. Nó được nuôi dưỡng và thành hình bởi Toán học, Triết học và hàng loạt bộ môn kỹ thuật. Dù có một lịch sử đầy thăng trầm và mùa đông khắc nghiệt, nhưng đích đến cuối cùng của chúng ta là tạo ra những cỗ máy không chỉ thông minh, mà còn thực sự hữu ích và an toàn.
+
+Slide 28: CÂU HỎI & THẢO LUẬN
+Người 2: Khép lại nội dung lý thuyết, chúng tôi muốn để lại hai câu hỏi mở để các bạn cùng suy ngẫm: "Liệu Bài kiểm tra Turing có còn là thước đo phù hợp cho AI ngày nay hay không?" và "Theo các bạn, nguy cơ lớn nhất của AI trong một thập kỷ tới là gì?". Các em hãy suy nghĩ để chúng ta cùng đưa ra bàn luận sâu hơn trong tiết học thực hành tiếp theo nhé.
+Người 1: Bài giảng mở đầu cho môn Trí tuệ nhân tạo xin phép khép lại tại đây. Xin cảm ơn sự đồng hành và chú ý lắng nghe của tất cả các bạn sinh viên! Hẹn gặp lại các bạn ở chương 2.
