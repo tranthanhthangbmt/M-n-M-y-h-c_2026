@@ -1,0 +1,166 @@
+Slide 1: Chương 16: Xử lý Ngôn ngữ Tự nhiên với RNN và Cơ chế Chú ý
+Người 1: Chào các em. Ở chương trước, ta đã dùng mạng R N N để dự báo chuỗi thời gian như giá cổ phiếu. Hôm nay, ta sẽ tiến vào một lĩnh vực thú vị hơn nhiều: Xử lý Ngôn ngữ Tự nhiên (viết tắt là N L P).
+Người 2: Tức là mình sẽ dạy máy tính đọc hiểu văn bản, dịch tiếng Anh sang tiếng Việt, và thậm chí là làm thơ đúng không ạ?
+Người 1: Chính xác. Đỉnh cao là tạo ra những con A I biết "Nói chuyện" như con người.
+
+Slide 2: Mục tiêu của Chương
+Người 1: Chương này ta sẽ xây dựng AI bắt chước phong cách viết của nhà văn Shakespeare. Sau đó ta làm quen với hệ thống Dịch Máy. Và cuối cùng là làm quen với Cơ chế Chú ý (Attention) cùng mạng Tran pho mờ (Transformer) - công nghệ lõi tạo ra Chat G P T.
+
+Slide 3: Mục lục
+Người 1: Bài học chia làm 5 phần. Phần 1: Sinh văn bản. Phần 2: Phân tích cảm xúc. Phần 3: Dịch máy N M T. Phần 4: Cơ chế Chú ý và Transformer. Phần 5: Họ mô hình nền tảng khổng lồ và thư viện Hugging Face.
+
+Slide 4: 1.1 Giới thiệu bài toán mô hình hóa ngôn ngữ (Language Modeling)
+Người 1: Làm sao để AI tự viết ra một cuốn tiểu thuyết? Ta dùng Mô hình Ngôn ngữ (Language Model). Nhiệm vụ của nó vô cùng đơn giản: Cho trước một chuỗi các từ, hãy dự đoán TỪ TIẾP THEO là gì.
+Người 2: Giống như lúc em nhắn tin trên điện thoại, gõ chữ "Hôm" thì máy tự gợi ý chữ "Nay" đúng không ạ?
+Người 1: Đúng vậy! Nếu mô hình cứ liên tục đoán từ tiếp theo rồi nhét từ đó ngược lại vào câu, nó có thể tự động viết ra cả ngàn trang sách.
+
+Slide 5: 1.2 Mô hình hóa Cấp độ Ký tự (Character-level) vs Từ (Word-level)
+Người 1: Có 2 cách tiếp cận. Một là Cấp độ Từ (Word-level): mô hình dự đoán từ "Nay" tiếp theo từ "Hôm". Hai là Cấp độ Ký tự (Character-level): mô hình dự đoán chữ cái 'a' tiếp theo chữ cái 'n'. 
+Người 2: Phân tích theo từng chữ cái thì từ vựng nhỏ (bảng chữ cái tiếng Anh chỉ khoảng 26 chữ), nhưng câu văn dài ra rất nhiều đúng không ạ?
+Người 1: Đúng. Cấp độ ký tự không cần lo về lỗi "Từ vựng lạ không có trong từ điển", nhưng nó khó học cấu trúc ngữ pháp hơn. Hôm nay ta sẽ thử làm Cấp độ Ký tự.
+
+Slide 6: 1.3 Tập dữ liệu văn bản Shakespeare
+Người 1: Ta tải toàn bộ tác phẩm của nhà thơ vĩ đại Shakespeare từ mạng về. Biến nó thành một chuỗi văn bản dài hơn 1 triệu ký tự.
+Người 2: Chỉ một chuỗi duy nhất thôi ạ?
+Người 1: Đúng, AI sẽ học sự tuần tự của chuỗi này để bắt chước phong cách hành văn của ông.
+
+Slide 7: 1.4 Tiền xử lý văn bản: Tokenizer trong Keras
+Người 1: Mạng nơ-ron không đọc được chữ "A, B, C", nó chỉ đọc được số. Ta dùng lớp Tokenizer của Keras để cấp số chứng minh nhân dân cho từng chữ cái. Ví dụ khoảng trắng là số 1, chữ 'e' là số 2, chữ 't' là số 3.
+
+Slide 8: 1.5 Chuẩn bị dữ liệu bằng tf.data
+Người 1: Cầm 1 triệu con số đưa vào R N N thì không được. Ta phải dùng module tf chấm data chấm Dataset. 
+Người 2: Mình chia nó ra thành từng cửa sổ nhỏ (window) giống như cắt chuỗi thời gian ở chương trước ạ?
+Người 1: Rất chuẩn. Ta cắt thành các câu nhỏ độ dài 100 ký tự. Cứ đưa 100 ký tự đầu vào thì nhãn Y sẽ là ký tự thứ 101. 
+
+Slide 9: 1.6 One-hot Encoding so với Embedding
+Người 1: Vì nhãn Y lúc này là các Hạng mục (số 2 là chữ e, số 3 là chữ t, chúng không có quan hệ lớn bé), nên ta KHÔNG THỂ để nguyên con số đưa vào học.
+Người 2: Mình phải chuyển nó sang One-Hot Encoding hoặc dùng lớp Embedding ạ?
+Người 1: Do từ vựng ở cấp độ Ký tự rất nhỏ (tổng cộng có 39 chữ cái và dấu câu), ta dùng One-Hot cho tiện. Mỗi ký tự biến thành một vector độ dài 39, chứa 1 con số 1 và 38 số 0.
+
+Slide 10: 1.7 Xây dựng mô hình Char-RNN với GRU
+Người 1: Dữ liệu đã sẵn sàng! Ta xây dựng mô hình với 2 lớp G R U xếp chồng lên nhau. Mỗi lớp có 128 nơ-ron. 
+Người 2: Tại sao lại là G R U mà không phải LSTM ạ?
+Người 1: G R U đào tạo nhanh hơn mà hiệu quả tương đương. Lớp cuối cùng là lớp Dense có 39 nơ-ron, bọc bằng hàm Softmax để xuất ra Xác suất dự đoán cho 39 chữ cái trong từ điển.
+
+Slide 11: 1.8 Vấn đề Lặp văn bản khi Dự đoán (Argmax Loop)
+Người 1: Sau khi huấn luyện vài giờ, ta cho nó sinh văn bản. Thường mọi người hay lấy chữ cái có Xác suất cao nhất (hàm Argmax) làm kết quả cuối cùng.
+Người 2: Thế có gì sai ạ?
+Người 1: Sai lầm lớn! Nếu cứ chọn từ xác suất cao nhất, câu văn sẽ biến thành một cỗ máy nhàm chán và lặp đi lặp lại một mẫu câu duy nhất, ví dụ: "tôi đi học rồi tôi đi học rồi tôi đi...". AI sẽ mất hoàn toàn tính sáng tạo!
+
+Slide 12: 1.9 Sinh văn bản với Nhiệt độ (Temperature)
+Người 1: Giải pháp là ta sẽ lấy mẫu ngẫu nhiên Dựa trên Trọng số Xác suất (Categorical Distribution). Nghĩa là, chữ cái xác suất 90% thì có tỷ lệ trúng 90, chữ xác suất 10% vẫn có 10% hy vọng được chọn!
+Người 2: À, để lâu lâu nó nói ra một từ bất ngờ, tạo cảm giác thi vị như con người!
+Người 1: Tuyệt vời! Ta còn có tham số Nhiệt độ (Temperature). Nhiệt độ bằng 0 là cỗ máy nhàm chán Argmax. Nhiệt độ bằng 1 là sáng tạo nguyên bản. Nhiệt độ càng cao, AI càng "điên" và ăn nói lung tung!
+
+Slide 13: 2.1 Giới thiệu bài toán phân tích cảm xúc
+Người 1: Chuyển sang phần 2: Phân tích cảm xúc (Sentiment Analysis). Đầu vào là bài đánh giá phim: "Phim quá dở". Đầu ra là Nhãn nhị phân: 1 (Tốt) hoặc 0 (Tệ). 
+Người 2: Đây là bài toán Chuỗi sang Vector, R N N sẽ đọc hết câu rồi mới xuất kết quả phải không ạ?
+Người 1: Đúng vậy. Lần này ta sẽ làm việc với dữ liệu ở Cấp độ Từ (Word-level).
+
+Slide 14: 2.2 Xử lý dữ liệu ngôn ngữ (Word-level)
+Người 1: Ta dùng bộ dữ liệu I M D B khổng lồ. Ở cấp độ Từ, từ vựng có thể lên tới 50 nghìn từ tiếng Anh khác nhau. Lúc này dùng One-hot sẽ bị tràn RAM ngay lập tức.
+Người 2: Lúc này ta dùng Embedding như chương 13 đúng không thầy?
+Người 1: Chính xác. Embedding sẽ nén mỗi từ thành một vector liên tục (ví dụ độ dài 128) để lưu giữ ngữ nghĩa.
+
+Slide 15: 2.3 Padding và Masking trong Keras
+Người 1: Có một vấn đề. Các bài đánh giá phim có độ dài khác nhau. Có bài 20 từ, bài 100 từ. Mạng R N N cần các mẫu trong cùng một Lô (Batch) phải có độ dài bằng nhau.
+Người 2: Vậy mình độn thêm các số 0 (Zero Padding) vào câu ngắn cho bằng câu dài nhất ạ?
+Người 1: Đúng. Nhưng nếu đẩy các số 0 vô nghĩa đó vào mạng R N N, nó sẽ tính toán lãng phí và làm nhiễu dữ liệu. Ta phải dùng cơ chế Masking (Mặt nạ). Ta báo cho lớp Embedding biết: "Hãy bỏ qua số 0". Lúc đó mạng R N N tự động nhảy qua, không thèm nhìn các số 0 đó nữa.
+
+Slide 16: 2.4 Kiến trúc LSTM cho Phân tích Cảm xúc
+Người 1: Kiến trúc như sau: Đầu vào đi qua Embedding(mask_zero=True). Kế tiếp là 1 hoặc 2 lớp L S T M. Cuối cùng là lớp Dense 1 nơ-ron với hàm Sigmoid để ra quyết định Tốt hay Xấu.
+
+Slide 17: 2.5 Đánh giá Kết quả và Hạn chế
+Người 1: Mô hình này chạy rất tốt. Tuy nhiên, nó bị một điểm yếu: R N N đọc từ trái sang phải. Nên từ đứng cuối câu sẽ được nó Ưu tiên ghi nhớ nhất, từ đầu câu thì nó quên sạch!
+Người 2: Ví dụ câu "Phim này ban đầu tưởng dở nhưng hóa ra rất hay". R N N đọc chữ "hay" ở cuối nên đoán là Tích cực. Còn câu "Phim này ban đầu rất hay nhưng cuối cùng lại quá dở", nó đọc chữ "dở" ở cuối nên đoán Tiêu cực ạ?
+Người 1: Em phân tích quá chuẩn. Nhưng nếu gặp câu đánh đố cấu trúc thì sao? Đó là lúc ta cần mạng hai chiều (Bidirectional R N N).
+
+Slide 18: 3.1 Dịch máy thần kinh (Neural Machine Translation - NMT)
+Người 1: Sang phần 3: Dịch máy (N M T). Dịch từ tiếng Anh sang tiếng Pháp. Đây là kiến trúc Chuỗi sang Chuỗi Trễ (Sequence-to-Sequence).
+Người 2: Em nhớ là nó có 2 mạng: Một Encoder (Mã hóa) đọc tiếng Anh, và một Decoder (Giải mã) nói ra tiếng Pháp ạ?
+Người 1: Chính xác.
+
+Slide 19: 3.2 Cơ chế hoạt động của Decoder
+Người 1: Đầu tiên, Encoder đọc tiếng Anh rồi nén nó thành 1 vector duy nhất (gọi là Vector Ngữ Cảnh - Context Vector). Truyền cái vector đó cho Decoder.
+Người 2: Decoder sẽ dịch thế nào ạ?
+Người 1: Nó dịch theo phong cách Language Model ở Phần 1! Nó nhận từ khóa bắt đầu SOS (Start of Sequence), nhả ra từ tiếng Pháp đầu tiên (ví dụ "Je"). Xong nó cầm chữ "Je" đó quay ngược lại đầu vào, nhả ra chữ thứ hai "suis", liên tục cho đến khi nhả ra ký tự kết thúc EOS (End of Sequence).
+
+Slide 20: 3.3 Kiến trúc Encoder-Decoder Thực tế (Xếp chồng)
+Người 1: Để dịch hay, Encoder và Decoder không phải là 1 lớp L S T M đơn giản, mà là cả một hệ thống các lớp L S T M xếp chồng lên nhau cho thật sâu. Keras hỗ trợ kết nối chúng bằng lớp RepeatVector cực kỳ dễ dàng.
+
+Slide 21: 3.4 Kỹ thuật Tìm kiếm chùm (Beam Search)
+Người 1: Khi Decoder dịch văn bản, nếu dùng cách tham lam (chọn từ xác suất cao nhất) thì câu dịch rất gãy gọn nhưng thường tối nghĩa.
+Người 2: Giống như Google Translate thời xưa dịch từng từ một nghe rất buồn cười ạ?
+Người 1: Đúng. Giải pháp là Beam Search (Tìm kiếm Chùm). Thay vì chọn 1 từ tốt nhất, nó giữ lại Top k từ tốt nhất (ví dụ Top 3). Ở bước tiếp theo, nó phát triển 3 từ đó thành 3 nhánh câu khác nhau, rồi lại chọn ra 3 nhánh có tổng xác suất cao nhất. Cứ thế đi tới cuối, nó sẽ chọn ra được nguyên CÂU văn hợp lý nhất!
+
+Slide 22: 3.5 Đo lường độ tốt của Dịch máy (BLEU Score)
+Người 1: Để chấm điểm máy dịch có hay không, ta dùng điểm Bờ lu (BLEU). Nó đếm xem có bao nhiêu "Cụm từ" trong câu dịch trùng khớp với cụm từ mà chuyên gia con người dịch mẫu.
+
+Slide 23: 4.1 Vấn đề Nút thắt cổ chai (Bottleneck) của RNN
+Người 1: Sang phần 4: Cú chấn động lớn nhất của N L P! Mạng R N N Dịch máy (Seq2Seq) gặp một rào cản chết người.
+Người 2: Có phải là quên từ do chuỗi dài không ạ?
+Người 1: Đúng, nhưng nguyên nhân sâu xa hơn! Hãy tưởng tượng Encoder đọc một cuốn sách 100 trang, sau đó nó bị BẮT BUỘC phải "nén" toàn bộ ý nghĩa 100 trang sách đó vào duy nhất 1 cái Vector Ngữ Cảnh bé xíu!
+Người 2: Chắc chắn là nó sẽ làm rớt mất thông tin!
+Người 1: Chính xác. Đó gọi là Nút thắt cổ chai của R N N.
+
+Slide 24: 4.2 Cơ chế Chú ý của Bahdanau (2014)
+Người 1: Năm 2014, Bahdanau phát minh ra CƠ CHẾ CHÚ Ý (Attention). Thay vì nén cả câu vào 1 vector, ông cho phép Decoder NHÌN LẠI TOÀN BỘ CÁC TỪ của câu gốc trong lúc nó đang dịch từng chữ!
+Người 2: Wow! Giống như khi em dịch, bí chỗ nào em được quyền ngó lại nguyên bản tiếng Anh để xem lại đúng không ạ?
+Người 1: Chuẩn! Mô hình sẽ tự học cách "Đổ dồn sự Chú ý" vào các từ tiếng Anh liên quan nhất khi nó đang viết từ tiếng Pháp. Nó đập tan nút thắt cổ chai! R N N lúc này dịch mượt như con người.
+
+Slide 25: 4.3 Sự Ra Đời Của Cú sốc "Transformer" (2017)
+Người 1: Năm 2017, các kỹ sư Google ra mắt bài báo "Attention Is All You Need". Họ nói: "R N N quá chậm chạp vì nó bắt buộc phải chạy Tuần tự từng từ một. Chúng tôi KHÔNG CẦN R N N nữa. Chúng tôi chỉ dùng Dành sự Chú ý (Attention)!"
+Người 2: Đem bỏ R N N? Thế thì cái gì phân tích chuỗi ạ?
+Người 1: Đó chính là kiến trúc Tran pho mờ (Transformer) - Kẻ đã tạo ra Chat G P T ngày nay!
+
+Slide 26: 4.4 Kiến trúc Transformer Gốc
+Người 1: Transformer cũng là Encoder-Decoder, nhưng nó là Mạng Truyền Thẳng (Feedforward) có cơ chế Chú ý. Nghĩa là nó đút CẢ CÂU VĂN VÀO CÙNG MỘT LÚC, tính toán song song tòan bộ trên G P U, siêu siêu tốc!
+
+Slide 27: 4.5 Mã hóa Vị trí (Positional Encoding)
+Người 1: Nhưng chờ đã! Nếu đút cả câu vào cùng lúc, thì chữ "Mèo" và chữ "Chuột" đứng ở đâu máy tính làm sao phân biệt? Câu "Mèo ăn chuột" và "Chuột ăn mèo" sẽ bị máy tính hiểu là giống hệt nhau!
+Người 2: À, vì nó không đọc tuần tự nên nó mất khái niệm Thứ tự trước sau!
+Người 1: Tuyệt vời! Để giải quyết, họ nhét thêm một loại ma thuật tên là Positional Encoding (Mã hóa Vị trí). Nó bơm thêm các hàm sóng Sin và Cosine vào từng từ, để đánh dấu "Từ này nằm ở vị trí số 1", "Từ này nằm ở vị trí số 3". Máy tính nhìn vào là hiểu ngay thứ tự!
+
+Slide 28: 4.6 Cơ chế Tự Chú ý (Self-Attention)
+Người 1: Trái tim của Transformer là Tự Chú Ý (Self-Attention). Trong R N N, AI dịch từ tiếng Pháp bằng cách chú ý tiếng Anh. Ở Transformer, bản thân các từ trong CÙNG MỘT CÂU phải Chú ý lẫn nhau!
+Người 2: Ví dụ câu "Con gấu không ăn mật ong vì NÓ quá no". AI phải tự chú ý xem chữ "NÓ" là con gấu hay mật ong ạ?
+Người 1: Quá xuất sắc! Self-Attention giúp mỗi từ tự động gửi tia ngắm, móc nối với các từ xung quanh để tự định hình ý nghĩa của mình theo Ngữ cảnh. Chữ "Bank" trong ngữ cảnh Bờ sông sẽ khác chữ "Bank" trong ngữ cảnh Ngân hàng.
+
+Slide 29: 4.7 Tính toán Q, K, V (Query, Key, Value)
+Người 1: Về toán học, Self-Attention chia mỗi từ thành 3 vector: Truy vấn (Query), Khóa (Key) và Giá trị (Value) giống như nguyên lý Tìm kiếm cơ sở dữ liệu. Nó lấy Truy vấn của chữ "NÓ", đi so khớp với Khóa của mọi chữ khác trong câu. Khớp càng mạnh thì điểm Chú ý càng cao, và nó sẽ lấy Giá trị của chữ đó.
+
+Slide 30: 4.8 Chú ý Đa đầu (Multi-Head Attention)
+Người 1: Transformer không chỉ dùng 1 bộ Chú ý, nó dùng nhiều bộ (Multi-Head), ví dụ 8 cái. 
+Người 2: Một từ mà ngó nhiều hướng để làm gì ạ?
+Người 1: Mỗi "Đầu" sẽ săn lùng một kiểu ngữ pháp khác nhau. Đầu số 1 chú ý xem ai là Chủ ngữ. Đầu số 2 chú ý Động từ. Đầu số 3 chú ý Thì quá khứ. Cùng một lúc AI phân tích toàn bộ cấu trúc câu siêu đẳng!
+
+Slide 31: 4.9 Tổng kết: Tại sao Transformer mạnh đến vậy?
+Người 1: Transformer không bị suy thoái Gradient vì không có vòng lặp (Đường dẫn rất ngắn). Nó đọc cả câu cùng lúc nên huấn luyện trên hàng vạn G P U song song siêu nhanh. Và cuối cùng là khả năng hiểu Ngữ cảnh sâu sắc bằng Multi-Head Attention.
+
+Slide 32: 5.1 Các Họ Mô Hình Khổng lồ (Foundation Models)
+Người 1: Từ Transformer sinh ra 3 dòng họ quái vật. Dòng họ Encode-only như BERT, dùng để Đọc hiểu văn bản. Dòng họ Decode-only như G P T, chuyên dùng để Sinh văn bản (như ChatGPT). Và dòng họ Encoder-Decoder kết hợp (như T 5) dùng cho Mọi bài toán.
+
+Slide 33: 5.2 Kiến trúc BERT (Bi-directional Encoder)
+Người 1: BERT của Google là đỉnh cao của Đọc hiểu. Nó dùng cơ chế Masked Language Model. Nó lấy một câu, che đi (Mask) ngẫu nhiên 15% số từ, và ép mô hình phải đoán.
+Người 2: Nhờ vậy mô hình phải học cách nhìn cả phía trước và phía sau (Hai chiều) để đoán từ bị che ạ?
+Người 1: Chính xác. Nó đã phá kỷ lục thế giới ở mọi bài kiểm tra đọc hiểu năm 2018.
+
+Slide 34: 5.3 Vision Transformers (ViT) - Attention trong Computer Vision
+Người 1: Khủng khiếp hơn, Transformer giờ lấn sân sang cả Thị giác máy tính! Kỹ sư cắt bức ảnh thành các ô vuông 16 nhân 16, trải nó ra thành một Chuỗi các ô vuông, rồi ném vào Transformer.
+Người 2: Ý tưởng là các ô vuông tự "Chú ý" lẫn nhau thay cho Lớp Tích chập C N N ạ?
+Người 1: Đúng! ViT (Vision Transformer) chứng minh khi dữ liệu siêu khủng, Transformer đánh bại hoàn toàn C N N truyền thống! Hầu hết các AI vẽ tranh hiện tại đều dùng nó.
+
+Slide 35: 5.4 Thư viện Transformers của Hugging Face
+Người 1: Với các mô hình tỷ tỷ tham số này, không ai tự code lại từ đầu. Ta dùng nền tảng Hugging Face - kho tàng mã nguồn mở lớn nhất thế giới của AI.
+Người 2: Giống như GitHub nhưng dành riêng cho mô hình AI ạ?
+Người 1: Đúng. Em chỉ việc dùng thư viện `transformers`, tải mô hình BERT hay G P T đã huấn luyện sẵn về và dùng ngay!
+
+Slide 36: 5.5 Ví dụ: Tích hợp AI bằng Hugging Face Pipeline
+Người 1: Với một dòng lệnh `pipeline("sentiment-analysis")`, Hugging Face sẽ tự tải mô hình khổng lồ xuống, tự làm Tokenize, tự dự đoán cảm xúc câu văn cho em. Nhanh chưa tới 1 phút. Sự tiện lợi là vô song!
+
+Slide 37: Tổng Kết Chương 16
+Người 1: Tóm lại, ta đã đi một hành trình kinh điển từ R N N, L S T M gặp giới hạn Nút thắt cổ chai, và sự trỗi dậy của Cơ chế Chú ý cùng đế chế Transformer. N L P đã thực sự sang trang.
+Người 2: Dạ, bài học quá tuyệt vời. Cảm ơn thầy!
+
+Slide 38: HỎI & ĐÁP
+Người 1: Các em có câu hỏi gì thêm không? (Dành thời gian giải đáp thắc mắc).

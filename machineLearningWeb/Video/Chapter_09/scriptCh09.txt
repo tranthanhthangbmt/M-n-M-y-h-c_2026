@@ -1,0 +1,212 @@
+Slide 1: CHƯƠNG 9 - HỌC KHÔNG GIÁM SÁT
+Người 1: Chào các em. Ở 8 chương trước, chúng ta đã học cách xây dựng mô hình trên dữ liệu có nhãn. Tức là ta biết trước đáp án để dạy máy tính. Nhưng trong thực tế, dữ liệu có sẵn nhãn lại rất hiếm và đắt đỏ.
+Người 2: Dạ, giống như để phân loại ảnh chó mèo, phải có người ngồi gán nhãn từng bức ảnh một thì mới học được. Rất tốn thời gian.
+Người 1: Chính xác. Vì vậy, hôm nay ta sẽ học cách khai thác lượng dữ liệu khổng lồ Không Có Nhãn, thông qua các thuật toán Học Không Giám Sát.
+
+Slide 2: Các Tác Vụ Của Học Không Giám Sát
+Người 1: Học không giám sát có ba tác vụ chính: Phân cụm, Phát hiện dị thường và Ước tính mật độ. Ở chương trước, ta đã học một tác vụ ẩn khác là Giảm chiều dữ liệu.
+Người 2: Phân cụm (Clustering) có nghĩa là gì vậy thầy?
+
+Slide 3: Phân Cụm (Clustering)
+Người 1: Phân cụm là nhóm các trường hợp có đặc điểm tương đồng lại với nhau thành các Cụm. Thuật toán tự tìm ra sự tương đồng mà không cần ai nói cho nó biết trước.
+Người 2: À, giống như nhìn vào một đống ảnh động vật, máy tính tự nhận ra có một nhóm lông lá 4 chân, và một nhóm có cánh bay trên trời, rồi tách chúng làm hai cụm ạ?
+
+Slide 4: Phân Loại So Với Phân Cụm
+Người 1: Đúng. Khác với Phân loại (đã biết trước nhãn), Phân cụm hoàn toàn là mò mẫm tự phát hiện.
+Người 2: Vậy làm sao nó biết được nhóm 4 chân đó tên là "chó" hay "mèo" ạ?
+Người 1: Nó không biết tên. Nó chỉ gán ID là cụm 1, cụm 2. Con người sau đó sẽ nhìn vào cụm 1 và tự đặt tên cho nó.
+
+Slide 5: Các Ứng Dụng Của Phân Cụm
+Người 1: Ứng dụng của Phân cụm rất rộng: từ Phân khúc khách hàng để chạy quảng cáo, đến Gợi ý sản phẩm, hay Phân đoạn hình ảnh để xe tự lái nhận diện đường phố.
+Người 2: Quả là đa năng. Thế thuật toán Phân cụm nào là nổi tiếng nhất thưa thầy?
+
+Slide 6: Thuật Toán K-Means
+Người 1: Nổi tiếng và lâu đời nhất chính là thuật toán K-Means, được phát triển từ năm 1957. K-Means sẽ cố gắng tìm ra Tâm của mỗi cụm.
+Người 2: Tâm cụm (Centroid) tức là điểm trung bình nằm ở chính giữa của nhóm dữ liệu đó đúng không ạ?
+
+Slide 7: Khởi Tạo Thuật Toán
+Người 1: Đúng vậy. Giả sử ta muốn tìm 5 cụm (k bằng 5). Ban đầu, K-Means sẽ đặt 5 tâm cụm một cách ngẫu nhiên lên biểu đồ.
+Người 2: Đặt ngẫu nhiên thì làm sao chính xác được ạ?
+
+Slide 8: Bước Gán Điểm Dữ Liệu
+Người 1: Chìa khóa nằm ở quá trình lặp. Nó thực hiện 2 bước: Bước 1, đo khoảng cách từ mọi điểm dữ liệu đến 5 tâm cụm, điểm nào gần tâm nào nhất thì được gán màu của cụm đó.
+Người 2: À, chia lô dữ liệu xong. Rồi Bước 2 làm gì ạ?
+
+Slide 9: Cập Nhật Tâm Cụm
+Người 1: Bước 2: Nó tính toán lại Tọa độ trung bình của tất cả các điểm trong mỗi cụm mới, rồi dịch chuyển cái Tâm cụm ban đầu về đúng vị trí trung bình đó!
+Người 2: Wow! Thế là cái tâm sẽ nhích dần về phía trung tâm thực sự của đám dữ liệu.
+
+Slide 10: Sự Hội Tụ Của K-Means
+Người 1: Và nó cứ lặp lại 2 bước đó cho đến khi các tâm cụm không còn dịch chuyển nữa. Quá trình này được chứng minh toán học là luôn luôn hội tụ. Thường chỉ vài vòng lặp là xong.
+Người 2: Thuật toán nghe có vẻ vô cùng đơn giản nhưng lại cực kỳ thông minh.
+
+Slide 11: Phân Vùng Voronoi
+Người 1: Nếu ta vẽ các đường ranh giới phân chia các cụm, ta sẽ được một biểu đồ gọi là Phân vùng Voronoi, chia không gian thành các mảng màu đa giác khác nhau như các ô đất.
+Người 2: Trông rất trực quan. Cứ rơi vào ô đất nào là thuộc về cụm của ô đất đó.
+
+Slide 12: Vấn Đề Khởi Tạo Ngẫu Nhiên
+Người 1: Chờ một chút, ta có một rắc rối nhỏ. Vì 5 tâm cụm ban đầu được đặt ngẫu nhiên, nên đôi khi nó hội tụ về những vị trí rất kỳ cục (Tối ưu cục bộ).
+Người 2: Dạ, lỡ 2 cái tâm cùng rơi vào một đám dữ liệu thì nó sẽ chẻ đám đó làm đôi một cách vô lý.
+
+Slide 13: Giải Quyết Khởi Tạo Bằng Cách Chạy Nhiều Lần
+Người 1: Để giải quyết, thuật toán K-Means truyền thống sẽ chạy 10 lần với 10 vị trí khởi tạo ngẫu nhiên khác nhau.
+Người 2: Rồi sau đó nó so sánh kết quả của 10 lần chạy đó để chọn ra người chiến thắng ạ? Nó dùng tiêu chí gì để so sánh?
+
+Slide 14: Quán Tính (Inertia)
+Người 1: Nó dùng điểm "Quán Tính". Quán tính là Tổng bình phương khoảng cách từ mọi điểm đến tâm cụm gần nhất. Quán tính càng nhỏ chứng tỏ các điểm càng bám chặt lấy tâm.
+Người 2: Dạ, vậy mô hình nào có quán tính thấp nhất trong 10 mô hình sẽ được chọn.
+
+Slide 15: K-Means ++
+Người 1: Ngoài ra, ngày nay ta dùng phương pháp khởi tạo K-Means Cộng Cộng (K-Means ++). Nó tính toán xác suất để cố tình đặt các tâm cụm ban đầu cách xa nhau nhất có thể, tránh việc chúng dẫm chân lên nhau.
+Người 2: Nhờ vậy mà nó hạn chế được tình trạng chia cụm vô lý ngay từ đầu. Scikit-Learn chắc cài đặt sẵn phương pháp này rồi đúng không thầy?
+Người 1: Chuẩn, nó là thiết lập mặc định.
+
+Slide 16: Trở Lại Việc Chọn K
+Người 1: Giờ sang một câu hỏi khó: Làm sao để chọn số lượng cụm K? Nếu ta vẽ biểu đồ Quán tính theo K, ta sẽ thấy Quán tính liên tục giảm khi K tăng.
+Người 2: Đương nhiên rồi ạ, nếu em cho K bằng đúng số lượng điểm dữ liệu, thì quán tính bằng 0 luôn vì mỗi điểm tự thành một tâm cụm!
+
+Slide 17: Phương Pháp Cùi Chỏ (Elbow Method)
+Người 1: Chính vì thế ta không thể chọn K sao cho quán tính nhỏ nhất. Ta phải dùng phương pháp Cùi Chỏ: Tìm điểm K trên biểu đồ mà tốc độ giảm của quán tính bắt đầu gãy khúc, chậm lại rõ rệt.
+Người 2: À, em thấy đồ thị nó cong lại như cái khuỷu tay. Chỗ cái cùi chỏ chính là số cụm tối ưu!
+
+Slide 18: Điểm Silhouette (Silhouette Score)
+Người 1: Nhưng phương pháp Cùi Chỏ khá thô sơ. Một cách chính xác hơn là dùng Điểm Silhouette. Nó đo lường xem một điểm dữ liệu nằm sâu trong cụm của mình như thế nào, và cách xa cụm hàng xóm ra sao.
+Người 2: Nghĩa là nó vừa đánh giá tính gắn kết nội bộ, vừa đánh giá tính tách biệt với bên ngoài đúng không ạ?
+
+Slide 19: Tính Điểm Silhouette
+Người 1: Đúng vậy. Hệ số Silhouette chạy từ âm 1 đến dương 1. Giá trị càng gần dương 1 thì điểm đó càng nằm đúng vị trí. Bằng cách so sánh điểm Silhouette trung bình, ta sẽ tìm được số K tối ưu dễ dàng và chuẩn xác hơn.
+Người 2: Rất hay. Biểu đồ Silhouette của K bằng 5 sẽ có điểm cao nhất nên ta chọn 5.
+
+Slide 20: Biểu Đồ Silhouette Cắt Lát
+Người 1: Hơn thế nữa, ta có thể vẽ biểu đồ Silhouette hình dao cho từng cụm. Trục dọc là số điểm trong cụm, trục ngang là điểm Silhouette của các điểm đó.
+Người 2: Nếu các lưỡi dao vượt qua được vạch trung bình nét đứt màu đỏ, và có độ dày ngang bằng nhau, thì đó là một cấu hình phân cụm hoàn hảo.
+
+Slide 21: K-Means Dùng Mini-Batch
+Người 1: Một phiên bản nâng cấp khác của K-Means là Mini Batch K-Means. Thay vì cập nhật tâm cụm bằng toàn bộ dữ liệu, nó chỉ bốc một lô nhỏ (Mini-batch) để mớm cho thuật toán.
+Người 2: Cách này chắc chắn sẽ làm tốc độ huấn luyện tăng lên gấp nhiều lần! Thích hợp cho dữ liệu siêu lớn.
+
+Slide 22: Giới Hạn Của K-Means
+Người 1: K-Means có nhược điểm chí mạng là nó luôn giả định các cụm có hình tròn (hình cầu). Nếu dữ liệu là các đám hình elip dẹp, hoặc hình lưỡi liềm, K-Means sẽ chia cắt chúng rất sai lệch.
+Người 2: Dạ, vì nó chỉ dùng khoảng cách Euclid đo từ tâm ra xung quanh một cách đồng đều.
+
+Slide 23: Phân Đoạn Hình Ảnh (Image Segmentation)
+Người 1: Để minh họa ứng dụng của K-Means, ta có bài toán Phân đoạn Hình ảnh. Một bức ảnh con bọ rùa có hàng vạn màu. Ta có thể dùng K-Means để gom hàng vạn màu đó lại thành 8 cụm màu cơ bản.
+Người 2: Sau đó mình thay thế toàn bộ màu gốc bằng màu của tâm cụm tương ứng đúng không thầy?
+
+Slide 24: Kết Quả Nén Ảnh
+Người 1: Đúng. Bức ảnh chắc chắn sẽ giảm dung lượng đi đáng kể, dù trông hơi mảng khối một chút. Đây là một dạng nén mất mát dữ liệu (Lossy compression).
+Người 2: Ứng dụng này rất hay khi muốn tách nền, hoặc tìm các khối vật thể màu sắc trong xe tự lái.
+
+Slide 25: Ứng Dụng Tiền Xử Lý (Pre-processing)
+Người 1: Một mẹo cực hay: Ta có thể chạy K-Means để tìm các cụm, sau đó dùng khoảng cách từ mỗi điểm đến các tâm cụm làm ĐẶC TRƯNG MỚI để đưa vào mô hình Hồi quy Logistic.
+Người 2: Wow! Biến khoảng cách thành đặc trưng. Hồi quy Logistic là tuyến tính, nhưng nhờ các khoảng cách phi tuyến tính này, nó sẽ có sức mạnh phân loại siêu đẳng.
+
+Slide 26: Học Bán Giám Sát (Semi-Supervised Learning)
+Người 1: Thêm một ứng dụng đỉnh cao: Nếu em có 1000 ảnh chưa dán nhãn, và chỉ có 50 ảnh có nhãn. Hãy dùng K-Means chia 1000 ảnh thành 50 cụm.
+Người 2: Rồi em lấy nhãn của 50 bức ảnh đó, copy cho toàn bộ các ảnh còn lại nằm chung cụm đúng không ạ?
+Người 1: Hoàn hảo! Em vừa thực hiện xong việc Học Bán Giám Sát rồi đó.
+
+Slide 27: Thuật Toán DBSCAN
+Người 1: Để khắc phục nhược điểm "không thể nhận diện hình dạng lạ" của K-Means, ta làm quen với thuật toán thứ hai: D B SCAN. Thuật toán này không dùng "tâm cụm", mà nó dựa trên MẬT ĐỘ.
+Người 2: Dựa trên mật độ nghĩa là chỗ nào đông đúc thì nó gom lại thành cụm ạ?
+
+Slide 28: Điểm Cốt Lõi (Core Instance)
+Người 1: Đúng. Với D B SCAN, em cung cấp bán kính Epsilon. Thuật toán sẽ quét: Nếu xung quanh điểm A trong bán kính Epsilon có ít nhất min samples điểm khác, thì A được gọi là "Điểm Cốt Lõi" (Core Instance).
+Người 2: Tức là khu vực đó có mật độ cao, đủ điều kiện lập thành một khu dân cư đông đúc.
+
+Slide 29: Lan Truyền Cụm
+Người 1: D B SCAN sẽ tiếp tục lan truyền: Hàng xóm của điểm Cốt Lõi cũng sẽ được kéo vào cùng một cụm. Nếu hàng xóm đó cũng là điểm Cốt Lõi, cụm sẽ tiếp tục phình to ra theo mọi hướng liên tiếp.
+Người 2: Cơ chế này giống như giọt nước loang ra trên tờ giấy, nó có thể len lỏi và tạo ra các cụm với hình dáng bất kỳ, như hình lưỡi liềm hay hình mặt cười!
+
+Slide 30: Trực Quan Hóa Cụm Bằng D B SCAN
+Người 1: Trong hình, các điểm màu đỏ là điểm Cốt Lõi. Nhờ cơ chế lan truyền, D B SCAN có thể tách hai cụm hình bán nguyệt lồng vào nhau một cách hoàn hảo. K-Means sẽ đầu hàng bài toán này.
+Người 2: Tuyệt vời.
+
+Slide 31: Điểm Dị Thường (Outlier)
+Người 1: Điểm lợi hại nhất của D B SCAN là: Bất kỳ điểm nào không phải Điểm Cốt Lõi, và cũng không nằm gần bất kỳ Điểm Cốt Lõi nào, sẽ bị gán nhãn là Điểm Dị Thường (Anomaly) với ID bằng âm 1.
+Người 2: K-Means không làm được việc này, K-Means sẽ ép điểm dị thường đó vào một cụm nào đó dù nó nằm xa lơ xa lắc. Các điểm xanh dương trong hình là Dị thường đó ạ.
+
+Slide 32: Dự Đoán Bằng DBSCAN
+Người 1: Có một nhược điểm là bản thân lớp D B SCAN không có hàm predict để dự đoán điểm mới. Nó chỉ phân cụm dữ liệu có sẵn.
+Người 2: Vậy nếu có điểm mới thì sao ạ?
+Người 1: Em phải tự huấn luyện một bộ Phân loại K Láng Giềng Gần (K N N) dựa trên cái nhãn mà D B SCAN vừa tạo ra.
+
+Slide 33: Nhược Điểm Của DBSCAN
+Người 1: D B SCAN cũng cực kỳ khó điều chỉnh bán kính Epsilon nếu các cụm có Mật độ khác nhau. (Cụm thì dày đặc, cụm thì thưa thớt).
+Người 2: Dạ, nếu chọn Epsilon nhỏ thì cụm thưa thớt bị vỡ vụn. Chọn Epsilon to thì các cụm dày đặc lại bị dính chùm vào nhau.
+
+Slide 34: Các Thuật Toán Khác
+Người 1: Bên cạnh đó còn có Thuật toán phân cụm Kết tụ (Agglomerative), Thuật toán BIRCH (dành cho dữ liệu khổng lồ cực nhanh) và Truyền lực hấp dẫn (Affinity Propagation).
+Người 2: Học máy truyền thống quả là một kho báu đa dạng các thuật toán.
+
+Slide 35: Mô Hình Hỗn Hợp Gauss (Gaussian Mixture Models - GMM)
+Người 1: Thuật toán vĩ đại thứ 3 của chương này là Mô Hình Hỗn Hợp Gauss (G M M). K-Means giả định cụm hình tròn, nhưng G M M giả định dữ liệu được sinh ra từ sự trộn lẫn của nhiều phân phối Gauss hình elip.
+Người 2: Phân phối Gauss là cái biểu đồ hình quả chuông (Bell curve) kinh điển trong thống kê đó ạ?
+
+Slide 36: G M M Phân Cụm Hình Elip
+Người 1: Đúng. G M M hoạt động cực kỳ mượt mà với những cụm bị kéo dẹt thành hình elip. Trong không gian 2D, một phân phối Gauss giống như một đỉnh đồi hình bầu dục.
+Người 2: Trông rất trơn tru và tự nhiên.
+
+Slide 37: Xác Suất Của G M M (Soft Clustering)
+Người 1: Khác biệt cốt lõi: G M M không "cứng nhắc" gán chết một điểm vào một cụm. Nó trả về XÁC SUẤT điểm đó thuộc về cụm 1 là bao nhiêu phần trăm, cụm 2 là bao nhiêu phần trăm.
+Người 2: Dạ, đó gọi là Phân cụm Mềm. Gần ranh giới thì xác suất sẽ là 50/50 thay vì ép uổng.
+
+Slide 38: Thuật Toán Tối Ưu E - M
+Người 1: G M M sử dụng thuật toán E - M (Expectation Maximization) để tối ưu hóa. Quá trình này khá giống K-Means: tính xác suất, cập nhật tâm, kích thước và góc nghiêng của hình elip, rồi lại tính xác suất.
+Người 2: Nó sẽ liên tục xoay và kéo giãn các hình elip sao cho ôm trọn vừa khít với đám mây điểm dữ liệu.
+
+Slide 39: Lưu Ý Khởi Tạo
+Người 1: Giống như K-Means, thuật toán E - M cũng bị kẹt ở Tối ưu cục bộ. Nên Scikit-Learn thường phải chạy K-Means 1 lần để mồi vị trí trước, rồi mới thả G M M vào tinh chỉnh.
+Người 2: Rất bài bản.
+
+Slide 40: Ràng Buộc Ma Trận Hiệp Phương Sai
+Người 1: Nếu G M M có quá nhiều chiều, nó sẽ phải tính toán ma trận xoay cực kỳ tốn kém. Em có thể buộc các cụm phải giữ hình Cầu (spherical), hoặc giữ trục song song với tọa độ (diag) để chạy nhanh hơn.
+Người 2: Tuy hơi mất độ linh hoạt nhưng sẽ tiết kiệm được rất nhiều RAM và thời gian.
+
+Slide 41: Ước Tính Mật Độ
+Người 1: G M M là một thuật toán Sinh (Generative Model). Tức là nó đã học được hàm mật độ của dữ liệu. Ta hoàn toàn có thể ra lệnh cho nó "Đẻ" ra những điểm dữ liệu mới toanh dựa trên cái khung đó!
+Người 2: Ồ! Ảo diệu quá, giống như tạo ra ảnh giả mạo vậy.
+
+Slide 42: Phát Hiện Dị Thường Bằng G M M
+Người 1: Chính vì biết được mật độ, G M M là vua trong việc Phát hiện Dị thường. Mọi điểm dữ liệu nằm ở vùng có Mật Độ Xác Suất quá thấp (ví dụ dưới ngưỡng 4 phần trăm) sẽ bị cắm cờ là ngoại lệ ngay.
+Người 2: Ứng dụng để phát hiện giao dịch thẻ tín dụng lừa đảo, hoặc phát hiện sản phẩm lỗi trên băng chuyền như ví dụ đầu bài!
+
+Slide 43: Chọn Cụm K Cho G M M
+Người 1: Để chọn số lượng cụm K cho G M M, ta không dùng Quán tính hay Silhouette nữa. Ta dùng tiêu chuẩn thông tin B I C hoặc A I C. Nó sẽ phạt những mô hình có quá nhiều tham số (quá phức tạp).
+Người 2: Khái niệm đánh đổi giữa độ khớp dữ liệu và sự đơn giản của mô hình. Càng phức tạp càng bị phạt điểm nặng.
+
+Slide 44: Biểu Đồ B I C / A I C
+Người 1: Nhìn vào biểu đồ B I C và A I C, ta thấy thung lũng thấp nhất nằm ở vị trí k bằng 3.
+Người 2: Tìm điểm thấp nhất trên biểu đồ là sẽ ra được số cụm tối ưu. Khá giống phương pháp cùi chỏ ạ.
+
+Slide 45: Thuật Toán Bayesian G M M
+Người 1: Nâng cao hơn, Scikit-Learn cung cấp lớp Bayesian G M M. Thuật toán này siêu việt ở chỗ: Nó TỰ ĐỘNG dập tắt các cụm không cần thiết, tự tìm ra số lượng cụm tối ưu luôn!
+Người 2: Wow! Tức là em khởi tạo dư 10 cụm, nó sẽ tự động loại bỏ bớt và chỉ giữ lại 3 cụm có ý nghĩa nhất thôi ạ? Cứ như có phép thuật vậy.
+
+Slide 46: Cụm Trống Không
+Người 1: Chính xác. Thuật toán sẽ gán trọng số bằng 0 cho các cụm không có ích. Biểu đồ sẽ cho thấy chỉ có 3 cụm là có khối lượng.
+Người 2: Giải pháp quá tuyệt vời cho những người không biết bắt đầu chọn K từ đâu.
+
+Slide 47: Sự Tập Trung Tiên Nghi (Dirichlet Prior)
+Người 1: Bayesian G M M dùng phân phối Dirichlet Prior để quyết định xem nó nên gộp các cụm lại hay xé lẻ ra. Em có thể điều chỉnh tham số weight concentration prior để can thiệp.
+Người 2: Một sự can thiệp tinh tế từ bên ngoài thông qua xác suất tiền nghiệm (Prior).
+
+Slide 48: Nhược Điểm Của G M M
+Người 1: Tuy nhiên G M M cũng luôn mặc định các cụm có hình bầu dục Elip. Nếu gặp hình bán nguyệt như Swiss roll, nó cũng sẽ cố gắng nhét cái bầu dục vào hình bán nguyệt đó, gây ra sự phân chia vụn vặt.
+Người 2: Thuật toán nào cũng có điểm yếu, không có Chén Thánh chung cho mọi bài toán.
+
+Slide 49: Các Kỹ Thuật Phát Hiện Dị Thường Khác
+Người 1: Để mở rộng cho Phát hiện dị thường, ta còn có Isolation Forest, cực mạnh cho dữ liệu nhiều chiều. Và One-class S V M.
+Người 2: Rừng cô lập (Isolation Forest) nghe tên rất oách. Cắt nhỏ dữ liệu ra để cô lập điểm khác thường.
+
+Slide 50: Tóm Lược Về Học Không Giám Sát
+Người 1: Hôm nay chúng ta đã đi qua bộ 3 quyền lực của Phân Cụm: K-Means (nhanh, dễ dùng, hình cầu), D B SCAN (nhận diện hình thù kỳ dị, loại bỏ nhiễu) và G M M (xác suất mềm, hình elip, phát hiện dị thường đỉnh cao).
+Người 2: Tất cả đều làm việc trên dữ liệu KHÔNG CÓ NHÃN. Tiết kiệm được vô khối tiền thuê người dán nhãn dữ liệu.
+
+Slide 51: Kết Thúc Chương 9
+Người 1: Đúng vậy. Tiết học đến đây là kết thúc. Chúng ta đã hoàn thành xong phần I của cuốn sách: Các kỹ thuật Học Máy Truyền Thống.
+Người 2: Hành trình thật dài và thú vị. Kể từ chương sau, chúng ta sẽ bắt đầu học về Trí Tuệ Nhân Tạo hiện đại: Học Sâu (Deep Learning) và Mạng Nơ-ron nhân tạo phải không thầy?
+
+Slide 52: Hẹn Gặp Lại
+Người 1: Chuẩn xác. Hẹn gặp lại các em vào học kỳ Mạng Nơ-ron. Hãy ôn tập thật kỹ các thuật toán truyền thống nhé vì chúng là nền tảng tối quan trọng.
+Người 2: Dạ vâng, chúng em chào thầy ạ!

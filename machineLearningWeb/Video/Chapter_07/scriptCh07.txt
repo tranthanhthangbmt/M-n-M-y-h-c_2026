@@ -1,0 +1,285 @@
+Slide 1: Học Máy (Machine Learning)
+Người 1: Chào các em. Hôm nay chúng ta sẽ tiếp tục hành trình khám phá Học máy với Chương 7, một trong những kỹ thuật mạnh mẽ nhất: Học Tổ hợp và Rừng Ngẫu nhiên. Kỹ thuật này dựa trên một triết lý vô cùng quen thuộc: "Một cây làm chẳng nên non, ba cây chụm lại nên hòn núi cao".
+Người 2: Có phải là thay vì dùng một mô hình duy nhất, ta sẽ kết hợp nhiều mô hình lại với nhau không thưa thầy/cô?
+Người 1: Chính xác! Đó chính là Học Tổ hợp, hay Ensemble Learning.
+
+Slide 2: Nội dung Chương trình
+Người 1: Trước tiên, hãy xem qua nội dung chương trình hôm nay. Chúng ta sẽ bắt đầu bằng việc tìm hiểu bộ phân loại biểu quyết, sau đó là kỹ thuật Túi hóa và Dán nhãn.
+Người 2: Em thấy có cả Rừng ngẫu nhiên, Tăng cường Boosting và Xếp chồng Stacking nữa ạ.
+Người 1: Đúng vậy. Đó đều là những phương pháp kết hợp vô cùng độc đáo để tạo ra các siêu mô hình vô địch trong các cuộc thi Kaggle.
+
+Slide 3: Giới thiệu Học tổ hợp
+Người 1: Tập hợp một nhóm các công cụ dự đoán, chẳng hạn như bộ phân loại hoặc bộ hồi quy, được gọi là một tập hợp, hay ensemble. Học tổ hợp chính là kỹ thuật học máy sử dụng tập hợp này.
+Người 2: Vậy tức là thay vì tin tưởng một người, mình sẽ hỏi ý kiến một nhóm người ạ?
+Người 1: Đúng vậy. Kỹ thuật này thường được sử dụng ở giai đoạn cuối của dự án. Khi em đã xây dựng được một vài mô hình tốt, em kết hợp chúng lại để tạo ra một mô hình xuất sắc hơn nữa.
+
+Slide 4: Sự khôn ngoan của đám đông
+Người 1: Hãy tưởng tượng em hỏi một câu hỏi hóc búa cho một chuyên gia giỏi. Đôi khi chuyên gia cũng sẽ đoán sai. Nhưng nếu em hỏi hàng nghìn người bình thường rồi lấy số đông, câu trả lời đôi khi lại chính xác hơn cả chuyên gia.
+Người 2: Dạ, trong thống kê người ta gọi đó là Sự khôn ngoan của đám đông đúng không ạ?
+Người 1: Hoàn toàn chính xác. Tương tự trong học máy, nếu gom các dự đoán của một nhóm bộ dự đoán lại, ta thường thu được kết quả dự đoán tốt hơn so với bộ dự đoán cá nhân tốt nhất.
+
+Slide 5: Bộ phân loại biểu quyết (Voting Classifiers)
+Người 1: Phương pháp đơn giản nhất để gom dự đoán là Biểu Quyết. Giả sử ta huấn luyện một vài mô hình khác nhau trên cùng một tập dữ liệu: Hồi quy Logistic, Support Vector Machine, Rừng ngẫu nhiên, K láng giềng gần nhất...
+Người 2: Tức là mình cho chung một tập huấn luyện vào tất cả các mô hình đó để chúng tự học ạ?
+Người 1: Đúng vậy. Mỗi bộ phân loại sẽ tự đưa ra dự đoán của riêng nó cho một điểm dữ liệu mới.
+
+Slide 6: Huấn luyện các bộ phân loại đa dạng
+Người 1: Như trên biểu đồ, ta thấy tập dữ liệu huấn luyện được đưa vào nhiều thuật toán khác nhau để sinh ra nhiều bộ phân loại khác nhau.
+Người 2: Việc dùng nhiều thuật toán khác nhau có ý nghĩa gì ạ? Tại sao không dùng cùng một thuật toán?
+Người 1: Bởi vì mỗi thuật toán có một cách nhìn nhận dữ liệu khác nhau. Nếu các mô hình đa dạng và độc lập, chúng sẽ mắc những sai lầm khác nhau, bù trừ cho nhau, giúp nâng cao độ chính xác tổng thể.
+
+Slide 7: Bộ phân loại bỏ phiếu cứng (Hard Voting)
+Người 1: Cách lấy đa số phiếu bầu đơn giản nhất được gọi là Bỏ Phiếu Cứng, hay Hard Voting. Mô hình nào dự đoán ra lớp có nhiều phiếu bầu nhất thì lớp đó sẽ chiến thắng.
+Người 2: Tức là chỉ đếm số lượng biểu quyết thôi, giống như bầu cử lớp trưởng đúng không thầy/cô?
+Người 1: Chính xác. Bộ phân loại bỏ phiếu đa số thường đạt độ chính xác cao hơn bộ phân loại tốt nhất trong tập hợp đó.
+
+Slide 8: Dự đoán bỏ phiếu cứng
+Người 1: Hãy nhìn sơ đồ này. Ta có Bộ phân loại 1, Bộ phân loại 2, cho đến Bộ phân loại n. Chúng cùng dự đoán một mẫu mới.
+Người 2: Nếu bộ 1 và 2 dự đoán là lớp 1, bộ 3 đoán lớp 2. Thì kết quả chung cuộc sẽ là lớp 1 vì được đa số phiếu đúng không ạ?
+Người 1: Hoàn toàn đúng. Điểm mạnh của Bỏ phiếu cứng là sự đơn giản và trực quan.
+
+Slide 9: Nguyên lý đằng sau bộ phân loại biểu quyết
+Người 1: Điều đáng ngạc nhiên là, ngay cả khi mỗi bộ phân loại chỉ là một công cụ dự đoán yếu, nghĩa là nó chỉ dự đoán tốt hơn việc đoán mò một chút thôi. Thì tập hợp của chúng vẫn có thể là một công cụ dự đoán mạnh!
+Người 2: Việc này nghe có vẻ khó tin. Làm sao tập hợp những người học kém lại thành một nhóm xuất chúng được ạ?
+Người 1: Nó hoàn toàn có thể xảy ra nhờ vào Toán Xác suất, cụ thể là Luật Số Lớn.
+
+Slide 10: Luật số lớn
+Người 1: Hãy thử tưởng tượng em có một đồng xu hơi bị lệch, có 51 phần trăm khả năng ra mặt ngửa và 49 phần trăm ra mặt sấp. Nếu em tung 1 nghìn lần, em thường sẽ nhận được khoảng 510 lần ngửa và 490 lần sấp. 
+Người 2: Vậy tức là tỷ lệ ngửa chiếm đa số. 
+Người 1: Đúng vậy! Bằng toán học, ta có thể tính được xác suất để đa số ra mặt ngửa sau 1 nghìn lần tung lên tới gần 75 phần trăm. Nếu tung 10 ngàn lần, xác suất này tiến tới hơn 97 phần trăm. Biểu quyết của mô hình cũng hoạt động y như vậy!
+
+Slide 11: Mã nguồn: Bộ phân loại bỏ phiếu cứng (Phần 1)
+Người 1: Bây giờ hãy xem mã nguồn để thực hiện điều này trong scikit learn. Ta import RandomForestClassifier, VotingClassifier và LogisticRegression.
+Người 2: Trong code, ta khởi tạo các biến voting_clf, log_clf, rn_clf và svm_clf phải không ạ?
+Người 1: Đúng. Ta kết hợp chúng lại bằng VotingClassifier, với tham số estimators là danh sách các mô hình ta vừa tạo, và tham số voting bằng "hard" để dùng Bỏ phiếu cứng.
+
+Slide 12: Mã nguồn: Bộ phân loại bỏ phiếu cứng (Phần 2)
+Người 1: Sau khi huấn luyện, ta có thể kiểm tra độ chính xác của từng mô hình con so với mô hình tập hợp. Em thấy kết quả thế nào?
+Người 2: Chà, mô hình Logistic Regression đạt độ chính xác 86 phẩy 4 phần trăm, Random Forest đạt 89 phẩy 6 phần trăm, S V M đạt 89 phẩy 6. Nhưng Voting Classifier lại đạt tới 91 phẩy 2 phần trăm!
+Người 1: Đó chính là minh chứng rõ ràng nhất cho sức mạnh của bộ phân loại biểu quyết. Tập hợp luôn mạnh hơn cá nhân.
+
+Slide 13: Bỏ phiếu mềm (Soft Voting)
+Người 1: Bên cạnh Biểu quyết Cứng, ta còn có Biểu quyết Mềm, hay Soft Voting. Nếu tất cả các bộ phân loại đều có thể ước tính xác suất của từng lớp, tức là chúng có hàm predict_proba, ta có thể yêu cầu Scikit-Learn dự đoán lớp có xác suất trung bình cao nhất.
+Người 2: Tức là mô hình nào tự tin 99 phần trăm sẽ có tiếng nói nặng ký hơn mô hình chỉ tự tin 51 phần trăm ạ?
+Người 1: Rất chuẩn. Do đó, Biểu quyết Mềm thường cho kết quả cao hơn Biểu quyết Cứng vì nó coi trọng những phiếu bầu tự tin cao.
+
+Slide 14: Mã nguồn: Bỏ phiếu mềm
+Người 1: Để chuyển sang Bỏ phiếu mềm trong code, ta chỉ cần thay tham số voting bằng "soft". Tuy nhiên hãy nhớ một điều với S V M.
+Người 2: Dạ, mặc định thì SVC trong scikit learn không trả về xác suất phải không ạ?
+Người 1: Đúng. Do đó em phải thiết lập tham số probability bằng True khi khởi tạo lớp S V C, để nó sử dụng xác thực chéo tính toán xác suất. Tất nhiên việc này sẽ làm mô hình chậm đi một chút.
+
+Slide 15: Túi hóa (Bagging) và Dán nhãn (Pasting)
+Người 1: Để tạo ra sự đa dạng, thay vì dùng nhiều thuật toán khác nhau, ta có thể dùng CHỈ MỘT thuật toán, nhưng huấn luyện chúng trên các TẬP CON ngẫu nhiên của dữ liệu.
+Người 2: Chà, mỗi cây học một góc của dữ liệu thì chúng sẽ có góc nhìn khác nhau!
+Người 1: Rất đúng. Việc lấy tập con có hai cách: Túi hóa, hay Bagging, là lấy mẫu có hoàn lại. Và Dán nhãn, hay Pasting, là lấy mẫu không hoàn lại.
+
+Slide 16: Đặc điểm của Bagging và Pasting
+Người 1: Lấy mẫu có hoàn lại (Bagging) nghĩa là trong một tập con có thể xuất hiện trùng lặp một mẫu nhiều lần. Điều này tạo ra sự đa dạng cao hơn so với Dán nhãn (Pasting).
+Người 2: Nếu đa dạng cao hơn thì các mô hình sẽ khác nhau nhiều hơn, dẫn đến độ lệch cao hơn một chút đúng không thầy/cô?
+Người 1: Đúng. Nhưng bù lại, phương sai của toàn bộ tập hợp sẽ giảm đi mạnh mẽ hơn. Trong thực tế, Bagging thường cho kết quả tốt hơn Pasting.
+
+Slide 17: Minh họa: Quá trình lấy mẫu Bagging/Pasting
+Người 1: Cả hai phương pháp này đều cho phép huấn luyện các bộ dự đoán song song trên nhiều nhân C P U hoặc nhiều máy chủ khác nhau.
+Người 2: Dạ, có thể huấn luyện song song nghĩa là tốc độ sẽ rất nhanh.
+Người 1: Hoàn toàn chính xác. Tương tự, việc dự đoán cũng có thể thực hiện song song. Nhờ vậy, chúng là những phương pháp cực kỳ phổ biến và hiệu quả.
+
+Slide 18: Bagging và Pasting trong Scikit-Learn
+Người 1: Trong Scikit-Learn, ta dùng BaggingClassifier. Nếu muốn dùng Dán nhãn, em chỉ cần đặt tham số bootstrap bằng False.
+Người 2: Thế còn n_jobs bằng âm 1 là để làm gì ạ?
+Người 1: Đó là câu lệnh để yêu cầu Scikit-Learn vắt kiệt sức mạnh của máy tính, dùng tất cả các lõi C P U khả dụng để huấn luyện và dự đoán song song.
+
+Slide 19: Mã nguồn: BaggingClassifier
+Người 1: Đây là đoạn code ví dụ. Ta huấn luyện 500 Cây quyết định, mỗi cây lấy ngẫu nhiên 100 mẫu huấn luyện với phương pháp Bagging.
+Người 2: Nếu mô hình gốc có thể ước tính xác suất, thì BaggingClassifier sẽ tự động dùng Bỏ phiếu mềm đúng không thầy/cô?
+Người 1: Đúng. Cây quyết định có tính năng đó, nên tập hợp này sẽ tự động áp dụng Soft Voting.
+
+Slide 20: Phân tích kết quả của Bagging
+Người 1: Các em nhìn lên biểu đồ này. Một bên là ranh giới của một Cây Quyết Định đơn độc, còn bên kia là tập hợp Bagging gồm 500 cây.
+Người 2: Ranh giới của tập hợp trông mượt mà và tổng quát hóa tốt hơn hẳn. Các điểm nhiễu đã bị triệt tiêu!
+Người 1: Chính xác. Tập hợp có độ lệch tương đương nhưng phương sai nhỏ hơn rất nhiều so với một cây đơn lẻ được huấn luyện trên cùng một tập dữ liệu.
+
+Slide 21: So sánh Cây đơn lẻ và Tập hợp túi hóa
+Người 1: Hãy nhìn kỹ hơn vào vùng dữ liệu. Cây đơn lẻ cố gắng uốn lượn để bao trọn những điểm bất thường, dẫn tới hiện tượng quá khớp (overfitting).
+Người 2: Còn tập hợp túi hóa thì ranh giới mềm mại hơn, nó bỏ qua các điểm bất thường.
+Người 1: Sự kết hợp của 500 góc nhìn khác nhau đã làm nên điều kỳ diệu đó.
+
+Slide 22: Đánh giá ngoài mẫu (Out-of-Bag Evaluation)
+Người 1: Khi ta lấy mẫu có hoàn lại (Bagging), theo thống kê, mỗi cây chỉ nhìn thấy khoảng 63 phần trăm dữ liệu gốc. 37 phần trăm dữ liệu còn lại chưa từng được cây đó nhìn thấy, gọi là dữ liệu Ngoài Mẫu, hay Out of bag (O O B).
+Người 2: Wow! Vậy ta có thể dùng chính 37 phần trăm dữ liệu đó để Kiểm Thử mô hình, khỏi cần phải tự tách tập Test lúc ban đầu ạ?
+Người 1: Rất thông minh! Đó chính là Đánh giá Ngoài Mẫu. Mỗi cây được đánh giá trên tập O O B của riêng nó, sau đó ta lấy trung bình cho toàn bộ tập hợp.
+
+Slide 23: Mã nguồn: Đánh giá OOB
+Người 1: Trong Scikit-Learn, em chỉ cần đặt tham số oob_score bằng True. Mô hình sẽ tự động tính điểm đánh giá ngay sau khi huấn luyện xong.
+Người 2: Hàm oob_score_ sẽ trả về kết quả luôn. Quá tiện lợi! Nó tiết kiệm được lượng lớn dữ liệu để dành cho huấn luyện.
+Người 1: Đúng vậy, điều này cực kỳ hữu ích khi tập dữ liệu của em không quá lớn.
+
+Slide 24: Random Patches và Random Subspaces
+Người 1: Bên cạnh lấy mẫu ngẫu nhiên Dữ liệu, ta còn có thể lấy mẫu ngẫu nhiên Đặc trưng thông qua các tham số max_features và bootstrap_features.
+Người 2: Ví dụ ảnh có 1000 pixel, mỗi cây chỉ được nhìn ngẫu nhiên 300 pixel đúng không ạ?
+Người 1: Đúng. Nếu ta lấy mẫu CẢ Dữ Liệu LẪN Đặc Trưng cùng một lúc, đó gọi là phương pháp Random Patches. Còn nếu chỉ lấy mẫu Đặc trưng mà giữ nguyên toàn bộ Dữ liệu, ta gọi đó là Random Subspaces. Phương pháp này đặc biệt hữu ích khi xử lý dữ liệu chiều cao như hình ảnh.
+
+Slide 25: Rừng ngẫu nhiên (Random Forests)
+Người 1: Và bây giờ, xin giới thiệu: Rừng Ngẫu Nhiên! Đây thực chất chính là một Ensemble gồm hàng trăm Cây Quyết Định, được kết hợp lại bằng phương pháp Bagging.
+Người 2: Em nghe danh Rừng Ngẫu Nhiên đã lâu, hóa ra cấu tạo của nó cũng rất logic. Thay vì dùng BaggingClassifier với Cây quyết định, ta có thể dùng trực tiếp RandomForestClassifier phải không ạ?
+Người 1: Chính xác. Thuật toán này đã được tối ưu hóa đặc biệt dành riêng cho Cây quyết định, giúp huấn luyện nhanh hơn và tiện lợi hơn nhiều.
+
+Slide 26: Mã nguồn: RandomForestClassifier
+Người 1: Đây là đoạn code huấn luyện Rừng ngẫu nhiên. Ta tạo một RandomForestClassifier với 500 cây, và giới hạn số lượng nút lá tối đa là 16.
+Người 2: Lớp này chứa mọi siêu tham số của cả Cây quyết định và BaggingClassifier luôn ạ?
+Người 1: Đúng vậy. Em có thể tinh chỉnh mô hình rất linh hoạt chỉ với một lớp duy nhất.
+
+Slide 27: So sánh BaggingClassifier và RandomForestClassifier
+Người 1: Rừng ngẫu nhiên có một tính năng làm tăng tính ngẫu nhiên: khi chẻ một nút, thay vì tìm đặc trưng tốt nhất trong toàn bộ đặc trưng, nó tìm đặc trưng tốt nhất trong một tập con ngẫu nhiên các đặc trưng.
+Người 2: Ồ! Như vậy nó ép các cây phải sử dụng cả những đặc trưng kém quan trọng, tạo ra một khu rừng muôn hình vạn trạng!
+Người 1: Chuẩn! Việc này làm tăng độ lệch một chút, nhưng đổi lại phương sai của toàn bộ rừng sẽ giảm mạnh, tạo ra một mô hình xuất sắc.
+
+Slide 28: Cây ngẫu nhiên cực đại (Extra-Trees)
+Người 1: Nếu em vẫn cảm thấy Rừng ngẫu nhiên chưa đủ ngẫu nhiên, ta có Cực đại Cây, hay Extra-Trees! Tại mỗi nút, thay vì tìm cái "Ngưỡng chẻ" tối ưu, thuật toán sẽ sử dụng các ngưỡng NGẪU NHIÊN.
+Người 2: Chà, ngẫu nhiên cả đặc trưng lẫn ngưỡng cắt. Như vậy mỗi cái cây sẽ xây dựng cực kỳ nhanh vì bỏ qua được khâu tính toán mệt mỏi nhất.
+Người 1: Đúng vậy, Extra-Trees huấn luyện nhanh hơn Rừng Ngẫu Nhiên rất nhiều. Việc này cũng đổi thêm một chút phương sai lấy độ lệch lớn hơn.
+
+Slide 29: Cài đặt Extra-Trees trong Scikit-Learn
+Người 1: Trong thực tế, rất khó để biết RandomForest hay ExtraTrees cái nào sẽ tốt hơn cho một bộ dữ liệu cụ thể.
+Người 2: Chắc chắn là ta phải dùng Cross Validation để thử nghiệm cả hai rồi ạ.
+Người 1: Đúng thế. Scikit-Learn cung cấp lớp ExtraTreesClassifier. Cách sử dụng của nó giống hệt như RandomForestClassifier.
+
+Slide 30: Tầm quan trọng của đặc trưng
+Người 1: Một siêu năng lực khác của Rừng Ngẫu Nhiên là nó đo lường được Tầm quan trọng của từng đặc trưng (Feature Importance).
+Người 2: Nó làm cách nào để đo lường được ạ? Có phải dựa vào việc đặc trưng đó được sử dụng nhiều ở các nút trên cùng không ạ?
+Người 1: Rất xuất sắc! Scikit-Learn sẽ thống kê xem một đặc trưng đã giúp làm giảm Độ không tinh khiết (như Gini) bao nhiêu lần, tính trung bình trên TẤT CẢ các cây trong rừng. Kết quả được tự động chia tỷ lệ sao cho tổng bằng 1.
+
+Slide 31: Mã nguồn: Tính toán Feature Importances
+Người 1: Em thấy trong đoạn code này không? Sau khi gọi hàm fit, em có thể truy cập biến feature_importances_ để lấy danh sách độ quan trọng của tất cả đặc trưng.
+Người 2: Dạ, trong ví dụ hoa Iris, chiều dài và chiều rộng cánh hoa chiếm tổng cộng tới 92 phần trăm độ quan trọng, còn đài hoa thì không đáng kể.
+
+Slide 32: Tầm quan trọng pixel MNIST
+Người 1: Đây là hình ảnh trực quan hóa độ quan trọng của từng pixel trong dữ liệu ảnh chữ số viết tay MNIST.
+Người 2: Rừng ngẫu nhiên đánh giá được ngay là các pixel nằm ở rìa bức ảnh không có ý nghĩa gì (màu xanh thẫm). Chỉ có các pixel ở vùng trung tâm mới đóng vai trò phân loại (màu sáng).
+Người 1: Nhờ vậy, ta có thể dùng Rừng ngẫu nhiên để Lọc bỏ các đặc trưng thừa, giúp giảm số chiều dữ liệu.
+
+Slide 33: Tăng cường (Boosting)
+Người 1: Chúng ta đã học xong Bagging, là huấn luyện song song. Bây giờ ta sẽ sang Boosting, là huấn luyện NỐI TIẾP. Trong Boosting, mô hình sinh sau sẽ cố gắng SỬA CHỮA lỗi lầm của mô hình sinh trước.
+Người 2: Huấn luyện nối tiếp thì không thể chạy song song nhiều nhân C P U được phải không ạ? 
+Người 1: Đúng vậy, vì mô hình 2 phải đợi mô hình 1 huấn luyện xong mới có thể bắt đầu. Khả năng mở rộng của Boosting kém hơn Bagging.
+
+Slide 34: AdaBoost (Adaptive Boosting)
+Người 1: Thuật toán Boosting nổi tiếng nhất là Ada Boost. Thuật toán này hoạt động bằng cách: Mô hình thứ nhất chạy xong, nó sẽ TĂNG TRỌNG SỐ cho những mẫu dữ liệu mà nó dự đoán sai.
+Người 2: À, để mô hình thứ hai khi vào học sẽ phải đặc biệt chú ý đến những bài toán "khó nhằn" mà người đi trước làm sai!
+Người 1: Rất chuẩn. Đó là lý thuyết cốt lõi của Ada Boost.
+
+Slide 35: Cập nhật trọng số trong AdaBoost
+Người 1: Quá trình đó diễn ra liên tục. Mô hình thứ 3 lại chú ý sửa lỗi cho mô hình thứ 2. Cứ thế lặp đi lặp lại cho đến khi đủ số lượng mô hình hoặc đạt độ chính xác mong muốn.
+Người 2: Đến cuối cùng thì tất cả các mô hình cùng biểu quyết phải không ạ?
+Người 1: Đúng, nhưng nó không biểu quyết ngang hàng. Mô hình nào có độ chính xác trên tập huấn luyện cao hơn sẽ có "Trọng lượng phiếu bầu" nặng hơn. Rất công bằng!
+
+Slide 36: Phân tích trọng số trong SVM
+Người 1: Biểu đồ này minh họa 5 bộ dự đoán S V M liên tiếp. Em thấy những vùng bị phân loại sai ở bước trước đã được "phóng to" sự chú ý ở bước sau.
+Người 2: Em thấy ranh giới quyết định dần dần uốn cong để cố gắng phân loại đúng những điểm dữ liệu "cứng đầu" nhất.
+Người 1: Chính xác. Tuy nhiên, nếu dữ liệu có nhiều điểm nhiễu (outliers), Ada Boost có thể bị ám ảnh bởi việc sửa lỗi các điểm nhiễu đó, dẫn đến quá khớp.
+
+Slide 37: Toán học AdaBoost: Tỷ lệ lỗi và Trọng số bộ dự đoán
+Người 1: Đây là công thức toán học tính trọng số cho mỗi mô hình j. Trọng số alpha của mô hình j tỷ lệ thuận với độ chính xác của nó. Nếu tỷ lệ lỗi r của nó nhỏ, alpha sẽ lớn.
+Người 2: Em thấy có một biến e ta (eta) là tốc độ học. Chắc là dùng để giới hạn mức độ ảnh hưởng của một mô hình lên tổng thể ạ?
+Người 1: Đúng. Nếu ta thấy mô hình bị quá khớp, ta có thể giảm tốc độ học e ta xuống.
+
+Slide 38: Toán học AdaBoost: Cập nhật trọng số trường hợp
+Người 1: Sau khi tính được trọng số của mô hình, thuật toán sẽ đi tính lại trọng số w (đáp lưu) cho từng mẫu dữ liệu i. 
+Người 2: Nếu đoán đúng thì trọng số w giữ nguyên, còn nếu đoán sai thì trọng số w sẽ được nhân thêm e mũ alpha đúng không ạ?
+Người 1: Rất chính xác. Bước cuối cùng, thuật toán sẽ chuẩn hóa tất cả các trọng số w sao cho tổng của chúng bằng 1.
+
+Slide 39: Mã nguồn: AdaBoostClassifier
+Người 1: Việc lập trình Ada Boost trong Scikit-Learn rất đơn giản. Ta dùng lớp AdaBoostClassifier, với 200 cây quyết định, mỗi cây là một Gốc cây (Decision Stump), tức là cây chỉ có một độ sâu max_depth bằng 1.
+Người 2: Thuật toán SAMME.R là gì vậy ạ?
+Người 1: Nó là phiên bản nâng cấp của Ada Boost. Nếu các mô hình thành phần có khả năng dự đoán xác suất, SAMME.R sẽ sử dụng các xác suất đó để cập nhật trọng số, giúp thuật toán hội tụ nhanh hơn và chính xác hơn.
+
+Slide 40: Gradient Boosting
+Người 1: Một người anh em nổi tiếng không kém của Ada Boost là Gradient Boosting. Nhưng thay vì thay đổi trọng số mẫu dữ liệu, Gradient Boosting trực tiếp dạy mô hình sau DỰ ĐOÁN PHẦN DƯ, hay Residual Error, của mô hình trước.
+Người 2: Dự đoán phần dư (Sai số) nghĩa là sao thưa thầy/cô?
+Người 1: Ví dụ: Cây 1 dự đoán giá nhà là 10 tỷ, nhưng giá thực là 12 tỷ. Sai số là 2 tỷ. Cây thứ 2 sẽ KHÔNG học giá nhà, mà nó học cách dự đoán con số 2 tỷ đó!
+
+Slide 41: Mã nguồn: Gradient Tree Boosting thủ công (Phần 1)
+Người 1: Để hiểu rõ, ta hãy tự lập trình nó. Đầu tiên ta huấn luyện cây thứ nhất (tree_reg1) trên dữ liệu gốc y.
+Người 2: Sau đó, thầy tính sai số y2 bằng cách lấy y gốc trừ đi y dự đoán của cây 1 phải không ạ?
+Người 1: Đúng! Và cây thứ hai (tree_reg2) sẽ được huấn luyện trên nhãn mới là y2, chứ không phải y nữa.
+
+Slide 42: Mã nguồn: Gradient Tree Boosting thủ công (Phần 2)
+Người 1: Tiếp tục, ta lại tính phần dư y3 bằng cách lấy y2 trừ đi dự đoán của cây 2, và dùng y3 để huấn luyện cây 3.
+Người 2: Tư duy này thật sự quá độc đáo. Sai số cứ thế bị gọt nhỏ dần dần qua từng cái cây!
+Người 1: Cuối cùng, khi có dữ liệu mới, kết quả dự đoán sẽ là Tổng của tất cả các cây cộng lại.
+
+Slide 43: Quá trình huấn luyện GBRT
+Người 1: Hãy nhìn biểu đồ. Hàng bên trái là dự đoán của từng cây đơn lẻ. Hàng bên phải là tổng dự đoán của tập hợp. Càng về sau, đường ranh giới của tập hợp càng bám sát vào dữ liệu.
+Người 2: Dạ, cây đầu tiên chỉ vẽ được một đường cơ bản, nhưng khi cộng cây thứ 2 và cây thứ 3 vào, đường dự đoán đã khớp một cách hoàn hảo với dữ liệu!
+
+Slide 44: GradientBoostingRegressor trong Scikit-Learn
+Người 1: Scikit-Learn đã đóng gói sẵn mọi thứ trong lớp GradientBoostingRegressor (gọi tắt là G B R T). Em chỉ cần khởi tạo với số cây (n_estimators) và độ sâu cây (max_depth).
+Người 2: Rất gọn gàng ạ. Chắc chắn nó chạy nhanh hơn việc mình tự viết vòng lặp thủ công.
+
+Slide 45: Vấn đề quá khớp và Shrinkage
+Người 1: Để tránh việc "gọt" quá tay dẫn đến quá khớp, Gradient Boosting dùng siêu tham số Learning Rate (Tốc độ học). Nếu Learning Rate nhỏ, mỗi cây chỉ đóng góp một phần nhỏ xíu vào kết quả cuối cùng. 
+Người 2: Nghĩa là nếu bước đi nhỏ thì an toàn, nhưng bù lại ta sẽ cần rất nhiều cây để đạt được kết quả cuối cùng ạ.
+Người 1: Chính xác. Kỹ thuật này được gọi là Shrinkage, hay Sự co rút. 
+
+Slide 46: Các tập hợp GBRT không đủ và vừa đủ cây
+Người 1: Nhìn vào biểu đồ bên trái, với learning rate nhỏ mà ít cây quá thì mô hình bị Underfitting (Chưa khớp). Còn biểu đồ bên phải, với đủ số cây, mô hình đã bao quát dữ liệu rất tốt.
+Người 2: Thế nếu ta tham lam cho n_estimators quá lớn thì nó sẽ bị cong queo quá mức, tức là Overfitting đúng không ạ?
+Người 1: Hoàn toàn đúng. Gradient Boosting rất dễ bị quá khớp nếu số lượng cây quá nhiều.
+
+Slide 47: Dừng sớm (Early Stopping) trong GBRT
+Người 1: Để tìm ra số cây tối ưu, ta có thể dùng kỹ thuật Dừng sớm (Early Stopping). Ta huấn luyện một rừng lớn, sau đó đo lỗi trên tập Validation ở từng giai đoạn.
+Người 2: Trong code, hàm staged_predict sẽ trả về dự đoán của tập hợp ở mọi số lượng cây từ 1 đến n_estimators đúng không ạ?
+Người 1: Chính xác. Ta tìm ra số cây có sai số nhỏ nhất bằng hàm arg min, rồi dùng con số đó để tạo ra mô hình tối ưu nhất.
+
+Slide 48: Tăng cường Gradient dựa trên Biểu đồ (HGB)
+Người 1: Nếu dữ liệu lớn, Gradient Boosting thông thường sẽ rất chậm. Vì vậy, Scikit-Learn giới thiệu Histogram-Based Gradient Boosting (H G B). Thuật toán này gộp (bin) các đặc trưng liên tục vào các "thùng" rời rạc, gọi là biểu đồ Histogram.
+Người 2: Điều này giống như là giảm độ phân giải của dữ liệu xuống, để tính toán nhanh hơn đúng không ạ?
+Người 1: Chuẩn xác. Nó có thể tăng tốc độ huấn luyện lên hàng trăm lần, và tiêu tốn ít bộ nhớ hơn, đổi lại độ chính xác có thể giảm một chút.
+
+Slide 49: Mã nguồn: HistGradientBoostingRegressor
+Người 1: H G B được cài đặt trong lớp HistGradientBoostingRegressor và Classifier. Một điểm cực hay của nó là hỗ trợ tốt cho dữ liệu bị thiếu (NaN values) và dữ liệu hạng mục (Categorical).
+Người 2: Vậy mình không cần phải dùng Simple Imputer để điền giá trị thiếu hay One-hot Encoder nữa ạ?
+Người 1: Đúng vậy! Mô hình sẽ tự học được cách rẽ nhánh cho các giá trị bị thiếu. Nó tiết kiệm cho ta rất nhiều công đoạn Tiền xử lý.
+
+Slide 50: Phân lớp xếp chồng (Stacking)
+Người 1: Kỹ thuật cuối cùng hôm nay là Phân lớp Xếp chồng, hay Stacking. Thay vì dùng các hàm đơn giản như Biểu quyết (lấy đa số) để tổng hợp kết quả của các mô hình, tại sao ta không huấn luyện MỘT MÔ HÌNH HỌC MÁY KHÁC để làm việc tổng hợp này?
+Người 2: Ý tưởng táo bạo quá! Tức là lấy dự đoán của các mô hình thành viên làm "dữ liệu đầu vào" cho một mô hình cấp trên ạ?
+Người 1: Chính xác. Mô hình cấp trên đó được gọi là Bộ trộn (Blender) hoặc Meta-Learner.
+
+Slide 51: Tổng hợp dự đoán bằng bộ trộn
+Người 1: Như sơ đồ này, ta có một điểm dữ liệu mới. Ba bộ dự đoán bên dưới đưa ra 3 kết quả lần lượt là 3 phẩy 1, 2 phẩy 7, và 2 phẩy 9.
+Người 2: Thay vì lấy trung bình, 3 con số này sẽ được đẩy lên Bộ trộn (Blender). Blender sẽ tính toán và đưa ra kết quả cuối cùng là 3 phẩy 0.
+Người 1: Rất đúng! Blender sẽ học được rằng bộ dự đoán 1 thường bị thổi phồng kết quả, hoặc bộ dự đoán 2 hay bị chệch. Nó sẽ tự động điều chỉnh lại.
+
+Slide 52: Khái niệm bộ trộn (Blender)
+Người 1: Bộ trộn được huấn luyện trên một tập dữ liệu "Giữ lại" (Hold-out set). Nghĩa là tập huấn luyện được chia làm hai phần.
+Người 2: Phần đầu tiên để huấn luyện các bộ dự đoán lớp dưới. Còn phần thứ hai dùng để làm gì ạ?
+Người 1: Phần thứ hai sẽ không được các mô hình lớp dưới học. Thay vào đó, nó được đẩy qua các mô hình lớp dưới để sinh ra các dự đoán. Các dự đoán này chính là "Đặc trưng đầu vào" mới để huấn luyện Bộ trộn.
+
+Slide 53: Huấn luyện bộ trộn trong tập hợp
+Người 1: Bằng cách dùng tập dữ liệu giữ lại, ta đảm bảo rằng Bộ trộn được huấn luyện trên những dự đoán "sạch", giống hệt như cách nó sẽ đối mặt với dữ liệu thực tế.
+Người 2: Nếu không dùng tập giữ lại mà dùng luôn tập huấn luyện thì sao ạ?
+Người 1: Thì các mô hình lớp dưới sẽ dự đoán quá chuẩn vì chúng đã "thuộc lòng" dữ liệu đó rồi. Bộ trộn sẽ học được một ảo tưởng rằng các mô hình lớp dưới luôn hoàn hảo, dẫn đến Overfitting nặng nề.
+
+Slide 54: Kiến trúc xếp chồng phức tạp
+Người 1: Thậm chí, ta không chỉ có một Bộ trộn. Ta có thể huấn luyện một "Lớp thứ hai" gồm nhiều Bộ trộn khác nhau (ví dụ Trộn bằng Hồi quy tuyến tính, Trộn bằng Rừng ngẫu nhiên). Sau đó, trên cùng lại có một "Lớp thứ ba" là Siêu bộ trộn.
+Người 2: Trời ơi, xếp chồng thành một mạng lưới khổng lồ luôn ạ. Nghe giống như mạng nơ ron nhiều lớp vậy!
+Người 1: Đúng, kiến trúc này có thể trở nên cực kỳ sâu. Tuy nhiên, kiến trúc càng phức tạp, nguy cơ quá khớp càng lớn và chi phí tính toán cũng rất cao.
+
+Slide 55: Tập hợp xếp chồng đa lớp
+Người 1: Khi áp dụng kiến trúc nhiều tầng, việc huấn luyện sẽ phải chia thành nhiều bước với nhiều tập Hold-out khác nhau.
+Người 2: Việc chia tập dữ liệu thành nhiều mảnh chắc chắn sẽ làm mất đi lượng lớn dữ liệu để huấn luyện các mô hình lớp dưới.
+Người 1: Đó là một nhược điểm lớn. Để khắc phục, thực tế người ta dùng Kiểm chứng chéo ngoài mẫu (Out-of-fold Cross Validation) để sinh dữ liệu huấn luyện cho lớp Blender thay vì cắt riêng một tập Hold-out.
+
+Slide 56: Cài đặt StackingClassifier trong Scikit-Learn
+Người 1: Rất may, Scikit-Learn đã đóng gói mọi sự phức tạp đó vào lớp StackingClassifier. Em chỉ cần khai báo một mảng các estimators (mô hình lớp dưới), và chỉ định final_estimator là mô hình Bộ trộn.
+Người 2: Như trong code, RandomForest và S V C là mô hình lớp dưới, còn LogisticRegression là Blender đúng không ạ?
+Người 1: Chính xác. Nếu ta không khai báo final_estimator, Scikit-Learn sẽ mặc định dùng LogisticRegression cho bài toán phân loại và RidgeRegression cho bài toán hồi quy.
+
+Slide 57: Tổng kết Chương 7
+Người 1: Bài học hôm nay đã xâu chuỗi lại mọi thứ. Học Tổ hợp (Ensemble Learning) là đỉnh cao của Học Máy truyền thống. Rừng Ngẫu Nhiên, Ada Boost, Gradient Boosting, và Stacking là những "vũ khí" cực mạnh mà bất kỳ kỹ sư dữ liệu nào cũng phải nắm vững.
+Người 2: Việc kết hợp nhiều mô hình yếu thành một cỗ máy khổng lồ thật sự là một nghệ thuật. Cảm ơn thầy/cô đã hướng dẫn.
+
+Slide 58: Hỏi & Đáp
+Người 1: Trước khi kết thúc, các em hãy mở Jupyter Notebook. Lần này hãy dùng thuật toán X G Boost hoặc Random Forest để huấn luyện lại các tập dữ liệu cũ nhé. Chắc chắn kết quả sẽ làm các em bất ngờ đấy. Có ai có câu hỏi gì không?
+Người 2: Dạ, chúng em sẽ thực hành luôn ạ. Cảm ơn thầy/cô, chào thầy/cô!
+Người 1: Tuyệt vời. Tiết học đến đây là kết thúc. Ở chương sau, chúng ta sẽ bắt đầu bước vào một vùng đất hoàn toàn mới: Giảm Chiều Dữ Liệu và Học Không Giám Sát. Chào các em!

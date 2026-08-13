@@ -1,0 +1,203 @@
+Slide 1: Chương 10: Giới thiệu về Mạng Nơ-ron Nhân tạo
+Người 1: Chào các em. Hôm nay chúng ta sẽ chính thức bước vào một chương cực kỳ thú vị và cũng là nền tảng của toàn bộ ngành Trí tuệ nhân tạo hiện đại: Mạng Nơ-ron Nhân tạo (Artificial Neural Networks), hay gọi tắt là A N N.
+Người 2: Dạ chào thầy/cô! Mạng nơ-ron nhân tạo có phải là thứ đứng đằng sau Chat GPT và nhận diện khuôn mặt không ạ?
+Người 1: Chính xác! Nó chính là trái tim của Học Sâu (Deep Learning). Hôm nay chúng ta sẽ tìm hiểu cội nguồn của nó, từ cách nó mô phỏng não bộ con người, cho đến cách xây dựng nó bằng thư viện Keras.
+
+Slide 2: Mục tiêu của Chương
+Người 1: Mục tiêu của chương này là giúp các em hiểu được cấu trúc cốt lõi của một mạng nơ-ron. Chúng ta sẽ bắt đầu từ các khái niệm sơ khai nhất như Perceptron, cho đến Mạng Đa lớp (M L P).
+Người 2: Vậy chúng ta có được thực hành viết code luôn không ạ?
+Người 1: Chắc chắn rồi. Chúng ta sẽ dùng API Sequential và Functional của thư viện Keras để tự tay xây dựng mô hình Phân loại và Hồi quy.
+
+Slide 3: Mục lục
+Người 1: Bài học sẽ đi qua 8 phần chính. Từ lịch sử, khái niệm Perceptron, M L P, cho đến cách dùng API của Keras, cách giám sát mô hình bằng TensorBoard và cuối cùng là tinh chỉnh siêu tham số.
+Người 2: Nghe có vẻ khá dài và nhiều kiến thức thực hành. Chúng ta bắt đầu từ lịch sử luôn nhé thầy/cô!
+
+Slide 4: 1.1 Lịch sử Mạng Nơ-ron Nhân tạo (ANN)
+Người 1: Ý tưởng về A N N thực ra không mới, nó ra đời từ năm 1943 bởi nhà thần kinh học Warren McCulloch và nhà toán học Walter Pitts. Nhưng phải đến những năm 2010 nó mới thực sự bùng nổ. 
+Người 2: Tại sao lại bị gián đoạn lâu như vậy ạ? Có phải do hồi xưa máy tính quá yếu không thưa thầy/cô?
+Người 1: Rất chuẩn. Có ba lý do chính cho sự bùng nổ trở lại: Thứ nhất là sự xuất hiện của Dữ liệu lớn (Big Data). Thứ hai là sức mạnh phần cứng khổng lồ từ card đồ họa G P U. Và thứ ba là các thuật toán huấn luyện đã được cải tiến tinh vi hơn rất nhiều.
+
+Slide 5: 1.2 Nơ-ron Sinh học
+Người 1: Trước khi học mô hình nhân tạo, ta hãy xem bản chính của nó: Nơ-ron sinh học trong não bộ. Một nơ-ron sinh học gồm: thân tế bào, các sợi nhánh (dendrites) để nhận tín hiệu, và sợi trục (axon) để truyền tín hiệu đi.
+Người 2: Tức là nó nhận xung điện từ các nơ-ron khác, nếu tín hiệu đủ mạnh thì nó sẽ phát ra xung điện truyền đi tiếp ạ?
+Người 1: Chính xác. Hàng tỷ nơ-ron như vậy nối với nhau tạo thành một mạng lưới khổng lồ, đó chính là nguồn gốc tư duy của con người.
+
+Slide 6: 1.3 Từ Sinh học đến Mô hình Nhân tạo
+Người 1: McCulloch và Pitts đã đơn giản hóa mô hình sinh học đó thành một Mô hình toán học cực kỳ đơn giản: Nơ-ron logic. Nó có một hoặc nhiều đầu vào nhị phân (Đúng/Sai) và một đầu ra nhị phân.
+Người 2: Nó sẽ đưa ra kết quả Đúng khi nào ạ?
+Người 1: Nơ-ron này sẽ "kích hoạt" (trả về Đúng) khi số lượng tín hiệu Đúng ở đầu vào vượt qua một ngưỡng nào đó. Đơn giản vậy thôi.
+
+Slide 7: 1.4 Các Phép toán Logic với Nơ-ron
+Người 1: Đáng kinh ngạc là, chỉ với mô hình nơ-ron đơn giản đó, người ta có thể nối chúng lại để giải quyết bất kỳ phép toán Logic nào.
+Người 2: Giống như các cổng A N D, O R, hay N O T trong môn Kỹ thuật số đó ạ?
+Người 1: Đúng vậy! Ví dụ, nếu nơ-ron chỉ kích hoạt khi CẢ HAI đầu vào đều là Đúng, thì ta có cổng A N D. Đây là nền tảng cốt lõi chứng minh nơ-ron có thể thực hiện mọi tính toán.
+
+Slide 8: 2.1 Khái niệm Perceptron
+Người 1: Đến năm 1957, Frank Rosenblatt phát minh ra Perceptron. Đây là một bước tiến lớn, vì đầu vào không còn là số nhị phân nữa, mà là các số thực, gọi là x 1, x 2...
+Người 2: Nếu là số thực thì mỗi đầu vào sẽ có một mức độ quan trọng khác nhau phải không ạ?
+Người 1: Rất thông minh! Mỗi đầu vào sẽ được nhân với một TRỌNG SỐ (Weight), ký hiệu là w 1, w 2... Khái niệm Trọng số chính là nền móng để mạng nơ-ron có thể "học" được!
+
+Slide 9: 2.2 Hoạt động của TLU (Threshold Logic Unit)
+Người 1: Đơn vị tính toán trong Perceptron gọi là T L U (hoặc L T U). Nó hoạt động theo 2 bước. Bước 1: Nó tính TỔNG CÓ TRỌNG SỐ của tất cả các đầu vào (z bằng w 1 nhân x 1 cộng w 2 nhân x 2...). Bước 2: Đưa tổng z đó đi qua một Hàm Bước (Step Function).
+Người 2: Hàm Bước là gì ạ? Có phải nếu tổng z lớn hơn 0 thì nó trả về 1, ngược lại trả về 0 không ạ?
+Người 1: Chính xác! Hàm Bước phổ biến nhất trong Perceptron là hàm Heaviside. Nhiệm vụ của T L U chính là một bộ Phân loại tuyến tính nhị phân.
+
+Slide 10: 2.3 Kiến trúc Mạng Perceptron
+Người 1: Một mạng Perceptron hoàn chỉnh sẽ gồm một lớp các T L U đặt song song nhau. Lớp đầu tiên chỉ chứa các đầu vào, gọi là Lớp Đầu vào (Input Layer). Lớp các T L U gọi là Lớp Đầu ra (Output Layer).
+Người 2: Mỗi nơ-ron ở lớp đầu vào có được nối với tất cả các nơ-ron ở lớp đầu ra không thưa thầy/cô?
+Người 1: Có chứ! Kiến trúc mà mọi nơ-ron lớp trước nối với mọi nơ-ron lớp sau được gọi là Lớp Kết nối Đầy đủ (Fully Connected Layer) hay Lớp Dày đặc (Dense Layer). Ngoài ra, ta còn thêm một nơ-ron đặc biệt gọi là Nơ-ron Bias luôn luôn phát ra giá trị 1.
+
+Slide 11: 2.4 Điểm yếu của Perceptron: Bài toán XOR
+Người 1: Perceptron rất mạnh, nhưng nó có một điểm yếu chí mạng được chứng minh vào năm 1969: Nó không thể giải được bài toán X O R (Exclusive OR).
+Người 2: Tại sao lại không giải được ạ? Em nhớ X O R là "đúng khi hai đầu vào khác nhau".
+Người 1: Bởi vì ranh giới phân loại của Perceptron là một đường THẲNG. Còn bài toán X O R đòi hỏi phải vẽ một đường cong hoặc hai đường thẳng mới chia tách được dữ liệu! Vấn đề này đã đẩy mạng nơ-ron vào "Mùa đông AI" suốt nhiều thập kỷ.
+
+Slide 12: 3.1 Mạng Perceptron Đa Lớp (MLP)
+Người 1: Để phá vỡ giới hạn đó, người ta phát hiện ra rằng: Chỉ cần xếp chồng nhiều lớp Perceptron lên nhau, mạng nơ-ron sẽ có khả năng giải quyết các bài toán phi tuyến tính cực kỳ phức tạp (như X O R).
+Người 2: Ồ, sự kết hợp của nhiều lớp tuyến tính sẽ tạo ra một sức mạnh phi tuyến tính! Cấu trúc này được gọi là gì ạ?
+Người 1: Nó được gọi là Mạng Perceptron Đa Lớp (Multi-Layer Perceptron), gọi tắt là M L P.
+
+Slide 13: 3.2 Kiến trúc MLP
+Người 1: Một mạng M L P tiêu chuẩn gồm 3 thành phần: Một lớp đầu vào (Input layer), một hoặc nhiều LỚP ẨN (Hidden layers), và một Lớp đầu ra (Output layer).
+Người 2: Tại sao lại gọi là lớp ẩn thưa thầy/cô?
+Người 1: Vì nó nằm kẹp giữa đầu vào và đầu ra, ta không trực tiếp nhìn thấy dữ liệu đi qua nó. Bất kỳ mạng nơ-ron nào có từ 2 lớp ẩn trở lên sẽ được gọi là Mạng Nơ-ron Sâu (Deep Neural Network), nguồn gốc của từ Deep Learning.
+
+Slide 14: 3.3 Thuật toán Lan truyền ngược (Backpropagation)
+Người 1: Cấu trúc đã có, nhưng làm sao để "dạy" M L P học? Năm 1986, thuật toán Lan truyền ngược (Backpropagation) ra đời, đây là thuật toán quan trọng nhất của Học Sâu.
+Người 2: Nó hoạt động như thế nào ạ? Có giống với Gradient Descent không?
+Người 1: Nó SỬ DỤNG Gradient Descent! Bước 1 (Lan truyền tiến): dữ liệu chạy từ đầu vào tới đầu ra để đưa ra dự đoán. Bước 2: Đo lường Sai số. Bước 3 (Lan truyền ngược): Thuật toán chạy NGƯỢC từ đầu ra về đầu vào, dùng đạo hàm (Chain Rule) để xem mỗi trọng số gây ra bao nhiêu phần trăm sai số. Và cuối cùng là Bước 4: Cập nhật điều chỉnh các trọng số đó.
+
+Slide 15: 3.4 Tại sao lại cần Hàm Kích hoạt (Activation Functions)?
+Người 1: Để Backpropagation hoạt động, các nhà nghiên cứu phải thay thế Hàm Bước (Step Function) bằng các Hàm Kích hoạt (Activation Function) mới. 
+Người 2: Tại sao Hàm Bước lại không dùng được cho thuật toán này ạ?
+Người 1: Vì Hàm Bước là một đường gấp khúc bậc thang. Đạo hàm của nó luôn bằng 0 (chỗ bằng phẳng) hoặc không xác định. Nếu đạo hàm bằng 0, Gradient Descent sẽ không biết phải điều chỉnh trọng số đi hướng nào! Ta cần những hàm cong trơn tru để tính đạo hàm.
+
+Slide 16: 3.5 Các Hàm Kích Hoạt Phổ Biến
+Người 1: Có 3 hàm kích hoạt kinh điển: Hàm Logistic (Sigmoid) uốn lượn chữ S từ 0 đến 1. Hàm Tanh uốn lượn từ âm 1 đến 1. Và hàm Re L U (Rectified Linear Unit).
+Người 2: Em thấy hàm Re L U rất đơn giản: nếu nhỏ hơn 0 thì bằng 0, lớn hơn 0 thì giữ nguyên thành đường thẳng. Sao đường thẳng mà vẫn dùng được ạ?
+Người 1: Dù là đường thẳng, nhưng nó bị bẻ gãy ở điểm 0, nên nó mang tính phi tuyến. Re L U tính toán cực kỳ nhanh và hoạt động rất hiệu quả, nên nó trở thành hàm kích hoạt mặc định cho hầu hết các mạng nơ-ron hiện nay.
+
+Slide 17: 4.1 MLP Hồi quy (Regression MLP)
+Người 1: M L P rất đa năng. Đầu tiên, ta có thể dùng M L P để giải Bài toán Hồi quy, tức là dự đoán một con số cụ thể, ví dụ dự đoán giá nhà.
+Người 2: Kiến trúc cho bài toán hồi quy có gì đặc biệt không ạ?
+Người 1: Rất đơn giản. Lớp đầu ra chỉ cần duy nhất 1 Nơ-ron (đại diện cho giá nhà). Và đặc biệt: Lớp đầu ra thường KHÔNG dùng hàm kích hoạt nào cả, để nó có thể trả về bất kỳ giá trị nào từ âm vô cực đến dương vô cực.
+
+Slide 18: 4.2 Cấu hình chuẩn cho MLP Hồi quy
+Người 1: Tuy nhiên, nếu em muốn giá nhà dự đoán LUÔN LUÔN dương, em có thể gắn hàm Re L U hoặc Softplus vào Nơ-ron đầu ra đó.
+Người 2: Dạ, nếu em muốn dự đoán một tỷ lệ phần trăm (từ 0 đến 1), em sẽ gắn hàm Sigmoid vào nơ-ron đầu ra. Thật là linh hoạt!
+Người 1: Về hàm Mất mát (Loss Function), ta thường dùng Lỗi Bình phương trung bình (M S E). Nếu dữ liệu nhiều nhiễu, có thể dùng M A E hoặc Huber Loss.
+
+Slide 19: 4.3 MLP Phân loại (Classification MLP)
+Người 1: Ứng dụng thứ hai là Phân loại (Classification). Đối với bài toán phân loại nhị phân (ví dụ: email rác hay không rác), lớp đầu ra cũng dùng 1 Nơ-ron duy nhất.
+Người 2: Lần này chắc chắn phải dùng hàm kích hoạt Sigmoid để ép kết quả về xác suất từ 0 đến 1 đúng không ạ?
+Người 1: Hoàn toàn chính xác! Kết quả đầu ra chính là xác suất email đó là email rác. Hàm mất mát sử dụng sẽ là Binary Cross Entropy.
+
+Slide 20: 4.4 Cấu hình chuẩn cho MLP Phân loại
+Người 1: Nhưng nếu em muốn phân loại hình ảnh quần áo vào 10 danh mục khác nhau (Phân loại đa lớp), thì lớp đầu ra cần thiết kế thế nào?
+Người 2: Em nghĩ là sẽ cần 10 Nơ-ron ở lớp đầu ra, mỗi Nơ-ron phụ trách dự đoán xác suất cho 1 loại quần áo.
+Người 1: Rất thông minh! Và để đảm bảo tổng xác suất của 10 nơ-ron đó luôn bằng 100 phần trăm, ta sẽ bọc chúng bằng hàm kích hoạt Softmax. Hàm mất mát lúc này gọi là Categorical Cross Entropy.
+
+Slide 21: 5.1 TensorFlow và Keras
+Người 1: Lý thuyết đã xong, giờ là lúc thực hành. Chúng ta sẽ dùng Keras, một API Cấp cao (High-level API) tuyệt đẹp và cực kỳ dễ sử dụng để xây dựng mạng nơ-ron. 
+Người 2: Em nghe nói Keras chạy trên nền tảng của TensorFlow phải không ạ?
+Người 1: Đúng vậy! Kể từ TensorFlow 2.0, Keras đã được tích hợp sâu vào TensorFlow dưới dạng module tf chấm keras. Nó mạnh mẽ đến mức hỗ trợ huấn luyện trên nhiều G P U và T P U khổng lồ của Google.
+
+Slide 22: 5.2 Sequential API: Xây dựng mô hình
+Người 1: Cách dễ nhất để xây M L P trong Keras là dùng Sequential API (API Tuần tự). Ta cứ xếp từng lớp lên nhau như xếp gạch vậy.
+Người 2: Đoạn mã này có vẻ rất rõ ràng. Lớp đầu tiên là Flatten để kéo phẳng ảnh M N I S T từ 28 nhân 28 thành 1 mảng 1 chiều 784 phần tử ạ?
+Người 1: Đúng! Kế tiếp, ta ném vào 2 lớp Dense (Lớp Ẩn) với 300 và 100 nơ-ron, dùng hàm kích hoạt Re L U. Và cuối cùng là Lớp Đầu Ra với 10 nơ-ron dùng hàm Softmax.
+
+Slide 23: 5.3 Giải thích Mô hình Sequential
+Người 1: Sau khi xếp gạch xong, em gọi hàm model chấm summary() để xem lại toàn bộ kiến trúc.
+Người 2: Ôi, sao cột Param lại báo tổng số tham số lên tới 266 nghìn thế kia? 
+Người 1: Vì là mạng Kết nối Đầy đủ, mỗi nơ-ron lớp này nối với mọi nơ-ron lớp kia. 784 điểm ảnh nhân với 300 nơ-ron đã tạo ra hơn 235 nghìn trọng số rồi. Việc có nhiều tham số giúp mạng cực kỳ linh hoạt nhưng cũng rất dễ bị Quá khớp (Overfitting).
+
+Slide 24: 5.4 Biên dịch (Compile) và Huấn luyện (Fit)
+Người 1: Trước khi huấn luyện, ta phải "Biên dịch" (Compile) mô hình. Tại đây ta phải chỉ định 3 thứ: Hàm mất mát (Loss), Bộ Tối ưu hóa (Optimizer) và Thước đo (Metrics).
+Người 2: Ở đây loss là sparse categorical crossentropy. Tại sao lại có chữ sparse ạ?
+Người 1: Chữ "sparse" dùng khi nhãn gốc (y) là số nguyên (ví dụ nhãn 0, 1, 2... đến 9). Sau khi Compile, ta chỉ việc gọi hàm fit, truyền dữ liệu, chỉ định epochs bằng 30 là Keras sẽ tự động làm mọi việc tính toán Backpropagation!
+
+Slide 25: 5.5 Đường cong Học tập (Learning Curves)
+Người 1: Trong quá trình Fit, Keras trả về đối tượng History. Ta có thể dùng nó để vẽ biểu đồ Đường cong học tập. 
+Người 2: Em thấy đường Loss giảm dần, còn đường Accuracy tăng dần. Quá trình học diễn ra rất trơn tru!
+Người 1: Đúng vậy, đồ thị cho thấy mô hình chưa hề bị Quá khớp vì đường Validation vẫn bám sát đường Training. Thật hoàn hảo.
+
+Slide 26: 6.1 Vượt giới hạn với Functional API
+Người 1: Sequential API rất dễ, nhưng nó bắt buộc kiến trúc mạng phải chạy trên một đường thẳng. Để xây các kiến trúc phức tạp hơn, ta phải dùng Functional API.
+Người 2: Kiến trúc phức tạp như thế nào ạ? Kiểu mạng bị rẽ nhánh hay sao thưa thầy/cô?
+Người 1: Đúng thế! Ví dụ kinh điển nhất là kiến trúc Wide and Deep (Rộng và Sâu).
+
+Slide 27: 6.2 Kiến trúc Wide & Deep
+Người 1: Hãy nhìn sơ đồ. Dữ liệu đi vào, một nhánh đi qua các lớp ẩn (Deep) để học những quy luật phức tạp. Nhưng một nhánh khác lại đi tắt thẳng từ đầu vào nối thẳng tới đầu ra (Wide).
+Người 2: Ồ, vậy là mô hình vừa học được những thứ trừu tượng sâu xa, vừa giữ lại được những khuôn mẫu gốc đơn giản nhất của dữ liệu để không bị quên?
+Người 1: Chính xác! Đó là ý tưởng cốt lõi của Wide and Deep, rất phổ biến trong các hệ thống Gợi ý Sản phẩm.
+
+Slide 28: 6.3 Code: Functional API
+Người 1: Đây là cách viết Functional API. Thay vì khởi tạo mô hình rồi nhét các lớp vào, ta định nghĩa từng Lớp riêng biệt và gọi chúng như một Hàm (Function), truyền đầu ra của lớp trước vào lớp sau.
+Người 2: Ở dòng concat, ta nối đầu ra của nhánh Deep (từ lớp hidden 2) với nhánh Wide (từ lớp input). Quả là rất linh hoạt!
+Người 1: Rất chuẩn. Sau khi móc nối xong, ta khởi tạo keras chấm Model, chỉ định đầu vào và đầu ra là hoàn thành.
+
+Slide 29: 6.4 Functional API: Nhiều luồng dữ liệu (Multiple Inputs)
+Người 1: Hơn thế nữa, Functional API cho phép mạng nơ-ron nhận NHIỀU NGUỒN DỮ LIỆU ĐẦU VÀO khác nhau. 
+Người 2: Tức là nhánh Wide nhận 5 đặc trưng A, còn nhánh Deep nhận 6 đặc trưng B, sau đó hòa trộn ở giữa ạ?
+Người 1: Hoàn toàn đúng. Khi gọi hàm fit, em chỉ cần truyền một bộ (Tuple) gồm 2 tập dữ liệu X input A và X input B cho mô hình. Cực kỳ tiện lợi.
+
+Slide 30: 6.5 Functional API: Nhiều đầu ra (Multiple Outputs)
+Người 1: Thậm chí, Functional API còn cho phép mô hình phun ra Nhiều Đầu Ra (Multiple Outputs) cùng lúc!
+Người 2: Ví dụ vừa muốn phân loại khuôn mặt là vui hay buồn, vừa muốn nhận diện khuôn mặt đó có đeo kính hay không trên cùng một bức ảnh ạ?
+Người 1: Ví dụ của em vô cùng xuất sắc! Khi compile, ta có thể chỉ định 2 hàm Mất mát khác nhau cho 2 đầu ra, và Keras sẽ tối ưu hóa tổng của 2 hàm mất mát đó.
+
+Slide 31: 6.6 Subclassing API (Lập trình Hướng đối tượng)
+Người 1: Nếu Functional API vẫn chưa đủ "dị" với em, em có thể dùng Subclassing API (Kế thừa Lớp). API này cho phép em tự do nhúng bất kỳ dòng code Python nào vào quá trình truyền xuôi (hàm call).
+Người 2: Tức là em có thể nhét vòng lặp for, lệnh if else, tùy ý nhào nặn cấu trúc mô hình luôn ạ?
+Người 1: Đúng vậy! Nhưng đánh đổi lại, Keras sẽ không thể kiểm tra lỗi kiến trúc cho em, và việc lưu mô hình xuống đĩa cũng phức tạp hơn nhiều.
+
+Slide 32: 7.1 Lưu và Khôi phục Mô hình
+Người 1: Nói về lưu mô hình. Việc huấn luyện mạng sâu tốn hàng ngày trời, nên ta phải lưu nó lại. Với Sequential và Functional, ta chỉ cần gọi model chấm save(). 
+Người 2: Nó sẽ lưu ra định dạng HDF5 (.h 5) và sau này dùng hàm load_model để nạp lại đúng không ạ?
+Người 1: Chính xác. Rất nhanh và an toàn.
+
+Slide 33: 7.2 Callbacks: Trợ lý huấn luyện
+Người 1: Nếu mô hình đang huấn luyện dở 10 tiếng mà mất điện thì sao? Keras cung cấp các Callbacks (Hàm gọi lại). Nó là các "Trợ lý" được Keras kích hoạt tự động sau mỗi epoch (vòng lặp).
+Người 2: Vậy mình có thể cài đặt ModelCheckpoint để cứ chạy xong 1 vòng là lưu mô hình tạm thời xuống ổ cứng ạ?
+Người 1: Đúng. Tham số save_best_only còn giúp ta chỉ lưu mô hình nếu nó có điểm số tốt nhất, rất tiện.
+
+Slide 34: 7.3 Dừng sớm (Early Stopping)
+Người 1: Một Callback kinh điển khác là Dừng Sớm (Early Stopping). Nó giải quyết triệt để nỗi sợ Quá khớp (Overfitting).
+Người 2: Có phải nếu mô hình cứ học mãi mà điểm số trên tập Validation không tăng lên nữa, thì nó sẽ tự động bấm nút Stop để dừng huấn luyện không ạ?
+Người 1: Hoàn toàn chính xác! Keras sẽ tự dừng lại và tự động khôi phục trọng số về thời điểm tốt nhất. Ta không bao giờ sợ thiết lập số vòng Epochs quá lớn nữa.
+
+Slide 35: 7.4 TensorBoard: Công cụ Giám sát tối thượng
+Người 1: Để theo dõi đồ thị Learning Curve theo thời gian thực (Real-time), ta dùng TensorBoard, một siêu công cụ tích hợp sẵn.
+Người 2: Mình cũng khai báo nó dưới dạng một Callback và truyền vào hàm fit đúng không thầy/cô?
+Người 1: Đúng vậy. TensorBoard sẽ sinh ra giao diện Web tuyệt đẹp. Em có thể theo dõi đồ thị mất mát, xem kiến trúc mạng, vẽ cấu trúc 3D của cụm dữ liệu ngay trong lúc mô hình đang chạy!
+
+Slide 36: 8.1 Tinh chỉnh Siêu Tham số (Hyperparameters)
+Người 1: Mạng nơ-ron có quá nhiều thứ để cấu hình: số lớp, số nơ-ron, hàm kích hoạt... Việc mò mẫm thủ công là bất khả thi. Ta phải dùng Tinh chỉnh Siêu tham số (Hyperparameter Tuning).
+Người 2: Mình có thể dùng GridSearchCV giống như bài Rừng Ngẫu Nhiên không ạ?
+Người 1: Có thể! Keras cung cấp lớp bao bọc KerasRegressor. Em nhét mô hình Keras vào đó, rồi vứt cho RandomizedSearchCV. Hoặc mạnh mẽ hơn, hãy dùng thư viện Keras Tuner.
+
+Slide 37: 8.2 Số lượng Lớp Ẩn (Hidden Layers)
+Người 1: Vài mẹo khi thiết kế mạng nơ-ron. Về số lượng lớp, thay vì xây một mạng "nông" nhưng "rộng" (1 lớp 1000 nơ-ron), hãy xây một mạng "SÂU" nhưng hẹp (10 lớp, mỗi lớp 100 nơ-ron).
+Người 2: Tại sao mạng sâu lại tốt hơn mạng rộng ạ? Cùng là 1000 nơ-ron mà.
+Người 1: Vì mạng sâu tận dụng được cấu trúc "phân cấp". Lớp đầu tìm các nét cong, nét thẳng. Lớp sau ghép nét lại thành hình tròn, hình vuông. Lớp cuối ghép lại thành khuôn mặt. Nó cần rất ít dữ liệu để học biểu diễn phức tạp.
+
+Slide 38: 8.3 Số lượng Nơ-ron trên mỗi Lớp Ẩn
+Người 1: Về số lượng nơ-ron, xưa kia người ta hay dùng kiến trúc kim tự tháp: lớp đầu 100, lớp sau 50, lớp cuối 10 nơ-ron. 
+Người 2: Nghe có vẻ hợp lý, giống như chắt lọc thông tin dần dần. 
+Người 1: Tuy nhiên thực tế cho thấy, việc giữ SỐ LƯỢNG NƠ-RON BẰNG NHAU cho tất cả các lớp ẩn lại hoạt động cực tốt và dễ cấu hình hơn nhiều (ví dụ mọi lớp đều 100 nơ-ron). Cứ cho thừa nơ-ron đi, rồi dùng Early Stopping để chống quá khớp.
+
+Slide 39: 8.4 Tốc độ học (Learning Rate)
+Người 1: Siêu tham số quan trọng SỐ MỘT của Mạng Nơ-ron là Tốc độ học (Learning Rate).
+Người 2: Tại sao nó lại quan trọng nhất ạ?
+Người 1: Nếu quá cao, thuật toán bị nhảy lung tung. Nếu quá thấp, nó hội tụ cực chậm trong nhiều tuần. Cách tốt nhất là bắt đầu từ rất nhỏ, tăng dần lên cho đến khi Lỗi bị bùng nổ, rồi chọn giá trị tốc độ học nhỏ hơn điểm bùng nổ đó khoảng 10 lần.
+
+Slide 40: 8.5 Kích thước Lô (Batch Size) & Optimizer
+Người 1: Kích thước Batch Size (số lượng mẫu dữ liệu nạp vào GPU cùng lúc) cũng rất quan trọng. Có hai trường phái: dùng Batch Size nhỏ (nhỏ hơn 32) để mạng học chi tiết và ổn định, hoặc dùng Batch Size lớn (hàng ngàn) kết hợp chiến lược làm nóng (warm-up) để ăn gian sức mạnh tính toán song song của GPU.
+Người 2: Về Bộ Tối ưu hóa (Optimizer), ngoài Gradient Descent chuẩn, Keras còn hỗ trợ các thuật toán như Adam, R M S prop, chúng hội tụ nhanh và tối ưu hơn rất nhiều đúng không ạ?
+Người 1: Chính xác. Adam hiện đang là vua của các thuật toán Tối ưu hóa hiện nay. 
+
+Slide 41: HỎI & ĐÁP
+Người 1: Chương học về Mạng Nơ-ron cơ bản kết thúc ở đây. Chúng ta đã đi từ Nơ-ron sinh học, Perceptron, M L P, cho đến việc làm chủ quyền năng của Keras. Cánh cửa Học Sâu đã chính thức mở ra!
+Người 2: Kiến thức chương này thật vĩ đại. Em sẽ về tải Keras và thử viết mô hình Sequential ngay tối nay. Cảm ơn thầy/cô!
+Người 1: Tốt lắm! Tiết sau chúng ta sẽ học cách làm cho mô hình Sâu Hơn Nữa (Deep Learning thực thụ) trong Chương 11 nhé. Hẹn gặp lại các em!

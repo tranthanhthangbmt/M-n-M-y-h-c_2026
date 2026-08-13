@@ -1,0 +1,201 @@
+Slide 1: Chương 11: Huấn luyện Mạng Nơ-ron Sâu
+Người 1: Chào các em. Ở chương trước, chúng ta đã biết cách dùng Keras để xây dựng một Mạng Nơ-ron đơn giản. Nhưng khi đối mặt với các bài toán thực tế cực khó, ta cần xây dựng các mạng Nơ-ron RẤT SÂU, có thể lên tới hàng chục, thậm chí hàng trăm lớp.
+Người 2: Có phải khi mạng càng sâu thì nó càng thông minh và học được nhiều thứ phức tạp hơn không thưa thầy/cô?
+Người 1: Về lý thuyết là vậy. Nhưng thực tế, khi mạng quá sâu, nó sẽ đối mặt với hàng loạt vấn đề nghiêm trọng, khiến việc huấn luyện trở thành một cơn ác mộng. Hôm nay chúng ta sẽ học cách "thuần hóa" con quái vật này.
+
+Slide 2: Nội dung Chương 11
+Người 1: Bài học sẽ gồm các giải pháp thiết yếu nhất: Giải quyết vấn đề Gradient biến mất/bùng nổ bằng cách Khởi tạo trọng số và Hàm kích hoạt tiên tiến; kỹ thuật Chuẩn hóa Hàng loạt (Batch Normalization); Học chuyển giao (Transfer Learning); các Trình tối ưu hóa siêu tốc và cuối cùng là Chính quy hóa bằng Dropout.
+Người 2: Toàn là những kỹ thuật "hạng nặng". Chúng ta bắt đầu bằng vấn đề đầu tiên luôn đi ạ!
+
+Slide 3: Vấn đề Gradient Biến mất (Vanishing Gradients)
+Người 1: Năm 2006, người ta phát hiện ra một căn bệnh nan y của thuật toán Lan truyền ngược (Backpropagation): Vấn đề Gradient biến mất.
+Người 2: Gradient biến mất nghĩa là sao ạ?
+Người 1: Khi thuật toán tính toán sai số từ lớp đầu ra và truyền ngược về các lớp đầu vào, Gradient (tức là mức độ sai số) cứ NHỎ DẦN qua mỗi lớp. Đến khi về tới những lớp đầu tiên, Gradient gần như bằng 0!
+Người 2: Ôi, nếu đạo hàm bằng 0 thì các lớp đầu tiên sẽ không bao giờ được cập nhật trọng số, mạng sẽ bị "tê liệt" ở phần đầu đúng không ạ?
+Người 1: Chính xác tuyệt đối! Đó là lý do khiến người ta không thể huấn luyện mạng quá sâu trong một thời gian dài.
+
+Slide 4: Sự Bão Hòa Của Hàm Kích Hoạt Sigmoid
+Người 1: Nguyên nhân chính gây ra bệnh này là do việc sử dụng Hàm kích hoạt Sigmoid kết hợp với cách khởi tạo trọng số ngẫu nhiên theo phân phối chuẩn truyền thống.
+Người 2: Hàm Sigmoid có vấn đề gì ạ? Em thấy nó uốn lượn rất mượt mà.
+Người 1: Nhìn vào biểu đồ Sigmoid, khi giá trị đầu vào rất lớn hoặc rất nhỏ, đường cong trở nên nằm NGANG. Khi nó nằm ngang, đạo hàm của nó tiến về 0. Thế là Gradient bị triệt tiêu hoàn toàn, không có tín hiệu nào truyền ngược lại được nữa!
+
+Slide 5: Khởi tạo Trọng số Glorot / He (Initialization)
+Người 1: Để giải quyết, năm 2010, Glorot và Bengio đề xuất một giải pháp Toán học: Khởi tạo trọng số làm sao để phương sai của tín hiệu ở đầu vào của một lớp BẰNG phương sai ở đầu ra của lớp đó.
+Người 2: Tức là tín hiệu đi qua lớp đó không bị phóng to ra, cũng không bị thu nhỏ đi ạ?
+Người 1: Đúng vậy! Phương pháp này gọi là Khởi tạo Xavier hay Glorot. Về sau, He (Hà) cải tiến nó để dùng riêng cho hàm Re L U. Bằng cách chọn phương sai khởi tạo chính xác, tín hiệu sẽ chảy xuyên suốt mạng lưới mượt mà.
+
+Slide 6: Code: Khởi Tạo Trọng Số trong Keras
+Người 1: Mặc định, Keras đã dùng Khởi tạo Glorot. Nhưng nếu em dùng hàm kích hoạt Re L U, em NÊN chuyển sang dùng Khởi tạo He (Hà).
+Người 2: Trong code, em thấy tham số kernel_initializer được gán bằng chuỗi "he_normal" (h e gạch dưới normal). Rất dễ hiểu ạ.
+Người 1: Đúng vậy. Chỉ một dòng code thay đổi, nhưng nó có thể cứu sống cả một mạng nơ-ron sâu!
+
+Slide 7: Vấn đề "Dying ReLU"
+Người 1: Chờ chút, hàm Re L U thần thánh đôi khi cũng bị "bệnh". Bệnh đó tên là Dying Re L U (Re L U chết).
+Người 2: Bệnh này triệu chứng như thế nào ạ?
+Người 1: Trong quá trình học, một số nơ-ron bị cập nhật trọng số sao cho tổng đầu vào của nó LUÔN ÂM. Mà theo định nghĩa của Re L U, nếu âm thì nó xuất ra số 0.
+Người 2: Vậy là nơ-ron đó "chết" luôn, vì đạo hàm tại số 0 cũng bằng 0, nó không bao giờ phục hồi được nữa!
+Người 1: Quá thông minh! Có những mạng nơ-ron bị chết đến 50 phần trăm số nơ-ron theo cách này.
+
+Slide 8: Hàm Leaky ReLU
+Người 1: Thuốc chữa cho bệnh "Re L U chết" là Leaky Re L U (Re L U rò rỉ).
+Người 2: Tức là nó không trả về 0 hoàn toàn mà rò rỉ một chút xíu tín hiệu đúng không ạ?
+Người 1: Chuẩn! Nếu x âm, thay vì bằng 0, nó sẽ trả về một đường thẳng hơi dốc một chút, ví dụ độ dốc alpha bằng 0,01. Nhờ độ dốc này, nơ-ron không bao giờ chết hẳn và có cơ hội "tỉnh lại".
+
+Slide 9: ELU và SELU
+Người 1: Năm 2015, hàm E L U (Exponential Linear Unit) ra đời, vượt trội hơn tất cả. Khi x âm, nó uốn cong mềm mại thay vì là đường thẳng gấp khúc.
+Người 2: Đường cong trơn tru ở mọi nơi thì Gradient Descent sẽ hội tụ nhanh hơn rất nhiều đúng không ạ?
+Người 1: Rất chính xác. Tuy nhiên, ELU tính toán chậm hơn ReLU. Kế tiếp là S E L U, một hàm E L U có khả năng "Tự chuẩn hóa". Nếu mạng chỉ toàn lớp Dense, S E L U sẽ tự giữ tín hiệu ổn định ở mức trung bình bằng 0 và độ lệch chuẩn bằng 1.
+
+Slide 10: GELU, Swish, và Mish
+Người 1: Gần đây, người ta còn tìm ra các hàm G E L U, Swish và Mish. Các hàm này có hình dáng uốn lượn phức tạp hơn và hơi "lõm" xuống dưới số 0 một chút trước khi đi lên.
+Người 2: Nhiều hàm quá. Vậy khi thực hành em nên chọn hàm nào ạ?
+Người 1: Thông thường: S E L U tốt nhất cho mạng M L P tiêu chuẩn. Leaky Re L U nếu em cần huấn luyện nhanh. Còn với Học Sâu hiện đại (như Transformer), G E L U và Swish đang là vua. Nếu không muốn nghĩ nhiều, cứ dùng Re L U mặc định.
+
+Slide 11: Batch Normalization (Chuẩn hóa Hàng loạt)
+Người 1: Khởi tạo He và hàm E L U giảm bớt Gradient biến mất ở đầu quá trình huấn luyện, nhưng không đảm bảo về sau. Kỹ thuật vĩ đại nhất để triệt tiêu bệnh này tên là Chuẩn hóa Hàng loạt (Batch Normalization - B N).
+Người 2: Kỹ thuật này hoạt động bằng cách nào ạ?
+Người 1: Nó chèn một thao tác vào giữa các lớp Nơ-ron. Thao tác này sẽ lấy tín hiệu (batch) đi qua nó, căn giữa về 0 (trừ đi trung bình) và chuẩn hóa (chia cho độ lệch chuẩn).
+Người 2: Ồ, vậy là nó liên tục nắn lại tín hiệu, không cho tín hiệu bị trôi dạt hay bùng nổ, giúp mạng cực kỳ ổn định!
+
+Slide 12: Code: Thêm Batch Normalization trong Keras
+Người 1: Trong Keras, em chỉ việc chèn một lớp tên là BatchNormalization vào sau mỗi lớp Dense. Nó tự động làm mọi phép toán phức tạp đó.
+Người 2: Nhưng nếu chuẩn hóa xong, thì mọi tín hiệu đều nằm trong khoảng từ -1 đến 1. Lỡ đâu mạng nơ-ron cần tín hiệu lan rộng ra thì sao ạ?
+Người 1: Câu hỏi xuất sắc! B N rất thông minh, nó tự học thêm 2 tham số là gamma (để phóng to/thu nhỏ) và beta (để dịch chuyển). Nhờ 2 tham số này, B N có thể điều chỉnh lại tín hiệu cho phù hợp nhất với lớp tiếp theo.
+
+Slide 13: Hoạt động của BN lúc Inference (Dự đoán)
+Người 1: Có một vấn đề nhỏ. Khi huấn luyện, ta có một Lô (Batch) dữ liệu để tính giá trị trung bình. Nhưng khi mang mô hình đi dự đoán thực tế (Inference), ta đôi khi chỉ dự đoán cho 1 khách hàng duy nhất. Lúc đó lấy trung bình ở đâu ra?
+Người 2: Dạ, đúng rồi, 1 khách hàng thì đâu thể tính trung bình được.
+Người 1: Keras giải quyết bằng cách: Trong lúc huấn luyện, B N âm thầm dùng kỹ thuật Trung bình Động (Moving Average) để tính toán giá trị trung bình của TÒAN BỘ TẬP DỮ LIỆU. Đến khi đi dự đoán thực tế, nó sẽ lôi con số đã tính đó ra để dùng! Quá thông minh!
+
+Slide 14: Gradient Clipping
+Người 1: Ngoài Vanishing Gradient, ta còn có Exploding Gradient (Gradient bùng nổ), tức là đạo hàm lớn đến mức văng ra vô cực (N a N). Vấn đề này hay gặp ở Mạng Hồi quy (R N N). Giải pháp là Cắt xén Gradient (Gradient Clipping).
+Người 2: Nghĩa là nếu đạo hàm vượt quá một ngưỡng, ví dụ 1, thì ta chặt nó lại bằng 1 luôn đúng không ạ?
+Người 1: Chính xác. Rất bạo lực nhưng hiệu quả. Trong Keras, chỉ cần thêm tham số clipvalue bằng 1.0 vào Optimizer là xong.
+
+Slide 15: Học Chuyển Giao (Transfer Learning)
+Người 1: Bây giờ, ta nói đến Học Chuyển Giao. Xây mạng sâu từ đầu rất tốn thời gian. Vậy nếu đã có ai đó huấn luyện sẵn một mô hình cực xịn (ví dụ phân loại 100 loài động vật), ta có thể lấy nó để dùng cho bài toán của mình (ví dụ phân loại chó mèo) không?
+Người 2: Dạ có thể, ta chỉ việc lấy các lớp đầu tiên của họ (vốn nhận diện các nét cong, nét thẳng), giữ lại, và chỉ huấn luyện lại các lớp cuối cùng thôi ạ.
+Người 1: Rất thông minh! Đó chính là Học chuyển giao. Nó tiết kiệm đến 99 phần trăm thời gian huấn luyện.
+
+Slide 16: Code: Tái sử dụng mô hình trong Keras
+Người 1: Bằng Keras, ta gọi load_model để tải mô hình cũ. Ta sao chép nó, loại bỏ lớp Output cũ đi, thay vào đó là một lớp Output mới dành cho bài toán của mình.
+Người 2: Nhưng nếu mình fit ngay, các lỗi ở lớp mới sẽ truyền ngược về phá hỏng mất những thứ tinh túy ở các lớp cũ đã học được.
+Người 1: Rất nhạy bén! Do đó, ta phải Đóng băng (Freeze) các lớp cũ bằng cách gán trainable bằng False, huấn luyện vài epoch cho lớp mới ổn định. Sau đó ta mới "Mở băng" để tinh chỉnh toàn bộ mạng.
+
+Slide 17: Huấn Luyện Không Giám Sát (Unsupervised Pretraining)
+Người 1: Nếu em có rất ít dữ liệu có nhãn, nhưng lại có cực kỳ nhiều dữ liệu KHÔNG CÓ NHÃN. Em có thể dùng thuật toán Học Không Giám sát (như Autoencoders) để huấn luyện từng lớp của mạng nơ-ron trên tập dữ liệu không nhãn đó trước.
+Người 2: Sau khi mạng đã hiểu được phần nào cấu trúc dữ liệu, ta mới đưa dữ liệu có nhãn vào để tinh chỉnh lớp cuối cùng ạ?
+Người 1: Đúng vậy. Kỹ thuật này đã châm ngòi cho sự phục hưng của Học Sâu vào năm 2006.
+
+Slide 18: Giới thiệu các Optimizer (Trình tối ưu hóa)
+Người 1: Huấn luyện mạng lưới khổng lồ rất chậm. Để tăng tốc, ta không dùng Gradient Descent cổ điển nữa, mà dùng các Bộ tối ưu hóa (Optimizer) nhanh hơn.
+Người 2: Em thấy hồi nãy thầy có nhắc đến Adam. Vậy Adam là gì ạ?
+Người 1: Để hiểu Adam, ta phải đi qua các bậc tiền bối của nó: Momentum, NAG, AdaGrad, và RMSProp. Mỗi bậc tiền bối mang một ý tưởng đột phá.
+
+Slide 19: Tối ưu hóa Bằng Động Lượng (Momentum)
+Người 1: Momentum (Động lượng) mô phỏng một quả bóng lăn xuống dốc núi. Gradient Descent thông thường giống như một người mù bước từng bước nhỏ, núi thoai thoải thì bước chậm.
+Người 2: Còn Momentum thì quả bóng sẽ LĂN NHANH DẦN ĐỀU, càng xuống dốc càng nhanh đúng không ạ?
+Người 1: Chính xác. Nhờ quán tính (vận tốc v), nó không chỉ hội tụ nhanh hơn rất nhiều, mà còn dễ dàng bay xuyên qua các hố lõm cục bộ (Local Minima) để tìm đến thung lũng sâu nhất (Global Minimum).
+
+Slide 20: Nesterov Accelerated Gradient (NAG)
+Người 1: Yurii Nesterov cải tiến Momentum bằng cách: Thay vì tính độ dốc tại vị trí hiện tại, quả bóng của ông tính độ dốc ở một vị trí MÀ NÓ SẮP LĂN TỚI.
+Người 2: Ô, nó biết nhìn về tương lai một chút! Làm vậy để làm gì ạ?
+Người 1: Để quả bóng tự biết mà "đạp phanh" (giảm tốc) sớm khi sắp đến đáy thung lũng, tránh việc bị quán tính văng quá đà sang sườn đồi bên kia. Thuật toán này luôn nhanh hơn Momentum gốc một chút.
+
+Slide 21: AdaGrad
+Người 1: Một vấn đề khác. Nếu bài toán có 1 thung lũng rất hẹp và dài. Quả bóng thường bị "lắc lư" va đập qua lại 2 bên sườn núi mà rất khó tiến về phía trước.
+Người 2: AdaGrad giải quyết việc lắc lư đó thế nào ạ?
+Người 1: Bằng Tốc độ học Thích ứng (Adaptive Learning Rate). Nếu quả bóng thấy sườn núi phía này quá dốc (gradient lớn), nó tự động GIẢM tốc độ học trên phương diện đó lại. Còn nếu đường phía trước thoai thoải, nó sẽ TĂNG tốc lên. Kết quả là nó lao thẳng về đích mà không bị lắc qua lắc lại.
+
+Slide 22: RMSProp và Adam
+Người 1: Tuy nhiên, AdaGrad giảm tốc độ quá nhanh, thường bị dừng hẳn lại trước khi tới đích. Thuật toán R M S Prop khắc phục bằng cách chỉ tính độ dốc trong các bước gần đây nhất, giúp nó không bị dừng giữa đường.
+Người 2: Còn Adam thì sao ạ?
+Người 1: Adam chính là con quái vật được sinh ra bằng cách TỔNG HỢP cả 2 ý tưởng: Quán tính của Momentum và Khả năng tự điều chỉnh tốc độ của R M S Prop. Adam hiện nay là lựa chọn mặc định an toàn và hiệu quả nhất cho hầu hết mạng nơ-ron.
+
+Slide 23: Vấn đề của Tốc Độ Học Cố Định
+Người 1: Ngoài thuật toán tối ưu, ta có thể chủ động điều chỉnh Siêu tham số Tốc độ học (Learning Rate) theo thời gian.
+Người 2: Có phải ban đầu ta cho tốc độ lớn để học nhanh, lúc sau gần tới đích ta cho tốc độ nhỏ lại để không bước lố qua đích ạ?
+Người 1: Em thực sự rất tinh tế! Các chiến lược đó gọi là Lập lịch Tốc độ học (Learning Rate Scheduling).
+
+Slide 24: Code: Power Scheduling trong Keras
+Người 1: Có rất nhiều kiểu lập lịch. Trong Keras, dễ nhất là Power Scheduling. Tốc độ sẽ giảm dần theo số lượng bước lặp. Em chỉ cần khai báo tham số decay trong Optimizer.
+Người 2: Nó sẽ giảm nhanh lúc đầu và giảm chậm dần về sau đúng không ạ?
+Người 1: Đúng thế.
+
+Slide 25: Code: Performance Scheduling
+Người 1: Một chiến lược cực hay là Performance Scheduling (Lịch biểu hiệu suất). 
+Người 2: Nó sẽ đo đếm điểm số thực tế của mô hình để tự điều chỉnh ạ?
+Người 1: Đúng. Nếu mô hình mãi không giảm được Loss trong vòng ví dụ 5 Epoch (tham số patience), nó tự động chia tốc độ học đi một nửa (tham số factor bằng 0,5). Trong Keras ta dùng ReduceLROnPlateau Callback.
+
+Slide 26: Tổng Quan Các Phương Pháp Chính Quy Hóa
+Người 1: Bây giờ, ta nói đến căn bệnh Quá khớp (Overfitting), đặc biệt là với mạng nơ-ron sâu với hàng triệu tham số, chúng rất thích "học vẹt". Để trị bệnh này, ta có các phương pháp Chính quy hóa (Regularization).
+Người 2: Mạng nơ-ron có thể dùng lại các hàm như L1, L2 mà ta đã học ở chương trước không ạ?
+
+Slide 27: L1 và L2 Regularization
+Người 1: Có chứ, ta hoàn toàn có thể áp dụng L1 hoặc L2 cho từng lớp Dense. L2 sẽ phạt những trọng số quá lớn, trong khi L1 ép một số trọng số về 0 để tạo ra mô hình thưa (sparse).
+Người 2: Trong Keras thì mình chỉ cần thêm tham số kernel_regularizer vào lớp Dense là được ạ.
+Người 1: Rất chuẩn. Nhưng có một kỹ thuật "chính quy hóa" độc đáo hơn dành riêng cho mạng nơ-ron: Dropout.
+
+Slide 28: Dropout - "Liều Thuốc Mê" Cho Nơ-ron
+Người 1: Dropout là một thuật toán do "Bố già AI" Geoffrey Hinton phát minh. Nguyên lý của nó vô cùng "cục súc": Ở mỗi bước huấn luyện, mỗi Nơ-ron có xác suất p (thường là 50 phần trăm) bị "Tắt điện" hoàn toàn.
+Người 2: Tắt điện? Nghĩa là bước đó nơ-ron bị vô hiệu hóa, không nhận cũng không truyền tín hiệu đi ạ? Như vậy thì mạng học bằng cách nào?
+Người 1: Hãy tưởng tượng công ty em có nhân viên bị ốm nghỉ ngơi luân phiên. Những người còn lại BẮT BUỘC phải làm việc độc lập thay vì ỷ lại vào người giỏi nhất. Mạng nơ-ron cũng vậy, nó không thể phụ thuộc vào một vài đặc trưng, mà phải phân tán kiến thức ra. Nhờ đó, nó kháng Quá khớp cực kỳ mạnh!
+
+Slide 29: Sử dụng Dropout trong Keras
+Người 1: Trong Keras, em chỉ việc chèn lớp Dropout với tỷ lệ rate bằng 0,5 sau mỗi lớp Dense.
+Người 2: Vậy lúc mang mô hình đi dự đoán thực tế thì sao ạ? Các nơ-ron có tiếp tục bị tắt điện không?
+Người 1: Không! Khi dự đoán, tất cả 100 phần trăm nơ-ron sẽ được bật sáng để biểu quyết kết quả. Nhưng ta phải cẩn thận nhân trọng số của chúng với 0,5 để bù đắp lại lượng tín hiệu bị tăng lên. Keras sẽ tự động lo việc này cho em.
+
+Slide 30: Monte Carlo (MC) Dropout
+Người 1: Từ ý tưởng đó, người ta phát hiện ra M C Dropout. Nếu ta dùng thuật toán ép Dropout PHẢI BẬT ngay cả lúc dự đoán thực tế thì sao?
+Người 2: Tức là lúc dự đoán, mạng nơ-ron vẫn trong tình trạng "tắt điện ngẫu nhiên" ạ? Kết quả chắc chắn sẽ bị dao động.
+Người 1: Đúng! Ta sẽ yêu cầu nó dự đoán cùng một bức ảnh 100 lần. Ta thu được 100 kết quả khác nhau. Ta lấy trung bình cộng làm kết quả cuối cùng. Bằng cách này, ta vô tình xây dựng được một Rừng Nơ-ron (Ensemble) khổng lồ chỉ từ 1 mạng duy nhất!
+
+Slide 31: Code: Thực Hiện MC Dropout Bằng Keras
+Người 1: Để làm vậy trong Keras, ta gọi tham số training bằng True bên trong Dropout.
+Người 2: Ủa, làm vậy để làm gì ạ? Rườm rà quá thầy ơi.
+Người 1: Nó giúp ta biết được "Sự không chắc chắn". Nếu cả 100 lần đều dự đoán là "Con mèo", mô hình rất tự tin. Nhưng nếu 50 lần ra "Con mèo", 50 lần ra "Con chó", ta biết mô hình đang bối rối, và độ lệch chuẩn rất cao!
+Người 2: Đặc biệt quan trọng với Xe Tự Lái hoặc Chẩn đoán Y tế. Nếu AI phân vân, nó phải báo động để con người can thiệp, chứ không được cắm đầu quyết định liều!
+
+Slide 32: Alpha Dropout
+Người 1: Một biến thể của Dropout là Alpha Dropout. Nó được thiết kế riêng để dùng cùng với hàm kích hoạt S E L U. Nhằm đảm bảo mạng vẫn giữ được khả năng tự chuẩn hóa (trung bình bằng 0) ngay cả khi đang bị ngắt điện.
+Người 2: Dạ, dùng chung một combo luôn ạ.
+
+Slide 33: Max-Norm Regularization
+Người 1: Kỹ thuật cuối cùng: Max-Norm. Rất đơn giản, nó không thêm phí phạt vào hàm mất mát như L1, L2. Nó trực tiếp kiểm tra: sau mỗi bước huấn luyện, nếu trọng số lớn vượt quá một bán kính r cho trước, nó thu nhỏ trọng số đó lại cho bằng r.
+Người 2: Thật là một bộ công cụ đồ sộ để thuần hóa những con quái vật AI siêu to khổng lồ.
+
+Slide 34: Code: Max-Norm Trong Keras
+Người 1: Trong Keras, em chỉ việc thêm tham số kernel_constraint bằng max_norm(1.0) vào lớp Dense. Nếu trọng số vượt quá 1, nó sẽ bị kéo ngược lại.
+Người 2: Dạ rõ. Rất dễ sử dụng ạ.
+
+Slide 35: Tối ưu hóa RMSProp
+Người 1: Giờ ta nhìn lại cấu hình cho R M S Prop. Khác với AdaGrad, nó chỉ lấy trung bình bình phương gradient trong lịch sử gần, thông qua tham số rho.
+Người 2: Tham số rho thường đặt bằng bao nhiêu ạ?
+Người 1: Trong Keras, rho mặc định là 0.9, giá trị này thường hoạt động cực kỳ tốt, hiếm khi phải tinh chỉnh.
+
+Slide 36: Code: Tối Ưu Hóa RMSProp Keras
+Người 1: Sử dụng trong Keras rất nhanh gọn, em chỉ cần gọi hàm keras.optimizers.RMSprop, với tốc độ học mong muốn và rho bằng 0.9.
+Người 2: Dạ, rồi đưa nó vào hàm compile của model là xong.
+
+Slide 37: Adam, Nadam & AdamW
+Người 1: Adam kết hợp Momentum và R M S Prop. Biến thể của Adam có Nadam (Adam kết hợp N A G để có thêm tính dự báo tương lai) và Adam W. Adam W là bản nâng cấp giải quyết lỗi L2 Regularization có trong Adam gốc.
+Người 2: Vậy thì giờ cứ dùng Nadam hoặc Adam W thay vì Adam ạ?
+Người 1: Đúng! Hiện nay Adam W thường được giới học thuật dùng để đạt hiệu suất siêu việt, nhất là trong các mô hình Transformer khổng lồ.
+
+Slide 38: Tóm Tắt Lựa Chọn Các Kỹ Thuật (Phần 1)
+Người 1: Có quá nhiều kỹ thuật, vậy một dự án Deep Learning thông thường thì dùng cấu hình nào? Cấu hình chuẩn mặc định là: Hàm khởi tạo He, Hàm kích hoạt Re L U (hoặc Swish), dùng Batch Normalization (B N) ở mỗi lớp, có thêm Dừng sớm (Early Stopping) và bộ tối ưu Adam W hoặc Nadam.
+Người 2: Đây là cấu hình "mì ăn liền" giải quyết được 80 phần trăm bài toán ạ.
+
+Slide 39: Tóm Tắt Lựa Chọn Nếu Tự Chuẩn Hóa (Phần 2)
+Người 1: Tuy nhiên, nếu em xây một mạng M L P thuần túy với các Lớp Dày đặc, em có thể dùng combo Tự chuẩn hóa: Khởi tạo LeCun, Hàm kích hoạt S E L U, không cần B N, và nếu có chống quá khớp thì dùng Alpha Dropout.
+Người 2: Combo này giúp mạng chạy nhanh hơn vì không phải tính toán hàm B N nặng nề đúng không ạ?
+Người 1: Cực kỳ chính xác!
+
+Slide 40: Các Vấn Đề Thực Tế Khác
+Người 1: Một lưu ý nhỏ. Nếu mô hình bị Quá khớp (Overfitting), hãy ưu tiên Early Stopping và thêm Dropout. Nếu vẫn chưa hết, hãy dùng L1 hoặc L2. Nếu mạng của em là R N N hoặc gặp bài toán rất sâu, đừng quên thêm Gradient Clipping.
+Người 2: Cảm ơn thầy, bảng tóm tắt này thật sự là kim chỉ nam cho tụi em!
+
+Slide 41: Tổng Kết Chương 11
+Người 1: Hôm nay chúng ta đã học được cách giúp mạng nơ-ron vượt qua những giới hạn vật lý và thuật toán: Từ cách khởi tạo để tín hiệu không bị tắt dần, các hàm kích hoạt mới, chuẩn hóa dữ liệu giữa các lớp, cho đến các thuật toán tăng tốc độ học, và cuối cùng là Dropout chống học vẹt.
+Người 2: Kiến thức thật sự choáng ngợp nhưng rất logic và liền mạch. Cảm ơn thầy!

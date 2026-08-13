@@ -1,0 +1,209 @@
+Slide 1: Chương 12: Mô hình tùy chỉnh và Huấn luyện với TensorFlow
+Người 1: Chào các em. Đến giờ, chúng ta đã dùng Keras như một bộ xếp hình Lego có sẵn. Nhưng nếu các em đọc các bài báo nghiên cứu AI mới nhất, họ thường phát minh ra những Kiến trúc Lớp hoặc Hàm mất mát cực kỳ "dị" mà Keras không hề có sẵn. Lúc đó ta phải làm sao?
+Người 2: Có phải lúc đó ta phải xắn tay áo lên tự code lại toàn bộ những thứ đó từ đầu không ạ?
+Người 1: Chính xác! Đó là lúc ta phải đi sâu xuống tầng dưới của Keras: Lõi TensorFlow. Ở chương này, chúng ta sẽ học cách "độ" lại mọi thứ theo ý mình.
+
+Slide 2: Nội dung chương
+Người 1: Chúng ta sẽ đi từ việc làm quen với cấu trúc Tensor cơ bản, học cách viết Hàm Mất Mát tùy chỉnh, Lớp tùy chỉnh, Mô hình tùy chỉnh.
+Người 2: Vậy còn việc huấn luyện mô hình thì sao ạ? Ta vẫn dùng hàm fit bình thường chứ thầy?
+Người 1: Em hoàn toàn có thể dùng hàm fit. Nhưng ở cuối chương, thầy sẽ chỉ các em cách vứt bỏ luôn hàm fit, để tự viết Vòng lặp Huấn luyện Tùy chỉnh (Custom Training Loop) bằng công cụ Gradient Tape! Đó mới là đẳng cấp cao nhất.
+
+Slide 3: Giới thiệu nhanh về TensorFlow
+Người 1: Ra mắt năm 2015 bởi Google, TensorFlow không chỉ là thư viện Học Sâu. Nó là một cỗ máy tính toán số học khổng lồ, chuyên xử lý các Đồ thị Tính toán (Computational Graphs) trên nhiều thiết bị như C P U, G P U hay T P U.
+Người 2: T P U là gì vậy ạ? Em chỉ biết G P U của N VI DI A thôi.
+Người 1: T P U (Tensor Processing Unit) là con chip do chính Google thiết kế riêng biệt chỉ để chạy TensorFlow, nó có sức mạnh gấp hàng chục lần G P U trong việc huấn luyện AI.
+
+Slide 4: Hệ sinh thái TensorFlow
+Người 1: T F không đứng một mình. T F chấm Keras là bề nổi dễ dùng nhất. Khi mô hình huấn luyện xong, ta dùng T F Extended (T F X) để đưa vào môi trường Sản xuất (Production). 
+Người 2: Nếu em muốn đem AI đó chạy trên điện thoại hoặc trình duyệt web thì sao ạ?
+Người 1: Đã có T F Lite (cho di động) và T F chấm j s (để chạy bằng JavaScript ngay trên trình duyệt). Quá hoàn hảo phải không?
+
+Slide 5: Tổng quan về API Python của TensorFlow (1/2)
+Người 1: TensorFlow có kiến trúc phân tầng rất rõ ràng. Tầng thấp nhất ở lõi là bộ nhân viết bằng C cộng cộng (C++), giúp tính toán với tốc độ bàn thờ.
+Người 2: Còn Python thì nằm ở đâu thưa thầy/cô?
+Người 1: Python nằm ở các tầng trên cùng (API cấp cao). Nó giúp ta viết code dễ dàng như ngôn ngữ tự nhiên. 
+
+Slide 6: Tổng quan về API Python của TensorFlow (2/2)
+Người 1: Ngoài Python, T F còn có API cho C cộng cộng, Java, Go, nhưng Python vẫn là đứa con cưng được hỗ trợ đầy đủ tính năng nhất. Hầu hết giới nghiên cứu AI đều dùng Python.
+Người 2: Nên cứ học thật tốt Python và Keras là đủ để chinh phục T F rồi đúng không ạ?
+
+Slide 7: Kiến trúc của TensorFlow (1/2)
+Người 1: Về kiến trúc thực thi, TensorFlow có khả năng phân tán dữ liệu rất mạnh. Em có thể thiết kế để nó chạy trên 1 G P U, hoặc lan tỏa ra một cụm máy chủ với hàng ngàn G P U.
+Người 2: Chắc lúc đó phải sửa code nhiều lắm ạ?
+Người 1: Không hề! Với chiến lược T F Distributed Strategy, em chỉ tốn vài dòng code, TensorFlow sẽ tự động "cắt nhỏ" ma trận tính toán và ném cho từng G P U xử lý song song.
+
+Slide 8: Kiến trúc của TensorFlow (2/2)
+Người 1: Một điểm mạnh nữa của T F là khả năng trích xuất mô hình (Graph). Code Python của em sẽ được biên dịch thành một Đồ thị vô hướng. Đồ thị này CÓ THỂ CHẠY ĐỘC LẬP MÀ KHÔNG CẦN PYTHON.
+Người 2: Có nghĩa là em lưu ra file, xong chép vào điện thoại Android (dùng Java), nó vẫn hiểu và chạy mượt mà?
+Người 1: Chuẩn xác 100 phần trăm!
+
+Slide 9: Tensor và Phép toán (Tensors and Operations)
+Người 1: Thành phần hạt nhân của T F là Tensor. Nó giống hệt mảng NumPy. Nó có thể chứa số vô hướng (0 chiều), vector (1 chiều), ma trận (2 chiều) hay đa chiều.
+Người 2: Vậy khởi tạo nó bằng lệnh tf chấm constant đúng không ạ? Em thấy nó in ra hình dạng (shape) và kiểu dữ liệu (dtype).
+Người 1: Đúng vậy. Dữ liệu trong Tensor là CỐ ĐỊNH, không thể thay đổi sau khi tạo (giống như hằng số).
+
+Slide 10: Các hàm toán học cơ bản
+Người 1: T F cung cấp đủ mọi phép toán: cộng, trừ, nhân, chia, log, mũ... bằng cú pháp cực giống NumPy. 
+Người 2: Ví dụ em muốn nhân 2 ma trận với nhau thì dùng tf chấm matmul hoặc toán tử A còng đúng không thầy?
+Người 1: Chính xác. Toán tử A còng là cách viết tắt rất ngầu để nhân ma trận (Matrix Multiplication).
+
+Slide 11: Tensors và NumPy: Tương tác qua lại
+Người 1: T F và NumPy là đôi bạn thân. Em có thể lấy mảng NumPy nạp thẳng vào tf.constant, và ngược lại, lấy Tensor gọi hàm chấm numpy() để trả về mảng NumPy.
+Người 2: Nếu chúng tương tự nhau, sao mình không dùng luôn NumPy cho nhẹ đầu ạ?
+Người 1: Vì NumPy CHỈ CHẠY ĐƯỢC TRÊN C P U! Trong khi Tensor của T F được thiết kế để nằm sẵn trong bộ nhớ của card đồ họa G P U, sẵn sàng cho tính toán siêu tốc song song!
+
+Slide 12: Lưu ý khi dùng chung Numpy và TensorFlow
+Người 1: Một lưu ý cực kỳ quan trọng: Mặc định NumPy dùng float 64 bit để độ chính xác cao nhất. Nhưng T F lại dùng float 32 bit.
+Người 2: Tại sao T F lại dùng chuẩn 32 bit ạ?
+Người 1: Vì bộ nhớ G P U rất đắt đỏ. Dùng 32 bit giúp tiết kiệm phân nửa bộ nhớ, tăng tốc độ tính toán lên gấp đôi, mà đối với Mạng Nơ-ron thì độ chính xác 32 bit là đã quá dư thừa rồi.
+
+Slide 13: Chuyển đổi kiểu dữ liệu (Type Conversions)
+Người 1: Chính vì vậy, T F rất "khó tính" trong việc ép kiểu. Em không thể lấy Tensor kiểu số nguyên (int) cộng với Tensor kiểu số thực (float) đâu, nó sẽ báo lỗi ngay lập tức.
+Người 2: Phải dùng hàm tf chấm cast để ép hai Tensor về chung một kiểu dữ liệu trước khi cộng phải không thầy?
+Người 1: Hoàn toàn chính xác.
+
+Slide 14: Biến số (Variables)
+Người 1: Như đã nói, tf.constant là hằng số, không thể thay đổi. Nhưng Trọng số (Weights) của Mạng nơ-ron thì phải thay đổi liên tục qua từng bước học!
+Người 2: Vậy phải lưu trọng số bằng gì ạ?
+Người 1: Ta dùng Biến số: tf chấm Variable. Với Variable, em có thể gọi hàm assign (gán lại) hoặc assign_add (cộng dồn) để sửa đổi nội dung của nó tại chỗ!
+
+Slide 15: Các cấu trúc dữ liệu nâng cao khác
+Người 1: T F còn có nhiều cấu trúc dữ liệu xịn xò khác. Tensor Thưa (Sparse Tensor) dùng khi ma trận của em toàn số 0. Thay vì lưu hàng tỷ số 0, nó chỉ lưu Tọa độ của những vị trí khác 0.
+Người 2: Nó giúp tiết kiệm cực nhiều RAM đúng không ạ? Thế còn Tensor Chuỗi (String Tensor) thì sao?
+Người 1: String Tensor dùng để lưu văn bản hoặc mảng byte, rất hữu ích trong Xử lý Ngôn ngữ Tự nhiên (N L P). Ngoài ra còn có Tensor Mảng để lưu dữ liệu có độ dài khác nhau.
+
+Slide 16: Tại sao cần tùy chỉnh mô hình trong Keras?
+Người 1: Giờ là phần quan trọng. 90 phần trăm thời gian, em chỉ cần các lớp có sẵn như Dense, Conv 2 D. Nhưng 10 phần trăm còn lại, em cần phát minh ra một Hàm kích hoạt mới toanh hoặc một thuật toán tính Mất mát chưa ai từng viết!
+Người 2: Đó là lúc ta nhúng mã TensorFlow thuần vào bên trong mô hình Keras phải không ạ?
+Người 1: Chính xác.
+
+Slide 17: Tùy chỉnh Hàm mất mát (Custom Loss) - Huber Loss (1/2)
+Người 1: Giả sử em đang dự đoán giá nhà. Bộ dữ liệu có nhiều dữ liệu nhiễu (outliers). Hàm M S E thì phạt quá nặng lỗi lớn, hàm M A E thì quá hiền. Giải pháp là hàm Huber Loss.
+Người 2: Em nhớ hàm này. Nếu lỗi nhỏ hơn delta thì nó tính bình phương, nếu lớn hơn thì nó tính tuyến tính (đường thẳng). Em tự viết một hàm Python huber_fn bằng lệnh if else bình thường được không ạ?
+Người 1: Tốt nhất em nên dùng các phép toán của TensorFlow như tf chấm where thay vì if-else của Python. tf chấm where sẽ duyệt qua toàn bộ Batch và áp dụng điều kiện cho từng phần tử cùng lúc trên G P U, tốc độ sẽ nhanh hơn hàng ngàn lần!
+
+Slide 18: Tùy chỉnh Hàm mất mát (Custom Loss) - Sử dụng (2/2)
+Người 1: Sau khi viết xong hàm huber_fn(y_true, y_pred), em chỉ việc gán tên hàm đó vào biến loss bên trong hàm model chấm compile() là xong!
+Người 2: Thật dễ dàng! Keras sẽ tự lấy hàm đó tính lỗi và đạo hàm ở mỗi vòng lặp luôn ạ?
+Người 1: Chính xác tuyệt đối.
+
+Slide 19: Lưu ý khi tải (load) mô hình chứa Custom Loss
+Người 1: Nhưng cẩn thận. Khi em lưu mô hình bằng model chấm save(), rồi tải lại ở máy tính khác bằng load_model(), máy tính kia sẽ báo lỗi không tìm thấy hàm huber_fn!
+Người 2: Vì lúc đó hàm Python tự chế của em không được lưu kèm vào định dạng của Keras ạ?
+Người 1: Đúng. Em phải cung cấp lại hàm đó qua tham số custom_objects khi gọi hàm load_model.
+
+Slide 20: Xây dựng Custom Loss bằng OOP (Subclassing) (1/2)
+Người 1: Nếu hàm Huber của em có một tham số ngưỡng (delta) có thể thay đổi được. Việc dùng hàm Python bình thường sẽ rất rườm rà. Cách chuyên nghiệp nhất là Lập trình Hướng đối tượng (O O P).
+Người 2: Là mình tạo một Class (Lớp) kế thừa từ lớp keras chấm losses chấm Loss ạ?
+Người 1: Rất chuẩn. Em tạo Class HuberLoss, nhận biến delta trong hàm khởi tạo init.
+
+Slide 21: Xây dựng Custom Loss bằng OOP (Subclassing) (2/2)
+Người 1: Sau đó, em định nghĩa phương thức call, phương thức này chính là nơi thực hiện công thức toán học. Quan trọng nhất, em định nghĩa phương thức get_config() để xuất cái delta kia ra.
+Người 2: Phương thức get_config() dùng để làm gì thưa thầy?
+Người 1: Để khi em lưu mô hình, Keras biết phải lưu con số delta đó vào file. Khi load lại mô hình, Keras tự động khôi phục lại cấu hình y hệt. Rất bài bản và an toàn.
+
+Slide 22: Tùy chỉnh Hàm Đánh giá (Custom Metrics)
+Người 1: Cách tùy chỉnh Số liệu đánh giá (Metrics) hoàn toàn y hệt Loss. Tuy nhiên, Loss là giá trị tức thời trên một batch, còn Metrics thường là Trung bình cộng (hoặc tổng) trong suốt cả 1 Epoch dài.
+Người 2: Dạ, ví dụ Accuracy (Độ chính xác) phải đếm số lượng câu trả lời đúng trên toàn bộ 1000 tập tin, nên phải theo dõi liên tục.
+Người 1: Nếu cần theo dõi trạng thái, em nên kế thừa lớp keras chấm metrics chấm Metric. Keras sẽ cung cấp các biến trạng thái ẩn để em tự động cộng dồn (update_state) ở mỗi batch.
+
+Slide 23: Tùy chỉnh Lớp ẩn không trạng thái (Stateless Custom Layers)
+Người 1: Không chỉ Loss, em có thể tự chế Lớp ẩn (Layer) mới. Nếu lớp đó KHÔNG có trọng số cần huấn luyện (ví dụ lớp tự thêm giá trị logarit vào dữ liệu), em chỉ cần dùng hàm Lambda.
+Người 2: Dùng lớp Lambda bọc ngoài một hàm Python là ta có ngay một Layer không trạng thái ạ?
+Người 1: Rất chuẩn. Nó như một đường ống lọc tín hiệu đi qua thôi.
+
+Slide 24: Tùy chỉnh Lớp ẩn có trạng thái (Stateful Custom Layer) (1/2)
+Người 1: Nhưng nếu em muốn tạo ra một Lớp chứa HÀNG TRIỆU trọng số để học (ví dụ Dense). Em phải kế thừa từ keras chấm layers chấm Layer.
+Người 2: Em phải khởi tạo các biến trọng số đó ở hàm init đúng không ạ?
+Người 1: Chưa chính xác. Em nên khởi tạo trong hàm build(). Lý do là ở hàm build, Keras mới biết được kích thước (shape) của dữ liệu đầu vào, từ đó mới tạo ra số lượng trọng số tương ứng. Nếu tạo ở init, ta phải "đoán" trước kích thước đầu vào.
+
+Slide 25: Tùy chỉnh Lớp ẩn có trạng thái (Stateful Custom Layer) (2/2)
+Người 1: Sau khi tạo trọng số ở build(), ta viết phương thức call() để thực hiện nhân ma trận, cộng độ lệch, và đi qua hàm kích hoạt.
+Người 2: Và cũng phải thêm get_config() để xuất thông số ra ngoài khi lưu trữ mô hình nữa. Rất giống Custom Loss ạ.
+Người 1: Chính xác.
+
+Slide 26: Tùy chỉnh toàn bộ Mô hình (Custom Models)
+Người 1: Nếu tự viết Lớp chưa đủ, em có thể tự viết ra toàn bộ một Mạng Nơ-ron (Model) bằng cách kế thừa keras chấm Model. Cấu trúc của nó hoàn toàn tương tự, cũng có init, build và call.
+Người 2: Việc này giúp ta tạo ra những kiến trúc có cấu trúc lặp đi lặp lại cực phức tạp đúng không thưa thầy?
+
+Slide 27: Mô hình tùy chỉnh: Residual Block
+Người 1: Ví dụ kinh điển là Mạng Dư (Residual Network - ResNet) từng làm mưa làm gió thế giới. Nó gồm vô số khối "Residual Block". Đặc trưng của khối này là dữ liệu vừa đi qua các lớp ẩn, vừa có đường tắt (skip connection) bay thẳng từ đầu vào cộng dồn vào đầu ra.
+Người 2: Giống mạng Wide and Deep ở bài trước đúng không ạ? Nhưng ở đây ta gói gọn nó thành một Lớp duy nhất.
+
+Slide 28: Mã Python Xây dựng Residual Block
+Người 1: Trong code, ở hàm init, ta khai báo nhiều Lớp con (Dense) chứa bên trong khối ResidualBlock này. Trong phương thức call, ta lập trình đường đi: x đi qua lớp ẩn 1, lớp ẩn 2, rồi cộng với x nguyên bản ban đầu, và đi qua hàm kích hoạt cuối.
+Người 2: Nhìn đoạn code này em thấy rất rõ ràng, không khác gì viết code Python bình thường ạ!
+
+Slide 29: Xây dựng Custom Model sử dụng Residual Block
+Người 1: Sau khi tạo thành công ResidualBlock, ta mang nó xếp chồng lên nhau bên trong hàm init của Custom Model. 
+Người 2: Lúc này ResidualBlock đóng vai trò như một viên gạch bình thường, ta có thể khai báo một vòng lặp for để nhét 100 viên gạch vào một danh sách, tạo ra mạng ResNet 100 lớp!
+Người 1: Quá xuất sắc! Mọi sức mạnh đều nằm trong tay em.
+
+Slide 30: Model Subclassing vs Functional API
+Người 1: Model Subclassing (Kế thừa O O P) cho ta sự tự do vô hạn (lệnh if else, for loop). Nhưng nhược điểm là Keras KHÔNG THỂ in ra biểu đồ (plot_model), không kiểm tra lỗi kiểu dữ liệu trước khi chạy, và rất khó lưu trữ toàn vẹn cấu trúc.
+Người 2: Nên nếu kiến trúc mạng chỉ là đường ống nối với nhau cố định, em vẫn nên ưu tiên dùng Functional API ạ?
+Người 1: Chính xác. Hãy dùng O O P như giải pháp cuối cùng.
+
+Slide 31: Chế độ Tức thời (Eager) vs Chế độ Biểu đồ (Graph)
+Người 1: Giờ ta qua phần tối quan trọng của TensorFlow. Từ bản 2 chấm 0, T F chạy ở Chế độ Tức thời (Eager Execution). Tức là viết lệnh Python xong, enter là có kết quả ngay (y hệt NumPy).
+Người 2: Rất dễ debug (tìm lỗi) đúng không thầy?
+Người 1: Đúng. Nhưng T F 1.0 ngày xưa chạy ở Chế độ Biểu đồ (Graph). Ta phải định nghĩa toàn bộ biến, toán tử thành một sơ đồ rối rắm rồi mới ấn nút chạy (Session chấm run). Code cực kỳ khó hiểu nhưng bù lại tốc độ chạy siêu tốc trên G P U.
+
+Slide 32: @tf.function : Phép màu của AutoGraph
+Người 1: T F 2.0 mang đến một phép màu kết hợp cả 2: AutoGraph. Em cứ viết code Python tĩnh bình thường. Khi muốn nó chạy siêu tốc, em ĐẶT KÝ HIỆU A CÒNG tf chấm function LÊN ĐẦU HÀM ĐÓ.
+Người 2: Hàm đó sẽ tự động biến thành Chế độ Biểu đồ của T F 1.0 ạ? 
+Người 1: Đúng thế. TensorFlow sẽ phân tích mã nguồn Python của em và dịch nó thành một hàm tính toán mức độ thấp (C cộng cộng). Code chạy cực nhanh, tiết kiệm RAM mà không cần sửa đổi bất cứ thứ gì!
+
+Slide 33: Cách AutoGraph tạo Biểu đồ và Tracing (1/2)
+Người 1: Việc sinh ra biểu đồ gọi là Tracing (Dò vết). Ở lần đầu tiên em gọi hàm, AutoGraph sẽ dò xem kiểu dữ liệu đầu vào là gì (ví dụ int hay float, kích thước tensor), sau đó nó tạo ra Biểu đồ dành riêng cho kiểu dữ liệu đó và T F sẽ chạy.
+Người 2: Vậy lần gọi thứ 2 với kiểu dữ liệu giống hệt thì nó sẽ không cần biên dịch lại mà chạy thẳng biểu đồ cũ? Tốc độ sẽ rất cao!
+
+Slide 34: Cách AutoGraph tạo Biểu đồ và Tracing (2/2)
+Người 1: Đúng! Tuy nhiên, nếu em ném một dữ liệu có kiểu khác hoàn toàn vào, nó sẽ phải tốn thời gian biên dịch lại (Retracing) để sinh ra một Biểu đồ mới lưu vào bộ đệm.
+Người 2: Nếu em thay đổi liên tục thì nó sẽ quá tải bộ đệm mất! Em sẽ chú ý ép kiểu đầu vào ổn định.
+
+Slide 35: Giới hạn và Quy tắc sống còn của TF Functions (1/2)
+Người 1: Dù kỳ diệu, nhưng AutoGraph có giới hạn. Quy tắc số 1: HẠN CHẾ dùng thư viện bên ngoài (như NumPy) bên trong thân hàm tf function. 
+Người 2: Vì sao ạ?
+Người 1: Vì NumPy chỉ chạy ở chế độ Dò vết lúc dịch code, chứ KHÔNG LƯU VÀO ĐỒ THỊ! Khi chạy đồ thị độc lập, biến NumPy đó sẽ biến thành một Hằng số cố định, mọi thứ sẽ sai lệch. Hãy dùng tf chấm random thay cho np chấm random!
+
+Slide 36: Giới hạn và Quy tắc sống còn của TF Functions (2/2)
+Người 1: Quy tắc số 2: Các vòng lặp (for) dùng bên trong, Keras khuyên em dùng cấu trúc vòng lặp của T F, ví dụ vòng lặp trên tensor hoặc tf chấm range. AutoGraph sẽ cuộn nó thành vòng lặp trên G P U một cách hoàn hảo. 
+Người 2: Vậy em hiểu rồi. Chỉ cần dùng thuần thư viện T F bên trong hàm đó thì mọi thứ sẽ tự động hóa trơn tru!
+
+Slide 37: Vòng lặp huấn luyện tùy chỉnh
+Người 1: Đỉnh cao cuối cùng: Tự viết Vòng lặp Huấn luyện (Custom Training Loop) vứt bỏ hàm fit. Giả sử em có 2 mạng nơ-ron chiến đấu với nhau (như mô hình G A N), em phải cập nhật cái này, đóng băng cái kia, thay đổi luật chơi liên tục. Hàm fit cứng ngắc không thể làm được!
+Người 2: Nhưng làm sao để tính được Đạo hàm (Backpropagation) để cập nhật Trọng số hả thầy? Hàm fit tự tính giúp ta rồi mà?
+Người 1: Ta sẽ dùng vũ khí Gradient Tape (Băng Ghi Hình Đạo Hàm)!
+
+Slide 38: tf.GradientTape() : Tính đạo hàm tự động
+Người 1: TensorFlow sinh ra khối lệnh with tf chấm GradientTape() as tape. Khi dữ liệu chạy qua khối lệnh này, cuộn băng (tape) sẽ BẤM NÚT GHI ÂM TẤT CẢ các phép toán diễn ra với các Biến (Variable).
+Người 2: Tức là nó ghi nhớ: Trọng số w được đem nhân với x, rồi cộng với b.
+Người 1: Chính xác. Sau khi chạy xong, ta chỉ cần nói với cuộn băng: "Ê, hãy tua ngược lại và tính cho tôi đạo hàm của Loss theo trọng số W". (Lệnh tape chấm gradient). Và bùm, ta có ngay bộ đạo hàm (Gradients)! Cực kỳ vi diệu.
+
+Slide 39: GradientTape nâng cao
+Người 1: Cuộn băng này rất thông minh. Nó tự động theo dõi MỌI biến tf chấm Variable. Nhưng nếu em khai báo tf chấm constant, nó sẽ coi như người qua đường và không thèm ghi hình.
+Người 2: Nếu em cần ghi hình constant thì sao ạ?
+Người 1: Em phải chủ động yêu cầu nó bằng lệnh tape chấm watch. Một lưu ý khác là cuộn băng tự hủy ngay sau 1 lần gọi. Nếu muốn gọi 2 lần, em phải khai báo tham số persistent bằng True.
+
+Slide 40: Viết Vòng lặp huấn luyện - Khởi tạo
+Người 1: Khung xương của vòng lặp tùy chỉnh rất đơn giản. Ta lấy Model, hàm Loss, Optimizer. Ta tạo 2 biến trạng thái để tính Lỗi trung bình và Độ chính xác (Metrics).
+Người 2: Sau đó ta dùng 2 vòng lặp for lồng nhau đúng không ạ?
+
+Slide 41: Viết Vòng lặp huấn luyện - Thực thi (Epochs & Steps)
+Người 1: Đúng. Vòng for ngoài chạy số lượng Epochs. Vòng for trong duyệt qua từng tập Lô (Batch). Trong mỗi Batch, ta gọi with GradientTape. Ta truyền x vào model để lấy y_pred, rồi tính hàm Loss.
+Người 2: Sau khối lệnh with, ta gọi tape chấm gradient để lấy đạo hàm. Rồi ném bộ đạo hàm đó cho Optimizer bằng hàm apply_gradients. Trọng số sẽ được vặn (update).
+Người 1: Và kết thúc batch, ta cập nhật Metrics. Kết thúc epoch, ta in kết quả ra màn hình. Thế là xong!
+
+Slide 42: Cấu trúc hoàn chỉnh và Những lưu ý quan trọng
+Người 1: Đừng quên reset_states (xóa sổ dữ liệu) của các Metrics sau mỗi Epoch, nếu không nó sẽ cộng dồn mãi từ đầu đến cuối quá trình học. Em cũng có thể gọi thanh tiến trình tqdm để hiển thị thanh tải cực đẹp giống hệt hàm fit.
+Người 2: Em thấy viết vòng lặp này rất trực quan, mình làm chủ được mọi ngóc ngách của quá trình huấn luyện ạ.
+
+Slide 43: Tối ưu hóa Vòng lặp với @tf.function
+Người 1: Vòng lặp tùy chỉnh viết bằng Python thuần sẽ chạy cực CHẬM. Giải pháp là gì em biết không?
+Người 2: Rất đơn giản! Chỉ cần bọc phần lõi của Vòng lặp Trong bằng một hàm con (ví dụ train_step), và gắn nhãn a còng tf chấm function lên đầu hàm đó!
+Người 1: Vô cùng chính xác. T F sẽ dịch khối lệnh lõi đó thành mã máy C cộng cộng, và em sẽ có một Vòng lặp tùy chỉnh mạnh mẽ linh hoạt nhưng nhanh hệt như hàm fit() nguyên bản!
+
+Slide 44: Tóm tắt
+Người 1: Vậy là ta đã lặn rất sâu xuống đáy của TensorFlow. Tự viết Hàm mất mát, Số liệu, Lớp, Mô hình, và làm chủ vũ khí tối thượng Gradient Tape cùng Vòng lặp tùy chỉnh và AutoGraph.
+Người 2: Giờ thì em không sợ bất cứ bài báo khoa học nào có kiến trúc "kỳ dị" nữa. Mọi thứ đều có thể tự tay xây dựng được! Cảm ơn thầy!

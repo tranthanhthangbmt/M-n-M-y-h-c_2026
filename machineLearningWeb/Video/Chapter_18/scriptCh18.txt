@@ -1,0 +1,168 @@
+Slide 1: Chương 18: Học Tăng Cường (Reinforcement Learning)
+Người 1: Chào các em. Hôm nay ta sẽ học về một nhánh A I kỳ diệu nhất: Học Tăng Cường (Reinforcement Learning - R L). Đây là công nghệ đã giúp AlphaGo đánh bại nhà vô địch cờ vây thế giới, và cũng là công nghệ huấn luyện xe tự lái hay robot đi bộ.
+Người 2: Có phải là nó giống như huấn luyện thú cưng không thầy? Thưởng khi làm đúng và phạt khi làm sai ạ?
+Người 1: Chính xác. Đó chính là cốt lõi của Học Tăng Cường.
+
+Slide 2: Mục tiêu của Chương
+Người 1: Trong chương này, ta sẽ đi từ khái niệm cơ bản (Tác nhân, Môi trường, Phần thưởng). Sau đó dùng thư viện OpenAI Gym để giả lập môi trường học. Tiếp theo ta giải phương trình Bellman để xây dựng thuật toán Q-Learning. Cuối cùng, kết hợp Q-Learning với Mạng Nơ-ron Sâu để tạo ra D Q N - AI biết tự chơi game.
+
+Slide 3: Mục lục
+Người 1: Nội dung gồm 6 phần: Giới thiệu RL. Toán học MDP. Q-Learning cơ bản. Mạng D Q N sâu. Policy Gradients và các thuật toán nâng cao như Actor-Critic.
+
+Slide 4: 1.1 Bối cảnh của Học Tăng Cường
+Người 1: Khác với Học có Giám sát (Supervised Learning) là em cung cấp sẵn nhãn đúng. Trong R L, không có nhãn. AI phải Tự chơi, Tự khám phá, thử sai hàng triệu lần. Nó chỉ nhận được Tín hiệu Phản hồi (Feedback) dưới dạng Phần thưởng (Reward) để biết mình làm đúng hay sai.
+
+Slide 5: 1.2 Mô hình Tác nhân và Môi trường
+Người 1: Mô hình gồm 2 thành phần: Tác nhân (Agent) và Môi trường (Environment). Ở mỗi Bước thời gian (Time step), Tác nhân quan sát Trạng thái (State) của môi trường. Dựa vào đó, nó thực hiện một Hành động (Action). Môi trường phản hồi lại một Phần thưởng (Reward) và cập nhật sang Trạng thái mới. Vòng lặp này cứ lặp lại liên tục.
+
+Slide 6: 1.3 Ví dụ thực tế về RL
+Người 1: Ví dụ một robot tập đi (Tác nhân). Trạng thái là góc độ của các khớp nối. Hành động là tạo lực xoắn ở mỗi khớp. Phần thưởng là dương nếu tiến tới trước, âm nếu bị ngã. 
+Người 2: Thế còn xe tự lái thì sao ạ?
+Người 1: Tác nhân là bộ não xe. Trạng thái là hình ảnh từ camera. Hành động là vặn vô lăng, đạp phanh. Phần thưởng cực kỳ âm nếu va chạm, và dương nếu về đích an toàn.
+
+Slide 7: 1.4 Chính sách (Policy)
+Người 1: Mục tiêu của Tác nhân là học được một CHÍNH SÁCH (Policy) tối ưu. Chính sách đơn giản là Quy tắc Ứng xử. Ví dụ: Nếu thấy đèn đỏ (Trạng thái) thì đạp phanh (Hành động). 
+Người 2: Tức là nó phải tìm ra một ánh xạ từ Trạng thái sang Hành động sao cho TỔNG Phần thưởng nhận được là lớn nhất?
+Người 1: Chuẩn xác. Nó có thể là Chính sách tất định (Deterministic) hoặc Chính sách xác suất (Stochastic - 80% đi thẳng, 20% rẽ trái).
+
+Slide 8: 1.5 Tìm kiếm chính sách (Policy Search)
+Người 1: Làm sao để tìm ra Chính sách đó? Một cách là Tìm kiếm ngẫu nhiên (chỉnh bừa các tham số, ai điểm cao thì giữ). Hoặc dùng Thuật toán Di truyền (tạo ra hàng trăm robot con, con nào đi xa nhất được giữ lại lai tạo). Tuy nhiên, cách mạnh nhất là dùng Tối ưu hóa Dốc (Gradient Ascent).
+
+Slide 9: 1.6 Môi trường OpenAI Gym (Gymnasium)
+Người 1: Để AI học, ta cần một thế giới ảo cho nó thử sai. OpenAI đã tạo ra thư viện `gym` (nay đổi thành `gymnasium`). Nó cung cấp hàng loạt môi trường: từ game Atari cũ, đến game vật lý 2D, 3D.
+Người 2: Giống như ma trận The Matrix dành riêng cho AI luyện tập phải không ạ?
+Người 1: Rất đúng! Môi trường ảo giúp chúng luyện tập hàng triệu giờ chỉ trong vài phút ngoài đời thực mà không lo gây nguy hiểm.
+
+Slide 10: 1.7 Cấu trúc Code cơ bản với OpenAI Gym
+Người 1: Trong Python, ta chỉ cần gọi `gym.make("CartPole-v1")`. Hàm `reset()` trả về Trạng thái ban đầu. Hàm `step(action)` để thực hiện hành động. Hàm sẽ trả về cho ta: Trạng thái mới, Phần thưởng, và một cờ `done` báo hiệu game kết thúc chưa. Code vô cùng thanh lịch.
+
+Slide 11: 1.8 Bài toán CartPole
+Người 1: Môi trường kinh điển nhất là CartPole (Xe đẩy cân bằng gậy). Một cây gậy dựng đứng trên chiếc xe. Tác nhân chỉ có 2 hành động: Đẩy xe sang trái (0) hoặc sang phải (1). Phần thưởng là 1 điểm cho mỗi giây gậy không bị đổ.
+Người 2: Trạng thái của nó là gì ạ?
+Người 1: Trạng thái là một mảng 4 con số: Vị trí xe, Vận tốc xe, Góc nghiêng của gậy, và Vận tốc góc.
+
+Slide 12: 1.9 Các Chính sách bằng Mạng Nơ-ron
+Người 1: Ta có thể dùng Mạng Nơ-ron (Neural Network) để làm Chính sách. Đầu vào là 4 số Trạng thái. Đầu ra là 1 số thể hiện Xác suất nên Đẩy sang Trái.
+Người 2: Tức là không cần người lập trình viết lệnh IF-ELSE (nếu gậy nghiêng trái thì đẩy trái), mà Mạng Nơ-ron sẽ tự học ra luật đó?
+Người 1: Quá chính xác. Đó là điểm siêu việt của Machine Learning!
+
+Slide 13: 1.10 Bài toán Phân bổ tín nhiệm (Credit Assignment)
+Người 1: Nhưng làm sao mạng học được? Nếu con robot đi được 100 bước rồi bị ngã. Nó làm sao biết trong 100 bước đó, bước nào là ngu ngốc gây ra cú ngã, bước nào là xuất sắc?
+Người 2: Khó nhỉ! Giống như đá bóng thua thì không biết lỗi do ai!
+Người 1: Hiện tượng đó gọi là Bài toán Phân bổ tín nhiệm (Credit Assignment Problem). Để giải quyết, ta cần Toán học Markov.
+
+Slide 14: 2.1 Nền tảng Toán học: Quá trình Markov
+Người 1: Andrey Markov phát minh ra "Quá trình Markov": Tương lai CHỈ phụ thuộc vào Hiện tại, hoàn toàn không liên quan đến Quá khứ! 
+Người 2: Ví dụ như xúc xắc, đổ lần này không liên quan lần trước ạ?
+Người 1: Đúng. Trạng thái tiếp theo chỉ phụ thuộc vào trạng thái hiện tại cộng với hành động ta vừa làm. R L hoàn toàn tuân theo tính chất này.
+
+Slide 15: 2.2 Quá trình Quyết định Markov (MDP)
+Người 1: Nâng cấp lên, ta có Quá trình Quyết định Markov (M D P). Trong M D P, việc chuyển đổi trạng thái mang tính xác suất (Stochastic).
+Người 2: Tức là không chắc chắn ạ?
+Người 1: Đúng. Dù em quyết định Đi Thẳng, thì vẫn có 10% xác suất em trượt chân ngã sang trái! Đó là đặc tính khó lường của Môi trường thật.
+
+Slide 16: 2.3 Hệ số chiết khấu (Discount Factor - γ)
+Người 1: Quay lại việc đá bóng, làm sao chia công? Người ta dùng Hệ số chiết khấu Gama (giá trị từ 0 đến 1). Hành động hiện tại có ảnh hưởng đến tương lai, nhưng ảnh hưởng đó sẽ GIẢM DẦN theo thời gian.
+Người 2: Giống như tiền mất giá ạ?
+Người 1: Rất thông minh! 1 điểm thưởng nhận ngay lúc này có giá hơn 1 điểm thưởng nhận ở 100 bước sau. 
+
+Slide 17: 2.4 Đánh giá Trạng thái và Hành động
+Người 1: Thay vì tính phần thưởng trước mắt, ta sẽ tính TỔNG PHẦN THƯỞNG DỰ KIẾN TƯƠNG LAI. Người ta định nghĩa ra 2 giá trị. Giá trị V (State Value): Độ TỐT khi đứng ở Trạng thái này. Giá trị Q (Action Value): Độ TỐT của việc Thực hiện 1 Hành động cụ thể tại Trạng thái này.
+Người 2: Giống như đứng trước bàn cờ vua. Giá trị V là đánh giá xem thế cờ này đang Lợi hay Hại. Giá trị Q là đánh giá xem nước đi Tượng ăn Mã có ngon không ạ?
+Người 1: Ví dụ của em đạt điểm 10!
+
+Slide 18: 2.5 Phương trình Bellman (Bellman Equation)
+Người 1: Dựa vào đó, Richard Bellman năm 1957 đã tìm ra Phương trình Bellman. Nó phát biểu: Giá trị tối ưu V (hiện tại) BẰNG phần thưởng tức thời, CỘNG VỚI giá trị V tối ưu của Trạng thái Tiếp Theo (đã nhân với hệ số Gama).
+Người 2: Nghĩa là giá trị tương lai liên kết ngược với giá trị hiện tại theo kiểu đệ quy! Nó giải được bài toán Credit Assignment rồi!
+
+Slide 19: 3.1 Nguyên lý Học Q (Q-Learning)
+Người 1: Dựa vào phương trình Bellman, thuật toán Q-Learning ra đời (1989). Ý tưởng là Tác nhân xây dựng 1 cái Bảng tra cứu (Q-Table). Số dòng là Số trạng thái. Số cột là Hành động. 
+Người 2: Trò Pacman có 4 hành động (Lên Xuống Trái Phải) thì bảng có 4 cột.
+Người 1: Đúng! Bảng này ghi lại "Điểm Q" của mọi cặp (Trạng thái - Hành động). Tác nhân chơi game, cứ mỗi bước đi, nó sẽ "Cập nhật" dần cái điểm Q này. Càng chơi bảng Q càng chính xác. 
+
+Slide 20: 3.2 Công thức Cập nhật Q-Learning
+Người 1: Nó cập nhật theo công thức: Q hiện tại = (1 - alpha)*Q hiện tại + alpha*(Phần thưởng + Gama * Q Tối đa của bước kế tiếp). Trong đó Alpha là tốc độ học.
+Người 2: Tức là nó lấy Kinh nghiệm mới, pha trộn một chút (Alpha) vào Kinh nghiệm cũ, dần dần kéo giá trị Q hội tụ về phương trình Bellman!
+Người 1: Xuất sắc! Đó là thuật toán Cập nhật sự Khác biệt Thời gian (Temporal Difference).
+
+Slide 21: 3.3 Vấn đề: Khám phá hay Khai thác (Exploration vs Exploitation)
+Người 1: Khi chơi game, Tác nhân phải chọn hành động dựa trên Bảng Q. Nếu nó chỉ chọn hành động điểm Cao nhất (Khai thác - Exploitation), nó sẽ mãi mãi kẹt ở những hành động quen thuộc, không bao giờ tìm ra chiến thuật mới tốt hơn. 
+Người 2: Giống như lúc nào cũng ăn nhà hàng cũ vì sợ ăn quán mới bị dở ạ?
+Người 1: Đúng. Do đó nó phải thi thoảng Khám phá (Exploration).
+
+Slide 22: 3.4 Chính sách Epsilon-Greedy
+Người 1: Giải pháp là Chính sách Epsilon-Tham lam (Epsilon-greedy). Ta đặt Epsilon là 1.0 (100% Khám phá ngẫu nhiên). Lúc mới học, con bot chạy bừa bãi. Khi nó bắt đầu giỏi lên, ta giảm dần Epsilon xuống 0.05. Lúc này 95% thời gian nó Khai thác kinh nghiệm để ghi điểm, và 5% thời gian nó vẫn tiếp tục Khám phá hên xui.
+
+Slide 23: 4.1 Khi Không Gian Trạng Thái Quá Lớn
+Người 1: Q-Learning dùng Bảng cực tốt. Nhưng hãy tưởng tượng trò chơi cờ vây, số trạng thái là 10 mũ 170. Còn trò Pacman, màn hình ảnh là hàng triệu điểm ảnh. Không có ổ cứng nào lưu nổi cái Bảng Q khổng lồ đó!
+
+Slide 24: 4.2 Kiến trúc Deep Q-Network (DQN)
+Người 1: Đỉnh cao xuất hiện: DeepMind năm 2013 giới thiệu Mạng D Q N (Deep Q-Network). Thay vì dùng Bảng, họ ném cái Bảng đó đi, và dùng một Mạng Nơ-ron Tích chập (C N N) để DỰ ĐOÁN điểm Q!
+Người 2: Có nghĩa là đầu vào là bức ảnh màn hình game, nó sẽ chạy qua mạng C N N, và xuất ra 4 cái nút (Lên Xuống Trái Phải) chứa 4 con số điểm Q đúng không thầy?
+Người 1: Đúng! Thần kỳ! Nhờ sức mạnh Nội suy của Mạng Nơ-ron, nó có thể đánh giá được ngay cả những trạng thái bức ảnh nó CHƯA TỪNG gặp bao giờ.
+
+Slide 25: 4.3 Vấn đề Hội tụ của DQN
+Người 1: Tuy nhiên, huấn luyện D Q N cực kỳ gian nan. Vấn đề 1: Dữ liệu bị tương quan (con bot đi 10 bước liên tục thì 10 bức ảnh đó cực kỳ giống nhau, làm AI học bị thiên lệch). Vấn đề 2: Mục tiêu di chuyển liên tục, vì mạng nơ-ron vừa tự dự đoán Q, lại vừa dùng Q đó làm Target để huấn luyện lại chính mình!
+Người 2: Giống như con chó tự cắn đuôi mình ạ? Mạng sẽ bị sụp đổ (diverge)!
+
+Slide 26: 4.4 Giải pháp 1: Trải nghiệm Phát lại (Replay Buffer)
+Người 1: DeepMind đưa ra 2 giải pháp thiên tài. Giải pháp 1: Replay Buffer (Bộ đệm phát lại). Khi con bot chơi, nó ghi lại từng bước đi vào 1 cái mảng khổng lồ chứa hàng triệu bước. Khi Huấn luyện, nó BỐC NGẪU NHIÊN 1 mẻ nhỏ (Batch) từ mảng đó ra để học.
+Người 2: À, bốc ngẫu nhiên thì dữ liệu sẽ bị trộn xáo trộn, không còn bị Tương quan liền kề nữa! Mạng sẽ học được tổng quát.
+Người 1: Tuyệt đỉnh!
+
+Slide 27: 4.5 Giải pháp 2: Mạng Mục tiêu (Target Network)
+Người 1: Giải pháp 2: Target Network. Thay vì dùng chung 1 mạng, họ copy ra làm 2 mạng: Mạng Online (dùng để chơi và cập nhật liên tục), và Mạng Target (bị ĐÓNG BĂNG, chỉ dùng để tính toán điểm Target ổn định). Cứ sau 1 vạn bước, mới Copy trọng số từ Mạng Online sang Mạng Target một lần. Mọi sự bất ổn chấm dứt!
+
+Slide 28: 4.6 Pseudo-code cho DQN với Keras
+Người 1: Code D Q N bằng Keras khá dài nhưng cực logic. Vòng lặp: Play 1 bước -> Lưu kinh nghiệm vào Bộ Đệm -> Bốc ngẫu nhiên 1 Batch từ Bộ đệm -> Mạng Target dự đoán Q-tương-lai -> Tính Q-hiện-tại = Phần thưởng + Gama * Q-tương-lai -> Dùng Q-hiện-tại làm nhãn (Y) để fit() Mạng Online. 
+Người 2: D Q N đúng là kiệt tác.
+
+Slide 29: 4.7 Cải tiến của DQN: Double DQN
+Người 1: D Q N Gốc có 1 điểm yếu: Do dùng hàm Tối đa (Max) khi tính Q-tương-lai, nó hay Bốc phét (Đánh giá quá cao) một hành động hên xui. Năm 2015, Double D Q N ra đời. 
+Người 2: Khắc phục thế nào ạ?
+Người 1: Rất đơn giản, dùng Mạng Online ĐỂ CHỌN hành động, và dùng Mạng Target ĐỂ ĐỊNH GIÁ hành động đó. Sự chéo ngoe này triệt tiêu hoàn toàn sự "Ảo tưởng sức mạnh".
+
+Slide 30: 4.8 Cải tiến của DQN: Dueling DQN
+Người 1: Cải tiến tiếp theo: Dueling D Q N. Mạng nơ-ron thay vì đoán luôn giá trị Q. Nó chia làm 2 nhánh: Nhánh 1 đoán giá trị Trạng thái V (Thế cờ này ngon hay dở). Nhánh 2 đoán Lợi thế A (Nếu ngon, thì đi Trái hay đi Phải lợi hơn?). Rồi mới gộp 2 nhánh lại.
+Người 2: Chia để trị, giúp mạng học cực kỳ hiệu quả khi có nhiều trạng thái giống nhau.
+
+Slide 31: 4.9 Ưu tiên Trải nghiệm (Prioritized Experience Replay)
+Người 1: Cải tiến cuối: Khi bốc ngẫu nhiên từ Bộ đệm, thay vì bốc đều. Cứ Mẫu nào lúc học phát hiện ra Sai số (Loss) càng lớn (chứng tỏ AI bị "Bất ngờ" chưa lường trước), thì tăng XÁC SUẤT bốc lại mẫu đó lên cao. Ép AI học đi học lại chỗ nó sai!
+
+Slide 32: 5.1 Hạn chế của Học Q với Hành động Liên tục
+Người 1: Ta học xong họ Q-Learning. Nhưng Q-Learning gặp 1 bài toán bế tắc: Nó chỉ làm được hành động Rời Rạc (Ví dụ vô lăng chỉ có: Sang trái, Giữ nguyên, Sang phải). Nếu em muốn vô lăng Xoay chính xác 33,5 độ (Không gian liên tục) thì sao?
+Người 2: Hàm Argmax không thể quét hết tập số thực vô hạn được! Vô phương cứu chữa ạ?
+Người 1: Chính xác. Đó là lúc ta chuyển sang nhánh RL thứ hai: Độ Dốc Chính Sách (Policy Gradients - PG).
+
+Slide 33: 5.2 Nguyên lý Độ dốc Chính sách (Policy Gradients - PG)
+Người 1: Thay vì tính Giá trị Q trung gian, P G Tối ưu TRỰC TIẾP lên Chính sách. Mạng nơ-ron của ta sẽ bỏ hoàn toàn Q. Đầu vào là Trạng thái, đầu ra là XÁC SUẤT làm hành động (hoặc ra 1 con số góc độ cụ thể).
+Người 2: Tức là không cần hàm Q luôn ạ? Thế làm sao nó cập nhật hàm Loss?
+
+Slide 34: 5.3 Thuật toán REINFORCE (1992)
+Người 1: Ta dùng thuật toán REINFORCE. Hãy cho con AI chơi nguyên cả 1 Ván game (Episode) bằng Chính sách ngẫu nhiên. Nếu Ván đó Thắng (Điểm cao), hãy LAN TRUYỀN NGƯỢC, nhân toàn bộ các Gradient của ván đó với Điểm cao. Hành động vô tình làm ở ván đó sẽ được KHUYẾN KHÍCH. Nếu Ván đó Thua (Điểm thấp), nhân Gradient với Điểm âm. Các hành động đó sẽ BỊ XÓA BỎ.
+Người 2: Trực quan quá! Cứ chơi hên xui, thắng thì ghi nhớ, thua thì né tránh!
+
+Slide 35: 5.4 Vấn đề Phương sai (High Variance) của REINFORCE
+Người 1: Nhưng REINFORCE có 1 vấn đề: Phương sai cực cao. Có ván đi rất hay nhưng xui ở giây cuối chết nên bị phạt âm. Có ván đi dở tệ nhưng ăn may sống lâu nên được thưởng dương. Mô hình bị nhảy loạn xạ.
+Người 2: Vậy phải có 1 hệ thống chấm điểm công bằng hơn thay vì dựa vào Điểm tổng ván cờ ạ?
+
+Slide 36: 6.1 Khái niệm Actor-Critic (Diễn viên & Nhà Phê Bình)
+Người 1: Đúng thế! Sự kết hợp hoàn hảo ra đời: Actor-Critic (Diễn viên và Nhà Phê bình). Nó gộp cả 2 thế giới Q-Learning và PG lại!
+Người 2: Cấu trúc nó như thế nào ạ?
+Người 1: Có 2 mạng Nơ-ron riêng. Mạng Actor (Diễn viên) chơi theo kiểu P G, nhiệm vụ là Chạy và Ra hành động. Mạng Critic (Nhà phê bình) chơi theo kiểu Q-Learning, đứng ngoài theo dõi Actor, và CHẤM ĐIỂM ngay lập tức cho từng bước đi của Actor. Actor sẽ dựa vào lời phê bình đó để tối ưu chính sách.
+
+Slide 37: 6.2 Ưu điểm của Actor-Critic
+Người 1: Nhờ Critic chấm điểm từng bước (sửa lỗi ngay lập tức), Actor không phải đợi đến cuối ván mới biết mình đúng hay sai. Phương sai giảm mạnh, mô hình hội tụ cực nhanh và siêu ổn định. 
+
+Slide 38: 6.3 Thuật toán A3C (Asynchronous Advantage Actor-Critic)
+Người 1: DeepMind tiến thêm một bước với A 3 C (Năm 2016). Thay vì 1 Diễn viên, họ tạo ra 100 Diễn viên (Agents) chơi 100 màn hình game song song trên 100 CPU cùng lúc! Tất cả kinh nghiệm gửi về cập nhật lên 1 Mạng Não Bộ Trung Ương một cách Bất Đồng Bộ (Asynchronous). AI học nhanh gấp hàng trăm lần!
+
+Slide 39: 6.4 Thuật toán PPO (Proximal Policy Optimization)
+Người 1: Đỉnh cao cuối cùng hiện nay: P P O do OpenAI tạo ra năm 2017. Thuật toán này dùng hàm Ràng buộc (Clipping) để đảm bảo: Mạng nơ-ron không bao giờ Cập nhật Trọng số quá lớn làm "mất trí nhớ" kinh nghiệm cũ. Rất đơn giản nhưng cực kỳ mạnh mẽ. ChatGPT và AI chơi Dota 2 đều được huấn luyện bằng P P O.
+
+Slide 40: Tổng Kết Chương 18
+Người 1: Tóm lại, Học Tăng Cường (RL) là cỗ máy tự học tuyệt đỉnh. Bắt đầu từ Toán học M D P và Phương trình Bellman, ta hiểu Q-Learning và D Q N (Sức mạnh Bảng giá trị). Ta tiến lên P G (Sức mạnh Trực tiếp), và giao thoa lại tại các kiệt tác Actor-Critic như A 3 C và P P O (Đỉnh cao của AI thời hiện đại).
+Người 2: Dạ, bài học đồ sộ và vô cùng hấp dẫn! Nó thực sự là bộ não ra quyết định của robot! Em cảm ơn thầy!
+
+Slide 41: HỎI & ĐÁP
+Người 1: Các em có câu hỏi gì thêm về cách AI tự khám phá và tối ưu này không? (Dành thời gian giải đáp thắc mắc).

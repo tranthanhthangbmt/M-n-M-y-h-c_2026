@@ -3984,7 +3984,9 @@ minh.
 <p style="text-align: right;"><a href="TaiLieu/slideML/Slide_ML_Chap19.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về Slide Bài Giảng (PDF)</a></p>
 
 #### ** 🎥 Video **
-*Đang cập nhật...*
+
+<iframe src="Video/Chapter_19/index.html" width="100%" height="600px" style="border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" allowfullscreen></iframe>
+
 
 #### ** 📝 Trắc nghiệm **
 *Đang cập nhật...*

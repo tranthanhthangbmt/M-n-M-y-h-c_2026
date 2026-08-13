@@ -1,0 +1,190 @@
+Slide 1: Chương 14: Thị giác Máy tính Chuyên sâu sử dụng Mạng Nơ-ron Tích chập
+Người 1: Chào các em. Hôm nay chúng ta sẽ khám phá Thị giác Máy tính (Computer Vision). Làm sao để AI có thể nhìn vào bức ảnh và biết đó là con mèo, hoặc tự động lái xe lách qua chướng ngại vật?
+Người 2: Có phải ta chỉ cần đưa các điểm ảnh (pixel) vào một mạng M L P khổng lồ như các chương trước không ạ?
+Người 1: Nếu làm vậy với một bức ảnh 1000 nhân 1000 pixel, lớp ẩn đầu tiên sẽ cần tới 1 triệu nơ-ron, kéo theo hàng TỶ trọng số. Mạng sẽ bị quá tải, cạn kiệt RAM và chắc chắn bị Quá khớp (Overfitting). Đó là lý do Mạng Nơ-ron Tích chập (C N N) ra đời!
+
+Slide 2: Nội dung Chương 14
+Người 1: Bài học hôm nay gồm: Cấu tạo của Mạng C N N (các lớp Tích chập và lớp Gộp); Lịch sử các kiến trúc huyền thoại như LeNet, ResNet; và cách dùng C N N cho các bài toán cực khó như Phát hiện đối tượng (Object Detection) và Phân đoạn ngữ nghĩa.
+Người 2: Rất hấp dẫn ạ.
+
+Slide 3: Khởi nguồn của Thị giác Máy tính
+Người 1: Ý tưởng C N N thực chất bắt nguồn từ nghiên cứu về Vỏ não Thị giác của loài mèo năm 1959. 
+Người 2: Não mèo hoạt động thế nào ạ?
+Người 1: Họ phát hiện ra, các nơ-ron trong mắt mèo không nhìn thấy toàn bộ hình ảnh cùng một lúc. Mỗi nơ-ron chỉ "nhìn" vào một vùng không gian siêu nhỏ gọi là Trường tiếp nhận cục bộ. Có nơ-ron chỉ phản ứng với các nét gạch ngang, có nơ-ron chỉ thích nét dọc.
+
+Slide 4: Trường tiếp nhận cục bộ (Local Receptive Fields)
+Người 1: AI cũng bắt chước y hệt như vậy. Thay vì kết nối 1 nơ-ron ở lớp ẩn với toàn bộ bức ảnh, ta chỉ kết nối nó với một Hình vuông nhỏ (ví dụ 3 nhân 3 pixel) trên bức ảnh.
+Người 2: Nơ-ron tiếp theo sẽ nhìn vào hình vuông nhỏ kế bên ạ?
+Người 1: Đúng! Nhờ vậy, mỗi nơ-ron tập trung phân tích một chi tiết nhỏ cục bộ, và tổng số Trọng số (Weights) cần học giảm đi hàng ngàn lần so với Mạng Đầy đủ (Dense).
+
+Slide 5: Lớp Tích chập (Convolutional Layer)
+Người 1: Đó chính là cốt lõi của Lớp Tích chập (Convolutional Layer). Nó dùng một hình vuông nhỏ (gọi là Bộ lọc - Filter) trượt dọc và trượt ngang khắp bức ảnh, thực hiện phép nhân ma trận để quét tìm các đặc trưng.
+Người 2: Phép trượt đó gọi là Tích chập ạ?
+Người 1: Trong toán học chuẩn, Tích chập đòi hỏi phải lật ngược ma trận trước khi nhân. Còn thứ chúng ta dùng trong Machine Learning thực chất gọi là Tương quan chéo (Cross-correlation), nhưng mọi người đã quen gọi nó là Tích chập rồi.
+
+Slide 6: Đệm (Padding)
+Người 1: Khi cái khung 3 nhân 3 trượt trên ảnh 5 nhân 5, nó chỉ trượt được 3 bước là đụng vách. Vậy đầu ra sẽ bị teo nhỏ lại thành 3 nhân 3. Nếu mạng có 100 lớp, ảnh sẽ bị teo dần đến biến mất!
+Người 2: Làm sao để giữ nguyên kích thước ạ?
+Người 1: Ta chèn thêm các số 0 bao bọc viền xung quanh bức ảnh gốc. Kỹ thuật này gọi là Zero Padding. Nhờ đó, khung trượt có thể đi ra ngoài rìa, giúp đầu ra giữ nguyên kích thước bằng đầu vào.
+
+Slide 7: Bước nhảy (Strides)
+Người 1: Nếu em muốn cố tình làm teo nhỏ ảnh để giảm tính toán thì sao? Em có thể dùng Bước nhảy (Stride).
+Người 2: Mặc định là khung nó nhích từng pixel một (Stride bằng 1). Giờ mình bắt nó nhảy cóc 2 pixel một bước thì kích thước ảnh đầu ra sẽ giảm đi một nửa đúng không thầy?
+Người 1: Rất thông minh! 
+
+Slide 8: Bộ lọc (Filters / Kernels)
+Người 1: Bây giờ, ta nói về Bộ lọc (Filter hay Kernel). Đó chính là một ma trận trọng số. Ví dụ một bộ lọc có sọc dọc ở giữa sẽ giúp mạng "Phát hiện ra" các cạnh dọc trên bức ảnh (như thân cây).
+Người 2: Vậy bộ lọc này là do con người thiết kế trước hay sao ạ?
+Người 1: Xưa kia con người tự thiết kế. Nhưng với C N N, các con số trong Bộ lọc chính là Trọng số (Weights). Thuật toán Backpropagation sẽ TỰ HỌC để tìm ra Bộ lọc tối ưu nhất: ví dụ lớp 1 học bộ lọc nét thẳng, lớp 2 tự học bộ lọc hình tròn!
+
+Slide 9: Nhiều Bản đồ Đặc trưng (Feature Maps)
+Người 1: Một lớp Tích chập thường có RẤT NHIỀU Bộ lọc. Ví dụ lớp 1 có 64 bộ lọc. Khi quét xong, nó tạo ra 64 bức ảnh con chồng lên nhau.
+Người 2: Mỗi bức ảnh con đó gọi là một Bản đồ Đặc trưng (Feature Map), dùng để làm nổi bật một chi tiết khác nhau (cái thì làm rõ nét dọc, cái thì nét ngang) đúng không ạ?
+Người 1: Hoàn toàn chính xác. Vì vậy, đầu ra của lớp Tích chập luôn là dữ liệu 3 Chiều (Chiều Cao, Chiều Rộng, và Số Kênh). Số kênh chính là số lượng Bộ lọc.
+
+Slide 10: Padding: "Valid" vs "Same"
+Người 1: Trong Keras, có 2 kiểu padding. Padding "Valid" nghĩa là Không đệm gì cả, ảnh sẽ bị teo nhỏ. Padding "Same" nghĩa là tự động thêm số 0 để kích thước Cao và Rộng của ảnh Đầu ra GIỐNG HỆT ảnh Đầu vào.
+
+Slide 11: Code: Xây dựng Lớp Conv2D trong Keras
+Người 1: Mã nguồn cực kỳ đơn giản: keras chấm layers chấm Conv2D(64, số 7, kích hoạt relu, padding bằng same).
+Người 2: Nghĩa là lớp này dùng 64 bộ lọc, mỗi bộ lọc có khung vuông 7 nhân 7, và có đệm viền bằng 0 ạ?
+Người 1: Giỏi lắm!
+
+Slide 12: Công thức Tính Kích Thước Đầu Ra (Output Dimension)
+Người 1: Đây là công thức toán học để tính chiều Cao/Rộng đầu ra nếu em dùng Padding Valid: Kích thước bằng (Kích thước gốc trừ Kích thước Bộ lọc) chia cho Bước nhảy, rồi cộng 1. Các em có thể tự nhẩm tính.
+
+Slide 13: Lớp Gộp Trung Bình & Gộp Toàn Cục
+Người 1: Để giảm kích thước ảnh một cách an toàn mà không dùng Stride, người ta phát minh ra Lớp Gộp (Pooling). 
+Người 2: Có lớp Average Pooling (Gộp Trung bình). Nó lấy trung bình cộng của các pixel trong khung trượt đúng không ạ?
+Người 1: Đúng. Cực đoan hơn là Global Average Pooling (Gộp Tòan cục): Nó tính trung bình cộng của TÒAN BỘ bức ảnh, biến bức ảnh thành một con số duy nhất! Thường dùng ở lớp cuối cùng trước khi đưa ra dự đoán.
+
+Slide 14: Lớp Gộp (Pooling Layer)
+Người 1: Mục đích chính của Lớp Gộp là Thu nhỏ (Subsampling). Nó giảm một nửa kích thước dữ liệu, giúp giảm lượng RAM, giảm khối lượng tính toán, và quan trọng nhất là Chống Quá khớp.
+Người 2: Đặc điểm của lớp Gộp là nó KHÔNG HỀ CÓ TRỌNG SỐ nào để học đúng không thưa thầy? Nó chỉ làm toán đơn giản thôi.
+Người 1: Chuẩn! Nó chạy cực kỳ nhanh và không tốn bộ nhớ lưu trữ trọng số.
+
+Slide 15: Max Pooling (Gộp Cực Đại)
+Người 1: Ngày nay, lớp Gộp phổ biến nhất là Max Pooling (Gộp cực đại). Thay vì tính trung bình, nó chỉ giữ lại GIÁ TRỊ LỚN NHẤT trong khung trượt.
+Người 2: Vì sao lại chuộng giá trị lớn nhất ạ?
+Người 1: Vì giá trị lớn nhất đại diện cho đặc trưng Tỏa Sáng nhất (ví dụ nét cạnh rõ nhất). Nó giúp nơ-ron chỉ tập trung vào tín hiệu mạnh nhất và vứt bỏ nhiễu xung quanh.
+
+Slide 16: Tính Bất Biến đối với Dịch Chuyển (Translation Invariance)
+Người 1: Nhờ Max Pooling, C N N có được sức mạnh vô song: Tính Bất Biến đối với Dịch chuyển. 
+Người 2: Nghĩa là con mèo nằm ở giữa ảnh hay góc ảnh thì AI vẫn nhận ra đúng không ạ?
+Người 1: Chính xác. Vì Max Pooling chỉ quan tâm đến việc "có" cái tai mèo trong khung quét hay không, chứ nó không quan tâm cái tai mèo nằm chính xác ở tọa độ nào.
+
+Slide 17: Tổng hợp Kiến Trúc CNN Tiêu Chuẩn
+Người 1: Giờ ta ghép chúng lại. Một mạng C N N tiêu chuẩn bắt đầu bằng 1 Lớp Tích Chập, nối tiếp là 1 Lớp Pooling. Quá trình này lặp lại vài lần: Ảnh ngày càng teo nhỏ lại, nhưng lại ngày càng Dày hơn (nhiều kênh Feature Map hơn).
+Người 2: Sau khi có được các khối đặc trưng siêu dày nhưng kích thước siêu nhỏ, ta dàn phẳng nó ra (Flatten) rồi cho vào lớp Dense để xuất ra kết quả phân loại cuối cùng.
+Người 1: Hoàn hảo! Đó là kiến trúc kinh điển của mọi mạng C N N.
+
+Slide 18: 1. LeNet-5 (1998)
+Người 1: Mạng C N N thành công đầu tiên trên thế giới là LeNet-5 của Yann LeCun năm 1998, dùng để đọc mã bưu điện viết tay.
+Người 2: Nó áp dụng chính xác quy luật: Tích chập xong rồi Gộp (Average Pooling), rồi lại Tích chập, rồi dàn phẳng đưa vào Dense.
+Người 1: Đúng. Điều thú vị là ngày đó hàm Tanh vẫn được dùng làm hàm kích hoạt, chứ chưa có Re L U.
+
+Slide 19: 2. AlexNet (2012)
+Người 1: Năm 2012, thế giới bùng nổ khi mạng AlexNet đánh bại mọi đối thủ trong cuộc thi ImageNet. Nó là mạng C N N lớn hơn, sâu hơn, và là mạng đầu tiên dùng hàm Re L U cùng kỹ thuật Dropout, được huấn luyện trên G P U.
+Người 2: Lớp Tích chập đầu tiên của nó dùng Stride bằng 4. Nhảy bước lớn thế thì ảnh nhỏ lại rất nhanh ạ!
+Người 1: Đúng, để giảm khối lượng tính toán khổng lồ của ảnh màu. Nó cũng dùng một kỹ thuật chuẩn hóa gọi là L R N, nhưng ngày nay L R N đã bị Batch Normalization thay thế.
+
+Slide 20: Tăng cường Dữ liệu (Data Augmentation)
+Người 1: Nhờ AlexNet, người ta nhận ra Data Augmentation (Tăng cường dữ liệu) quan trọng thế nào. Tác giả đã dịch chuyển ảnh, lật ngang ảnh, và thay đổi độ sáng để tạo ra lượng dữ liệu ảo khổng lồ, ép mạng lưới phải học thật.
+Người 2: Việc này tương tự như bắt con mèo tập nhìn đồ vật ở mọi tư thế để nó khôn hơn.
+
+Slide 21: 3. GoogLeNet (2014) và Mô đun Inception
+Người 1: Đến năm 2014, Google đưa ra GoogLeNet. Thay vì hỏi: "Ở lớp này tôi nên dùng Tích chập 3 nhân 3, 5 nhân 5 hay là lớp Pooling nhỉ?". Tác giả quyết định: DÙNG TẤT CẢ!
+Người 2: Dùng tất cả cùng lúc ạ? Mô hình sẽ béo ú ra mất!
+Người 1: Họ thiết kế "Mô-đun Inception". Dữ liệu đi vào sẽ bị tẻ làm 4 nhánh song song (nhánh 1 nhân 1, 3 nhân 3, 5 nhân 5 và MaxPool). Sau đó, đầu ra của 4 nhánh được chập lại với nhau! Mạng lưới có thể phát hiện đặc trưng ở nhiều độ lớn nhỏ khác nhau cùng một lúc.
+
+Slide 22: Mạng GoogLeNet Hoàn Chỉnh
+Người 1: Mạng GoogLeNet xếp chồng 9 mô-đun Inception lên nhau. Nó sâu hơn AlexNet rất nhiều nhưng số lượng tham số chỉ bằng 1 phần 10!
+Người 2: Bí mật nằm ở các lớp Tích chập 1 nhân 1 đúng không ạ? Nó đóng vai trò "cổ chai" để ép giảm số lượng bản đồ đặc trưng xuống trước khi đưa vào các lớp 3 nhân 3 nặng nề.
+Người 1: Đúng! Kiến trúc này cực kỳ thông minh và tinh tế.
+
+Slide 23: 4. ResNet (2015) - Residual Networks
+Người 1: Năm 2015, Kaiming He (Hà Khải Minh) tạo ra chấn động với ResNet. Lần đầu tiên, người ta huấn luyện được một mạng C N N sâu tới 152 lớp!
+Người 2: Nếu sâu như vậy thì thuật toán Backpropagation sẽ dính lỗi Gradient biến mất ngay lập tức!
+Người 1: Họ đã bẻ gãy rào cản đó bằng một ý tưởng vô cùng đơn giản: Kết nối Tắt (Skip Connection).
+
+Slide 24: Cơ chế Hoạt động của Skip Connection
+Người 1: Thông thường dữ liệu chạy từ x, đi qua 2 lớp Tích chập sinh ra F(x), rồi đi tiếp. Nhưng với Skip Connection, họ kéo một đường dây dẫn tín hiệu x BAN ĐẦU đi tắt ngang qua 2 lớp đó, rồi Cộng trực tiếp vào kết quả F(x)!
+Người 2: Nghĩa là Kết quả cuối cùng bằng F(x) cộng x. Mạng lưới chỉ cần học để biến đổi "phần Dư" (Residual) F(x). Nếu mạng thấy lớp đó không cần thiết, nó ép F(x) bằng 0, tín hiệu x vẫn an toàn băng qua. Không bao giờ sợ Gradient bị mất!
+
+Slide 25: Toàn Cảnh Kiến Trúc ResNet
+Người 1: Nhờ Skip Connection, người ta cứ việc vô tư copy/paste khối Residual này nối đuôi nhau hàng trăm lần mà mô hình vẫn học cực kỳ trơn tru. ResNet đã vô địch mọi giải đấu năm đó.
+Người 2: Quả là một phát kiến thay đổi lịch sử trí tuệ nhân tạo.
+
+Slide 26: Code: Xây dựng Khối Residual (ResNet Block)
+Người 1: Xây khối Residual bằng Functional API rất đơn giản. Dữ liệu Đầu vào được sao chép vào biến Z. Sau đó Z đi qua lớp Conv2D thứ nhất, qua Batch Normalization. Đi qua lớp Conv2D thứ hai, qua B N.
+Người 2: Kế tiếp là phép CỘNG TENSORS! Lệnh layers chấm Add, gộp Đầu vào ban đầu với Z hiện tại, rồi đưa qua lớp Re L U cuối cùng.
+
+Slide 27: Xử lý Kích thước Kênh qua Skip Connection
+Người 1: Sẽ có lúc x ban đầu có 64 kênh, nhưng F(x) đầu ra lại có 128 kênh. Phép cộng sẽ báo lỗi do lệch số chiều.
+Người 2: Phải xử lý sao ạ?
+Người 1: Ở đường đi tắt, ta nhét thêm một lớp Tích chập 1 nhân 1 với Stride bằng 2 để nó bóp x lại cho đúng bằng kích thước và số kênh của F(x), sau đó mới cộng.
+
+Slide 28: 5. Xception (2016)
+Người 1: Kế thừa Inception, Francois Chollet (tác giả của Keras) sáng tạo ra mạng Xception (E X T R E M E Inception).
+Người 2: Tức là nó phân tách các nhánh ra tột độ ạ?
+Người 1: Đúng. Nó tách rời hoàn toàn việc "tìm đặc trưng không gian" và "tìm đặc trưng kênh". Nó dùng Tích chập Phân tách Theo chiều sâu (Depthwise Separable Convolution). Thay vì 1 bộ lọc dày quét cả 3 kênh RGB, nó dùng 3 bộ lọc mỏng quét riêng rẽ từng kênh, rồi dùng tích chập 1 nhân 1 trộn lại. Siêu nhanh và tốn siêu ít bộ nhớ!
+
+Slide 29: 6. SENet (2017) - Squeeze-and-Excitation
+Người 1: Cuối cùng, đỉnh cao S E Net ra đời. Đây không phải một mạng C N N mới, mà là một cục Mô-đun để gắn thêm vào bất kỳ mạng nào (ví dụ cấy vào ResNet tạo thành SE-ResNet).
+Người 2: Mô-đun này làm nhiệm vụ gì mà thần thánh vậy ạ?
+Người 1: Mô-đun này sẽ đánh giá lại Mức độ quan trọng của từng Feature Map. Nếu nó phát hiện bức ảnh này là cái mặt người, nó sẽ vặn to tín hiệu của Feature Map "miệng, mũi", và giảm nhỏ tín hiệu của Feature Map "đám mây" lại! 
+
+Slide 30: Mô-đun SE-Inception
+Người 1: Cơ chế của nó là Squeeze (Ép): Dùng Global Average Pooling ép mỗi Feature Map thành một con số. Sau đó là Excitation (Kích thích): Đưa các con số đó qua lớp Dense bọc hàm Sigmoid để biến thành mức độ phần trăm (từ 0 đến 1).
+Người 2: Sau đó lấy phần trăm này nhân ngược lại vào các Feature Map ban đầu để khuếch đại hoặc dập tắt tín hiệu! Quá thông minh!
+
+Slide 31: Sử dụng Mô Hình Sẵn Có (Pretrained) trong Keras
+Người 1: Việc tự thiết kế và huấn luyện các mô hình này tốn hàng trăm ngàn USD tiền điện. Thay vào đó, Keras đã tích hợp sẵn TẤT CẢ bọn chúng trong module keras chấm applications!
+Người 2: Em chỉ cần gọi lệnh ResNet50(weights bằng "imagenet") là lấy được toàn bộ trọng số thông minh của nó về máy dùng miễn phí ạ?
+Người 1: Chính xác. Đó gọi là Học Chuyển Giao như ta đã học.
+
+Slide 32: Bài toán Phân loại và Định vị
+Người 1: C N N không chỉ để phân loại chó mèo. Ta có thể dùng nó để Định vị (Localization): Vẽ một chiếc Khung bao quanh con mèo!
+Người 2: Để vẽ được Khung bao (Bounding Box), mô hình phải dự đoán cái gì ạ?
+Người 1: Rất đơn giản. Lớp đầu ra ta thay vì 1 nơ-ron, ta cho nó đẻ ra thêm 4 nơ-ron dự đoán 4 con số: Tọa độ x, tọa độ y của tâm, Chiều rộng và Chiều cao của khung bao.
+
+Slide 33: Đo lường Khung Chứa: IoU (Intersection over Union)
+Người 1: Bài toán định vị thực chất là bài toán Hồi quy (dự đoán 4 con số). Ta có thể dùng M S E. Nhưng để đánh giá độ chính xác thực tế, người ta dùng chỉ số I o U (Giao điểm chia cho Hợp).
+Người 2: Là lấy Diện tích phần Giao nhau giữa khung dự đoán và khung thực tế, chia cho Tổng diện tích của cả 2 khung ạ?
+Người 1: Đúng. Nếu I o U lớn hơn 0,5 thì coi như đoán trúng.
+
+Slide 34: Thuật toán Non-Max Suppression
+Người 1: Nhưng nếu 1 con mèo mà mạng C N N lỡ đẻ ra tới 5 cái khung chồng chéo lên nhau thì sao?
+Người 2: Mình phải xóa bớt đi ạ.
+Người 1: Ta dùng thuật toán Non-Max Suppression: Tìm cái khung có xác suất phân loại cao nhất. Sau đó đi đo I o U của khung đó với các khung còn lại. Cái nào I o U cao (tức là chồng lấn lên khung giỏi nhất) thì XÓA.
+
+Slide 35: Mean Average Precision (mAP)
+Người 1: Trong các cuộc thi định vị, người ta đo điểm số bằng mAP (Độ chính xác trung bình). Nó là một phép tính phức tạp vẽ biểu đồ Precision-Recall để xem thuật toán phát hiện đủ và đúng hay không.
+
+Slide 36: Bài toán Phát Hiện Đối Tượng
+Người 1: Nâng cao hơn Định vị là Phát hiện đối tượng (Object Detection): Hãy đếm và vẽ khung tất cả chó, mèo, chim trong cùng 1 bức ảnh!
+Người 2: Việc này cực kỳ khó vì không biết trước bức ảnh có bao nhiêu con vật ạ.
+Người 1: Trước đây người ta dùng Cửa sổ trượt (Sliding Window), cắt ảnh thành hàng ngàn mảnh nhỏ rồi quăng vào C N N. Chạy vô cùng chậm chạp.
+
+Slide 37: Biến CNN thành FCN (Fully Convolutional Network)
+Người 1: Một đột phá vĩ đại: F C N. Họ nhận ra Lớp Dày đặc (Dense) ở cuối C N N chính là thủ phạm bắt buộc ảnh đầu vào phải có kích thước cố định.
+Người 2: Họ làm gì ạ? Xóa luôn lớp Dense ạ?
+Người 1: Họ biến lớp Dense thành một Lớp Tích chập 1 nhân 1. Tự dưng mạng nơ-ron nhận được ảnh mọi kích cỡ khổng lồ. Nó quét qua ảnh 1 LẦN DUY NHẤT và đẻ ra 1 ma trận chứa hàng ngàn kết quả định vị trải đều trên ảnh!
+
+Slide 38: Giải thuật Yolo (You Only Look Once)
+Người 1: Dựa trên ý tưởng đó, thuật toán Yô-Lô (Y O L O) ra đời. Yô-Lô chia ảnh thành một hệ thống Lưới (Grid). Mỗi ô của Lưới chịu trách nhiệm dự đoán các khung bao chứa tâm đối tượng nằm trong ô đó.
+Người 2: Vì sao gọi là You Only Look Once (Bạn chỉ nhìn một lần) ạ?
+Người 1: Vì nó chạy nhanh như chớp! Nó đút cả ảnh vào mạng, đẻ ra toàn bộ tọa độ lưới trong 1 lần suy luận duy nhất, đủ sức chạy theo Thời gian thực (Real-time) cho xe tự lái!
+
+Slide 39: Bài toán Phân Đoạn Ngữ Nghĩa
+Người 1: Đỉnh cao nhất là Phân đoạn Ngữ nghĩa (Semantic Segmentation). Mạng nơ-ron không vẽ khung bao nữa, mà nó TÔ MÀU TỪNG PIXEL CỦA BỨC ẢNH. Pixel này thuộc về con đường, pixel kia thuộc về chiếc xe.
+Người 2: Tức là nó dự đoán hàng triệu kết quả cùng lúc! Nhưng mà đi qua các lớp Tích chập và Gộp, ảnh bị teo nhỏ lại rồi, làm sao tô màu lại bằng đúng kích thước ban đầu được ạ?
+
+Slide 40: Kĩ thuật Tích chập ngược (Transposed Convolution)
+Người 1: Họ dùng kỹ thuật Upsampling (Phóng to). Có rất nhiều cách, nhưng đỉnh nhất là Tích chập ngược (Transposed Convolution hay Deconvolution).
+Người 2: Nó làm việc ngược lại với Convolution bình thường ạ?
+Người 1: Đúng. Nó chèn các khoảng trống (số 0) vào giữa các pixel của ảnh nhỏ, rồi dùng một Bộ lọc học được để nội suy, lấp đầy các khoảng trống đó, phóng to ảnh lên độ phân giải ban đầu! Bức ảnh được phục dựng và phân loại chi tiết đến từng cọng cỏ.
+
+Slide 41: Tổng Kết Chương 14
+Người 1: Tóm lại, mạng nơ-ron tích chập là công cụ mạnh mẽ nhất hiện nay để xử lý hình ảnh. Từ lớp Tích chập mô phỏng mắt mèo, đến các kiến trúc vĩ đại ResNet, Inception. Và vươn tới các hệ thống thời gian thực đỉnh cao như Y O L O hay Phân đoạn ngữ nghĩa.
+Người 2: Dạ vâng, hôm nay em đã hiểu được bức tranh toàn cảnh về thị giác máy tính và các kiến trúc nổi bật. Em cảm ơn thầy ạ!

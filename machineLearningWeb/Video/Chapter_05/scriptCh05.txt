@@ -1,0 +1,180 @@
+Slide 1: CHƯƠNG 5 - MÁY HỌC VÉC-TƠ HỖ TRỢ (SVM)
+Người 1: Chào các em sinh viên. Ở các chương trước, chúng ta đã tìm hiểu về Hồi quy và Phân loại cơ bản. Hôm nay, ở Chương 5, chúng ta sẽ làm quen với một mô hình Học máy rất mạnh mẽ và linh hoạt: Máy học véc-tơ hỗ trợ, gọi tắt là S V M.
+Người 2: Dạ chào thầy. Em có nghe nói S V M rất nổi tiếng và được ứng dụng nhiều trước khi Deep Learning bùng nổ, đúng không ạ?
+Người 1: Chính xác. S V M có thể thực hiện phân loại tuyến tính hoặc phi tuyến, hồi quy và cả phát hiện điểm bất thường. Nó cực kỳ hiệu quả với tập dữ liệu có kích thước từ nhỏ đến trung bình.
+
+Slide 2: Phân loại S V M Tuyến tính
+Người 1: Hãy bắt đầu với phân loại S V M tuyến tính. Tưởng tượng chúng ta có tập dữ liệu hoa Iris, hai lớp hoa có thể được phân tách rõ ràng bằng một đường thẳng.
+Người 2: Tức là dữ liệu có thể phân tách tuyến tính đúng không ạ? Giống như Hồi quy Logistic.
+Người 1: Đúng vậy, nhưng S V M có tư duy khác. Nó không chỉ tìm một đường thẳng phân tách, mà nó cố gắng tìm một "con đường" rộng nhất có thể nằm giữa hai lớp.
+
+Slide 3: Phân loại Biên Lớn (Large Margin Classification)
+Người 1: Nhìn lên hình minh họa, thay vì một đường mỏng manh, S V M kẻ một con đường với hai lề song song. Ý tưởng là khoảng cách từ đường biên quyết định đến các điểm dữ liệu gần nhất của mỗi lớp phải là lớn nhất.
+Người 2: À, con đường càng rộng thì việc phân loại các điểm dữ liệu mới trong tương lai sẽ càng an toàn và chính xác, tránh được việc quá khớp đúng không thầy?
+Người 1: Hoàn toàn chính xác. Tư duy này gọi là Phân loại biên lớn.
+
+Slide 4: Các Véc-tơ Hỗ Trợ (Support Vectors)
+Người 1: Các em lưu ý, việc thêm các điểm dữ liệu ở phía sau lớp lề sẽ không làm thay đổi con đường. Con đường này hoàn toàn được xác định và "chống đỡ" bởi các điểm dữ liệu nằm ngay trên mép lề.
+Người 2: Vậy các điểm nằm trên mép lề đó chính là các Véc-tơ Hỗ trợ phải không ạ?
+Người 1: Rất chuẩn. Đó là lý do tại sao thuật toán này có tên là Máy học Véc-tơ Hỗ trợ.
+
+Slide 5: Tính nhạy cảm với thang đo
+Người 1: Một lưu ý cực kỳ quan trọng khi dùng S V M là nó rất nhạy cảm với thang đo đặc trưng. Nếu một trục có giá trị lớn hơn trục kia rất nhiều, con đường phân tách sẽ bị hẹp và lệch.
+Người 2: Vậy bắt buộc chúng ta phải Chuẩn hóa dữ liệu bằng Standard Scaler trước khi đưa vào S V M đúng không thầy?
+Người 1: Tuyệt vời, em đã nắm được mấu chốt thực hành rồi đó.
+
+Slide 6: Phân loại Biên Cứng (Hard Margin)
+Người 1: Nếu chúng ta ép buộc toàn bộ dữ liệu phải nằm hoàn toàn bên ngoài con đường và ở đúng phía của lớp đó, ta gọi đó là Phân loại Biên Cứng.
+Người 2: Nghe có vẻ hoàn hảo, nhưng liệu có thực tế không ạ? Nếu lỡ có một điểm dữ liệu nhiễu nằm nhầm chỗ thì sao?
+Người 1: Em hỏi rất hay. Biên cứng có hai nhược điểm mạng: thứ nhất là nó chỉ hoạt động nếu dữ liệu thực sự phân tách tuyến tính. Thứ hai, nó cực kỳ nhạy cảm với các điểm nhiễu ngoại lệ.
+
+Slide 7: Hạn chế của Biên Cứng
+Người 1: Chỉ cần một điểm ngoại lệ nằm lấn vào giữa, S V M biên cứng sẽ không thể tìm ra con đường, hoặc nó sẽ tạo ra một con đường rất hẹp, khiến mô hình bị quá khớp và tổng quát hóa kém.
+Người 2: Vậy ta phải chấp nhận cho phép một vài điểm dữ liệu được phép "lấn làn" hoặc vi phạm vào bên trong con đường để giữ cho con đường được rộng rãi ạ?
+
+Slide 8: Phân loại Biên Mềm (Soft Margin Classification)
+Người 1: Đúng vậy! Đó chính là ý tưởng của Phân loại Biên Mềm. Chúng ta tìm sự cân bằng giữa việc giữ cho con đường càng rộng càng tốt và việc hạn chế các điểm vi phạm biên.
+Người 2: Nghĩa là ta đánh đổi một chút sai số trên tập huấn luyện để đổi lấy sự mạnh mẽ trên tập kiểm thử.
+
+Slide 9: Siêu tham số C trong S V M
+Người 1: Trong thư viện Scikit-Learn, sự cân bằng của Biên Mềm được kiểm soát bởi một siêu tham số gọi là C. Nếu em đặt C là một giá trị thấp, mô hình sẽ tạo ra một con đường rộng nhưng có nhiều điểm vi phạm.
+Người 2: Và ngược lại, nếu đặt C cao, nó sẽ cố gắng ít vi phạm biên nhất có thể, nhưng con đường sẽ hẹp lại và dễ bị quá khớp đúng không thầy?
+Người 1: Chính xác! Siêu tham số C hoạt động như một cơ chế tinh chỉnh mức độ chính quy hóa của S V M. C càng nhỏ, mô hình càng được chính quy hóa nhiều.
+
+Slide 10: Triển khai Linear S V C bằng mã nguồn
+Người 1: Về mặt lập trình, ta có thể tạo một Pipeline chứa Standard Scaler và lớp Linear S V C. Khai báo Linear S V C với siêu tham số C bằng 1. Sau đó dùng lệnh fit để huấn luyện.
+Người 2: Thầy ơi, hàm này có hàm predict proba để tính xác suất giống hồi quy Logistic không ạ?
+Người 1: Linear S V C mặc định không có hàm predict proba. Nó chỉ đưa ra quyết định dựa trên hàm decision function.
+
+Slide 11: Hàm Quyết Định (Decision Function)
+Người 1: Thay vì xuất ra xác suất, S V M xuất ra một điểm số từ hàm quyết định. Hàm này đo khoảng cách có dấu từ điểm dữ liệu đến đường biên quyết định. Điểm số dương thì thuộc lớp dương, điểm số âm thì thuộc lớp âm.
+Người 2: Dạ, vậy nếu ta muốn có xác suất thì sao ạ?
+Người 1: Ta phải dùng lớp S V C thay vì Linear S V C, và bật tham số probability bằng True. Tuy nhiên, nó sẽ làm quá trình huấn luyện chậm hơn khá nhiều.
+
+Slide 12: Phân Loại S V M Phi Tuyến
+Người 1: Chúng ta đã xong phần tuyến tính. Nhưng thực tế, rất nhiều tập dữ liệu không thể phân tách bằng một đường thẳng.
+Người 2: Nếu dữ liệu lộn xộn thì đường thẳng vô dụng. Vậy S V M giải quyết thế nào ạ?
+Người 1: Ý tưởng thứ nhất rất đơn giản: Thêm các đặc trưng đa thức. Giống như hồi quy đa thức, nếu ta bình phương một đặc trưng lên, dữ liệu từ không gian 1 chiều sẽ chuyển thành dạng Parabol trong không gian 2 chiều, và lúc đó ta lại có thể cắt bằng một đường thẳng.
+
+Slide 13: Minh họa Thêm Đặc Trưng Đa Thức
+Người 1: Các em nhìn lên biểu đồ. Ở trục x một chiều, các điểm xanh đỏ nằm xen kẽ nhau, không thể cắt bằng một điểm. Nhưng khi ta thêm trục y bằng x bình phương, dữ liệu cong lên và ta có thể dễ dàng kẻ một đường thẳng nằm ngang để chia tách.
+Người 2: Một sự biến đổi không gian quá thông minh. Ta có thể dùng Polynomial Features của Scikit-Learn để làm việc này.
+
+Slide 14: Tập dữ liệu Moons
+Người 1: Tập dữ liệu Moons là một ví dụ kinh điển. Nó có hình hai nửa vầng trăng đan vào nhau. Rõ ràng là phi tuyến.
+Người 2: Ta sẽ đưa nó qua Pipeline gồm Polynomial Features bậc 3, chuẩn hóa Scaler rồi mới chạy Linear S V C ạ?
+Người 1: Đúng. Mô hình sẽ tìm ra được một đường biên uốn lượn rất mượt mà tách rời hai nửa vầng trăng này.
+
+Slide 15: Vấn đề của Đặc Trưng Đa Thức
+Người 1: Việc thêm đặc trưng đa thức rất tốt, nhưng nó có một nhược điểm chí mạng. Nếu bậc đa thức cao, số lượng đặc trưng sinh ra sẽ bùng nổ tổ hợp, làm cho mô hình chậm chạp kinh khủng.
+Người 2: Dạ đúng, nếu đầu vào có 100 đặc trưng, bậc 10 thì chắc máy tính treo luôn. Có cách nào giải quyết không thầy?
+
+Slide 16: Thủ Thuật Kernel (Kernel Trick)
+Người 1: Đây là lúc S V M thể hiện phép màu toán học của mình: Thủ thuật Kernel. Thủ thuật này cho phép S V M đạt được kết quả tương đương như khi ta thêm vô số đặc trưng đa thức bậc cao, nhưng lại KHÔNG HỀ thực sự sinh ra thêm một đặc trưng nào cả.
+Người 2: Không sinh ra đặc trưng mới mà vẫn tính toán được trong không gian chiều cao? Thật kỳ diệu, làm sao nó làm được vậy ạ?
+
+Slide 17: Áp dụng Kernel Đa Thức
+Người 1: Bí mật nằm ở các phép tính đại số tuyến tính nội bộ của nó. Về thực hành, ta chỉ cần gọi lớp S V C và truyền tham số kernel bằng "poly", kèm theo bậc degree mong muốn. Thuật toán sẽ chạy rất nhanh nhẹn.
+Người 2: Tham số coef không trong hàm có ý nghĩa gì vậy thầy?
+Người 1: coef không kiểm soát mức độ ảnh hưởng của các bậc đa thức cao so với các bậc thấp, giúp ta tinh chỉnh mô hình khỏi bị quá khớp.
+
+Slide 18: Các Đặc Trưng Tương Tự (Similarity Features)
+Người 1: Ngoài đa thức, còn một cách khác để xử lý dữ liệu phi tuyến là dùng hàm tương tự. Ta đặt các "điểm mốc" trên không gian dữ liệu, và đo lường khoảng cách từ mỗi điểm dữ liệu đến điểm mốc đó.
+Người 2: Nếu gần điểm mốc thì giá trị cao, xa thì giá trị thấp đúng không ạ?
+
+Slide 19: Hàm R B F Gaussian
+Người 1: Đúng vậy. Hàm phổ biến nhất để đo sự tương tự là R B F Gaussian. Nó có hình chuông. Biến đổi dữ liệu bằng hàm này cũng giúp làm cho dữ liệu phi tuyến trở nên phân tách tuyến tính.
+Người 2: Nhưng nếu ta đặt điểm mốc tại mọi điểm dữ liệu trong tập huấn luyện thì số chiều sẽ tăng lên bằng đúng số lượng mẫu. Dữ liệu lớn thì sẽ bùng nổ số chiều mất!
+
+Slide 20: Kernel R B F Gaussian
+Người 1: Lại một lần nữa, Thủ thuật Kernel giải cứu chúng ta. Ta sử dụng kernel R B F trong hàm S V C. Nó tính toán như thể ta có vô số điểm mốc mà không bị chi phí bộ nhớ.
+Người 2: Dạ, trong mã nguồn, em thấy có siêu tham số Gamma khi dùng kernel R B F. Nó dùng để làm gì ạ?
+
+Slide 21: Siêu Tham Số Gamma
+Người 1: Siêu tham số Gamma kiểm soát độ hẹp của đường cong hình chuông. Tăng Gamma làm đường cong hẹp lại, phạm vi ảnh hưởng của mỗi điểm dữ liệu nhỏ đi, đường biên quyết định sẽ uốn lượn ngoằn ngoèo bám sát dữ liệu.
+Người 2: Vậy Gamma lớn dễ bị quá khớp. Nếu mô hình quá khớp, ta nên giảm Gamma đi đúng không thầy?
+Người 1: Rất chuẩn xác! Gamma và C phối hợp với nhau để chính quy hóa mô hình.
+
+Slide 22: So Sánh Các Lớp S V M trong Scikit-Learn
+Người 1: Tổng kết về mặt lập trình, ta có Linear S V C cực nhanh, độ phức tạp thời gian O lớn của m nhân n, rất hợp với tập dữ liệu lớn nhưng chỉ chạy tuyến tính.
+Người 2: Còn lớp S V C hỗ trợ thủ thuật Kernel thì sao ạ?
+Người 1: Nó có độ phức tạp nằm giữa O lớn của m bình phương nhân n và m lập phương nhân n. Có nghĩa là nó chạy rất chậm nếu tập huấn luyện có quá nhiều mẫu. Do đó Kernel S V M chỉ lý tưởng với dữ liệu từ nhỏ đến trung bình.
+
+Slide 23: S G D Classifier với Hinge Loss
+Người 1: Nếu dữ liệu lớn vượt quá RAM, ta có thể dùng S G D Classifier kết hợp tham số loss bằng "hinge". Nó huấn luyện S V M tuyến tính bằng phương pháp giảm độ dốc ngẫu nhiên.
+Người 2: Vậy nó hỗ trợ học tăng dần và xử lý được dữ liệu siêu lớn. Rất linh hoạt ạ!
+
+Slide 24: Hồi Quy S V M (SVM Regression)
+Người 1: Từ nãy giờ ta mới nói về phân loại. S V M cũng làm được Hồi quy. Bí quyết là thay vì cố tìm con đường tách biệt hai lớp, Hồi quy S V M cố gắng nhét càng nhiều điểm dữ liệu vào bên trong con đường càng tốt.
+Người 2: Ồ, tư duy bị đảo ngược hoàn toàn. Vậy kích thước con đường lúc này đại diện cho cái gì ạ?
+
+Slide 25: Siêu tham số Epsilon
+Người 1: Kích thước con đường lúc này được kiểm soát bởi siêu tham số Epsilon. Các điểm dữ liệu nằm lọt thỏm trong con đường sẽ không ảnh hưởng đến lỗi của mô hình. Gọi là không nhạy cảm với Epsilon.
+Người 2: Nếu có điểm nằm ngoài con đường thì mới bị tính là lỗi đúng không thầy?
+Người 1: Đúng. Và ta dùng lớp Linear S V R cho hồi quy tuyến tính, hoặc lớp S V R hỗ trợ kernel cho hồi quy phi tuyến.
+
+Slide 26: Hồi Quy S V M Phi Tuyến
+Người 1: Tương tự như phân loại, hồi quy S V M phi tuyến cũng dùng tham số kernel bằng "poly" hoặc "rbf". Nó có thể khớp được các đường cong phức tạp bám theo dữ liệu.
+Người 2: Rất thống nhất về mặt cú pháp code ạ. Em đã hiểu cách áp dụng S V M.
+
+Slide 27: Bên Trong S V M Tuyến Tính (Under the hood)
+Người 1: Bây giờ, ta sẽ đi sâu một chút vào phần toán học đằng sau bộ phân loại S V M tuyến tính. Hãy nhớ hàm quyết định của chúng ta là tích vô hướng của véc-tơ trọng số w và véc-tơ đặc trưng x cộng với hệ số chệch b.
+Người 2: Dạ, điểm số này nếu dương thì dự đoán là lớp 1, âm thì dự đoán là lớp 0.
+
+Slide 28: Toán Học của Biên Phân Loại
+Người 1: Đường biên quyết định chính là tập hợp các điểm có điểm số bằng 0. Trong không gian, nó là một siêu phẳng.
+Người 2: Còn hai lề của "con đường" thì sao thầy?
+Người 1: Hai lề của con đường chính là các điểm có điểm số bằng dương 1 và âm 1. Khoảng cách giữa hai lề này chính là kích thước của biên.
+
+Slide 29: Trọng Số W và Kích Thước Biên
+Người 1: Một tính chất hình học thú vị: Kích thước của biên tỉ lệ nghịch với độ lớn của véc-tơ trọng số w. Muốn con đường càng rộng, ta phải làm cho véc-tơ w càng nhỏ.
+Người 2: À, để tối đa hóa độ rộng con đường, ta cần tối thiểu hóa chuẩn của véc-tơ trọng số w.
+
+Slide 30: Bài Toán Tối Ưu Biên Cứng
+Người 1: Dưới góc nhìn toán học, bài toán phân loại biên cứng là tìm w và b sao cho chuẩn của w là nhỏ nhất, với điều kiện mọi điểm dữ liệu lớp dương phải có điểm số lớn hơn hoặc bằng 1, và lớp âm phải nhỏ hơn hoặc bằng âm 1.
+Người 2: Ta có thể gộp hai điều kiện đó thành một bằng cách nhân nhãn y với điểm số. Ràng buộc sẽ là y nhân với (w chuyển vị nhân x cộng b) luôn lớn hơn hoặc bằng 1.
+
+Slide 31: Bài Toán Tối Ưu Biên Mềm
+Người 1: Còn với biên mềm, ta đưa vào một biến gọi là biến trượt, ký hiệu là zeta. Biến trượt này cho phép một số điểm vi phạm lấn lề.
+Người 2: Vậy ta phải cân bằng giữa việc thu nhỏ w và thu nhỏ tổng các biến trượt zeta. Siêu tham số C chính là hệ số đứng trước tổng các biến trượt này đúng không thầy?
+
+Slide 32: Hàm Mất Mát Bản Lề (Hinge Loss)
+Người 1: Để giải bài toán tối ưu hóa này, máy tính thường sử dụng hàm mất mát bản lề. Hàm này có dạng max của (0 phẩy 1 trừ đi t).
+Người 2: Nghĩa là nếu điểm dữ liệu nằm an toàn đúng phía và cách xa lề, hàm mất mát bằng 0. Còn nếu nó vi phạm, tổn thất sẽ tăng dần theo tuyến tính.
+
+Slide 33: Tối Ưu Hóa Bằng Đạo Hàm
+Người 1: Thuật toán S G D Classifier sẽ tính đạo hàm của hàm mất mát bản lề này và sử dụng Giảm Độ Dốc để cập nhật w và b sau mỗi vòng lặp.
+Người 2: Dạ, vậy hàm mất mát bản lề có bị vấn đề không khả vi tại điểm t bằng 1 không thầy? Giống hệt hàm ReLU trong mạng nơ-ron.
+Người 1: Rất tinh ý. Tại điểm đó đạo hàm không xác định, nhưng trong tính toán số, ta dùng đạo hàm dưới để giải quyết.
+
+Slide 34: Bài Toán Đối Ngẫu (Dual Problem)
+Người 1: Về lý thuyết tối ưu hóa, một bài toán luôn có dạng bài toán gốc và dạng đối ngẫu. Đối với S V M, giải bài toán đối ngẫu cho ra cùng một kết quả với bài toán gốc.
+Người 2: Vậy tại sao ta lại rắc rối chuyển sang giải bài toán đối ngẫu làm gì ạ?
+
+Slide 35: Sức Mạnh Của Đối Ngẫu
+Người 1: Bài toán đối ngẫu có tốc độ giải nhanh hơn khi số lượng mẫu dữ liệu nhỏ hơn số lượng đặc trưng. Nhưng quan trọng nhất, dạng đối ngẫu là chìa khóa DUY NHẤT để ta có thể áp dụng thủ thuật Kernel.
+Người 2: Ôi, mọi thứ đã móc xích lại với nhau. Nghĩa là không có bài toán đối ngẫu thì không có S V M phi tuyến!
+
+Slide 36: Tích Vô Hướng Trong Đối Ngẫu
+Người 1: Chính xác. Nếu nhìn vào công thức bài toán đối ngẫu, em sẽ thấy các mẫu dữ liệu huấn luyện chỉ xuất hiện dưới dạng tích vô hướng của hai véc-tơ x i và x j.
+Người 2: Và Thủ thuật Kernel hoạt động bằng cách thay thế tích vô hướng bằng một hàm số học tính toán trực tiếp kết quả của tích vô hướng trong không gian chiều cao?
+
+Slide 37: Sự Kì Diệu Của Kernel
+Người 1: Đúng như vậy. Hàm số học đó chính là Kernel. Thay vì phải đưa véc-tơ vào không gian vô hạn chiều rồi mới nhân vô hướng, hàm Kernel R B F chỉ cần tính khoảng cách giữa hai véc-tơ gốc bằng hàm e mũ.
+Người 2: Giúp tiết kiệm lượng lớn sức mạnh tính toán. Thật sự là một kiệt tác của học máy truyền thống!
+
+Slide 38: Nhược Điểm Toán Học Của S V M
+Người 1: Dù hay, nhưng S V M yêu cầu giải phương trình bậc hai (Q P Solver). Khi số lượng dữ liệu lớn, ma trận tích vô hướng kích thước m nhân m sẽ trở nên khổng lồ, vượt quá bộ nhớ RAM.
+Người 2: Đó là giới hạn lớn nhất của S V M so với Mạng nơ-ron phải không thầy? Mạng nơ-ron chạy theo lô nhỏ nên dữ liệu bao nhiêu cũng học được.
+
+Slide 39: Tổng Kết Chương 5
+Người 1: Đúng. Vậy tóm lại, S V M cung cấp một ranh giới quyết định rất an toàn với biên tối đa, cực kỳ tốt cho dữ liệu phức tạp nhưng có kích thước khiêm tốn. Đặc trưng phi tuyến được xử lý tinh tế bằng Thủ thuật Kernel.
+Người 2: Em đã nắm vững. Phân loại, Hồi quy, Linear S V C và Kernel S V C.
+
+Slide 40: Dặn Dò Bài Tập Thực Hành
+Người 1: Về nhà, các em hãy mở Jupyter Notebook. Lấy tập dữ liệu nhà ở California từ Chương 2, và thử dùng S V R để hồi quy xem kết quả có tốt hơn Rừng Ngẫu Nhiên không nhé.
+Người 2: Dạ vâng thưa thầy. Em sẽ thử tinh chỉnh C và Gamma bằng Grid Search luôn ạ.
+
+Slide 41: Lời Chào Tạm Biệt
+Người 1: Tuyệt vời. Tiết học đến đây là kết thúc. Hẹn gặp lại các em ở chương sau, chúng ta sẽ bắt đầu học về Cây Quyết Định.
+Người 2: Chúng em chào thầy ạ! Chúc thầy một ngày vui vẻ!

@@ -1,0 +1,172 @@
+Slide 1: CHƯƠNG 6 - CÂY QUYẾT ĐỊNH (DECISION TREES)
+Người 1: Chào các em. Nếu ở chương trước, chúng ta học về S V M - một thuật toán thiên về hình học và tối ưu hóa toán học, thì hôm nay chúng ta sẽ tìm hiểu một thuật toán hoạt động hoàn toàn dựa trên tư duy logic của con người: Cây Quyết Định.
+Người 2: Nghe tên "Cây Quyết Định" giống như sơ đồ cây if-else mà tụi em hay dùng khi lập trình đúng không thầy?
+Người 1: Đúng vậy! Và điều tuyệt vời nhất là Cây quyết định có thể làm được cả Phân loại, Hồi quy và nó là nền tảng cốt lõi để xây dựng nên Rừng Ngẫu Nhiên - một thuật toán siêu mạnh mẽ mà ta sẽ học ở chương sau.
+
+Slide 2: Huấn luyện và Trực quan hóa
+Người 1: Đầu tiên, hãy xem cách huấn luyện một Cây Quyết Định. Bằng Scikit-Learn, ta dùng lớp Decision Tree Classifier. Rất ngắn gọn, chỉ cần khai báo mô hình và gọi hàm fit là xong.
+Người 2: Quá quen thuộc. Nhưng làm sao để ta biết được bên trong nó đã học ra cái "cây" có hình thù như thế nào ạ?
+Người 1: Scikit-Learn cung cấp một hàm tên là export graphviz. Hàm này xuất mô hình ra một file đồ thị để ta có thể vẽ lên màn hình.
+
+Slide 3: Graphviz
+Người 1: Chúng ta dùng phần mềm mã nguồn mở Graphviz để đọc file cấu trúc đó. Và đây chính là Cây Quyết Định phân loại hoa Iris.
+Người 2: Ồ, nó vẽ ra một sơ đồ dạng khối hình chữ nhật rất trực quan, có các đường nối phân nhánh như một cái rễ cây lộn ngược.
+
+Slide 4: Đưa ra Dự Đoán
+Người 1: Bây giờ, giả sử em nhặt được một bông hoa mới. Để dự đoán, em chỉ việc đi từ Khối trên cùng, gọi là Nút Gốc. Nút Gốc hỏi: "Chiều dài cánh hoa có nhỏ hơn hoặc bằng 2 phẩy 45 xăng ti mét không?"
+Người 2: Nếu câu trả lời là CÓ, em sẽ rẽ trái. Nếu KHÔNG, em rẽ phải. Cứ thế đi xuống đúng không ạ?
+
+Slide 5: Nút Lá (Leaf Node)
+Người 1: Chính xác. Nếu em rẽ trái, em sẽ gặp ngay một nút không có nhánh nào đâm ra nữa. Đó gọi là Nút Lá.
+Người 2: Tại nút lá này không còn câu hỏi nào cả. Nó chỉ in ra chữ class bằng setosa. Nghĩa là bông hoa đó là hoa Iris setosa.
+Người 1: Việc suy luận này cực kỳ nhanh và dễ giải thích cho người không có kiến thức kỹ thuật. Đó là ưu điểm lớn của Cây Quyết Định.
+
+Slide 6: Phân Tích Thông Số Của Một Nút
+Người 1: Nhìn kỹ vào một nút, em sẽ thấy các chỉ số: samples, value, và gini. Samples là tổng số mẫu huấn luyện rơi vào nút đó. Value là số lượng mẫu của từng phân lớp.
+Người 2: Ví dụ value bằng mảng ngoặc vuông 0 phẩy 1 phẩy 45. Nghĩa là có 0 hoa setosa, 1 hoa versicolor và 45 hoa virginica ạ?
+Người 1: Rất tốt. Và từ value đó, nó tính ra một chỉ số đo lường sự "tinh khiết" của nút, gọi là Độ Không Tinh Khiết Gini.
+
+Slide 7: Độ Không Tinh Khiết Gini (Gini Impurity)
+Người 1: Gini đo lường mức độ "lộn xộn" của một nút. Một nút được gọi là thuần khiết, tức là Gini bằng 0, nếu toàn bộ 100 phần trăm số mẫu trong nút đó đều thuộc về cùng một lớp duy nhất.
+Người 2: À, nếu Gini bằng 0 thì nó không cần đặt câu hỏi phân chia nữa. Nhưng nếu trong nút vẫn còn lẫn lộn nhiều loại hoa thì Gini sẽ lớn hơn 0 đúng không thầy?
+
+Slide 8: Công Thức Tính Gini
+Người 1: Công thức tính Gini là G i bằng 1 trừ đi tổng bình phương của p i k. Trong đó p i k là tỷ lệ số mẫu của lớp k so với tổng số mẫu trong nút.
+Người 2: Công thức này chỉ là phép cộng trừ nhân chia cơ bản. Việc tính toán Gini cực kỳ nhẹ nhàng cho CPU.
+
+Slide 9: Đường Biên Quyết Định (Decision Boundaries)
+Người 1: Về mặt hình học, mỗi câu hỏi trên cây tương đương với một nhát cắt vuông góc với trục tọa độ. Nhát cắt đầu tiên tại chiều dài cánh hoa bằng 2 phẩy 45 chia không gian thành 2 nửa trái phải.
+Người 2: Nhát cắt tiếp theo sẽ lại chia tiếp không gian thành các hình chữ nhật nhỏ hơn. Vậy ranh giới của cây quyết định là các đoạn thẳng song song với các trục tọa độ.
+
+Slide 10: Ước Tính Xác Suất Lớp
+Người 1: Cây quyết định cũng có thể tính ra xác suất. Xác suất một mẫu mới thuộc về lớp k đơn giản chính là tỷ lệ của lớp k ở trong Nút Lá mà mẫu đó rơi vào.
+Người 2: Chẳng hạn rơi vào cái nút có 1 hoa loại A và 49 hoa loại B, thì xác suất thuộc loại A là 1 phần 50, tức 2 phần trăm phải không thầy?
+Người 1: Đúng. Nó gọi hàm predict proba và trả về mảng xác suất giống hệt như các thuật toán khác.
+
+Slide 11: Thuật Toán Huấn Luyện C A R T
+Người 1: Scikit-Learn sử dụng thuật toán có tên là C A R T (Classification and Regression Trees) để xây dựng cây. Thuật toán này rất "tham lam".
+Người 2: Thuật toán tham lam (Greedy algorithm) nghĩa là sao ạ?
+Người 1: Nghĩa là tại mỗi nút, nó tìm mọi cách cắt dữ liệu thành 2 nửa sao cho Độ không tinh khiết Gini giảm đi nhiều nhất có thể ngay lập tức, mà không cần quan tâm đến kết quả của các tầng dưới cùng.
+
+Slide 12: Hàm Chi Phí của C A R T
+Người 1: Đây là hàm chi phí của C A R T: J bằng m trái chia m tổng nhân với Gini trái, cộng với m phải chia m tổng nhân với Gini phải. Thuật toán cố gắng tìm đặc trưng k và ngưỡng t k sao cho J là nhỏ nhất.
+Người 2: Dạ, tức là nó tìm nhát cắt sao cho 2 nửa con sinh ra càng tinh khiết càng tốt, có trọng số ưu tiên cho nửa nào đông con hơn.
+
+Slide 13: Điều Kiện Dừng Của Thuật Toán
+Người 1: Nó sẽ liên tục đệ quy chia đôi như vậy cho đến khi đạt đến độ sâu tối đa (max depth), hoặc khi không thể tìm ra nhát cắt nào giúp giảm Gini nữa.
+Người 2: Nếu ta không giới hạn max depth, nó sẽ chẻ nhỏ dữ liệu cho đến khi tất cả các nút lá đều thuần khiết 100 phần trăm luôn ạ?
+
+Slide 14: Độ Phức Tạp Tính Toán Dự Đoán
+Người 1: Vì là một cây nhị phân, để dự đoán, ta chỉ việc duyệt từ trên xuống dưới lá. Số phép thử trung bình là logarit cơ số 2 của m. Tức là O lớn của log m.
+Người 2: Ô, logarit của m thì siêu nhỏ. Cho dù có hàng triệu mẫu huấn luyện thì nó cũng chỉ hỏi khoảng 20 câu là xong. Dự đoán bằng Cây Quyết Định tốc độ đúng là nhanh như chớp!
+
+Slide 15: Độ Phức Tạp Huấn Luyện
+Người 1: Mặc dù dự đoán nhanh, nhưng để huấn luyện, tại mỗi nút nó phải thử cắt thử mọi đặc trưng trên mọi giá trị. Độ phức tạp huấn luyện là O lớn của n nhân m nhân log m.
+Người 2: Vậy nếu dữ liệu lớn và có rất nhiều đặc trưng thì khâu huấn luyện Cây Quyết Định cũng tốn kha khá thời gian ạ.
+
+Slide 16: Gini hay Entropy?
+Người 1: Bên cạnh Gini, ta còn có một thước đo độ không tinh khiết khác là Entropy. Em có thể thiết lập tham số criterion bằng "entropy" trong mã nguồn.
+Người 2: Entropy trong vật lý đo độ hỗn loạn. Vậy trong Máy học nó cũng đo mức độ lộn xộn của dữ liệu trong một nút phải không ạ?
+
+Slide 17: Công thức Entropy
+Người 1: Đúng. Công thức của Entropy là H bằng tổng của p nhân với logarit cơ số 2 của p. Entropy bằng 0 khi nút chỉ chứa một lớp duy nhất.
+Người 2: Thế dùng Gini tốt hơn hay Entropy tốt hơn thưa thầy?
+Người 1: Cả hai thường cho ra những cái cây giống nhau. Gini tính toán nhanh hơn vì không dùng logarit, nên nó là mặc định. Nhưng đôi khi Entropy giúp sinh ra cây cân bằng hơn một chút.
+
+Slide 18: Mô Hình Phi Tham Số
+Người 1: Nhớ lại câu hỏi lúc nãy của em. Nếu ta để Cây quyết định tự do mọc rễ mà không bị giới hạn, nó sẽ bám rất chặt vào mọi nhiễu của dữ liệu huấn luyện, gây ra hiện tượng quá khớp cực kỳ nghiêm trọng.
+Người 2: Đó là đặc trưng của các Mô Hình Phi Tham Số, vì cấu trúc của nó không được định trước mà tự do bẻ cong theo dữ liệu đúng không thầy?
+
+Slide 19: Siêu Tham Số Chính Quy Hóa
+Người 1: Đúng thế. Để ngăn chặn sự "ăn vã" này, ta phải áp dụng Chính quy hóa bằng cách cắt tỉa cây thông qua các siêu tham số. Phổ biến nhất là max depth, giới hạn độ sâu của cây.
+Người 2: Dạ, ngoài max depth ra thì còn siêu tham số nào hiệu quả nữa ạ?
+
+Slide 20: Các Tham Số min và max
+Người 1: Ta có min samples split: Số lượng mẫu tối thiểu để được phép chẻ nút. Và min samples leaf: Số lượng mẫu tối thiểu bắt buộc phải có ở một nút lá.
+Người 2: Nếu em đặt min samples leaf bằng 10, nghĩa là nút lá nào có 9 mẫu thì không được hình thành, nó bắt buộc gộp chung để giữ sự tổng quát. Em hiểu rồi.
+
+Slide 21: Minh Họa Sự Chính Quy Hóa
+Người 1: Nhìn vào hai hình sau. Hình bên trái là cây mọc tự do, biên quyết định gãy khúc ngoằn ngoèo bám theo từng dấu chấm nhiễu. Hình bên phải là cây đã được giới hạn min samples leaf bằng 5.
+Người 2: Khác biệt rõ ràng quá thầy. Hình bên phải ranh giới rất gọn gàng và mịn màng, chắc chắn sẽ dự đoán dữ liệu mới tốt hơn nhiều.
+
+Slide 22: Hồi Quy Bằng Cây Quyết Định
+Người 1: Bây giờ, ta chuyển sang tác vụ Hồi quy. Rất ngạc nhiên là Cây Quyết Định làm Hồi quy cũng y chang như Phân loại, ta dùng lớp Decision Tree Regressor.
+Người 2: Trong Phân loại, nút lá trả về lớp. Vậy trong Hồi quy, nút lá sẽ trả về một con số đúng không ạ?
+
+Slide 23: Trực Quan Hóa Cây Hồi Quy
+Người 1: Chính xác. Nhìn vào sơ đồ Cây Hồi Quy, thay vì in ra class, nút lá in ra chữ value bằng không phẩy một một một.
+Người 2: Cái giá trị 0 phẩy 1 1 1 đó tính bằng cách nào vậy thầy?
+Người 1: Rất đơn giản, nó chính là giá trị mục tiêu trung bình cộng của tất cả các mẫu dữ liệu rơi vào nút lá đó.
+
+Slide 24: Dự Đoán Hồi Quy
+Người 1: Biểu đồ dự đoán của cây hồi quy không phải là một đường cong mượt mà, mà nó là những bậc thang đi ngang. Tại mỗi phân vùng giới hạn bởi các nhát cắt, mô hình dự đoán cùng một giá trị trung bình nằm ngang.
+Người 2: Nếu cây có độ sâu càng lớn thì số bậc thang càng nhiều và càng bám sát dữ liệu gốc, giống hệt việc chẻ nhỏ thành các đoạn nằm ngang.
+
+Slide 25: Hàm Chi Phí của Hồi Quy C A R T
+Người 1: Lúc này, thuật toán C A R T không dùng Gini nữa. Thay vào đó, nó cố gắng chia dữ liệu sao cho Sai số toàn phương trung bình, M S E, của hai nửa là nhỏ nhất.
+Người 2: Thuật toán vẫn giữ nguyên tính chất "tham lam", chỉ thay thế thước đo độ lệch từ Gini sang M S E là xong.
+
+Slide 26: Quá Khớp Trong Hồi Quy
+Người 1: Hình bên trái minh họa việc không dùng siêu tham số chính quy hóa cho cây hồi quy. Hàng trăm bậc thang giật cục nhảy lên nhảy xuống bắt dính lấy từng chấm nhiễu.
+Người 2: Trông thật thảm họa. Em sẽ áp dụng min samples leaf bằng 10 như hình bên phải để các bậc thang phẳng hơn và khái quát tốt hơn.
+
+Slide 27: Nhược Điểm của Cây Quyết Định
+Người 1: Cây Quyết Định có rất nhiều ưu điểm, nhưng cũng có hai "gót chân A-sin" chí mạng. Điểm yếu thứ nhất: Sự nhạy cảm với hướng của trục tọa độ.
+Người 2: Nhạy cảm với hướng nghĩa là sao thưa thầy?
+
+Slide 28: Sự Cứng Nhắc Trong Các Nhát Cắt
+Người 1: Hãy nhớ, mọi nhát cắt của Cây Quyết Định đều phải vuông góc với các trục x, y. Nghĩa là nó chỉ tạo ra được các ranh giới song song và vuông góc hình chữ nhật.
+Người 2: Ồ! Vậy nếu dữ liệu phân bố theo một đường chéo thì sao ạ?
+
+Slide 29: Xoay Dữ Liệu
+Người 1: Nếu dữ liệu là một đường chéo, Cây Quyết Định phải vẽ ra một ranh giới hình bậc thang ngoằn ngoèo để mô phỏng đường chéo đó. Rất thiếu hiệu quả.
+Người 2: Vậy ta phải làm phẳng dữ liệu trước khi đưa vào Cây Quyết Định ạ?
+Người 1: Chuẩn, ta có thể dùng thuật toán P C A (Phân tích Thành phần Chính) để xoay dữ liệu lại, sao cho nó thẳng hàng với các trục tọa độ. Khi đó cây chỉ cần cắt 1 đường là xong.
+
+Slide 30: Trực Quan PCA Xoay Trục
+Người 1: Đây là hình ảnh minh họa. Sau khi qua pipeline có hàm P C A, tập dữ liệu nghiêng đã bị bẻ nằm ngang. Cây Quyết Định lúc này chỉ cần xét một đặc trưng duy nhất là chẻ đôi được ngay.
+Người 2: Ứng dụng P C A kết hợp vào Pipeline quả là diệu kế.
+
+Slide 31: Phương Sai Cao (High Variance)
+Người 1: Điểm yếu thứ hai, và cũng là điểm yếu lớn nhất: Cây Quyết Định có phương sai rất cao.
+Người 2: Phương sai cao là thuật ngữ thống kê chỉ việc mô hình thiếu tính ổn định đúng không thầy?
+
+Slide 32: Tính Không Ổn Định
+Người 1: Rất chính xác. Vì C A R T là thuật toán tham lam, chỉ cần một thay đổi nhỏ xíu trong dữ liệu huấn luyện, ví dụ xóa đi một mẫu ngẫu nhiên, hoặc thay đổi random state, mô hình sẽ chẻ ra những nhánh hoàn toàn khác biệt.
+Người 2: Thế thì rủi ro quá, lỡ đem vào sản phẩm thực tế, dữ liệu hơi thay đổi là phán đoán sai lệch ngay.
+
+Slide 33: Sự Giải Cứu Từ Tập Hợp (Ensemble)
+Người 1: Đừng quá lo lắng. Có một phương pháp để triệt tiêu phương sai cao này: Đó là thay vì trồng 1 cây, ta sẽ trồng một khu Rừng gồm hàng nghìn cái cây Quyết Định!
+Người 2: Trồng hàng nghìn cây, sau đó cho tụi nó bỏ phiếu biểu quyết với nhau ạ?
+
+Slide 34: Lời Ngỏ Cho Rừng Ngẫu Nhiên
+Người 1: Rất nhanh trí. Kỹ thuật đó gọi là Rừng Ngẫu Nhiên (Random Forests). Nó biến điểm yếu phương sai cao của Cây Quyết Định thành sức mạnh vô song bằng cách lấy trung bình số đông. Nhưng chúng ta sẽ bàn sâu về nó ở Chương 7.
+Người 2: Nghe thật hấp dẫn. Em rất háo hức chờ đến bài Rừng Ngẫu Nhiên.
+
+Slide 35: So Sánh Tính Trắng Đen
+Người 1: Tóm lại bài hôm nay, Cây Quyết Định được gọi là Mô hình Hộp Trắng (White box model).
+Người 2: Hộp Trắng tức là ta nhìn thấu được bên trong nó ra quyết định như thế nào đúng không ạ?
+
+Slide 36: Mô Hình Hộp Đen (Black box model)
+Người 1: Đúng. Trái ngược với Hộp Đen (Black box) như Mạng Nơ-ron hay S V M, ta khó giải thích được vì sao Mạng Nơ-ron lại phán đoán như vậy, nhưng Cây Quyết Định thì ta chỉ việc vẽ cái cây ra là giải thích được tường tận.
+Người 2: Trong các bài toán tài chính, ngân hàng, cần giải trình lý do từ chối hồ sơ vay vốn, chắc chắn Cây Quyết Định sẽ được ưu tiên hơn Mạng Nơ-ron.
+
+Slide 37: Tổng Kết Cây Quyết Định
+Người 1: Tổng kết lại, Cây Quyết Định rất trực quan, dự đoán cực nhanh (O log m), xử lý được đa lớp và Hồi quy. Yêu cầu ít dữ liệu và không cần phải quy chuẩn hóa nhiều (trừ khi dùng P C A).
+Người 2: Điểm yếu là dễ bị Quá khớp và Phương sai cao, cần dùng siêu tham số giới hạn lá và độ sâu để giảm Quá khớp.
+
+Slide 38: Dặn Dò Làm Bài Tập
+Người 1: Bài tập về nhà cho các em: Hãy dùng Cây Quyết Định để phân loại tập dữ liệu Moons hình mặt trăng mà chúng ta làm hôm trước ở bài S V M, và quan sát cách nó vẽ các ranh giới bậc thang nhé.
+Người 2: Dạ vâng, em sẽ dùng Grid Search để dò siêu tham số max leaf nodes tối ưu luôn ạ.
+
+Slide 39: Bài Tập Nâng Cao
+Người 1: Thêm một bài tập nhỏ: Chia tập dữ liệu làm 1000 tập con, huấn luyện 1000 cái cây khác nhau, sau đó kết hợp dự đoán bằng bỏ phiếu đa số. Em sẽ tạo ra một Rừng Ngẫu Nhiên mini đấy!
+Người 2: Wow, em sẽ thử xây dựng từ đầu xem độ chính xác có tăng lên không.
+
+Slide 40: Lời Chúc
+Người 1: Tốt lắm, tư duy thực hành của em rất nhạy bén.
+Người 2: Dạ cảm ơn thầy. Tiết học về Cây Quyết Định cực kỳ dễ hiểu.
+
+Slide 41: Tạm biệt
+Người 1: Vậy là chúng ta đã kết thúc Chương 6. Hẹn gặp lại các em vào buổi học tuần sau với thuật toán Ensemble Learning - Học Tập Hợp. Chào các em.
+Người 2: Chúng em chào thầy ạ!

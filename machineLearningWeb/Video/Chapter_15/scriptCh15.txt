@@ -1,0 +1,184 @@
+Slide 1: Chương 15: Xử lý Chuỗi bằng RNN và CNN
+Người 1: Chào các em. Suốt từ đầu khóa đến giờ, chúng ta đã học cách dự đoán giá nhà từ các đặc trưng tĩnh, và cách phân loại ảnh con mèo. Nhưng nếu dữ liệu đầu vào không phải là một bức ảnh tĩnh, mà là một đoạn video chuyển động, hoặc một câu văn trải dài thì sao?
+Người 2: Đó là dữ liệu có tính thứ tự trước sau đúng không ạ? Nếu đảo lộn thứ tự các từ thì câu văn sẽ vô nghĩa.
+Người 1: Chính xác. Đó gọi là Dữ liệu Chuỗi. Và hôm nay chúng ta sẽ chinh phục nó bằng Mạng Nơ-ron Hồi quy (viết tắt là R N N) và cả mạng C N N một chiều!
+
+Slide 2: Nội dung Chương 15
+Người 1: Nội dung hôm nay gồm: Khái niệm Dữ liệu chuỗi, Kiến trúc cơ bản của mạng R N N. Cách huấn luyện nó bằng thuật toán B P T T. Sau đó, ta sẽ thực hành dự báo chuỗi thời gian thực tế. Cuối cùng là các kiến trúc tiên tiến như L S T M, G R U và WaveNet.
+Người 2: Vâng, em rất háo hức.
+
+Slide 3: Khái niệm: Dữ liệu Chuỗi (Sequence Data) là gì?
+Người 1: Dữ liệu Chuỗi là dữ liệu mà các phần tử có mối liên hệ mật thiết theo Thời gian hoặc Không gian. 
+Người 2: Có phải ví dụ như giá cổ phiếu chạy theo ngày, hay bản ghi âm giọng nói chạy theo từng giây không ạ?
+Người 1: Đúng. Hay dữ liệu văn bản, từ thứ hai phụ thuộc vào từ thứ nhất. Ở dữ liệu này, độ dài của chuỗi là thay đổi (câu ngắn, câu dài), và thứ tự quyết định ngữ nghĩa.
+
+Slide 4: Giới hạn của Mạng Truyền thẳng (Feedforward Networks)
+Người 1: Nếu em mang một câu văn ném vào mạng M L P hay mạng C N N 2 chiều truyền thống thì sao?
+Người 2: Mạng M L P yêu cầu đầu vào kích thước cố định. Nó lại không có "Trí nhớ" để nhớ từ đằng trước lúc đang đọc từ đằng sau ạ!
+Người 1: Hoàn toàn đúng. Mạng M L P xử lý các từ độc lập với nhau. Nó giống như em đọc sách mà chữ nào biết chữ nấy, đọc xong chữ sau là quên béng chữ trước! Đó là lý do R N N ra đời.
+
+Slide 5: Kiến trúc Mạng RNN Cơ bản
+Người 1: Mạng R N N (Recurrent Neural Network) khắc phục nhược điểm đó bằng cơ chế Vòng lặp phản hồi (Feedback loop). 
+Người 2: Tức là đầu ra của nó quay ngược trở lại làm đầu vào ạ?
+Người 1: Giỏi lắm! Tại một Bước thời gian (Time step), nó không chỉ nhận Dữ liệu mới của bước đó, mà nó còn nhận luôn Đầu ra của chính nó từ Bước thời gian trước đó! Nhờ vậy, R N N sở hữu một "Bộ nhớ" lưu trữ thông tin của quá khứ.
+
+Slide 6: Trạng thái Ẩn (Hidden State) và Tính Toán Toán Học
+Người 1: Cái "Bộ nhớ" quay vòng đó gọi là Trạng thái Ẩn (Hidden State). Tại bước thời gian t, nơ-ron nhận x_t và Trạng thái ẩn h_(t trừ 1). Cả hai được nhân với 2 bộ trọng số riêng biệt, cộng lại, rồi đưa qua hàm kích hoạt Tanh. Đầu ra vừa được xuất ra ngoài, vừa tạo thành Trạng thái ẩn h_t mới đẩy sang bước tiếp theo.
+Người 2: Chà, giống như việc truyền tay nhau một cuốn sổ ghi chép vậy.
+
+Slide 7: Đặc điểm của Trọng Số trong RNN
+Người 1: Một tính chất vĩ đại của R N N: Các trọng số W x và W y KHÔNG thay đổi qua các bước thời gian. Mạng R N N DÙNG CHUNG một bộ Trọng số duy nhất cho mọi bước.
+Người 2: Nhờ vậy mà số lượng trọng số rất nhỏ, không bị phình to dù câu văn dài 10 từ hay 100 từ ạ?
+Người 1: Chính xác. Nó giúp mạng có khả năng xử lý chuỗi có độ dài Tùy ý.
+
+Slide 8: Lớp RNN (RNN Cell Layer)
+Người 1: Nếu xếp nhiều nơ-ron R N N cạnh nhau, ta được một Lớp R N N (RNN Layer). Ở mỗi bước thời gian, Đầu ra Y của lớp là một Vector. Tương tự, Trạng thái Ẩn h cũng là một Vector mang thông tin tổng hợp của toàn bộ các nơ-ron.
+
+Slide 9: Phân loại Bài toán xử lý Chuỗi
+Người 1: Với khả năng linh hoạt, R N N có thể giải quyết 4 nhóm bài toán. Nhóm 1: Chuỗi sang Chuỗi (Sequence-to-Sequence). Ví dụ: Dịch tự động (đầu vào là câu tiếng Anh, đầu ra là câu tiếng Việt).
+Người 2: Nhóm 2 là Chuỗi sang Vector ạ? Giống như Phân tích cảm xúc: Đầu vào là một câu văn dài, nhưng đầu ra chỉ là 1 số: Tích cực hoặc Tiêu cực!
+Người 1: Đúng. Nhóm 3 là Vector sang Chuỗi (như Tạo chú thích cho ảnh). Và Nhóm 4 là Trễ (Delayed) - dịch xong toàn bộ mới xuất kết quả.
+
+Slide 10: Minh Họa 4 Dạng Kiến Trúc RNN Cốt Lõi
+Người 1: Đây là hình minh họa trực quan. Ở kiến trúc Chuỗi sang Chuỗi, nơ-ron hoạt động liên tục. Còn ở kiến trúc Chuỗi sang Vector, ta BỎ QUA tất cả kết quả trung gian, chỉ lấy kết quả CỦA BƯỚC THỜI GIAN CUỐI CÙNG, vì lúc đó bộ nhớ đã đọc xong toàn bộ thông tin.
+
+Slide 11: Ứng Dụng: Mạng Chuỗi Sang Chuỗi Dự Báo Trễ
+Người 1: Kiến trúc Trễ được dùng nhiều trong Hệ thống Dịch máy (Machine Translation). Nó gồm một mạng Encoder (Mã hóa) đọc hết câu tiếng Anh và nén thành 1 vector duy nhất. Sau đó truyền vector đó cho mạng Decoder (Giải mã) để đẻ ra từng từ tiếng Việt.
+
+Slide 12: Huấn luyện mạng Neural truyền thống (Nhắc lại)
+Người 1: Để hiểu cách mạng R N N học, ta nhắc lại một chút về Backpropagation truyền thống. Lan truyền xuôi đi từ Đầu vào tới Đầu ra, tính Sai số. Lan truyền ngược đi từ Đầu ra lùi về Đầu vào, dùng Đạo hàm để cập nhật trọng số.
+Người 2: Với R N N thì sao ạ? Nó có vòng lặp thì lùi kiểu gì thưa thầy?
+
+Slide 13: Backpropagation Through Time (BPTT)
+Người 1: Kỹ thuật vĩ đại mang tên B P T T (Lan truyền ngược Qua thời gian). Ý tưởng là: Hãy "Trải phẳng" (Unroll) cái vòng lặp đó ra theo chiều ngang của Thời gian!
+Người 2: Tức là nếu chuỗi dài 5 từ, ta copy mạng R N N thành 5 mạng nối tiếp nhau tạo thành một đường thẳng ạ?
+Người 1: Đúng! Lúc đó, mạng R N N trở thành mạng truyền thẳng bình thường nhưng siêu dài. Lan truyền xuôi chạy dọc qua các bước thời gian. Lan truyền ngược cũng lội ngược dòng THỜI GIAN từ tương lai về quá khứ để cập nhật trọng số.
+
+Slide 14: Cơ chế Hoạt động của BPTT (Minh họa)
+Người 1: Biểu đồ này cho thấy Gradient (Đạo hàm) sẽ lan truyền ngược qua hàm mất mát, rồi chảy ngược dần qua từng Tế bào R N N từ bước t lùi về bước 1. Do mọi tế bào DÙNG CHUNG trọng số, nên Gradient tại mỗi bước sẽ được CỘNG DỒN lại để cập nhật trọng số.
+
+Slide 15: Vấn Đề: Vanishing Gradients (Suy thoái Gradient)
+Người 1: Nhưng B P T T mang theo một lời nguyền đáng sợ. Nếu câu văn dài 100 từ, mạng trải phẳng ra sẽ dài 100 lớp. 
+Người 2: Dài 100 lớp thì Đạo hàm sẽ bị nhân liên tục với những số nhỏ hơn 1. Gradient biến mất (Vanishing Gradients)!
+Người 1: Chính xác. Tới lúc lùi về đến từ đầu tiên, đạo hàm chỉ còn số không. Mạng sẽ vĩnh viễn không nhớ được cái gì đã xảy ra ở xa trong quá khứ! R N N cơ bản CHỈ NHỚ ĐƯỢC NGẮN HẠN!
+
+Slide 16: Vấn Đề: Exploding Gradients (Bùng nổ Gradient)
+Người 1: Ngược lại, nếu trọng số khởi tạo lớn hơn 1, nó nhân 100 lần lên sẽ thành con số khổng lồ vô cực. Đó là Bùng nổ Gradient. Mạng sẽ sụp đổ, sinh ra các giá trị NaN.
+Người 2: Giải pháp là dùng Gradient Clipping (Cắt cụt đạo hàm) đúng không thầy?
+Người 1: Đúng. Còn để trị bệnh Suy thoái đạo hàm, ta phải dùng các tế bào xịn hơn như L S T M mà ta sẽ học phần sau.
+
+Slide 17: Bài toán Dự báo Chuỗi Thời Gian Thực Tế
+Người 1: Bây giờ, ta ứng dụng R N N vào Chuỗi thời gian (Time Series). Phổ biến nhất là Bài toán Dự báo (Forecasting). Cho trước giá cổ phiếu của 30 ngày qua, dự đoán giá ngày mai. 
+Người 2: Hoặc dự đoán doanh thu bán hàng tháng tới dựa trên doanh thu các tháng trước ạ?
+Người 1: Đúng. Có thể là Đơn biến (chỉ dự đoán dựa vào 1 chuỗi giá), hoặc Đa biến (dựa vào giá trị, khối lượng, và mã ngành cùng lúc).
+
+Slide 18: Ví dụ: Lượng hành khách xe buýt (Chicago)
+Người 1: Đây là biểu đồ lượng khách đi xe buýt hàng ngày ở Chicago. Em thấy gì?
+Người 2: Nó trồi sụt liên tục, nhưng nếu nhìn kỹ thì cứ 7 ngày nó lại lặp lại một mẫu hình (cuối tuần khách vắng hơn) đúng không ạ?
+Người 1: Mắt quan sát rất tốt! Đó gọi là Tính Mùa Vụ (Seasonality) - một đặc trưng vô cùng quan trọng của Time Series. Ngoài ra, biểu đồ còn có Xu hướng (Trend) tăng hoặc giảm dài hạn.
+
+Slide 19: Kỹ thuật Tiền Xử Lý: Sai phân (Differencing)
+Người 1: Nếu để nguyên dữ liệu này cho R N N học thì rất khó. Ta phải xóa bỏ tính Mùa vụ và Xu hướng bằng phép toán Sai phân (Differencing).
+Người 2: Sai phân làm thế nào ạ?
+Người 1: Thay vì lấy Giá trị của ngày t, ta lấy Giá trị ngày t TRỪ đi Giá trị ngày hôm trước. Chuỗi mới thu được sẽ chỉ chứa "Sự thay đổi" (lên xuống) chứ không chứa Xu hướng tăng mãi mãi nữa. Dữ liệu sẽ trở nên Ổn định (Stationary). R N N cực kỳ thích dữ liệu ổn định!
+
+Slide 20: Kỹ thuật Tiền Xử Lý: Xu Hướng Vĩ Mô
+Người 1: Hãy nhìn biểu đồ sau khi lấy sai phân bậc 1 (trừ ngày hôm qua). Xu hướng dài hạn đã biến mất, đường biểu diễn dao động đều quanh trục 0. Nhưng tính mùa vụ 7 ngày vẫn còn.
+Người 2: Vậy mình phải làm gì để xóa luôn cái mùa vụ 7 ngày ạ?
+
+Slide 21: Kỹ thuật Tiền Xử Lý: Sai phân Dài hạn
+Người 1: Em lấy Sai phân bậc 7. Tức là Giá trị ngày t trừ đi Giá trị ngày t trừ 7 (trừ ngày này tuần trước). Lúc này Mùa vụ cũng bốc hơi, đường dữ liệu biến thành nhiễu trắng ngẫu nhiên hoàn toàn sạch sẽ, hoàn hảo cho AI học.
+Người 2: Sau khi AI dự đoán xong cái "nhiễu trắng" đó cho ngày mai, mình cộng ngược lại các giá trị sai phân đã trừ để ra kết quả thực tế đúng không ạ?
+Người 1: Quá thông minh!
+
+Slide 22: Code: API Huấn luyện RNN cơ bản với Keras
+Người 1: Bây giờ là Code. Trong Keras, tạo mạng R N N cực dễ. Đầu tiên là tập dữ liệu. Dùng hàm tf chấm keras chấm utils chấm timeseries_dataset_from_array để cắt chuỗi dài thành các Cửa sổ (Window) trượt liên tục.
+Người 2: Có cửa sổ rồi thì đưa vào mô hình Sequential ạ?
+Người 1: Đúng. Mô hình chỉ cần lớp SimpleRNN(1). Hàm fit sẽ tự lo phần còn lại.
+
+Slide 23: Phân tích Code Keras RNN
+Người 1: Tuy nhiên, một mạng SimpleRNN với 1 nơ-ron là quá yếu. 
+Người 2: Lớp SimpleRNN hoạt động ra sao ạ?
+Người 1: Mặc định, nó quét qua ví dụ 50 ngày (time steps), nhưng nó BỎ QUA 49 kết quả trung gian, và chỉ trả về trạng thái ẩn của ngày cuối cùng làm Dự đoán cuối.
+
+Slide 24: Kiến trúc Mạng RNN Sâu
+Người 1: Để mô hình mạnh hơn, ta Xếp chồng nhiều lớp R N N lên nhau. Lớp R N N số 1 đọc dữ liệu gốc, sinh ra một chuỗi trạng thái ẩn. Lớp R N N số 2 đọc cái chuỗi trạng thái ẩn đó làm đầu vào. Cứ thế lên cao.
+
+Slide 25: Code: Xây dựng Mạng RNN Sâu
+Người 1: Trong code, em chỉ cần gọi 2 lớp SimpleRNN(32) liên tiếp. 
+Người 2: Khoan đã thầy, nếu lớp thứ 1 chỉ trả về kết quả ở bước cuối cùng, thì làm sao lớp thứ 2 nhận được nguyên một chuỗi mà quét ạ?
+Người 1: Câu hỏi đắt giá! Em bắt buộc phải bật tham số return_sequences bằng True ở tất cả các lớp R N N phía dưới. Khi đó, lớp 1 sẽ không giấu đi 49 kết quả trung gian nữa, mà xuất TẤT CẢ 50 kết quả lên cho lớp 2 đọc! Mọi lớp ẩn dưới phải trả về chuỗi 3D. Chỉ lớp R N N trên cùng mới trả về kết quả cuối (2D).
+
+Slide 26: Dự báo nhiều bước (Multi-step Forecasting)
+Người 1: Từ nãy giờ ta chỉ dự báo 1 bước tới (ngày mai). Nhưng thực tế người ta muốn dự báo hẳn 14 bước tiếp theo (2 tuần).
+Người 2: Vậy mình lấy dự đoán của ngày mai, ghép ngược vào đuôi dữ liệu đầu vào, rồi dự đoán tiếp ngày mốt được không ạ?
+Người 1: Được, đó gọi là Lặp tự hồi quy (Autoregressive). Nhưng cách đó bị lỗi tích lũy: Đoán sai ngày 1, sẽ kéo theo đoán sai bét ngày 14. Vậy có cách nào tốt hơn không?
+
+Slide 27: Kết quả dự báo đa bước của RNN Sâu
+Người 1: Có! Ta huấn luyện mô hình xuất ra một véc-tơ có mười bốn giá trị ở bước cuối cùng. Tốt hơn nữa, ta dùng mô hình chuỗi sang chuỗi (Seq2Seq): ở mọi bước thời gian từ quá khứ đến hiện tại, ta đều bắt mô hình phải dự báo mười bốn bước tiếp theo của riêng bước thời gian đó. Cách này giúp mô hình học ổn định hơn rất nhiều.
+
+Slide 28: Vấn đề cốt lõi của SimpleRNN (Nhắc lại)
+Người 1: Như thầy đã nói ở trên, mạng Simple R N N gặp lời nguyền Suy thoái Gradient. Nếu câu văn là: "Tôi lớn lên ở Pháp... [100 từ] ... nên tôi nói thông thạo tiếng _", mạng sẽ KHÔNG THỂ nhớ chữ Pháp ở quá xa để điền chữ "Pháp" vào chỗ trống.
+Người 2: Vì bộ nhớ h ngắn hạn đã bị thông tin mới pha loãng hết rồi ạ. Giải pháp là gì thưa thầy?
+
+Slide 29: Sơ lược về Tế bào LSTM (Long Short-Term Memory)
+Người 1: Cứu tinh xuất hiện năm 1997: L S T M (Bộ nhớ Ngắn-Dài hạn). Nó là một "Tế bào" R N N cực kỳ tinh vi.
+Người 2: Nó làm sao để nhớ được dài hạn ạ?
+Người 1: Nó tạo ra 2 đường truyền riêng biệt: Một đường cho Bộ nhớ Ngắn Hạn (h), và một Băng chuyền cao tốc cho Bộ nhớ Dài Hạn (c). Thông tin quan trọng có thể chạy dọc theo dải băng c xuyên suốt hàng ngàn bước thời gian mà KHÔNG BỊ SUY THOÁI Gradient!
+
+Slide 30: Cấu trúc Tế bào LSTM chi tiết
+Người 1: Nhìn vào kiến trúc, L S T M có vẻ rối rắm. Nhưng hãy nhìn kỹ dải băng c chạy thẳng ở phía trên. Nó chỉ thực hiện 2 phép toán cực kỳ đơn giản là Nhân và Cộng. Đạo hàm dễ dàng trượt thẳng qua nó!
+Người 2: Có các "cổng" đóng mở khóa dòng chảy dữ liệu đúng không ạ?
+Người 1: Đúng, L S T M có 3 Cổng ma thuật: Cổng Quên, Cổng Vào, và Cổng Ra.
+
+Slide 31: Phân tích 3 Cổng của LSTM (Phần 1)
+Người 1: Cổng Quên (Forget Gate): Nó dùng hàm Sigmoid sinh ra số từ 0 đến 1. Nó quyết định xem nên Xóa mẩu ký ức dài hạn nào đi. Ví dụ: đang theo dõi Chủ ngữ "John", khi gặp câu mới Chủ ngữ "Alice", nó lập tức "Mở cổng" Xóa "John" khỏi bộ nhớ!
+Người 2: Cổng Vào (Input Gate) thì quyết định xem thông tin nào đáng giá ở hiện tại để "Ghi" thêm vào bộ nhớ dài hạn đúng không ạ? Nó thêm "Alice" vào bộ nhớ!
+Người 1: Cực kỳ thông minh!
+
+Slide 32: Phân tích 3 Cổng của LSTM (Phần 2)
+Người 1: Cổng Ra (Output Gate) cuối cùng sẽ "đọc" bộ nhớ dài hạn, chắt lọc những gì tinh túy nhất để xuất ra Trạng thái Ngắn Hạn h đẩy ra ngoài làm Dự đoán, đồng thời truyền sang bước tiếp theo.
+Người 2: Tức là L S T M có khả năng Tự quyết định Nhớ cái gì, Quên cái gì. Tuyệt vời!
+
+Slide 33: Sử dụng LSTM trong Keras
+Người 1: Đằng sau L S T M là những ma trận toán học khổng lồ phức tạp, nhưng trong Keras, mọi thứ được đóng gói trong một dòng code: keras chấm layers chấm LSTM(32). 
+Người 2: Tức là mình thay chữ SimpleRNN bằng LSTM là xong ạ?
+Người 1: Chính xác. Thế giới lập trình AI thật tuyệt.
+
+Slide 34: Tế bào GRU (Gated Recurrent Unit)
+Người 1: L S T M quá mạnh, nhưng tính toán quá nặng. Năm 2014, G R U (Gated Recurrent Unit) ra đời như một bản rút gọn hoàn hảo.
+Người 2: Nó rút gọn thế nào ạ?
+Người 1: Nó gộp Trạng thái Dài hạn (c) và Ngắn hạn (h) làm một! Nó gộp luôn Cổng Quên và Cổng Vào thành 1 cổng duy nhất. 
+
+Slide 35: So sánh LSTM và GRU
+Người 1: Nếu Cổng bằng 1, nó ghi thông tin mới và Xóa luôn thông tin cũ. Tính toán nhẹ hơn rất nhiều!
+Người 2: Vậy nó có hoạt động tốt bằng L S T M không thầy?
+Người 1: Trong hầu hết bài toán, G R U cho kết quả tốt ngang ngửa L S T M nhưng huấn luyện nhanh hơn. Hãy ưu tiên thử G R U trước nhé!
+
+Slide 36: Tại sao lại dùng CNN cho Dữ liệu Chuỗi?
+Người 1: Phần cuối cùng, một bất ngờ thú vị: Dùng Mạng Tích chập C N N để xử lý Chuỗi!
+Người 2: C N N là dùng quét ảnh 2D cơ mà thầy?
+Người 1: Chuỗi là mảng 1 Chiều. Ta sẽ dùng Conv1D! Một lớp Conv1D quét cửa sổ trượt (ví dụ lấy 5 từ một lúc) chạy dọc theo câu văn, giống như nó quét tìm một "Mẫu hình ngắn" vậy. Rất giỏi để trích xuất đặc trưng cục bộ.
+
+Slide 37: Hạn chế của CNN 1D truyền thống
+Người 1: Nhưng C N N 1D truyền thống có nhược điểm. Để nhìn được cả câu văn siêu dài, em phải xếp hàng chục lớp Conv1D chồng lên nhau. Mạng sẽ trở nên quá sâu, rất tốn kém và khó huấn luyện.
+
+Slide 38: Giải pháp đột phá: Kiến trúc WaveNet (2016)
+Người 1: Năm 2016, DeepMind công bố WaveNet, xử lý âm thanh với hàng chục nghìn bước thời gian bằng C N N. Bí quyết là "Tích chập Giãn nở" (Dilated Convolution).
+Người 2: Giãn nở là sao ạ? Khung quét của nó bị phình ra ạ?
+
+Slide 39: Cách hoạt động của Dilated Convolution
+Người 1: Nhìn hình em sẽ thấy! Ở lớp thứ nhất, nó quét 2 điểm liền kề. Ở lớp thứ 2, nó quét 2 điểm CÁCH NHAU 1 ĐIỂM. Ở lớp thứ 3, nó quét 2 điểm CÁCH NHAU 3 ĐIỂM!
+Người 2: À! Tức là trường nhìn của nó Rộng theo cấp số nhân (1, 2, 4, 8) qua từng lớp, mà số lượng trọng số vẫn không hề tăng lên!
+Người 1: Xuất sắc! Nhờ vậy, chỉ với một vài lớp, mạng có thể với tay ôm trọn cả hàng ngàn bước thời gian ở dưới. Tốc độ cực nhanh và học cực tốt.
+
+Slide 40: Code: Xây dựng WaveNet với Keras
+Người 1: Trong Keras, em gọi Conv1D và tăng tham số dilation_rate thành 2, 4, 8... là em đã tạo ra WaveNet của riêng mình. 
+Người 2: Quả là ma thuật.
+
+Slide 41: Tổng Kết Chương 15 (Phần 1)
+Người 1: Tóm lại, Mạng Nơ-ron Hồi quy (R N N) với bộ nhớ động là vũ khí tối thượng cho Dữ liệu Chuỗi và Chuỗi thời gian. Bằng cách lan truyền ngược xuyên không gian và thời gian (B P T T), nó tự học được các mẫu hình trước sau.
+
+Slide 42: Tổng Kết Chương 15 (Phần 2)
+Người 1: Để đánh bại lời nguyền biến mất Đạo hàm, ta có L S T M và G R U ghi nhớ dài hạn siêu việt. Cuối cùng, C N N 1D kết hợp kỹ thuật giãn nở (WaveNet) đã chứng minh khả năng quét dữ liệu song song cực nhanh, xử lý những chuỗi khổng lồ như sóng âm thanh. Các em đã làm rất tốt.
+Người 2: Bài giảng mở mang tầm mắt lắm ạ. Cảm ơn thầy!

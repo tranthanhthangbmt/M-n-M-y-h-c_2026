@@ -9,3 +9,5 @@ tốt đấy, hãy tiến hành xây dựng, kiểm tra, nâng cấp cho hoàn t
 tương tự như vừa làm cho chương 12,13, 14, 15, giờ làm cho chương 11. Trong Figures\CH11 có 10 bức hình, hãy kiểm tra lại kế hoạch tạo slide chương 11 và cập nhật lại slide sao cho có đủ 11 bức ảnh này giúp slide bài giảng đại học này sinh động, chi tiết 
 ==================================
 Hãy tham khảo cách để đư nút Hỏi đáp với AI như trong D:\DongAUniversity\TÀI LIỆU DẠY HỌC_2024-2025\Trí tuệ nhân tạo_UDA_2025\webTTNT_2026, đường link khi nhấn vào nút đó: https://notebook.google.com/notebook/03495270-c47c-4092-a66e-630d5150357d?authuser=9
+---------------------
+tốt rồi, tương tự như đã làm script cho các chương 1-12, giờ hãy tiến hành xây dựng script chương 13 cho tôi theo kế hoạch planScriptCh13.md

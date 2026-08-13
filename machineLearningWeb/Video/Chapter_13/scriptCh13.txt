@@ -1,0 +1,185 @@
+Slide 1: Chương 13: Tải và Tiền Xử Lý Dữ Liệu với TensorFlow
+Người 1: Chào các em. Ở các chương trước, ta đã học về cấu trúc mạng nơ-ron và thuật toán tối ưu. Tuy nhiên, Học Sâu là con quái vật ngốn dữ liệu. Sẽ ra sao nếu ta có một tập dữ liệu khổng lồ vài trăm Gigabyte, thậm chí vài Terabyte?
+Người 2: Nếu dữ liệu lớn như thế thì máy tính bình thường RAM chỉ 8 Gigabyte hay 16 Gigabyte làm sao mà load hết được ạ? Máy sẽ bị treo ngay lập tức!
+Người 1: Chính xác. Đó là lúc ta phải dùng đến Data API (A P I Dữ liệu) của TensorFlow, cụ thể là module tf chấm data. Nó sẽ giúp ta bơm dữ liệu vào mô hình một cách mượt mà và siêu tốc.
+
+Slide 2: Nội dung Chương 13
+Người 1: Hôm nay chúng ta sẽ học cách giải quyết vấn đề RAM bằng Data API. Học cách Trộn, Trích xuất, và Tải trước dữ liệu (Prefetching). Học định dạng T F Record tối ưu hóa. Và cuối cùng là làm quen với TensorFlow Hub và TensorFlow Datasets.
+Người 2: Nghe có vẻ như chúng ta sẽ xây dựng một nhà máy chế biến dữ liệu quy mô công nghiệp đúng không ạ?
+
+Slide 3: Vấn đề với dữ liệu cực lớn
+Người 1: Nhắc lại một chút. Nếu dữ liệu vừa với RAM, ta chỉ cần gọi lệnh fit của Keras. Nhưng nếu nó quá lớn, ta phải tải dữ liệu TỪNG LÔ NHỎ một từ ổ cứng lên RAM.
+Người 2: Cứ mỗi lần G P U huấn luyện xong 1 lô, C P U lại lạch cạch đi đọc ổ cứng để lấy lô tiếp theo ném lên G P U. 
+Người 1: Và quá trình đó C P U phải làm thêm nhiệm vụ "Tiền xử lý" (như giải nén hình ảnh, cắt xén, chuẩn hóa). Việc này tạo ra một "nút thắt cổ chai", G P U sẽ phải ngồi không chờ đợi C P U. tf chấm data ra đời để giải quyết tận gốc nút thắt này!
+
+Slide 4: Khởi tạo tf.data.Dataset từ Tensor
+Người 1: Để bắt đầu, ta tạo một Dataset từ các Tensor có sẵn trong RAM. Dùng lệnh tf chấm data chấm Dataset chấm from_tensor_slices().
+Người 2: Lệnh này có phải nó sẽ "thái" Tensor lớn thành từng dòng nhỏ không ạ?
+Người 1: Chuẩn! Nếu em truyền vào một ma trận có 10 dòng, nó sẽ cắt thành 10 khối dữ liệu độc lập. Từ đây, ta có thể dùng vòng lặp for để duyệt qua từng phần tử rất dễ dàng.
+
+Slide 5: Các phép biến đổi chuỗi (Chaining Transformations)
+Người 1: Sức mạnh thật sự của Dataset nằm ở các Phép biến đổi chuỗi. Khi em có một Dataset, em gọi hàm map() hay filter(), nó sẽ KHÔNG tính toán ngay lập tức.
+Người 2: Nó không tính ngay thì làm gì ạ?
+Người 1: Nó trả về một Dataset MỚI. Giống như em đang ghép các đoạn ống nước lại với nhau. Nước (dữ liệu) chưa chảy, em chỉ đang thiết kế Bản vẽ đường ống mà thôi! Khi nào gọi vòng lặp for (hoặc hàm fit), nước mới bắt đầu chảy.
+
+Slide 6: Ví dụ: Repeat và Batch
+Người 1: Hai phép biến đổi hay dùng nhất là repeat và batch. 
+Người 2: Nếu em gọi dataset chấm repeat(3) thì chuyện gì sẽ xảy ra ạ?
+Người 1: Nó sẽ nhân bản toàn bộ dữ liệu lên 3 lần. Dữ liệu chạy hết một vòng sẽ tự động lặp lại vòng hai. Kế tiếp, em gọi chấm batch(7), nó sẽ gom cứ 7 phần tử lại thành một khối ma trận nhỏ. Các G P U rất thích xử lý dữ liệu theo từng khối Batch như thế này.
+
+Slide 7: Ví dụ: Map và Filter
+Người 1: Kế tiếp là hàm map. Em truyền một hàm tùy chỉnh vào map, nó sẽ đem áp dụng hàm đó cho mọi phần tử đi ngang qua đường ống. Thường dùng để biến đổi ảnh (cắt, phóng to).
+Người 2: Hàm filter thì có giống như việc lọc số chẵn số lẻ không ạ?
+Người 1: Hoàn toàn đúng. Em truyền một hàm trả về Đúng/Sai. Cái nào Sai sẽ bị vứt ra khỏi đường ống. Cuối cùng, hàm take(3) dùng để chỉ lấy đúng 3 phần tử đầu tiên rồi ngắt nước!
+
+Slide 8: Trộn dữ liệu (Shuffling)
+Người 1: Trong Học máy, thuật toán Gradient Descent cần dữ liệu độc lập, tức là các mẫu phải được Trộn ngẫu nhiên (Shuffle). 
+Người 2: Nếu dữ liệu lớn hơn RAM thì làm sao xóc trộn hết cả tập được ạ?
+Người 1: Kỹ thuật rất thông minh: Dataset sẽ bốc một lượng dữ liệu (gọi là Buffer Size) đưa vào RAM. Nó chỉ xáo trộn trong cái "bể" Buffer đó, rồi bốc ngẫu nhiên một mẫu từ bể ra đưa cho G P U. 
+
+Slide 9: Quy trình làm việc với nhiều file CSV
+Người 1: Khi dữ liệu của em là hàng ngàn file C S V khổng lồ trên ổ cứng, việc đọc tuần tự từng file sẽ rất chậm.
+Người 2: Vậy mình phải đọc song song cùng lúc nhiều file ạ?
+Người 1: Chính xác. Ta trộn danh sách các đường dẫn file (file paths), chia dữ liệu thành nhiều luồng, đọc song song, rồi gom các luồng đó trộn lại với nhau!
+
+Slide 10: Code: Interleave Đọc Song Song
+Người 1: Kỹ thuật đọc đan xen đó gọi là Interleave. Em dùng phương thức interleave, truyền vào một hàm đọc file. Thêm tham số num_parallel_calls bằng AUTOTUNE. 
+Người 2: AUTOTUNE nghĩa là gì ạ?
+Người 1: Là em giao phó việc quyết định số lượng luồng song song cho TensorFlow tự tối ưu dựa trên số nhân C P U của máy tính em đang chạy. Rất nhàn nhã!
+
+Slide 11: Tiền Xử Lý Dữ Liệu Từng Dòng (Preprocessing)
+Người 1: Khi đọc file C S V, nó chỉ là những chuỗi văn bản (String). Ta phải viết một hàm preprocess để bóc tách nó, biến văn bản thành số thực (float), phân tách Đầu vào (X) và Nhãn (Y).
+Người 2: Sau đó mình ném cái hàm preprocess này vào phương thức map() của đường ống là xong đúng không thầy? 
+
+Slide 12: Quản lý Hiệu suất: Prefetching (Tải trước)
+Người 1: Giờ là bí quyết quan trọng nhất: Lệnh prefetch() (Tải trước). Em PHẢI luôn luôn đặt nó ở cuối đường ống!
+Người 2: Nó hoạt động thế nào ạ?
+Người 1: Trong lúc G P U đang bận bịu huấn luyện lô dữ liệu số 1, thì C P U KHÔNG được nghỉ ngơi. Nhờ prefetch, C P U sẽ tự động đi đọc ổ cứng, cắt xén, chuẩn hóa lô số 2 và nhét sẵn vào RAM. Khi G P U xong lô 1, lô 2 đã sẵn sàng dâng lên tận miệng!
+Người 2: Tuyệt vời! Vậy là G P U không bị lãng phí một giây phút nào cả! Tốc độ được tối đa hóa!
+
+Slide 13: Sử dụng Dataset trong Keras
+Người 1: Đường ống đã xây xong. Làm sao để Keras sử dụng nó? Vô cùng đơn giản: Truyền nguyên biến đường ống Dataset đó vào hàm fit của Keras. Không cần quan tâm batch size hay shuffle gì trong hàm fit nữa, vì đường ống đã lo hết rồi!
+Người 2: Dạ rõ. Rất đồng bộ và tiện lợi.
+
+Slide 14: Code: Huấn luyện với tf.data
+Người 1: Code ở đây chỉ gọi model chấm fit, tham số thứ nhất là train_dataset, tham số validation_data là đường ống test_dataset.
+Người 2: Nó gọn hơn dùng NumPy Array nhiều ạ. Keras tự biết khi nào đường ống cạn nước để qua Epoch mới đúng không ạ?
+Người 1: Chính xác.
+
+Slide 15: Ví dụ Cụ Thể Về Các Giai Đoạn Đọc Dữ Liệu
+Người 1: Hãy nhìn sơ đồ. Không có prefetch, C P U và G P U phải chờ nhau làm việc luân phiên. Tổng thời gian huấn luyện sẽ rất dài. Khi có prefetch, chúng hoạt động hoàn toàn SONG SONG, tiết kiệm gần phân nửa thời gian.
+Người 2: Thật là một thiết kế hệ thống tối ưu.
+
+Slide 16: Giải nén TFRecord (Parsing)
+Người 1: File C S V đọc rất chậm và tốn dung lượng. T F cung cấp định dạng T F Record (sẽ học chi tiết sau). File này nén bằng nhị phân siêu tốc độ. Để đọc nó, ta phải viết hàm Parsing (Phân tích cú pháp) bằng lệnh tf chấm io chấm parse_single_example.
+Người 2: Nó sẽ dịch ngược chuỗi nhị phân (bytes) thành các Tensor gốc ban đầu ạ?
+
+Slide 17: Chuẩn Hóa Hình Ảnh (Image Standardization)
+Người 1: Đối với dữ liệu hình ảnh, ta có thể dùng phương thức map() kết hợp các hàm của TensorFlow như tf chấm image chấm resize để chuẩn hóa độ phân giải.
+Người 2: Các thao tác này C P U làm hay G P U làm ạ?
+Người 1: Thường C P U sẽ gánh phần này nhờ cơ chế đường ống T F data, để dành G P U cho việc tính toán Đạo hàm. 
+
+Slide 18: Data Augmentation Bằng Keras Layers
+Người 1: Tuy nhiên, việc tăng cường ảnh (Augmentation) như lật, xoay ngẫu nhiên... có thể được Keras cung cấp dưới dạng các Lớp (Layers).
+Người 2: Ô, mình có thể nhét thẳng các lớp Tăng cường ảnh vào đầu Mô hình mạng nơ-ron luôn ạ?
+Người 1: Chính xác! Các lớp này chỉ chạy lúc huấn luyện. Khi mang đi dự đoán thực tế, nó tự động tắt đi. Nếu G P U mạnh, nhét vào mô hình sẽ rất tiện. Nếu G P U yếu, hãy đưa nó vào hàm map() của đường ống để C P U gánh thay.
+
+Slide 19: Xử Lý Văn Bản: TextVectorization
+Người 1: Còn nếu dữ liệu là Chữ (Text)? Mô hình không hiểu chữ "Xin chào", nó chỉ hiểu Số. Ta dùng lớp TextVectorization. Nó sẽ chia câu thành từng từ (token), rồi thay thế mỗi từ bằng một con số Id.
+Người 2: Tức là nó tự tạo ra một cái Từ điển (Vocabulary), từ nào xuất hiện nhiều nhất sẽ có số 1, từ tiếp theo số 2?
+
+Slide 20: Ví Dụ: TextVectorization
+Người 1: Đúng. Em gọi hàm adapt() để nó đọc lướt qua toàn bộ văn bản và xây dựng từ điển. Khi đi vào mạng nơ-ron, câu "Xin chào thầy" sẽ biến thành chuỗi tensor ngoặc vuông 5, 2, 8.
+Người 2: Rất trực quan và dễ hiểu ạ.
+
+Slide 21: Cơ chế Hashing (Băm Phân Loại)
+Người 1: Nhược điểm của TextVectorization là từ điển có thể lớn tới hàng triệu từ, tốn rất nhiều RAM. Giải pháp thay thế là Hashing (Băm dữ liệu).
+Người 2: Băm dữ liệu là sao ạ? Giống mã hóa mật khẩu ạ?
+Người 1: Gần giống. Nó dùng thuật toán toán học băm bất kỳ từ nào thành một con số Id nằm trong một khoảng cố định (ví dụ từ 0 đến 1000). Không cần lưu từ điển nữa! Đổi lại, sẽ có vài từ khác nhau vô tình băm ra cùng một số Id (gọi là Xung đột - Collision). 
+Người 2: Có bị sai lệch mô hình không thầy?
+Người 1: Trong Học Sâu, mô hình đủ thông minh để tự phân biệt và sửa sai những xung đột nhỏ đó. Đổi lại, tốc độ và RAM tiết kiệm được là vô giá.
+
+Slide 22: Sử dụng HashingLayer trong Keras
+Người 1: Em có thể dùng lớp Hashing của Keras cho các biến văn bản (Categorical). Chẳng hạn biến "Nghề nghiệp" có 50 nghề, ta băm nó vào 10 thùng (bins).
+
+Slide 23: TensorFlow Hub (TF Hub)
+Người 1: Để tăng cường biểu diễn văn bản, ta không cần bắt đầu từ con số 0. Hãy dùng TensorFlow Hub! Đây là kho tàng chứa các mô hình ngôn ngữ hoặc hình ảnh khổng lồ đã được Google và cộng đồng huấn luyện sẵn.
+Người 2: Như kiểu có người đọc hết sách trên Wikipedia rồi, mình chỉ việc tải bộ não của họ về cấy ghép vào mô hình của mình ạ?
+Người 1: Hoàn toàn chính xác! 
+
+Slide 24: Cách tải Mô Hình từ TF Hub
+Người 1: Em chỉ cần lên web tfhub.dev tìm mô hình, copy cái đường link (URL) của nó. Sau đó dùng lớp hub chấm KerasLayer, thả URL đó vào. Keras sẽ tự động tải bộ não đó về và cắm thẳng vào mô hình của em như một Lớp xử lý bình thường!
+
+Slide 25: Giới thiệu TFRecord
+Người 1: Khi mô hình quá lớn, đọc nhiều file rời rạc cực kỳ chậm. Đó là lý do TensorFlow tạo ra định dạng TFRecord. Nó đóng gói tất cả hàng triệu file ảnh và text của em vào một vài file nhị phân siêu to khổng lồ.
+Người 2: Giống như mình nén tất cả vào file ZIP để copy cho lẹ đúng không thầy?
+Người 1: Gần giống, nhưng nó lưu dưới định dạng dữ liệu nối tiếp, giúp G P U không mất thời gian phân tích cú pháp C S V.
+
+Slide 26: Đọc và Viết TFRecord
+Người 1: Việc tạo TFRecord hơi phức tạp. Em dùng tf chấm io chấm TFRecordWriter để ghi từng chuỗi byte vào file. Khi đọc thì dùng tf chấm data chấm TFRecordDataset.
+
+Slide 27: Protocol Buffers (Protobuf)
+Người 1: Bản chất của TFRecord được xây dựng trên công nghệ Protocol Buffers (Protobuf) của Google. Nó quy định cấu trúc dữ liệu rất chặt chẽ và lưu bằng nhị phân. Gọn nhẹ hơn J S O N hay X M L rất nhiều.
+Người 2: Chắc là phải khai báo cấu trúc nghiêm ngặt như C cộng cộng rồi mới được nén ạ?
+Người 1: Đúng. Keras có cung cấp các đối tượng tf chấm train chấm Example để em đóng gói dữ liệu thành chuẩn Protobuf trước khi ghi vào file.
+
+Slide 28: Tiền Xử Lý Bằng Keras Layers
+Người 1: Như đã nói ở Slide 18, em có thể đưa các thao tác Tiền xử lý trực tiếp vào thành một Lớp Keras (Keras Layers).
+Người 2: Ưu điểm là khi chia sẻ mô hình cho người khác, họ không cần phải biết cách chuẩn hóa dữ liệu, vì tất cả logic đã nằm gọn trong bản thân mô hình rồi!
+Người 1: Câu trả lời 100 điểm. Em lưu mô hình thế nào, thì lúc load lại nó hoạt động y hệt thế.
+
+Slide 29: Tiền Xử Lý Một Lần (AOT Preprocessing)
+Người 1: Tuy nhiên, nếu em nhét nó vào mô hình, quá trình tính toán tiền xử lý sẽ lặp đi lặp lại qua mỗi Epoch. Rất lãng phí C P U. 
+Người 2: Làm sao để tối ưu ạ?
+Người 1: Hãy chạy Tiền xử lý đúng MỘT LẦN (Ahead Of Time - A O T). Lưu toàn bộ dữ liệu ĐÃ CHUẨN HÓA xuống ổ cứng (ví dụ dưới dạng TFRecord). Sau đó, quá trình huấn luyện chỉ việc đọc dữ liệu đã xử lý sạch sẽ lên, tốc độ sẽ bay trên bầu trời!
+
+Slide 30: Chuẩn Hóa Dữ Liệu (Normalization)
+Người 1: Về các thao tác chuẩn hóa phổ biến. Đầu tiên là Normalization Layer. Nó tự động trừ đi giá trị trung bình và chia cho độ lệch chuẩn.
+
+Slide 31: Rời Rạc Hóa Dữ Liệu Liên Tục (Discretization)
+Người 1: Có những dữ liệu liên tục như "Tuổi". Thay vì giữ số liên tục 15, 30, 65, ta có thể cắt nó thành các "Thùng" (Bins): Trẻ em, Thanh niên, Người già. Quá trình này gọi là Discretization.
+Người 2: Giúp mô hình dễ nắm bắt xu hướng tổng quát hơn là từng con số lẻ tẻ ạ?
+Người 1: Đúng vậy.
+
+Slide 32: Mã Hóa One-Hot (One-Hot Encoding)
+Người 1: Với dữ liệu Hạng mục (Categorical) như Màu Đỏ, Xanh, Vàng. Ta không thể đưa chữ vào, cũng không nên đánh số 0, 1, 2 vì máy tính sẽ hiểu nhầm màu Vàng lớn hơn màu Đỏ.
+Người 2: Em nhớ rồi, dùng One-Hot Encoding! Màu đỏ là vector 1-0-0, Vàng là 0-0-1. Các màu hoàn toàn bình đẳng với nhau.
+Người 1: Hoàn hảo. Keras có sẵn lớp CategoryEncoding để làm việc này.
+
+Slide 33: StringLookup và CategoryEncoding
+Người 1: Trong thực tế, em dùng lớp StringLookup để biến chữ "Màu Đỏ" thành Id số 1. Rồi ném Id số 1 đó qua CategoryEncoding để biến thành vector One-Hot 1-0-0. Keras chia rất rành mạch.
+
+Slide 34: Hạn Chế của One-Hot Encoding
+Người 1: Thế nhưng, chuyện gì xảy ra nếu biến "Nghề nghiệp" của em có tới 10,000 nghề khác nhau?
+Người 2: Dùng One-Hot thì vector sẽ có độ dài 10,000. Trong đó 1 ô bằng 1, và 9,999 ô còn lại là số 0. Ma trận sẽ khổng lồ và cực kỳ lãng phí RAM!
+Người 1: Đúng! Với từ vựng cực lớn, One-Hot là thảm họa.
+
+Slide 35: Khái Niệm Nhúng (Embedding)
+Người 1: Giải pháp vĩ đại để thay thế One-Hot chính là kỹ thuật Nhúng (Embedding). Thay vì dùng 10,000 số 0, ta chỉ dùng một vector số thực RẤT NGẮN, ví dụ độ dài 300.
+Người 2: 300 con số thực này lấy ở đâu ra ạ?
+Người 1: Nó chính là Trọng số (Weights) của Mạng nơ-ron! Ban đầu nó khởi tạo ngẫu nhiên. Khi mô hình huấn luyện, nó sẽ TỰ HỌC ra 300 con số tốt nhất để đại diện cho từng nghề nghiệp. Quá trình này gọi là Mạng nơ-ron tự "Nhúng" (nhét) từ vựng vào Không gian số học.
+
+Slide 36: Không Gian Ngữ Nghĩa của Word Embeddings
+Người 1: Kỳ diệu hơn nữa, khi huấn luyện với lượng dữ liệu khổng lồ, kỹ thuật Nhúng tạo ra Không gian Ngữ nghĩa. 
+Người 2: Tức là nếu em vẽ vector của từ "Vua" và "Hoàng Hậu", chúng sẽ nằm gần nhau trong không gian 300 chiều đó ạ?
+Người 1: Đúng! Thậm chí ta có phép toán kinh điển: Vector "Vua" trừ Vector "Đàn ông" cộng Vector "Đàn bà" sẽ xấp xỉ bằng Vector "Hoàng Hậu". Mô hình AI thực sự ĐÃ HIỂU được ý nghĩa của ngôn từ!
+
+Slide 37: Code: Xây Dựng Embedding trong Keras
+Người 1: Trong Keras, việc này dễ như trở bàn tay. Em chỉ cần chèn lớp Embedding(input_dim=10000, output_dim=300). Nó sẽ tự động lo mọi thứ! 
+
+Slide 38: TensorFlow Transform (tf.Transform)
+Người 1: Một công cụ cuối: T F Transform. Khi đưa AI vào sản phẩm thật (Production), em sẽ có 2 đường ống độc lập: một đường ống lúc huấn luyện, một đoạn code riêng lúc chạy thực tế.
+Người 2: Nếu có ai đó cập nhật công thức tính chuẩn hóa ở chỗ này mà quên sửa chỗ kia (Training-Serving Skew) thì thảm họa xảy ra đúng không ạ?
+Người 1: Chuẩn! T F Transform giải quyết bằng cách định nghĩa thao tác Tiền xử lý một lần duy nhất. Nó áp dụng cho tập Huấn luyện, đồng thời nó tự ĐÓNG GÓI công thức đó luôn vào mô hình khi đem đi chạy thực tế. Đảm bảo tính nhất quán tuyệt đối.
+
+Slide 39: TensorFlow Datasets (TFDS)
+Người 1: Cuối cùng, nếu em chán việc tự cào dữ liệu, hãy tải ngay TensorFlow Datasets (T F D S). Đây là thư viện chứa sẵn hàng trăm tập dữ liệu chuẩn mực nhất thế giới (M N I S T, ImageNet...).
+Người 2: Em chỉ cần dùng lệnh load là nó tự tải về tạo thành đường ống tf chấm data chấm Dataset luôn ạ?
+Người 1: Chính xác. Rất tiện lợi cho việc học tập và nghiên cứu.
+
+Slide 40: Sử dụng TFDS
+Người 1: Mã nguồn để dùng T F D S chỉ tốn đúng 1 dòng: tfds chấm load, truyền vào tên dataset (như imdb_reviews), và chỉ định lấy tập train hay test. Xong!
+
+Slide 41: Tổng Kết Chương 13
+Người 1: Tóm lại, tiền xử lý dữ liệu lớn là khâu ngốn nhiều công sức nhất trong AI. Nhưng với bộ đôi tf chấm data mạnh mẽ (cùng Prefetch, Interleave) và các lớp Tiền xử lý tinh vi của Keras, ta đã biến việc này thành nghệ thuật đường ống tự động siêu tốc. 
+Người 2: Cộng thêm sức mạnh của TF Record, Embeddings và TF Hub. Em đã nắm được bí kíp xử lý dữ liệu lớn. Cảm ơn thầy!

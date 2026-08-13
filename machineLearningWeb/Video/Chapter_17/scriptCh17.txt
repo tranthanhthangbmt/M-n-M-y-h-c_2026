@@ -1,0 +1,162 @@
+Slide 1: Chương 17: Autoencoder, GAN và Mô hình Khuếch tán
+Người 1: Chào các em. Từ đầu khóa học, chúng ta chỉ tập trung dạy AI cách Phân loại (đây là ảnh chó hay mèo). Hôm nay, ta bước sang một đẳng cấp hoàn toàn mới: Mô hình Sinh (Generative Models).
+Người 2: Có phải là dạy AI tự vẽ ra một bức ảnh con mèo mới tinh chưa từng tồn tại không ạ?
+Người 1: Chính xác! AI có thể sáng tạo ra khuôn mặt người, âm nhạc, hay phong cảnh. Để làm được điều vĩ đại đó, ta sẽ đi qua 3 công nghệ: Bộ tự mã hóa (Autoencoder), Mạng Đối kháng Sinh (G A N) và cuối cùng là Mô hình Khuếch tán (Diffusion Models) - lõi của Midjourney ngày nay!
+
+Slide 2: Mục tiêu của Chương
+Người 1: Trong chương này, ta sẽ học cách Autoencoder nén dữ liệu. Sau đó nâng cấp nó thành Autoencoder Biến phân (V A E) để sinh ảnh mới. Khám phá cách G A N dùng 2 mạng nơ-ron chiến đấu với nhau. Và cuối cùng là phá vỡ bức ảnh thành nhiễu rồi phục hồi nó bằng Mô hình Khuếch tán.
+
+Slide 3: Mục lục
+Người 1: Gồm 5 phần. 1: Kiến trúc Autoencoder. 2: Ứng dụng Autoencoder (giảm chiều, khử nhiễu). 3: Autoencoder Biến phân (V A E). 4: Mạng G A N. 5: Mô hình Khuếch tán.
+
+Slide 4: 1.1 Biểu diễn dữ liệu hiệu quả
+Người 1: Trí thông minh là gì? Nó phụ thuộc vào việc tìm ra các "Biểu diễn dữ liệu" (Data Representation) tốt nhất. Nhìn vào dải số này: 121, 144, 169, 196, 225... Em có thể nhớ hết chúng không?
+Người 2: Rất khó nhớ ạ.
+Người 1: Nhưng nếu thầy nói đó là Bình phương của 11, 12, 13, 14, 15 thì sao?
+Người 2: Ồ! Vậy thì em nhớ được ngay! Đó là "bản chất ẩn" của chuỗi số!
+Người 1: Xuất sắc. Khả năng tìm ra Quy luật Ẩn đó chính là nén dữ liệu. Và Autoencoder làm xuất sắc việc này.
+
+Slide 5: 1.2 Kiến trúc Autoencoder Đơn giản
+Người 1: Autoencoder là một mạng nơ-ron có cấu trúc "cổ chai". Gồm 2 phần: Bộ mã hóa (Encoder) và Bộ giải mã (Decoder).
+Người 2: Sao gọi là cổ chai ạ?
+Người 1: Vì số nơ-ron ở lớp ẩn ở giữa ÍT HƠN RẤT NHIỀU so với lớp đầu vào! Nó ép bức ảnh 784 điểm ảnh phải chui lọt qua cái lỗ chỉ có 30 nơ-ron. 
+Người 2: Thế thì nó mất hết thông tin! Nhãn (Label) lúc này là gì ạ?
+Người 1: Nhãn Y chính là Đầu vào X! Ta bắt Decoder phải dùng 30 con số bị nén đó để Vẽ Lại (Tái tạo) bức ảnh ban đầu sao cho giống nhất! Học Máy Không Giám Sát đích thực!
+
+Slide 6: 1.3 Autoencoder Tuyến tính và PCA
+Người 1: Nếu em xây dựng Autoencoder chỉ có 1 lớp ẩn tuyến tính duy nhất (không dùng hàm kích hoạt phi tuyến), thì nó sẽ thực hiện một phép toán y hệt như P C A (Phân tích Thành phần Chính) mà ta đã học.
+Người 2: Nó sẽ chiếu dữ liệu xuống Không gian con có phương sai lớn nhất ạ?
+
+Slide 7: 1.4 So sánh PCA và Autoencoder Tuyến tính
+Người 1: Đúng. Trọng số của bộ Mã hóa (Encoder) sẽ tự động khớp với các vector thành phần chính của P C A. Nhưng thay vì dùng toán học ma trận Eigenvectors để giải như P C A, Autoencoder dùng thuật toán Lan truyền ngược (Backpropagation) để tự học ra điều đó!
+
+Slide 8: 1.5 Autoencoder Xếp chồng (Stacked Autoencoders)
+Người 1: Để mạnh hơn, thay vì 1 lớp, ta xếp chồng nhiều lớp lên nhau tạo thành Stacked Autoencoder. Cấu trúc thường đối xứng.
+Người 2: Tức là đầu vào 784 nơ-ron, giảm xuống 300, rồi nén xuống 150 (Mã hóa). Sau đó giải mã phình lên 300, rồi xuất ra 784 đúng không thầy?
+Người 1: Chính xác. Lớp 150 ở giữa chính là Biểu diễn Ẩn (Latent Representation). Nó chứa các "khái niệm" cốt lõi nhất của bức ảnh.
+
+Slide 9: 1.6 Xây dựng Stacked AE bằng Keras
+Người 1: Code rất dễ. Em tạo mô hình Sequential `encoder` với các lớp Dense giảm dần. Sau đó tạo mô hình `decoder` phình to dần. Cuối cùng nối chúng lại thành một mô hình `autoencoder`. 
+Người 2: Loss Function (Hàm mất mát) ở đây mình dùng gì ạ?
+Người 1: Dùng M S E (Sai số toàn phương trung bình) giữa ảnh đầu vào X và ảnh đầu ra X phẩy (X').
+
+Slide 10: 1.7 Đánh giá Chất lượng Tái tạo (Reconstructions)
+Người 1: Sau khi huấn luyện, ta vẽ ảnh gốc và ảnh tái tạo cạnh nhau để xem. Thường ảnh tái tạo sẽ hơi mờ (vì nó đã vứt bỏ các chi tiết thừa thãi và chỉ giữ lại bản chất). Càng nét thì chứng tỏ mô hình nén càng giỏi.
+
+Slide 11: 2.1 Trực quan hóa dữ liệu (Visualization)
+Người 1: Ứng dụng số 1 của Autoencoder là Trực quan hóa dữ liệu. Nếu cái cổ chai (lớp giữa) có đúng 2 nơ-ron, ta ép toàn bộ kho ảnh M N I S T (chữ số viết tay) biến thành 2 con số (Tọa độ X và Y).
+Người 2: Sau đó mình chấm nó lên đồ thị mặt phẳng 2 D ạ?
+Người 1: Đúng! Tuy nhiên, thường nó sẽ bị dính chùm vào nhau.
+
+Slide 12: 2.2 Biểu đồ phân cụm bằng AE + t-SNE
+Người 1: Mẹo ở đây là: Dùng Autoencoder nén từ 784 chiều xuống 30 chiều. Sau đó dùng thuật toán t-SNE nén tiếp từ 30 chiều xuống 2 chiều! Kết quả đồ thị sẽ cực kỳ đẹp, các chữ số 0, 1, 2 sẽ tự động nhóm thành các cụm tách biệt hoàn toàn!
+
+Slide 13: 2.3 Tiền huấn luyện Không giám sát (Unsupervised Pretraining)
+Người 1: Ứng dụng số 2 vô giá: Tiền huấn luyện (Pretraining). Khi em có rất ít dữ liệu có nhãn (vd: chỉ 1000 ảnh có gán nhãn Chó/Mèo), nhưng có hàng triệu ảnh không gán nhãn. 
+Người 2: Mình phải làm sao ạ?
+Người 1: Hãy huấn luyện một Autoencoder tự tái tạo trên hàng triệu ảnh KHÔNG nhãn đó. Nó sẽ tự học được "Mèo là gì, Chó là gì" ở lớp Encoder. Sau đó, em lấy cái Encoder đó, cắt bỏ Decoder đi, gắn thêm 1 lớp Phân loại lên đỉnh, và chỉ dùng 1000 ảnh có nhãn kia để Tinh chỉnh lại. Điểm số sẽ cao chót vót!
+
+Slide 14: 2.4 Kỹ thuật Ràng buộc Trọng số (Tying Weights)
+Người 1: Khi kiến trúc đối xứng, ta có thể ràng buộc Trọng số của Decoder BẰNG CHUẨN với Trọng số chuyển vị của Encoder. Điều này giảm một nửa số lượng tham số cần học, giúp tăng tốc rất nhiều.
+
+Slide 15: 2.5 Huấn luyện Từng lớp (Greedy Layer-wise Training)
+Người 1: Những năm 2000, chưa có Re L U và Batch Norm, huấn luyện sâu rất khó. Người ta dùng Greed Layer-wise: Huấn luyện một Autoencoder mỏng 1 lớp. Đóng băng lớp đó. Dùng kết quả lớp đó huấn luyện tiếp Autoencoder thứ 2. Cuối cùng ghép lại. Ngày nay ta không cần làm vậy nữa, nhưng đó là mốc lịch sử quan trọng.
+
+Slide 16: 2.6 Autoencoder Tích chập (Convolutional AE)
+Người 1: Với hình ảnh lớn, ta không dùng Dense mà dùng Conv2D! Encoder sẽ dùng Tích chập và MaxPooling để giảm độ phân giải. Còn Decoder sẽ dùng Tích chập NGƯỢC (Transposed Convolution) để phóng to ảnh ra lại.
+
+Slide 17: 2.7 Autoencoder Khử nhiễu (Denoising AE)
+Người 1: Ứng dụng số 3: Denoising Autoencoder (Khử nhiễu). Thay vì ép Autoencoder tự tạo lại một bức ảnh hoàn hảo. Ta CỐ TÌNH bôi bẩn bức ảnh gốc (thêm nhiễu Gauss hoặc Dropout bôi đen 1 phần).
+Người 2: Sau đó bắt nó tái tạo lại bức ảnh "Sạch" ban đầu ạ?
+Người 1: Chính xác! Autoencoder sẽ bị ép phải Tưởng tượng ra phần bị thiếu. Nó không thể copy pixel 1-1 nữa, mà phải hiểu bản chất sâu sắc (rằng đây là một hình chữ O, bị khuyết một góc thì nó phải vẽ cong nối lại).
+
+Slide 18: 2.8 Hiệu quả của Denoising Autoencoder
+Người 1: Nhìn ảnh, đầu vào là các con số viết tay bị bôi nhiễu xám xịt mù mịt. Đầu ra, Autoencoder khử sạch bóng, bức ảnh rõ nét như mới. 
+Người 2: Công nghệ này dùng để khôi phục ảnh cũ, xước đúng không thầy? Thật kỳ diệu!
+
+Slide 19: 2.9 Autoencoder Thưa (Sparse AE)
+Người 1: Nếu lớp cổ chai quá to (ví dụ 300 nơ-ron), nó có thể gian lận bằng cách copy nguyên xi từng pixel qua. Để chống gian lận, ta thêm Ràng buộc Thưa (Sparsity L1) vào lớp ẩn. 
+Người 2: Nghĩa là ép hầu hết các nơ-ron ở giữa phải bằng 0 ạ?
+Người 1: Đúng. Ép nó "Tắt" nơ-ron đi. Chỉ cho vài nơ-ron "Sáng" lên. Điều này bắt nó tìm ra các đặc trưng Độc lập cực kỳ quan trọng nhất (như phân tách các nét bút, chứ không lấy cả mảng màu).
+
+Slide 20: 3.1 Giới thiệu về Mô hình Sinh (Generative Models)
+Người 1: Autoencoder nén rất giỏi. Nhưng thử tưởng tượng, em thọc tay vào lớp Cổ chai 30 chiều đó, em bốc ngẫu nhiên 1 vector (ví dụ 30 con số ngẫu nhiên), ném cho Decoder giải mã. Chuyện gì xảy ra?
+Người 2: Nó sẽ đẻ ra một bức ảnh mới hoàn toàn ạ?
+Người 1: Không! Nó sẽ đẻ ra rác! Vì Không gian ẩn (Latent space) của Autoencoder bình thường rất lồi lõm, đứt gãy. Có những vùng trống không có ý nghĩa. Để sinh được ảnh thật, Không gian Ẩn phải LIÊN TỤC và tuân theo Quy luật Xác suất. Đó là lúc V A E xuất hiện!
+
+Slide 21: 3.2 Kiến trúc VAE - Sinh dữ liệu qua Phân phối
+Người 1: Thay vì nén 1 bức ảnh thành ĐÚNG 1 vector (ví dụ Tọa độ X = 5, Y = 6). V A E (Variational Autoencoder) bắt Encoder phải sinh ra 2 tham số: Giá trị Trung bình (Mean) và Độ Lệch chuẩn (Variance).
+Người 2: Có nghĩa là nó sinh ra một Đám mây Xác suất hình quả chuông (Phân phối chuẩn) bao quanh tọa độ đó đúng không ạ?
+Người 1: Cực kỳ thông minh! Sau đó, ta Bốc ngẫu nhiên (Sample) một điểm bất kỳ Nằm trong Đám mây đó đưa cho Decoder giải mã. 
+
+Slide 22: 3.3 Hàm mất mát của VAE và Reparameterization
+Người 1: Nhờ lấy mẫu ngẫu nhiên, V A E bị ép phải học sao cho các điểm trong cùng 1 đám mây đều giải mã ra ảnh tương tự nhau. Nó khiến Không gian Ẩn trở nên liền mạch, mượt mà. Ta thêm Loss Kullback-Leibler (KL Divergence) để ép các đám mây tụ lại gần gốc tọa độ.
+Người 2: Lấy mẫu ngẫu nhiên thì làm sao Lan truyền ngược đạo hàm qua được ạ? Khởi tạo ngẫu nhiên đạo hàm bằng không mà!
+Người 1: Họ dùng Thủ thuật Tái tham số hóa (Reparameterization Trick). Tách hàm ngẫu nhiên độc lập ra khỏi phép nhân, thế là Gradient lách qua được an toàn.
+
+Slide 23: 3.4 Kết quả Tạo ảnh Mới với VAE
+Người 1: Sau khi huấn luyện, ta NÉM Encoder đi! Chỉ lấy mình Decoder. Quăng cho nó một mảng số ngẫu nhiên theo Phân phối chuẩn. Nó sẽ vẽ ra những khuôn mặt, những chữ số HOÀN TOÀN MỚI, chưa từng tồn tại!
+Người 2: Thật tuyệt. Nhưng nhìn ảnh sinh ra nó hơi mờ (blurry) thầy ạ.
+Người 1: Đó là nhược điểm của V A E. Do nó tính M S E so khớp điểm ảnh.
+
+Slide 24: 3.5 Nội suy Ngữ nghĩa (Semantic Interpolation)
+Người 1: Không gian liền mạch cho phép ta làm phép Nội suy. Lấy vector ẩn của bức ảnh Mặt cười. Lấy vector ẩn của ảnh Mặt mếu. Tìm một vector Trung bình nằm chính giữa đoạn thẳng đó.
+Người 2: Xong cho Decoder vẽ cái điểm ở giữa ra... Ta được một khuôn mặt đang nhếch mép cười mỉm! Cảm xúc biến đổi dần dần. Rất logic!
+
+Slide 25: 4.1 Mạng Đối kháng Sinh (Generative Adversarial Networks)
+Người 1: Để khắc phục ảnh mờ của V A E, năm 2014, Ian Goodfellow phát minh ra G A N. Nó gây bão toàn cầu. Ý tưởng là cho 2 Mạng nơ-ron đánh nhau!
+Người 2: Đánh nhau thế nào ạ?
+Người 1: Hai mạng là: Mạng Sinh (Generator) và Mạng Phân biệt (Discriminator). 
+
+Slide 26: 4.2 Kiến trúc Kẻ làm giả và Cảnh sát
+Người 1: Hãy tưởng tượng Generator là Kẻ làm giả tiền (từ các con số ngẫu nhiên nó cố vẽ ra tiền giả sao cho giống thật). Còn Discriminator là Cảnh sát: Nó nhận cả tiền thật lẫn tiền giả, cố gắng phân biệt đâu là thật, đâu là giả.
+Người 2: Mục tiêu là Generator phải vẽ lừa được Cảnh sát đúng không ạ?
+
+Slide 27: 4.3 Vòng lặp Huấn luyện GAN
+Người 1: Quá trình huấn luyện đan xen. Bước 1: Cho Cảnh sát bắt tiền giả của Generator. Tính Loss, cập nhật trọng số cho Cảnh sát khôn hơn.
+Người 2: Bước 2 thì sao ạ?
+Người 1: Bước 2: Đóng băng Cảnh sát. Bảo Generator tạo tiền giả, rồi ép Cảnh sát phải nhận định đó là tiền "Thật". Tính Loss, lan truyền đạo hàm xuyên qua Cảnh sát về thẳng Kẻ làm giả, giúp Generator vẽ đẹp hơn! Hai bên cứ giằng co, liên tục nâng cấp trình độ nhau lên đến vô cực. Cuối cùng Generator vẽ ra ảnh thật sắc nét hơn mọi V A E!
+
+Slide 28: 4.4 Hạn chế và Khó khăn của GAN (Vanilla GAN)
+Người 1: Tuy nhiên G A N cực kỳ khó huấn luyện. Hiện tượng Khủng hoảng Điểm cân bằng (Mode Collapse): Generator lười biếng, phát hiện ra Cảnh sát thích 1 kiểu mặt người, nó chỉ vẽ đúng 1 khuôn mặt đó suốt ngày để lừa Cảnh sát. Đa dạng hình ảnh bị mất.
+Người 2: Quá tinh ranh!
+
+Slide 29: 4.5 GAN Tích chập Sâu (DCGANs - 2015)
+Người 1: Năm 2015, D C G A N ra đời áp dụng Mạng Tích chập siêu lớn vào G A N. Họ thay Pooling bằng Strided Convolution, thay kích hoạt bằng Leaky Re L U, giúp mạng ổn định hơn rất nhiều.
+
+Slide 30: 4.6 Kết quả ấn tượng của DCGAN
+Người 1: Nó tạo ra những phòng ngủ, những khuôn mặt rất chi tiết. Điểm mạnh lớn nhất của D C G A N là tốc độ sinh ra 1 bức ảnh rất nhanh (chỉ bằng 1 lần đẩy tiến - Forward pass).
+
+Slide 31: 4.7 Toán học Không gian Ẩn của GAN
+Người 1: Không gian ẩn của G A N cũng làm được toán học cực kỳ sốc: Lấy vector của (Người đàn ông đeo kính) trừ (Đàn ông) cộng (Đàn bà). Mạng sẽ sinh ra bức ảnh "Người đàn bà đeo kính"! Máy tính đã học được ý nghĩa về Giới tính và Phụ kiện!
+
+Slide 32: 4.8 Sự phát triển tăng dần của GANs (ProGANs)
+Người 1: Tới ProGAN, họ huấn luyện GAN tạo ảnh cực nhỏ 4 nhân 4. Xong ổn rồi họ từ từ nới rộng mạng nơ-ron ra để sinh ảnh 8 nhân 8, 16 nhân 16. Mạng cứ dần to lên đến khi vẽ được ảnh siêu thực khổng lồ (Mega-pixel) rất trơn tru mà không bị sụp đổ.
+
+Slide 33: 4.9 StyleGAN (2018) - Định nghĩa lại Chất lượng sinh ảnh
+Người 1: StyleGAN tách riêng mạng ánh xạ và mạng tổng hợp. Nó thêm nhiễu vào từng cấp độ của hình ảnh. Nhờ đó, nó có thể kiểm soát độc lập từng phong cách: từ cấu trúc khuôn mặt (giới tính, độ tuổi) đến các chi tiết nhỏ (màu tóc, tàn nhang) mà không bị lẫn lộn.
+
+Slide 34: 5.1 Kỷ nguyên của Mô hình Khuếch tán (Diffusion Models)
+Người 1: Dù GAN rất mạnh, nhưng hiện tại Mô Hình Khuếch Tán (Diffusion Models) mới là ngôi vương (như Midjourney, Stable Diffusion).
+Người 2: Nó hoạt động khác GAN ở chỗ nào ạ?
+Người 1: Nó hoạt động theo triết lý Nhiệt động lực học: Phá hủy và Phục hồi!
+
+Slide 35: 5.2 Nguyên lý: Phá hủy và Phục hồi
+Người 1: Giai đoạn một (Quá trình tiến - Forward process): Bắt đầu từ bức ảnh thực tế sắc nét, ta thêm dần từng chút nhiễu (Noise) Gauss vào ảnh qua 1000 bước thời gian. 
+Người 2: Bước cuối bức ảnh biến thành 1 đống nhiễu trắng màn hình tivi luôn ạ?
+Người 1: Đúng. 
+
+Slide 36: 5.3 Lịch trình Phương sai (Variance Schedule)
+Người 1: Giai đoạn hai (Quá trình ngược): Ta huấn luyện một mạng nơ-ron (thường là U-Net có Skip Connection). Ta đưa đống nhiễu trắng đó vào, và Bắt Mạng U-Net dự đoán phần nhiễu ĐÃ ĐƯỢC THÊM VÀO ở bước trước đó.
+Người 2: Đoán được nhiễu rồi mình Trừ nó đi đúng không thầy?
+Người 1: Chính xác. Lặp lại việc Trừ nhiễu hàng ngàn lần. Dần dần, đống nhiễu tivi bị gọt dũa, "điêu khắc", lộ ra một bức ảnh con mèo mới tinh!
+
+Slide 37: 5.4 Denoising Diffusion Probabilistic Models (DDPM)
+Người 1: Mô hình DDPM giải phương trình đạo hàm ngẫu nhiên rất phức tạp. So với GAN, Diffusion sinh ảnh lâu hơn nhiều lần vì phải lặp vòng lặp hàng ngàn bước. Đổi lại, ảnh của nó Siêu Nét, cực kỳ Đa Dạng và Không bao giờ bị Mode Collapse như GAN!
+
+Slide 38: Tổng Kết Chương 17
+Người 1: Tóm lại, chúng ta đã tìm hiểu Autoencoder dùng để nén dữ liệu và khử nhiễu. V A E và G A N sinh ra kỷ nguyên tạo ảnh thực tế. Và cuối cùng là Mô hình khuếch tán với khả năng điêu khắc từ nhiễu, đẩy thế giới bước vào trào lưu Generative AI.
+Người 2: Dạ, bài học hôm nay thực sự quá thú vị và giúp em hiểu rõ nguyên lý đằng sau các công cụ AI vẽ tranh hiện nay. Em cảm ơn thầy!
+
+Slide 39: HỎI & ĐÁP
+Người 1: Các em có thắc mắc gì về mô hình sinh không? (Dành thời gian giải đáp).

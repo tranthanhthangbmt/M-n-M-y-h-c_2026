@@ -1,0 +1,204 @@
+Slide 1: Chương 19: Huấn luyện và Triển khai Mô hình TensorFlow
+Người 1: Chào các bạn sinh viên. Hôm nay chúng ta bước sang Chương 19, một chương mang tính bước ngoặt. Chúng ta đã học cách xây dựng, tối ưu và đánh giá mô hình. Nhưng một mô hình dù tốt đến đâu, nếu chỉ nằm trên máy tính cá nhân thì cũng không mang lại giá trị thực tế. Chương này sẽ hướng dẫn các bạn cách đưa mô hình ra thế giới thực, hay còn gọi là triển khai mô hình học máy.
+Người 2: Em chào thầy/cô. Em cũng đang thắc mắc là làm sao để một ứng dụng điện thoại hoặc một trang web có thể dự đoán được dựa trên mô hình mình đã viết bằng Python ạ.
+Người 1: Đúng vậy! Đó chính xác là những gì chúng ta sẽ giải quyết. Chúng ta sẽ tìm hiểu TensorFlow Serving, TensorFlow Lite, TensorFlow chấm JS và cách triển khai trên đám mây với Vertex AI. Hơn nữa, chúng ta cũng sẽ học cách mở rộng quy mô huấn luyện trên nhiều GPU và nhiều máy chủ.
+
+Slide 2: Mục tiêu của Chương
+Người 1: Trước tiên, hãy điểm qua mục tiêu của chương này. Chúng ta sẽ làm chủ vòng đời của một dự án Machine Learning, từ việc huấn luyện đến việc đưa mô hình vào môi trường sản xuất.
+Người 2: Việc này có vẻ đòi hỏi nhiều kiến thức về kỹ thuật phần mềm hơn là chỉ toán học và thuật toán phải không ạ?
+Người 1: Chính xác! Đó là sự kết hợp giữa học máy và vận hành phần mềm, người ta thường gọi là Mờ lờ Ốp. Các bạn sẽ học cách triển khai mô hình lên web, lên thiết bị di động, và thậm chí chạy trực tiếp trong trình duyệt. Cuối cùng là sử dụng phần cứng chuyên dụng như GPU và Tê pê u để tăng tốc độ huấn luyện.
+
+Slide 3: Mục lục
+Người 1: Mục lục chương này khá dài nhưng rất thú vị. Phần một, chúng ta tìm hiểu TensorFlow Serving và Google Cloud. Phần hai, chúng ta đưa trí tuệ nhân tạo đến vùng biên với Edge AI, sử dụng T F Lite và T F chấm JS.
+Người 2: Ở phần 3, 4 và 5 thì sao ạ?
+Người 1: Phần 3, 4, và 5 sẽ tập trung vào việc quản lý phần cứng như GPU, TPU và cách huấn luyện phân tán trên nhiều thiết bị. Chúng ta sẽ học cách chia nhỏ mô hình hoặc chia nhỏ dữ liệu để huấn luyện siêu nhanh.
+
+Slide 4: 1.1 Vòng đời dự án Machine Learning (MLOps)
+Người 1: Bắt đầu với phần một, vòng đời của dự án Machine Learning. Khi bạn huấn luyện xong một mô hình và nó đạt độ chính xác cao, công việc của bạn mới chỉ hoàn thành được một nửa. Bạn cần triển khai nó, và quan trọng hơn là phải bảo trì nó.
+Người 2: Tức là mình phải theo dõi xem mô hình có bị giảm độ chính xác theo thời gian không ạ?
+Người 1: Rất chuẩn! Dữ liệu trong thế giới thực luôn thay đổi, hiện tượng này gọi là trượt dữ liệu, hay data drift. Nếu một mô hình dự đoán giá nhà được huấn luyện bằng dữ liệu năm 2020, nó sẽ dự đoán sai bét vào năm 2024 do lạm phát và bong bóng bất động sản. Do đó, quy trình Mờ lờ Ốp bao gồm thu thập dữ liệu mới, dán nhãn, huấn luyện lại, đánh giá và triển khai liên tục một cách tự động.
+
+Slide 5: 1.2 Những thách thức khi đưa AI vào Thực tế
+Người 1: Tuy nhiên, việc đưa AI vào thực tế gặp rất nhiều thách thức. Thứ nhất là phiên bản mô hình, làm sao để chuyển đổi linh hoạt giữa phiên bản cũ và mới mà không làm gián đoạn dịch vụ.
+Người 2: Em nghĩ cấu hình phần cứng cũng là một vấn đề. Nếu hàng ngàn người truy cập cùng lúc thì một cái máy chủ bình thường chắc chắn sẽ bị sập.
+Người 1: Đúng vậy. Chúng ta cần kiến trúc có thể tự động mở rộng, hoặc co dãn quy mô. Thách thức thứ ba là độ trễ. Trong y tế hoặc xe tự lái, độ trễ vài mili giây cũng có thể gây ra hậu quả nghiêm trọng. TensorFlow cung cấp các giải pháp hoàn hảo cho những vấn đề này.
+
+Slide 6: 1.3 Giới thiệu TensorFlow Serving
+Người 1: Công cụ đầu tiên và mạnh mẽ nhất là TensorFlow Serving. Đây là một hệ thống máy chủ hiệu suất cao, được thiết kế đặc biệt cho các mô hình học máy.
+Người 2: Nó khác gì so với việc em tự viết một API bằng Flask hay FastAPI để nhận yêu cầu và trả về dự đoán ạ?
+Người 1: Rất khác! TensorFlow Serving được viết bằng C cộng cộng, tối ưu hóa cực tốt. Hơn nữa, nó hỗ trợ quản lý nhiều phiên bản mô hình cùng lúc. Nếu mô hình mới bị lỗi, bạn có thể lập tức quay về mô hình cũ trong nháy mắt mà không cần khởi động lại máy chủ. Nó cũng tự động gộp các yêu cầu dự đoán thành một lô để tận dụng tối đa sức mạnh của GPU.
+
+Slide 7: 1.4 Kiến trúc của TensorFlow Serving
+Người 1: Về mặt kiến trúc, TensorFlow Serving sẽ theo dõi một thư mục chứa các mô hình của bạn. Mỗi khi bạn thêm một thư mục con chứa mô hình mới, hệ thống sẽ tự động tải mô hình đó lên bộ nhớ.
+Người 2: Tức là nếu em lưu mô hình mới vào thư mục đó, T F Serving sẽ tự động thay thế mô hình cũ và dùng mô hình mới để dự đoán ạ?
+Người 1: Đúng vậy! Ứng dụng khách, tức là Client, có thể là web hoặc mobile app, sẽ gửi dữ liệu cần dự đoán thông qua giao thức gờ rờ pê xê hoặc REST API. T F Serving nhận dữ liệu, tính toán dự đoán và gửi trả lại kết quả gần như ngay lập tức. Bạn có thể sử dụng Docker để chạy T F Serving rất dễ dàng chỉ với một dòng lệnh.
+
+Slide 8: 1.5 Xuất mô hình (Exporting Model)
+Người 1: Để dùng được T F Serving, chúng ta cần lưu mô hình dưới định dạng SavedModel. Hàm mà chúng ta dùng là ten sor flow chấm ke rát chấm mô đồ sờ chấm sây.
+Người 2: Khi xuất ra định dạng SavedModel, thư mục đó sẽ chứa những gì ạ? Em nhớ là nó có một thư mục variables và một file chấm pê bê.
+Người 1: Rất nhớ bài! Thư mục sẽ bao gồm tệp saved_model.pb chứa cấu trúc đồ thị tính toán của mô hình, và thư mục variables chứa trọng số. Điều quan trọng là bạn cần tạo ra các phiên bản, ví dụ thư mục 0 0 0 1 cho phiên bản một, thư mục 0 0 0 2 cho phiên bản 2. T F Serving sẽ tự động tải phiên bản có số lớn nhất.
+
+Slide 9: 1.6 REST API và gRPC
+Người 1: Khi máy chủ đã chạy, làm sao để giao tiếp với nó? Chúng ta có hai lựa chọn chính là giao thức REST API và giao thức gờ rờ pê xê.
+Người 2: Em đã từng dùng REST API, dữ liệu thường được truyền dưới định dạng JSON. Còn gờ rờ pê xê thì sao ạ? Nó có ưu điểm gì hơn không thầy/cô?
+Người 1: Bạn nói đúng. REST API dùng JSON, rất dễ debug nhưng lại truyền văn bản nên kích thước dữ liệu lớn, mất thời gian chuyển đổi từ số sang chuỗi. Ví dụ số thập phân 0 chấm 1 2 3 4 5 sẽ chiếm nhiều byte hơn dạng nhị phân. Gờ rờ pê xê sử dụng Protocol Buffers, định dạng nhị phân nhỏ gọn và truyền tải nhanh hơn nhiều. Trong môi trường sản xuất có độ trễ thấp, gờ rờ pê xê là lựa chọn hàng đầu.
+
+Slide 10: 1.7 Tạo dịch vụ Dự đoán trên Vertex AI (Google Cloud)
+Người 1: Tuy nhiên, tự quản lý máy chủ T F Serving có thể rất tốn công. Nếu dịch vụ của bạn bất ngờ phổ biến, bạn phải tự cấu hình thêm máy chủ, cân bằng tải... Để giải quyết, chúng ta có thể đưa mô hình lên đám mây, ví dụ như Vertex AI của Google Cloud.
+Người 2: Vertex AI sẽ tự động lo việc thêm bớt máy chủ tùy theo lượng người dùng truy cập phải không ạ?
+Người 1: Hoàn toàn chính xác. Bạn chỉ cần tải mô hình SavedModel của mình lên Google Cloud Storage, sau đó thông báo cho Vertex AI biết. Nó sẽ tự động tạo một điểm cuối dự đoán, tức là Endpoint, và lo toàn bộ khâu mở rộng quy mô. Nếu không có ai dùng, nó thu hẹp số máy chủ về mức tối thiểu, tiết kiệm chi phí tối đa.
+
+Slide 11: 1.8 Mã nguồn Triển khai trên Vertex AI
+Người 1: Đoạn mã để triển khai trên Vertex AI khá đơn giản. Chúng ta sử dụng thư viện google cloud ai platform. 
+Người 2: Em thấy trên slide có gọi hàm Endpoint chấm đờ ploy. Trong đó có cài đặt max_replica_count bằng 5. Có phải là nếu người dùng tăng đột biến, nó sẽ bật tối đa 5 máy ảo không ạ?
+Người 1: Chính xác. Nó sẽ khởi tạo tối thiểu một nút theo min_replica_count, và nếu số truy vấn mỗi giây hay còn gọi là quy pê ét quá cao, nó tự động mở rộng lên tối đa 5 nút tính toán, chia tải đều cho cả 5 nút này. Bạn cũng có thể chọn loại GPU cần dùng, ví dụ Tesla K80 hoặc T4.
+
+Slide 12: 1.9 Dự đoán Hàng loạt (Batch Predictions)
+Người 1: Sẽ có lúc bạn không cần dự đoán ngay lập tức theo thời gian thực. Giả sử bạn có hàng triệu tấm ảnh tải lên mỗi đêm và cần phân loại chúng để sáng hôm sau báo cáo. Đó là lúc chúng ta dùng Dự đoán hàng loạt.
+Người 2: Việc này thì khác gì so với việc gửi từng ảnh lên REST API ạ?
+Người 1: Gửi từng tấm ảnh qua mạng sẽ tốn thời gian giao tiếp mạng rất lớn. Với dự đoán hàng loạt, bạn gộp dữ liệu thành các tệp như Jờ son Lines, tải lên bộ nhớ đám mây, và chạy một công việc batch predict. Máy chủ sẽ lấy dữ liệu về, dự đoán một lượt, và trả kết quả vào một tệp chung. Tối ưu hơn rất nhiều.
+
+Slide 13: 1.10 Tóm tắt: Tự quản lý vs Dùng Cloud (Vertex AI)
+Người 1: Tóm lại phần 1, chúng ta có hai hướng triển khai. Một là tự cài đặt T F Serving trên máy chủ riêng hoặc dùng Ku bơ nét. Cách này chi phí cố định, toàn quyền kiểm soát nhưng tốn công bảo trì hệ thống.
+Người 2: Còn hướng thứ hai là sử dụng Cloud như Vertex AI thì mình không phải lo quản lý máy chủ, nó tự động co dãn, nhưng chi phí có thể phụ thuộc vào lượng sử dụng đúng không ạ?
+Người 1: Rất chuẩn! Nếu công ty bạn là startup chưa rõ lượng truy cập, Cloud là giải pháp hoàn hảo. Nếu bạn là một tập đoàn lớn cần tiết kiệm chi phí vận hành hàng ngàn máy chủ ổn định, tự quản lý bằng Ku bơ nét lại là lựa chọn tốt.
+
+Slide 14: 2.1 Edge AI - Trí tuệ Nhân tạo tại biên
+Người 1: Đôi khi việc đưa mô hình lên đám mây không phải là giải pháp tốt nhất. Đám mây yêu cầu phải có kết nối Internet liên tục. Thay vì thế, chúng ta có thể đưa AI đến tận thiết bị của người dùng, gọi là Trí tuệ Nhân tạo tại biên, hay Edge AI.
+Người 2: Có phải là mô hình sẽ chạy trực tiếp trên điện thoại của mình không ạ?
+Người 1: Chính xác. Lợi ích là ứng dụng của bạn có thể hoạt động ngoại tuyến, không cần mạng. Bạn cũng tiết kiệm được băng thông mạng, giảm độ trễ và đặc biệt là bảo vệ dữ liệu riêng tư của người dùng, vì dữ liệu không bao giờ bị gửi lên máy chủ.
+
+Slide 15: 2.2 Giới thiệu TensorFlow Lite (TFLite)
+Người 1: Để chạy mô hình trên thiết bị di động, chúng ta sử dụng TensorFlow Lite, viết tắt là T F Lite. Các thiết bị di động và vi điều khiển có lượng RAM rất nhỏ, pin có hạn và CPU yếu hơn máy chủ rất nhiều.
+Người 2: Vậy làm sao một mô hình học sâu hàng trăm megabyte có thể chạy trên đó được ạ?
+Người 1: T F Lite giải quyết việc này bằng 3 mục tiêu chính: Giảm kích thước mô hình để tải xuống nhanh và ít tốn RAM, giảm khối lượng tính toán để tiết kiệm pin và giảm nhiệt, cuối cùng là thích nghi với phần cứng chuyên biệt của điện thoại.
+
+Slide 16: 2.3 Quy trình chuyển đổi TFLite
+Người 1: Để dùng T F Lite, bạn lấy mô hình SavedModel đã huấn luyện, đưa qua bộ chuyển đổi T F Lite Converter. Nó sẽ nén mô hình lại thành định dạng FlatBuffers vô cùng gọn nhẹ.
+Người 2: Khi đưa vào thiết bị, mình dùng thư viện nào để chạy nó ạ?
+Người 1: Ở trong điện thoại, một thành phần gọi là T F Lite Interpreter, hay Trình thông dịch T F Lite, sẽ trực tiếp đọc tệp FlatBuffers này mà không cần giải nén ra RAM, qua đó tối ưu bộ nhớ. Bộ chuyển đổi còn giúp gộp các phép tính lại, ví dụ phép cộng và phép nhân liền nhau sẽ được gộp lại để giảm thời gian xử lý.
+
+Slide 17: 2.4 Tối ưu hóa: Lượng tử hóa (Quantization)
+Người 1: Khâu quan trọng nhất để thu nhỏ mô hình là Lượng tử hóa, hay Quantization. Thay vì dùng số thực thập phân 32 bit cho các trọng số, chúng ta chuyển nó xuống số nguyên 8 bit.
+Người 2: Nhưng làm như vậy độ chính xác của mô hình có bị giảm đi nhiều không ạ?
+Người 1: Sẽ có suy giảm một chút, giống như ta thêm một ít nhiễu vào mô hình. Nhưng bù lại, kích thước mô hình giảm đi 4 lần. Hơn nữa, các phép tính trên số nguyên nhanh hơn rất nhiều so với tính toán trên số thực, và tiết kiệm pin hơn. Quá trình này dùng kỹ thuật lượng tử hóa đối xứng, ánh xạ dải giá trị float lớn nhất xuống khoảng số nguyên từ trừ 127 đến cộng 127.
+
+Slide 18: 2.5 Tối ưu hóa: Cắt tỉa mạng (Pruning)
+Người 1: Kỹ thuật thứ hai là cắt tỉa mạng, hay Pruning. Trong mạng nơ ron, sẽ có những kết nối có trọng số rất gần với số không, tức là chúng không đóng góp nhiều vào kết quả.
+Người 2: Có phải chúng ta sẽ xóa các kết nối đó đi để mô hình nhỏ hơn không ạ?
+Người 1: Chính xác. Cắt tỉa mạng sẽ loại bỏ những trọng số yếu đó. Sau khi cắt tỉa, mô hình trở nên thưa thớt hơn, tiết kiệm được bộ nhớ và tăng tốc độ xử lý mà không làm mất đi khả năng dự đoán chính xác của mô hình.
+
+Slide 19: 2.6 Delegate: Khai thác phần cứng Mobile
+Người 1: Ở thiết bị di động, CPU thường yếu để chạy AI, nhưng các smartphone hiện đại có GPU hoặc thậm chí NPU chuyên biệt cho học sâu. T F Lite sử dụng tính năng Delegate để ủy quyền công việc cho các phần cứng này.
+Người 2: Tức là T F Lite tự biết cách đẩy việc tính toán vào GPU của điện thoại ạ?
+Người 1: Đúng vậy! Bằng cách dùng Delegate, T F Lite sẽ tận dụng sức mạnh của các vi xử lý chuyên dụng này, tăng hiệu năng lên nhiều lần. Điều này đặc biệt hữu ích trong xử lý ảnh thời gian thực như nhận diện khuôn mặt hay thêm bộ lọc camera.
+
+Slide 20: 2.7 TensorFlow.js (TF.js)
+Người 1: Ngoài điện thoại, chúng ta còn một môi trường khác là Trình duyệt Web. Bạn nghĩ sao nếu mô hình chạy trực tiếp trong trình duyệt bằng JavaScript? Đó là lúc ta cần T F chấm JS.
+Người 2: Nếu chạy trong trình duyệt thì người dùng không cần cài đặt thêm phần mềm nào cả. Rất tiện lợi!
+Người 1: Rất tiện lợi. Hơn nữa, nó giúp bảo vệ quyền riêng tư cực tốt. Mọi bức ảnh bạn nhận diện sẽ được xử lý ngay trong máy tính của bạn, không bị tải lên đám mây.
+
+Slide 21: 2.8 Đặc điểm nổi bật của TF.js
+Người 1: T F chấm JS không chỉ dùng để dự đoán, nó còn hỗ trợ huấn luyện trực tiếp mô hình trên trình duyệt web.
+Người 2: Nhưng JavaScript có đủ nhanh để tính toán học sâu không ạ?
+Người 1: Đừng lo, T F chấm JS tận dụng Web G L để gọi trực tiếp Card đồ họa GPU trên máy tính của bạn, bất kể đó là card Nvidia, AMD hay Intel. Vì vậy tốc độ của nó rất đáng nể. Hơn nữa, bạn có thể biến trang web thành một ứng dụng web tiến bộ, hay Pi Đắp lưu Ây, cho phép hoạt động ngoại tuyến.
+
+Slide 22: 2.9 Chuyển đổi mô hình cho Web
+Người 1: Để đưa mô hình lên web, quy trình cũng giống T F Lite. Bạn sử dụng công cụ dòng lệnh T F chấm JS converter để đổi từ định dạng SavedModel sang định dạng web.
+Người 2: Và mình sẽ import mô hình này vào mã JavaScript như thế nào ạ?
+Người 1: Bạn chỉ cần dùng cú pháp load() của thư viện, sau đó truyền vào dữ liệu ảnh hoặc text để gọi hàm predict. Rất dễ dàng và có sẵn nhiều tài liệu hướng dẫn.
+
+Slide 23: 3.1 Nhu cầu Phần cứng Chuyên dụng
+Người 1: Ở phần trước chúng ta đã tối ưu mô hình để chạy trên điện thoại. Nhưng để huấn luyện được mô hình đó ngay từ đầu, bạn sẽ cần một sức mạnh tính toán khổng lồ.
+Người 2: Có phải vì dữ liệu bây giờ quá lớn và các mạng nơ ron thì có quá nhiều lớp không ạ?
+Người 1: Đúng vậy. Việc huấn luyện mạng nơ ron trên một CPU bình thường có thể mất hàng tuần hoặc hàng tháng. Chúng ta bắt buộc phải sử dụng phần cứng chuyên dụng để rút ngắn thời gian xuống còn vài ngày, thậm chí vài giờ.
+
+Slide 24: 3.2 CPU so với GPU và TPU
+Người 1: Nhắc đến phần cứng, chúng ta thường so sánh CPU, GPU và TPU. CPU có ít nhân nhưng mỗi nhân rất mạnh, giỏi xử lý các tác vụ logic phức tạp. GPU thì ngược lại.
+Người 2: Em nghe nói GPU ban đầu dùng để chơi game, tại sao nó lại hợp với AI ạ?
+Người 1: Vì GPU có hàng ngàn nhân xử lý nhỏ, cực kỳ giỏi trong việc thực hiện các phép tính toán học đơn giản nhưng song song cùng lúc, đặc biệt là nhân ma trận - thứ cốt lõi của học sâu. Còn TPU là bộ xử lý Tensor do Google thiết kế riêng biệt cho học sâu, nó loại bỏ các thành phần xử lý đồ họa của GPU để dồn toàn lực cho nhân ma trận.
+
+Slide 25: 3.3 Làm sao có GPU để huấn luyện?
+Người 1: Vậy làm sao để bạn có GPU? Lựa chọn rẻ nhất là dùng các dịch vụ đám mây miễn phí như Google Colab hay Kaggle.
+Người 2: Nhưng bản miễn phí thì hay bị ngắt kết nối và giới hạn thời gian. Nếu em muốn dùng lâu dài thì nên mua card rời hay thuê Cloud ạ?
+Người 1: Thuê GPU trên đám mây như Google Cloud hay AWS tiện lợi nếu bạn thỉnh thoảng mới dùng. Còn nếu bạn huấn luyện liên tục mỗi ngày, mua một card GPU riêng của Nvidia, ví dụ dòng R T X, sẽ tiết kiệm chi phí hơn về lâu dài. Tuy nhiên, bạn phải tự cài đặt driver, CUDA và cuDNN.
+
+Slide 26: 3.4 Quản lý RAM GPU trong TensorFlow
+Người 1: Một vấn đề cực kỳ quan trọng khi dùng GPU là quản lý RAM. Mặc định, ngay khi bạn chạy mã, TensorFlow sẽ chiếm dụng toàn bộ RAM của tất cả GPU có trên máy.
+Người 2: Ôi, thế nếu em muốn chạy 2 mô hình cùng lúc trên cùng một máy thì nó báo lỗi hết RAM luôn ạ?
+Người 1: Chính xác! TensorFlow làm vậy để tối ưu bộ nhớ, tránh bị phân mảnh. Để giải quyết, bạn có thể thiết lập biến môi trường CUDA_VISIBLE_DEVICES để chỉ cho phép mô hình A nhìn thấy GPU 1, và mô hình B nhìn thấy GPU 2.
+
+Slide 27: 3.5 Bật chế độ Memory Growth (Code)
+Người 1: Một cách tinh tế hơn là yêu cầu TensorFlow chỉ chiếm RAM khi nào cần. Chúng ta có thể dùng hàm set_memory_growth bằng True.
+Người 2: Làm như vậy thì TensorFlow sẽ xin cấp phát RAM từ từ giống như các phần mềm bình thường đúng không ạ?
+Người 1: Đúng thế. Tuy nhiên, có một rủi ro là trong quá trình chạy, bộ nhớ RAM có thể bị phân mảnh, làm giảm hiệu suất một chút. Dù sao, đây vẫn là cách rất phổ biến khi chạy các sổ tay Jupyter để nghiên cứu. Bạn cũng có thể thiết lập giới hạn cứng, ví dụ bắt TensorFlow chỉ được dùng tối đa 2 Gi ga byte RAM.
+
+Slide 28: 3.6 Huấn luyện trên Nhiều thiết bị (Multi-Device)
+Người 1: Khi bạn có một cỗ máy sở hữu 4, hoặc 8 GPU, làm sao TensorFlow biết nên đẩy phép tính nào vào GPU nào?
+Người 2: Em đoán là mình sẽ phải viết mã để phân công công việc ạ?
+Người 1: Bạn có thể phân công thủ công, nhưng may mắn thay TensorFlow và Keras có cơ chế tự động chia tải. Thông thường, CPU sẽ đảm nhiệm việc tiền xử lý dữ liệu, như đọc file, decode ảnh. Còn GPU sẽ chuyên tâm vào việc tính toán các lớp nơ ron.
+
+Slide 29: 3.7 Cách TensorFlow chia tải: Placement
+Người 1: Khi mã được thực thi, TensorFlow sẽ dựng một đồ thị tính toán. Nó tìm ra các phép toán không phụ thuộc vào ai và đưa vào một hàng đợi.
+Người 2: Thế nếu có nhiều thao tác song song thì nó đưa vào nhiều nhân GPU để chạy cùng lúc đúng không ạ?
+Người 1: Đúng vậy. CPU có một nhóm luồng gọi là Inter-op thread pool để chạy song song nhiều nhánh của đồ thị. GPU cũng tự động tận dụng hàng ngàn nhân của nó để thực hiện một phép tính ma trận. Quan trọng nhất là dữ liệu không bị sao chép thừa thãi qua lại giữa CPU và GPU, vì băng thông sao chép này chính là nút thắt cổ chai làm chậm hệ thống.
+
+Slide 30: 3.8 Mô hình Song song (Model Parallelism)
+Người 1: Có hai chiến lược chính để huấn luyện trên nhiều GPU. Thứ nhất là Mô hình Song song, hay Model Parallelism. Ở đây chúng ta cắt mô hình ra làm nhiều mảnh.
+Người 2: Cắt mô hình là sao ạ? Nghĩa là nửa đầu mạng nơ ron chạy ở GPU 1, nửa sau chạy ở GPU 2 ạ?
+Người 1: Chính xác. Cách này hữu ích khi một mạng nơ ron quá lớn, không thể chứa vừa trong RAM của một GPU. Tuy nhiên, nó có nhược điểm là GPU 2 phải đợi GPU 1 tính xong thì mới có dữ liệu để tính tiếp, dẫn đến lãng phí thời gian chờ đợi. Trừ khi mô hình có nhiều nhánh tính toán độc lập, còn không thì cách này không tối ưu.
+
+Slide 31: 3.9 Song song Dữ liệu (Data Parallelism)
+Người 1: Chiến lược thứ hai phổ biến và hiệu quả hơn rất nhiều, gọi là Song song Dữ liệu, hay Data Parallelism. Mọi GPU đều chứa toàn bộ kiến trúc mô hình.
+Người 2: Thế nếu mọi GPU đều có cùng một mô hình thì chúng chia việc cho nhau như thế nào ạ?
+Người 1: Rất thông minh! Thay vì chia mô hình, ta chia dữ liệu. Nếu batch size là 128, và ta có 4 GPU. Ta gửi 32 ảnh cho GPU 1, 32 ảnh cho GPU 2, và cứ thế. Mỗi GPU sẽ tự tính toán đạo hàm trên tập ảnh của riêng mình. Sau đó, tất cả đạo hàm sẽ được cộng gộp lại để cập nhật trọng số chung.
+
+Slide 32: 4.1 Cập nhật Đồng bộ (Synchronous Update)
+Người 1: Khi dùng Song song Dữ liệu, ta có hai cách cập nhật trọng số. Cách thứ nhất là cập nhật đồng bộ.
+Người 2: Tức là mọi GPU tính xong đạo hàm thì phải đợi nhau rồi mới cập nhật cùng một lúc đúng không ạ?
+Người 1: Chính xác. GPU nào tính xong trước sẽ phải ngồi chờ GPU chậm nhất. Sau đó tất cả đạo hàm được lấy trung bình. Trọng số mới được gửi lại cho mọi GPU để bắt đầu một bước mới. Nhược điểm là thời gian chờ đợi có thể làm giảm hiệu năng chung.
+
+Slide 33: 4.2 Cập nhật Bất đồng bộ (Asynchronous Update)
+Người 1: Cách thứ hai là cập nhật bất đồng bộ. GPU nào tính đạo hàm xong thì gửi lên máy chủ tham số, gọi là Parameter Server. Máy chủ này lập tức cập nhật trọng số và gửi lại cho GPU đó để tính bước tiếp theo.
+Người 2: Nghe có vẻ nhanh hơn vì không ai phải đợi ai. Nhưng liệu có trường hợp một GPU đang dùng trọng số cũ mèm để tính toán không ạ?
+Người 1: Bạn rất tinh ý! Đó gọi là Stale Gradients, hay Đạo hàm cũ. Đôi khi đạo hàm được tính ra từ trọng số cũ, nhưng lại mang đi cập nhật cho trọng số mới trên máy chủ, gây nhiễu quá trình huấn luyện. Tuy nhiên, nó vẫn hoạt động tốt nếu ta giảm learning rate xuống hoặc dùng kỹ thuật warmup.
+
+Slide 34: 5.1 API tf.distribute.Strategy
+Người 1: Để hiện thực hóa việc phân tán này, TensorFlow cung cấp bộ API t f chấm đít tri biu chấm xtra te gy (tf.distribute.Strategy).
+Người 2: Bộ API này giúp mình tránh việc phải viết mã mạng hay quản lý luồng bằng tay đúng không ạ?
+Người 1: Hoàn toàn chính xác. Bạn chỉ cần viết mã mô hình một lần, và chỉ định một chiến lược Strategy, Keras sẽ tự lo toàn bộ phần đồng bộ dữ liệu dưới nền. Bạn có thể huấn luyện trên 1 GPU, 8 GPU, hay thậm chí hàng trăm GPU trên nhiều máy chủ.
+
+Slide 35: 5.2 MirroredStrategy (Đa GPU 1 máy tính)
+Người 1: Chiến lược phổ biến nhất trên một máy tính có nhiều GPU là MirroredStrategy. Nó áp dụng Song song Dữ liệu và Cập nhật Đồng bộ.
+Người 2: Tại sao gọi là Mirrored, hay Phản chiếu, vậy ạ?
+Người 1: Bởi vì nó tạo ra một bản sao, tức là bản phản chiếu, của mô hình trên mỗi GPU. Tất cả các bản sao này đều giống hệt nhau ở mọi thời điểm vì chúng được cập nhật đồng bộ. Nó dùng thuật toán All Reduce để các GPU trao đổi trực tiếp đạo hàm cho nhau mà không cần máy chủ trung gian.
+
+Slide 36: 5.3 Triển khai MirroredStrategy bằng Keras
+Người 1: Khi bạn code với Keras, việc dùng MirroredStrategy dễ đến bất ngờ. Bạn chỉ cần tạo đối tượng strategy, sau đó đưa phần khởi tạo và biên dịch mô hình vào trong khối with strategy chấm sco p (with strategy.scope()).
+Người 2: Và hàm model chấm fit vẫn dùng như bình thường đúng không ạ?
+Người 1: Chính xác! Hàm fit sẽ tự chia dữ liệu ra và gửi đến các GPU. Một mẹo nhỏ là bạn nên tăng kích thước batch size tương ứng với số lượng GPU để tận dụng tối đa sức mạnh của chúng.
+
+Slide 37: 5.4 MultiWorkerMirroredStrategy (Đa máy tính)
+Người 1: Nếu một máy tính với 8 GPU vẫn chưa đủ nhanh thì sao? Chúng ta có thể dùng nhiều máy tính kết nối qua mạng, gọi là Multi-Worker. 
+Người 2: Khi chạy qua mạng thì băng thông sẽ là điểm nghẽn lớn nhất đúng không ạ?
+Người 1: Rất đúng! Vì vậy chiến lược Multi Worker Mirrored Strategy sẽ sử dụng một thuật toán tối ưu gọi là Ring All Reduce, giúp các máy chủ truyền dữ liệu theo hình vòng tròn, tối ưu hóa băng thông mạng. Quá trình cấu hình sẽ phức tạp hơn một chút vì bạn phải thiết lập địa chỉ IP mạng cho từng máy thông qua biến môi trường TF_CONFIG.
+
+Slide 38: 5.5 Huấn luyện phân tán trên Vertex AI
+Người 1: Nếu bạn không muốn phải tự cắm dây mạng và cài đặt IP, Vertex AI của Google Cloud lại là một cứu cánh.
+Người 2: Có phải nó cho phép mình thuê 100 máy ảo và nó tự cấu hình TF_CONFIG cho mình không ạ?
+Người 1: Đúng vậy! Bạn đóng gói mã nguồn thành một Docker Container, ném lên Vertex AI và bảo nó: Hãy chạy mã này trên 10 máy, mỗi máy 4 GPU. Vertex AI sẽ tự khởi tạo máy, tự điền TF_CONFIG, tự kết nối mạng và tắt máy khi huấn luyện xong. Bạn chỉ việc chờ lấy mô hình về.
+
+Slide 39: 5.6 Điều chỉnh Siêu tham số (Hyperparameter Tuning)
+Người 1: Một tính năng tuyệt vời khác của Vertex AI là tự động tìm kiếm siêu tham số. Thay vì thử thủ công learning rate là không phẩy một, rồi không phẩy không một.
+Người 2: Nó sẽ dùng Grid Search hay Random Search giống mình học ở các chương trước ạ?
+Người 1: Nó còn thông minh hơn thế. Nó sử dụng Tối ưu hóa Bayes, hay Bayesian Optimization. Dịch vụ này sẽ dự đoán xem vùng siêu tham số nào có khả năng cho ra kết quả tốt nhất, và liên tục thu hẹp phạm vi tìm kiếm. Rất tiết kiệm chi phí tính toán.
+
+Slide 40: Tổng Kết Chương 19
+Người 1: Chúc mừng các bạn đã đi đến cuối chương! Chúng ta đã trải qua một hành trình dài từ một mô hình học máy đơn giản đến việc triển khai nó trên Web, trên Mobile, và trên hệ thống phân tán Cloud.
+Người 2: Em thấy chương này thực sự kết nối những kiến thức học sâu khô khan với các ứng dụng phần mềm mà mọi người dùng hằng ngày.
+Người 1: Đó chính là mục đích của Mờ lờ Ốp. Các bạn giờ đây không chỉ là những nhà khoa học dữ liệu, mà còn có tư duy của kỹ sư phần mềm AI. Hãy áp dụng những kiến thức này vào đồ án môn học của mình nhé.
+
+Slide 41: HỎI & ĐÁP
+Người 1: Chúng ta còn ít phút cuối giờ. Các bạn có câu hỏi nào về TensorFlow Serving, T F Lite, Vertex AI hay huấn luyện phân tán không?
+Người 2: Tạm thời em chưa có câu hỏi gì ạ. Em sẽ thực hành ngay trên Colab và báo cáo thầy/cô vào buổi sau ạ.
+Người 1: Tuyệt vời! Hẹn gặp lại các bạn ở chương tiếp theo.

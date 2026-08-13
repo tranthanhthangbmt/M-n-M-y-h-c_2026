@@ -2158,7 +2158,9 @@ giải pháp cho các bài tập này có sẵn ở cuối sổ tay của chươ
 <p style="text-align: right;"><a href="TaiLieu/slideML/Slide_ML_Chap09.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về Slide Bài Giảng (PDF)</a></p>
 
 #### ** 🎥 Video **
-*Đang cập nhật...*
+
+<iframe src="Video/Chapter_09/index.html" width="100%" height="600px" style="border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" allowfullscreen></iframe>
+
 
 #### ** 📝 Trắc nghiệm **
 *Đang cập nhật...*
