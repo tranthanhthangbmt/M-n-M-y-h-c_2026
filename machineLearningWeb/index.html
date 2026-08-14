@@ -256,10 +256,10 @@
               let chapterIndex = parseInt(match[1]) - 1; // 0-indexed
               if (chapterIndex >= 0 && chapterIndex < playlist.length) {
                 if (ap.list.index !== chapterIndex) {
+                  let originalPlay = ap.play;
+                  ap.play = function() {}; // Tạm thời vô hiệu hóa hàm play
                   ap.list.switch(chapterIndex);
-                  setTimeout(function() {
-                    try { ap.pause(); } catch(e) { console.error(e); }
-                  }, 50);
+                  ap.play = originalPlay; // Khôi phục lại hàm play
                 }
               }
             }
