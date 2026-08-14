@@ -257,7 +257,9 @@
               if (chapterIndex >= 0 && chapterIndex < playlist.length) {
                 if (ap.list.index !== chapterIndex) {
                   ap.list.switch(chapterIndex);
-                  ap.pause();
+                  setTimeout(function() {
+                    try { ap.pause(); } catch(e) { console.error(e); }
+                  }, 50);
                 }
               }
             }
