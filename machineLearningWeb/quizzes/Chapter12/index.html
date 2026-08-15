@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 12</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "TensorFlow là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là một ngôn ngữ lập trình độc lập thay thế cho Python."
+            },
+            {
+                "id": "b",
+                "text": "Là một thư viện mã nguồn mở khổng lồ do Google phát triển, dùng để tính toán số học hiệu năng cao (sử dụng Tensor) và chuyên dùng để triển khai Machine Learning / Deep Learning trên mọi nền tảng (CPU, GPU, TPU, Mobile, Web)."
+            },
+            {
+                "id": "c",
+                "text": "Là một trình duyệt web."
+            },
+            {
+                "id": "d",
+                "text": "Là một thuật toán giống Random Forest."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "TensorFlow (TF) không chỉ là thư viện Học sâu, nó là cả một 'Hệ sinh thái'. Nó có TensorFlow.js cho trình duyệt web, TensorFlow Lite cho điện thoại di động và IoT, và TF Extended (TFX) cho triển khai quy mô công nghiệp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tensor (Khuôn lượng) trong TensorFlow khác với mảng NumPy (ndarray) ở điểm cốt lõi nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "TensorFlow Tensor không thể lưu trữ số thực."
+            },
+            {
+                "id": "b",
+                "text": "NumPy chạy trên CPU. Còn Tensor được thiết kế tối ưu hóa để TÍNH TOÁN SONG SONG TRÊN GPU/TPU siêu tốc. Tensor cũng hỗ trợ tính năng tự động vi phân (Auto-Differentiation) để tính đạo hàm ngược (Backpropagation)."
+            },
+            {
+                "id": "c",
+                "text": "TensorFlow Tensor không hỗ trợ mảng nhiều chiều (chỉ hỗ trợ 1D)."
+            },
+            {
+                "id": "d",
+                "text": "NumPy xử lý chuỗi tốt hơn Tensor."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Về mặt cú pháp, Tensor gần như giống hệt NumPy. Nhưng sức mạnh ngầm của Tensor là khả năng 'giao tiếp' với phần cứng GPU để tăng tốc độ tính toán ma trận lên hàng trăm lần so với CPU."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Tạo Tensor và Biến trong TensorFlow:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có thể tạo một tensor hằng số bằng lệnh `tf.constant()`. Các hằng số này là BẤT BIẾN (Immutable), nghĩa là bạn không thể sửa đổi giá trị bên trong nó sau khi tạo. Tuy nhiên, Mạng Nơ-ron cần phải liên tục cập nhật Trọng số (Weights) trong quá trình huấn luyện. Vì vậy, để lưu trữ trọng số, TensorFlow cung cấp cấu trúc <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Bạn có thể thay đổi giá trị của nó tại chỗ bằng hàm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "tf.Variable"
+            },
+            {
+                "id": "w2",
+                "text": "assign()"
+            },
+            {
+                "id": "w3",
+                "text": "tf.function"
+            },
+            {
+                "id": "w4",
+                "text": "append()"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Trọng số của mạng học sâu phải được thay đổi sau mỗi Epoch. Vì vậy chúng phải là Variable (Biến). Hàm assign() giúp cập nhật giá trị mới đè lên giá trị cũ mà không tạo ra bản sao bộ nhớ mới."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Trong TensorFlow, khi gọi hàm `tf.square(a)` hoặc `a ** 2` (trong đó 'a' là một tensor), phép toán này diễn ra như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó chỉ bình phương phần tử đầu tiên."
+            },
+            {
+                "id": "b",
+                "text": "Nó tính bình phương TỪNG PHẦN TỬ MỘT (Element-wise) bên trong tensor."
+            },
+            {
+                "id": "c",
+                "text": "Nó nhân ma trận 'a' với chính nó (Matrix multiplication)."
+            },
+            {
+                "id": "d",
+                "text": "Nó báo lỗi nếu tensor có nhiều hơn 1 chiều."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Giống y hệt NumPy, các phép toán số học (+, -, *, /, **, tf.math.log) trong TensorFlow đều là Element-wise. Nếu muốn nhân ma trận thực sự, bạn phải dùng lệnh tf.matmul() hoặc toán tử @."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép nối toán tử NumPy và TensorFlow tương đương:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "np.array([1, 2, 3])"
+            },
+            {
+                "id": "l2",
+                "text": "np.sum()"
+            },
+            {
+                "id": "l3",
+                "text": "a.T (Chuyển vị ma trận)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "tf.constant([1, 2, 3])"
+            },
+            {
+                "id": "r2",
+                "text": "tf.reduce_sum()"
+            },
+            {
+                "id": "r3",
+                "text": "tf.transpose(a)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "TensorFlow có tên gọi hơi khác NumPy một chút, ví dụ nó hay dùng tiền tố 'reduce_' cho các phép gom nhóm (reduce_mean, reduce_max)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tại sao Keras (API cấp cao) lại cung cấp khả năng tự định nghĩa (Custom) Hàm mất mát, Metric, Layer và Model?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để tăng tốc độ chạy của Keras."
+            },
+            {
+                "id": "b",
+                "text": "Để thay thế hoàn toàn TensorFlow."
+            },
+            {
+                "id": "c",
+                "text": "Để giải quyết các BÀI TOÁN KỲ LẠ mà các thư viện chuẩn chưa hỗ trợ. Ví dụ: Bài toán có hàm Loss độc quyền của doanh nghiệp (phạt nặng lỗi bỏ sót hơn lỗi sai ngẫu nhiên), hoặc các kiến trúc mạng mới được phát minh ngày hôm qua (chưa có sẵn trong Keras)."
+            },
+            {
+                "id": "d",
+                "text": "Vì Keras không có sẵn các hàm thông thường như MSE hay Accuracy."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Khả năng Custom (tùy biến) là thứ phân biệt một người xài tool cơ bản và một Kỹ sư / Nhà nghiên cứu AI thực thụ. Khi Keras không có sẵn cục gạch Lego bạn cần, bạn phải tự đúc cục gạch đó bằng TensorFlow."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Các bước định nghĩa một Hàm Loss tùy biến (Custom Loss Function) đơn giản (Ví dụ hàm Huber Loss) bằng hàm Python thường:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Định nghĩa hàm: def huber_fn(y_true, y_pred):"
+            },
+            {
+                "id": "2",
+                "text": "Bên trong hàm: Dùng TensorFlow (ví dụ tf.abs) để tính sự chênh lệch giữa y_true và y_pred."
+            },
+            {
+                "id": "3",
+                "text": "Bên trong hàm: Dùng tf.where() để trả về sai số bình phương (MSE) nếu lỗi nhỏ, và sai số tuyệt đối (MAE) nếu lỗi lớn."
+            },
+            {
+                "id": "4",
+                "text": "Gọi model.compile(loss=huber_fn, ...). Khi huấn luyện, Keras sẽ tự động nhét y_true và y_pred vào hàm này ở mỗi batch."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Custom Loss bằng hàm là cách nhanh nhất. Hàm Huber Loss là ví dụ kinh điển: Nếu đoán sai ít thì phạt bình phương (MSE - mềm mỏng). Nếu đoán sai quá mức (outlier) thì phạt tuyến tính (MAE - không bị nhạy cảm quá lố)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Điểm khác biệt quan trọng giữa việc định nghĩa Custom Loss bằng HÀM (Function) và bằng LỚP (Class kế thừa tf.keras.losses.Loss) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Viết bằng Class chạy chậm hơn viết bằng Hàm."
+            },
+            {
+                "id": "b",
+                "text": "Viết bằng Hàm thì dễ. Nhưng nếu hàm của bạn có SIÊU THAM SỐ (ví dụ threshold=1.0) và bạn muốn LƯU MÔ HÌNH (model.save) một cách trơn tru để sau này load lên không bị lỗi, bạn nên dùng cấu trúc CLASS (và triển khai phương thức get_config())."
+            },
+            {
+                "id": "c",
+                "text": "Viết bằng Hàm không thể dùng được Gradient Descent."
+            },
+            {
+                "id": "d",
+                "text": "Keras nghiêm cấm viết Custom Loss bằng Class."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi load một file .h5, Keras không biết cái hàm 'huber_fn' của bạn là gì (nó báo lỗi Unknown Loss). Nếu dùng Class và định nghĩa get_config(), mô hình sẽ lưu lại tham số threshold vào JSON và tự khởi tạo lại đúng lúc Load."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Khác biệt giữa Loss và Metric:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Hàm Mất mát (Loss) được dùng bởi thuật toán Gradient Descent để <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> trọng số. Vì vậy nó BẮT BUỘC phải có khả năng tính <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (có đạo hàm) ở mọi nơi. Trong khi đó, Thước đo (Metric, ví dụ Accuracy) chỉ dùng để CON NGƯỜI ĐÁNH GIÁ mô hình (xem đúng bao nhiêu %), nó không tham gia vào quá trình Backprop nên nó có thể là hàm nhảy bậc (không có đạo hàm).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Cập nhật / Huấn luyện"
+            },
+            {
+                "id": "w2",
+                "text": "Đạo hàm (Differentiable)"
+            },
+            {
+                "id": "w3",
+                "text": "Đóng băng"
+            },
+            {
+                "id": "w4",
+                "text": "Sai số ngẫu nhiên"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Mặc dù Custom Loss và Custom Metric lập trình y chang nhau. Nhưng Loss là thứ 'máy tính dùng' (phải trơn tru, có đạo hàm). Metric là thứ 'người xem' (dễ hiểu, ví dụ 95% là chuẩn, không cần trơn tru)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng 'Streaming Metric' (hay Stateful Metric) trong quá trình huấn luyện Keras có ý nghĩa gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Metric tự động tải video từ internet."
+            },
+            {
+                "id": "b",
+                "text": "Nó chỉ tính điểm Accuracy cho Mẻ (Batch) cuối cùng."
+            },
+            {
+                "id": "c",
+                "text": "Nó TÍCH LŨY (lưu trữ trạng thái) kết quả dự đoán qua nhiều mẻ (batches) để tính ra một điểm số TỔNG HỢP chính xác cho toàn bộ vòng lặp (Epoch), thay vì chỉ lấy trung bình cộng đơn giản của các mẻ (đôi khi bị sai lệch do số lượng dữ liệu ở mẻ cuối bị thiếu)."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ dùng được trên GPU."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Ví dụ hàm tf.keras.metrics.Precision. Precision không thể tính trung bình đơn giản giữa các batch. Nó phải tích lũy Tổng số True Positives và Tổng số False Positives xuyên suốt Epoch rồi mới thực hiện phép chia 1 lần ở cuối Epoch."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Quy trình 3 bước cốt lõi khi tạo một Lớp tùy biến (Custom Layer) bằng cách kế thừa `tf.keras.layers.Layer`:",
+        "instruction": "(Sắp xếp các hàm theo trình tự vòng đời của một Layer)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Hàm `__init__(self)`: Nơi bạn nhận các siêu tham số (ví dụ số Nơ-ron) từ người dùng."
+            },
+            {
+                "id": "2",
+                "text": "Hàm `build(self, batch_input_shape)`: Keras gọi hàm này lần đầu tiên khi nó biết hình dáng kích thước của Input. Đây là nơi bạn LÀM BIẾNG (Lazy) khởi tạo các Trọng số (self.add_weight)."
+            },
+            {
+                "id": "3",
+                "text": "Hàm `call(self, X)`: Hàm quan trọng nhất. Đây là nơi thực hiện các phép toán TensorFlow từ Đầu vào X và Trọng số W để trả về kết quả Đầu ra Y (Forward pass)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3"
+        ],
+        "explanation": "Khởi tạo Layer -> Đợi dữ liệu vào để Build (tạo bộ nhớ cho ma trận trọng số W) -> Thực thi tính toán (Call) mỗi khi có dữ liệu đi qua. Đây là mô hình kinh điển của Keras."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Cơ chế 'Tự động vi phân' (Automatic Differentiation) bằng `tf.GradientTape` trong TensorFlow có tác dụng gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để vẽ đồ thị dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Để ghi lại MỌI PHÉP TOÁN BẠN ĐÃ THỰC HIỆN bên trong băng từ (tape). Khi bạn gọi lệnh tape.gradient(), nó sẽ tự động phát lại băng từ đó ĐẢO NGƯỢC để tính ĐẠO HÀM của một biến theo một biến khác bằng quy tắc dây chuyền. Khỏi cần bạn tự giải tích toán học bằng tay."
+            },
+            {
+                "id": "c",
+                "text": "Để lưu mô hình vào bộ nhớ RAM."
+            },
+            {
+                "id": "d",
+                "text": "Để xóa dữ liệu dư thừa."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "GradientTape giống như một chiếc máy ghi âm bí mật. Nó lén ghi lại mọi bước tính toán (x^2, +y, *z). Khi bạn đòi đạo hàm, nó chiếu ngược cuộn băng để tính Chain Rule thần tốc. Đây là trái tim của việc tự viết Custom Training Loop."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Theo mặc định, sau khi bạn gọi `tape.gradient()` một lần, bạn có thể gọi lại nó để tính đạo hàm một lần nữa trên cùng một cuộn băng (tape) không?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Có, bạn có thể gọi bao nhiêu lần tùy thích."
+            },
+            {
+                "id": "b",
+                "text": "Không. Mặc định băng từ sẽ bị 'xóa' (xả bộ nhớ) ngay lập tức sau khi gọi tape.gradient() lần đầu để tiết kiệm RAM. Nếu muốn tính đạo hàm nhiều lần, bạn phải khai báo `tf.GradientTape(persistent=True)`."
+            },
+            {
+                "id": "c",
+                "text": "Có, nhưng đạo hàm sẽ tự động bị đổi dấu."
+            },
+            {
+                "id": "d",
+                "text": "Băng từ sẽ tự động sao chép ra thành file text."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Để tránh tràn RAM (vì việc ghi lại các phép tính ma trận ngốn RAM rất khủng khiếp), TF giải phóng rác ngay lập tức khi dùng xong. Dùng `persistent=True` nếu bạn cần tính đạo hàm riêng cho nhiều biến ở các thời điểm khác nhau."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Cấu trúc cơ bản của một Vòng lặp Huấn luyện Tùy biến (Custom Training Loop) mà không dùng hàm model.fit():",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Mở khối lệnh `with tf.GradientTape() as tape:`."
+            },
+            {
+                "id": "2",
+                "text": "Truyền dữ liệu qua mạng: `y_pred = model(X_batch)` và tính sai số `loss = loss_fn(y_true, y_pred)`."
+            },
+            {
+                "id": "3",
+                "text": "Yêu cầu Tape tính đạo hàm của hàm Loss so với tất cả trọng số: `gradients = tape.gradient(loss, model.trainable_variables)`."
+            },
+            {
+                "id": "4",
+                "text": "Đưa các đạo hàm vừa tính vào Optimizer để nó trừ đi một lượng nhỏ ở trọng số: `optimizer.apply_gradients(zip(gradients, model.trainable_variables))`."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Đây chính xác là những gì hàm `model.fit()` của Keras âm thầm làm bên dưới. Tự viết Vòng lặp huấn luyện giúp bạn can thiệp vào TỪNG BƯỚC một (ví dụ: Áp dụng GAN - huấn luyện xen kẽ 2 mạng Generator và Discriminator)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Tính năng Đồ thị tính toán (TensorFlow Graphs) và AutoGraph:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Mặc định ở TF 2.0, code Python chạy theo chế độ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (thực thi ngay lập tức từng dòng lệnh, rất dễ debug). Nhưng để mô hình chạy NHANH HƠN và có thể xuất (export) sang di động C++, bạn nên chuyển code Python thành Đồ thị (Graph mode). Việc này cực kỳ đơn giản, chỉ cần thêm Decorator (Trình trang trí) <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> ngay trên định nghĩa hàm của bạn. TensorFlow (AutoGraph) sẽ phân tích mã nguồn Python (vòng lặp for, if-else) và biên dịch nó thành đồ thị TensorFlow cực kỳ tối ưu.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Eager Execution (Chế độ háo hức)"
+            },
+            {
+                "id": "w2",
+                "text": "@tf.function"
+            },
+            {
+                "id": "w3",
+                "text": "Graph Mode"
+            },
+            {
+                "id": "w4",
+                "text": "compile()"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Eager mode giống như code Python bình thường, gọi là tính ngay. Graph mode biên dịch toàn bộ thành 1 luồng xử lý C++ khép kín (giống chương trình đóng gói .exe). @tf.function là phép thuật giúp lập trình viên dùng Python nhưng lại có tốc độ của Graph."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong TensorFlow, khi định nghĩa Custom Model bằng Subclassing (kế thừa tf.keras.Model), đâu là nơi hợp lý nhất để đặt khối lệnh `with tf.GradientTape()` nếu muốn viết lại hàm huấn luyện (model.fit)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Ghi đè (Override) phương thức `train_step(self, data)`. Đây là hàm lõi xử lý 1 mẻ dữ liệu mà model.fit() luôn gọi tới."
+            },
+            {
+                "id": "b",
+                "text": "Trong phương thức `call()`."
+            },
+            {
+                "id": "c",
+                "text": "Trong phương thức `build()`."
+            },
+            {
+                "id": "d",
+                "text": "Trong phương thức `__init__()`."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Bắt đầu từ Keras 2.2, thay vì tự viết vòng for thủ công 100%, bạn chỉ cần Ghi đè phương thức `train_step()`. Sau đó bạn GỌI `model.fit()` BÌNH THƯỜNG. Keras sẽ vẫn quản lý Progress bar, Callbacks cho bạn, nhưng lại dùng logic huấn luyện do bạn tự chế."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Phân biệt các công cụ tạo mạng (API) theo cấp độ linh hoạt:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Sequential API"
+            },
+            {
+                "id": "l2",
+                "text": "Functional API"
+            },
+            {
+                "id": "l3",
+                "text": "Subclassing API (Custom Model)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Thích hợp cho 80% tác vụ thông thường. Chỉ xếp thành đường thẳng."
+            },
+            {
+                "id": "r2",
+                "text": "Thích hợp cho 15% tác vụ phức tạp (rẽ nhánh nhiều đầu vào/đầu ra, ResNet). Dễ debug, đồ thị tĩnh."
+            },
+            {
+                "id": "r3",
+                "text": "Dành cho 5% các nhà nghiên cứu muốn kiểm soát từng ly từng tí (Dùng if/else trong mạng, thay đổi luồng forward pass bằng vòng lặp Python)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Subclassing API (Kế thừa Lớp) cho bạn quyền viết mọi thứ bằng Code Python thuần túy bên trong hàm call()."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Quy tắc Đa hình (Polymorphism) của trình biên dịch `@tf.function`:",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó chỉ biên dịch 1 lần duy nhất cho mọi đầu vào."
+            },
+            {
+                "id": "b",
+                "text": "Khi bạn gọi hàm lần đầu với Tensor kích thước [10, 10], nó biên dịch 1 Graph cho kích thước này. Nếu bạn gọi lại hàm đó với Tensor [20, 20], nó sẽ BIÊN DỊCH LẠI MỘT GRAPH MỚI cho đúng kích thước đó. Nếu bạn liên tục thay đổi kích thước, TF sẽ sinh ra hàng ngàn đồ thị, làm treo bộ nhớ (Memory leak)."
+            },
+            {
+                "id": "c",
+                "text": "Nó không hỗ trợ kiểu số nguyên (Integer)."
+            },
+            {
+                "id": "d",
+                "text": "Nó tự động xóa bỏ các hàm Python."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Đây là CẠM BẪY lớn nhất của tf.function. TF Graph rất cứng nhắc về shape và dtype (kích thước và kiểu dữ liệu). Đừng bao giờ đút các số nguyên (1, 2, 3...) thay đổi liên tục vào hàm, vì TensorFlow sẽ xem mỗi con số là một cấu hình đồ thị mới. Luôn cố gắng dùng Tensor cho đầu vào."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Tính linh hoạt của `tf.TensorArray`:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong Python thuần túy, bạn dùng List `[]` và `.append()` để lưu trữ các giá trị trong vòng lặp. Tuy nhiên, List Python KHÔNG THỂ chạy được trong <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (vì Graph C++ không biết cách cấp phát động cho List). Nếu bạn dùng `@tf.function` và muốn tạo một danh sách động bên trong hàm, bạn phải sử dụng đối tượng đặc biệt tên là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> thay vì List thường.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Graph Mode"
+            },
+            {
+                "id": "w2",
+                "text": "tf.TensorArray"
+            },
+            {
+                "id": "w3",
+                "text": "Eager Execution"
+            },
+            {
+                "id": "w4",
+                "text": "tf.Variable"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Trong TensorFlow Graph, mọi thứ phải có kiểu tĩnh. TensorArray cung cấp cấu trúc mảng mở rộng động (dynamic size) tương tự như List, nhưng có thể biên dịch được sang C++ / XLA."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Kiểu dữ liệu `tf.data.Dataset` sinh ra để làm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó dùng để hiển thị biểu đồ đồ thị."
+            },
+            {
+                "id": "b",
+                "text": "Là API luồng dữ liệu (Data Pipeline) cực mạnh. Nó giúp ĐỌC DỮ LIỆU TỪ Ổ CỨNG (Hàng triệu ảnh) một cách trơn tru, chia thành từng mẻ (batch), trộn ngẫu nhiên (shuffle), và tải dữ liệu chạy ngầm liên tục để đút vào RAM mà không làm nghẽn GPU."
+            },
+            {
+                "id": "c",
+                "text": "Nó dùng để tạo Custom Loss."
+            },
+            {
+                "id": "d",
+                "text": "Nó là một thư viện giống hệt Pandas DataFrame."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi học sâu, dữ liệu lớn hàng TB không thể nạp hết vào RAM. tf.data.Dataset cho phép bạn 'streaming' (bơm liên tục) từng dòng dữ liệu vào máy, giống như xem phim trên YouTube."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Các bước biến đổi dữ liệu cơ bản bằng `tf.data.Dataset` (Data Pipeline):",
+        "instruction": "(Sắp xếp các dòng mã để tạo ra ống dẫn dữ liệu chuẩn xác)",
+        "items": [
+            {
+                "id": "1",
+                "text": "dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))  # Tạo dataset từ bộ nhớ"
+            },
+            {
+                "id": "2",
+                "text": "dataset = dataset.shuffle(buffer_size=1000)  # Xáo trộn dữ liệu bằng 1 cái thau (buffer) chứa 1000 phần tử"
+            },
+            {
+                "id": "3",
+                "text": "dataset = dataset.batch(32)  # Nhóm dữ liệu thành từng mẻ 32 phần tử"
+            },
+            {
+                "id": "4",
+                "text": "dataset = dataset.prefetch(1)  # (Quan trọng) Bắt CPU chuẩn bị sẵn mẻ tiếp theo trong lúc GPU đang bận huấn luyện mẻ hiện tại"
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Tạo -> Xáo trộn -> Chia mẻ -> Chuẩn bị trước (prefetch). Kỹ thuật Prefetch là chìa khóa để GPU không bao giờ phải ngồi chơi chờ CPU đọc dữ liệu từ ổ cứng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Đặc điểm của hàm `tf.GradientTape()` là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó tự động theo dõi MỌI biến trong bộ nhớ RAM."
+            },
+            {
+                "id": "b",
+                "text": "Mặc định, nó CHỈ theo dõi sự thay đổi của các biến có loại `tf.Variable` (được đánh dấu trainable=True, tức là Trọng số). Nó bỏ qua các hằng số `tf.constant`. Nếu bạn cố tình muốn tính đạo hàm theo một hằng số, bạn phải dùng lệnh `tape.watch(hằng_số)`."
+            },
+            {
+                "id": "c",
+                "text": "Nó chỉ dùng được ở Eager Mode."
+            },
+            {
+                "id": "d",
+                "text": "Nó thay thế hoàn toàn Mạng Nơ-ron."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "GradientTape tối ưu RAM bằng cách chỉ dán băng ghi âm lên các Trọng số (Variables). Nó biết những con số Data Input (x) không cần tính đạo hàm nên bỏ qua. Dùng `watch` để ép nó ghi âm một biến bất kỳ."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong AutoGraph (biến mã Python thành Graph C++), lệnh `print()` và lệnh `tf.print()` có gì khác biệt?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chúng hoàn toàn giống nhau."
+            },
+            {
+                "id": "b",
+                "text": "Lệnh `print()` của Python CHỈ CHẠY 1 LẦN DUY NHẤT trong lúc TensorFlow 'Tracing' (Dò dấu) để vẽ đồ thị tĩnh. Trong khi đó, `tf.print()` trở thành 1 Node (một khối lệnh) BÊN TRONG đồ thị, và nó sẽ in ra liên tục mỗi khi đồ thị được chạy ở thời gian thực thi (Runtime)."
+            },
+            {
+                "id": "c",
+                "text": "tf.print in ra màu đỏ."
+            },
+            {
+                "id": "d",
+                "text": "print() không thể in số thập phân."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Đây là điểm bối rối nhất của tf.function. Code Python gốc (như print, if thường) chỉ được chạy đúng 1 lần lúc TensorFlow 'soi' code bạn để đúc thành Graph. Muốn Graph tự biết in ấn lúc đang chạy, bạn phải nhúng khối tf.print vào Graph."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Thiết bị tính toán (Device Placement) trong TensorFlow:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có thể ép TensorFlow thực thi một khối lệnh toán học cụ thể trên CPU hoặc GPU bằng cách sử dụng ngữ cảnh `with tf.device('/<span class=\"blank-slot\" data-id=\"1\">___(1)___</span>:0'):`. Tuy nhiên, thông thường bạn KHÔNG CẦN LÀM VIỆC NÀY, bởi vì TensorFlow có tính năng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Nghĩa là, nếu nó phát hiện máy bạn có Card đồ họa NVIDIA tương thích (GPU), nó sẽ tự động ưu tiên ném mọi phép toán phức tạp sang GPU để xử lý.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "GPU"
+            },
+            {
+                "id": "w2",
+                "text": "Vị trí động (Dynamic Placement / Soft placement)"
+            },
+            {
+                "id": "w3",
+                "text": "TPU"
+            },
+            {
+                "id": "w4",
+                "text": "Hard placement"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "TensorFlow tự động tối ưu hóa vị trí tính toán. Các ma trận khổng lồ sẽ được xử lý ở GPU, còn các mảng nhỏ/logic sẽ ở lại CPU."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép các công cụ hệ sinh thái TensorFlow (TFX):",
+        "left": [
+            {
+                "id": "l1",
+                "text": "TF Transform (TFT)"
+            },
+            {
+                "id": "l2",
+                "text": "TF Serving"
+            },
+            {
+                "id": "l3",
+                "text": "TensorBoard"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Chuẩn hóa dữ liệu cực lớn, đảm bảo logic tiền xử lý lúc Train y hệt như lúc Test."
+            },
+            {
+                "id": "r2",
+                "text": "Biến mô hình đã huấn luyện thành một API máy chủ (Web Service). Người dùng gọi API để lấy kết quả tiên đoán cực nhanh."
+            },
+            {
+                "id": "r3",
+                "text": "Bảng điều khiển trực quan hóa. Xem đồ thị Loss giảm theo thời gian, xem hình ảnh kiến trúc mạng Nơ-ron."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "TensorFlow không chỉ để nghiên cứu, nó cung cấp sẵn từ A-Z công cụ (Serving) để các công ty đưa thẳng AI lên app thương mại."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Nếu bạn muốn Mạng Nơ-ron có nhiều cổng Đầu vào (Inputs) độc lập và nhiều cổng Đầu ra (Outputs) riêng biệt, bạn phải sử dụng API nào của Keras?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Sequential API."
+            },
+            {
+                "id": "b",
+                "text": "Functional API. Bằng cách nối các lớp (layers) như hàm toán học `out = Layer()(in)`, và chốt lại bằng lệnh `Model(inputs=[in1, in2], outputs=[out1, out2, out3])`."
+            },
+            {
+                "id": "c",
+                "text": "Chỉ có Subclassing API mới làm được."
+            },
+            {
+                "id": "d",
+                "text": "Keras không hỗ trợ tính năng này."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Functional API cực kỳ linh hoạt. Ví dụ mô hình Wide & Deep, một luồng ảnh đi vào Input 1, một luồng số liệu đi vào Input 2. Cuối cùng hợp nhất lại bằng hàm tf.keras.layers.concatenate()."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Định dạng TFRecord được sử dụng rất nhiều trong TensorFlow. Nó là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là file âm thanh."
+            },
+            {
+                "id": "b",
+                "text": "Là một định dạng nhị phân cực kỳ nhỏ gọn để lưu trữ liên tiếp 1 dãy các dữ liệu (Ảnh, văn bản, mảng) dưới dạng byte nối tiếp. TensorFlow đọc định dạng nhị phân này NHANH HƠN RẤT NHIỀU so với đọc hàng ngàn file JPEG rời rạc từ ổ cứng."
+            },
+            {
+                "id": "c",
+                "text": "Là định dạng thay thế cho JSON."
+            },
+            {
+                "id": "d",
+                "text": "Là tính năng ghi màn hình quá trình train."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Ổ cứng đọc 10.000 file ảnh nhỏ thì cực kỳ ì ạch (do head seek). Đóng gói 10.000 ảnh đó thành 1 file TFRecord nhị phân liên tục, GPU sẽ uống dữ liệu như uống nước."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Quy trình sử dụng TFRecord và `tf.data.Dataset`:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tạo Protobuf (Protocol Buffers): Gói cấu trúc dữ liệu của bạn (ví dụ gồm Đặc trưng Hình ảnh dạng byte, và Đặc trưng Nhãn dạng int) thành đối tượng tf.train.Example."
+            },
+            {
+                "id": "2",
+                "text": "Ghi ra đĩa: Dùng tf.io.TFRecordWriter để ghi các đối tượng Example này thành file `.tfrecord` khổng lồ."
+            },
+            {
+                "id": "3",
+                "text": "Đọc dữ liệu từ đĩa bằng tf.data.TFRecordDataset(filepath). (Dữ liệu lúc này đang là luồng byte khó hiểu)."
+            },
+            {
+                "id": "4",
+                "text": "Phân giải (Parse): Dùng tf.io.parse_single_example() kèm theo bộ ánh xạ (Feature description) để phục hồi lại hình ảnh ma trận và nhãn nguyên vẹn để đút vào mô hình."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "TFRecord sử dụng 'Protocol Buffers' (Protobuf - do Google phát minh) để nén dữ liệu. Vì nó nén cứng, khi đọc ra bạn bắt buộc phải có 'chìa khóa' (Feature description) để bung nén ra định dạng cũ."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Vì sao phải 'Cắt đôi' quá trình đạo hàm (Stop Gradients) bằng lệnh `tf.stop_gradient(tensor)` trong một số kiến trúc mạng tiên tiến?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để xóa hẳn tensor đó."
+            },
+            {
+                "id": "b",
+                "text": "Trong các kiến trúc phức tạp (như AutoEncoders rời rạc, hoặc luồng suy luận phụ), ta muốn phần Đầu vào (Forward pass) vẫn được truyền tín hiệu tới. NHƯNG khi Lan truyền ngược (Backprop), ta không muốn nhánh đó cập nhật trọng số. `stop_gradient` hoạt động như cái VAN MỘT CHIỀU: Cho tính toán đi tới, nhưng chặn đứng đạo hàm đi lùi."
+            },
+            {
+                "id": "c",
+                "text": "Để đổi dấu đạo hàm thành số âm."
+            },
+            {
+                "id": "d",
+                "text": "Để tối ưu hóa RAM bộ nhớ."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Đây là phép thuật cấp cao. Ví dụ bạn nhúng 1 mô hình đã train sẵn (VGG16) nối vào giữa mô hình của bạn, và bạn muốn VGG16 chỉ làm nhiệm vụ tính toán chứ không được phép tự ý thay đổi bộ não của nó (chặn gradient lùi)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Mối tương quan giữa TensorFlow và Keras trong phiên bản TF 2.x:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trước đây Keras là một thư viện độc lập hỗ trợ nhiều nền tảng (Theano, CNTK). Kể từ TensorFlow 2.0, Keras đã được sáp nhập chặt chẽ và trở thành API Cấp cao <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của TensorFlow (Nằm ở module `tf.keras`). Hầu hết các lệnh TensorFlow cốt lõi như `tf.math`, `tf.linalg` chạy ở <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>, cung cấp các khối gạch toán học nhỏ. Keras lắp ráp các khối gạch này thành những tòa lâu đài (Models) hoàn chỉnh.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Chính thức / Độc quyền (Official)"
+            },
+            {
+                "id": "w2",
+                "text": "Cấp thấp (Low-level)"
+            },
+            {
+                "id": "w3",
+                "text": "KerasClassifier"
+            },
+            {
+                "id": "w4",
+                "text": "Backend"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Trong TF2.0, bạn gần như chỉ code Keras (tf.keras). Nếu bạn cần cộng trừ nhân chia ma trận kỳ dị, bạn mới nhảy xuống xài TensorFlow gốc cấp thấp."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

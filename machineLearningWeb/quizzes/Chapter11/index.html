@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 11</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Vấn đề 'Triệt tiêu Đạo hàm' (Vanishing Gradients) trong quá trình huấn luyện Mạng Nơ-ron sâu là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Khi đạo hàm phát triển quá lớn khiến trọng số nhảy lung tung."
+            },
+            {
+                "id": "b",
+                "text": "Khi dữ liệu đầu vào bị mất trong quá trình truyền qua các lớp."
+            },
+            {
+                "id": "c",
+                "text": "Khi đạo hàm (gradients) ngày càng NHỎ DẦN đi lúc truyền ngược từ lớp Output về các lớp Input. Kết quả là các lớp đầu tiên của mạng không nhận được tín hiệu để cập nhật trọng số và 'ngừng học'."
+            },
+            {
+                "id": "d",
+                "text": "Khi mô hình học quá nhanh dẫn đến Overfitting."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Vanishing Gradients là cơn ác mộng lớn nhất của Deep Learning thời kỳ đầu. Do sử dụng hàm Sigmoid, mỗi lần đạo hàm truyền qua 1 lớp nó lại bị nhân với 1 số < 0.25. Truyền qua 10 lớp thì đạo hàm tụt về 0. Lớp đầu vào coi như bị 'tê liệt'."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khởi tạo trọng số Glorot (hay Xavier Initialization) giải quyết vấn đề Triệt tiêu Đạo hàm bằng cách nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó nhân tất cả các trọng số với 100."
+            },
+            {
+                "id": "b",
+                "text": "Nó thay đổi hàm mất mát."
+            },
+            {
+                "id": "c",
+                "text": "Nó giữ cho phương sai (variance) của các tín hiệu đi qua mỗi lớp luôn ĐỒNG ĐỀU nhau (phương sai đầu vào bằng phương sai đầu ra), bằng cách khởi tạo trọng số ngẫu nhiên theo một phân phối dựa trên số lượng Nơ-ron đầu vào (fan-in) và đầu ra (fan-out)."
+            },
+            {
+                "id": "d",
+                "text": "Nó gán tất cả trọng số thành giá trị trung bình."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Năm 2010, Glorot và Bengio chỉ ra rằng việc khởi tạo trọng số ngẫu nhiên thông thường khiến tín hiệu bị teo nhỏ dần hoặc phình to dần qua các lớp. Khởi tạo Glorot scale trọng số rất khéo để tín hiệu chảy mượt mà từ đầu đến cuối mạng."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối phương pháp Khởi tạo trọng số (Initialization) với Hàm kích hoạt phù hợp nhất của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Glorot (Xavier) Initialization"
+            },
+            {
+                "id": "l2",
+                "text": "He Initialization"
+            },
+            {
+                "id": "l3",
+                "text": "LeCun Initialization"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Hàm None, Tanh, Logistic, Softmax."
+            },
+            {
+                "id": "r2",
+                "text": "Hàm ReLU và các biến thể của nó (LeakyReLU, v.v.)."
+            },
+            {
+                "id": "r3",
+                "text": "Hàm SELU."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Keras mặc định dùng Glorot vì nó dùng tốt với nhiều hàm. Nhưng nếu bạn dùng hàm ReLU (là hàm phổ biến nhất hiện nay cho lớp ẩn), bạn BẮT BUỘC phải đổi khởi tạo sang 'He' (He normal) để mạng học hiệu quả nhất."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hàm kích hoạt Không Bão hòa (Nonsaturating Activation Functions):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Hàm ReLU rất tuyệt, nhưng nó bị một lỗi gọi là 'Dying ReLUs' (Các nơ-ron ReLU bị chết). Nếu trọng số xui xẻo làm tổng đầu vào < 0, ReLU sẽ xuất ra số 0 và đạo hàm cũng bằng 0. Nơ-ron đó sẽ chết vĩnh viễn. Để cứu vãn, người ta dùng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Hàm này cho phép một rò rỉ nhỏ (ví dụ 0.01x) khi x < 0. Một phiên bản khác mạnh hơn là hàm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>, nó có đường cong trơn tru ở phần âm giúp tăng tốc độ hội tụ (nhưng tính toán chậm hơn).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "LeakyReLU"
+            },
+            {
+                "id": "w2",
+                "text": "ELU"
+            },
+            {
+                "id": "w3",
+                "text": "Sigmoid"
+            },
+            {
+                "id": "w4",
+                "text": "Softmax"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Dying ReLU là hiện tượng cả cụm mạng nơ-ron chỉ xuất ra số 0 và ngừng học. LeakyReLU cho 'rò' một chút gradient (độ nghiêng nhỏ) khi âm, đủ sức đánh thức nơ-ron sống lại."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Hàm kích hoạt SELU (Scaled ELU) có một 'siêu năng lực' cực kỳ đặc biệt nào nếu mạng cấu hình đúng chuẩn?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó tự động giảm kích thước dữ liệu đầu vào."
+            },
+            {
+                "id": "b",
+                "text": "Tính tự chuẩn hóa (Self-Normalizing). Nếu mạng là các lớp Dense xếp chồng liên tiếp, sử dụng LeCun initialization, thì mạng sẽ TỰ DUY TRÌ đầu ra của mỗi lớp có mean = 0 và variance = 1. Giải quyết triệt để Vanishing Gradients mà không cần Batch Normalization."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự thay đổi tốc độ học (Learning Rate)."
+            },
+            {
+                "id": "d",
+                "text": "Nó có thể xử lý hình ảnh 3D mà không cần lớp tích chập."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "SELU là một hàm kích hoạt mang tính đột phá được giới thiệu năm 2017. Bạn ghép SELU + Khởi tạo LeCun, mạng của bạn sẽ tự động cân bằng số liệu mà khỏi cần chèn thêm các lớp chuẩn hóa lằng nhằng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Lớp Batch Normalization (Chuẩn hóa Theo mẻ) làm nhiệm vụ gì trong Keras?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xóa bớt dữ liệu xấu."
+            },
+            {
+                "id": "b",
+                "text": "Nó tự động CHUẨN HÓA (zero-centering và dãn phương sai = 1) đầu ra của lớp trước ĐANG BAY (on the fly), ngay cả khi mạng đang huấn luyện. Nó chèn thêm 2 tham số (scale và shift) để tự học cách chuẩn hóa tốt nhất cho mạng."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự động điều chỉnh siêu tham số K-Means."
+            },
+            {
+                "id": "d",
+                "text": "Nó dịch văn bản sang ngôn ngữ khác."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Batch Normalization (BN) là cứu cánh vĩ đại nhất của Deep Learning hiện đại. Nó cho phép bạn xài Learning Rate khổng lồ, dùng bất kỳ hàm kích hoạt nào mà không sợ Vanishing/Exploding Gradients."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Thứ tự sắp xếp các lớp khi sử dụng Batch Normalization TRƯỚC hàm kích hoạt (Theo đề xuất gốc của 논문 BN):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "model.add(Dense(300, use_bias=False)) # Tắt bias vì BN sẽ tự thêm shift param"
+            },
+            {
+                "id": "2",
+                "text": "model.add(BatchNormalization()) # Chuẩn hóa ngay trước khi đẩy vào hàm kích hoạt"
+            },
+            {
+                "id": "3",
+                "text": "model.add(Activation('relu')) # Bây giờ mới đi qua Activation"
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3"
+        ],
+        "explanation": "Bạn có thể đặt BN trước hay sau Activation đều được (hiện nay người ta thích đặt sau). Nhưng cấu hình chuẩn gốc là: Lớp Dense (tắt bias) -> Lớp BN -> Hàm kích hoạt."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Batch Normalization, tại sao khi ta dùng model.predict() (quá trình suy luận thực tế) mô hình không tính toán giá trị Mean và Std của batch hiện tại nữa?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì mô hình predict chỉ nhận 1 tấm ảnh (batch_size=1), không thể tính trung bình mẻ. BN sẽ sử dụng Trung bình chạy (Moving Average) của toàn bộ dữ liệu học mà nó đã âm thầm tích lũy từ lúc huấn luyện."
+            },
+            {
+                "id": "b",
+                "text": "Vì giá trị Mean luôn bằng 0."
+            },
+            {
+                "id": "c",
+                "text": "Vì TensorFlow sẽ bỏ qua lớp này khi dự đoán."
+            },
+            {
+                "id": "d",
+                "text": "Vì ta phải truyền thủ công Mean và Std vào hàm predict()."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Batch Normalization hành xử RẤT KHÁC NHAU ở lúc Train và lúc Test. Lúc Train nó tính mean/std của mẻ đó. Lúc Test nó xài mean/std tổng quát mà nó đã ghi nhớ (Non-trainable params)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Kỹ thuật 'Gradient Clipping' (Cắt xén Đạo hàm) thường được sử dụng cho loại mạng nơ-ron nào để chống Bùng nổ Đạo hàm (Exploding Gradients)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mạng Dense thông thường (Feedforward)."
+            },
+            {
+                "id": "b",
+                "text": "Mạng nơ-ron Tích chập (CNN)."
+            },
+            {
+                "id": "c",
+                "text": "Mạng nơ-ron Hồi quy (RNN - Recurrent Neural Networks), vì Batch Normalization hoạt động rất tệ trên chuỗi thời gian, nên người ta phải 'cắt gọt' thẳng tay các đạo hàm nếu nó vượt qua một ngưỡng cố định (ví dụ clipvalue=1.0)."
+            },
+            {
+                "id": "d",
+                "text": "Decision Tree."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Khác với Vanishing (triệt tiêu), Bùng nổ (Exploding) là khi đạo hàm to đến mức lỗi tràn RAM (NaN). Keras cung cấp optimizer=SGD(clipvalue=1.0) để chặt cụt mọi giá trị > 1.0. Rất hữu ích cho RNN/LSTM."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Học Chuyển giao (Transfer Learning):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Thay vì huấn luyện 1 mạng Nơ-ron siêu sâu từ con số 0 (mất vài tuần), bạn có thể tìm một mạng đã được Google train sẵn (ví dụ trên ảnh ImageNet). Bạn giữ lại các <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của họ (nơi đã học được cách nhận diện cạnh, góc, vân). Bạn chỉ lột bỏ lớp Output cũ, gắn lớp Output mới của mình vào. Trong lúc huấn luyện, bạn nên <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Freeze) các lớp cấp thấp này bằng cách đặt `layer.trainable = False` để tránh làm hỏng các tri thức chúng đã học.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Lớp cấp thấp (Lower layers)"
+            },
+            {
+                "id": "w2",
+                "text": "Đóng băng"
+            },
+            {
+                "id": "w3",
+                "text": "Khởi tạo lại"
+            },
+            {
+                "id": "w4",
+                "text": "Lớp đầu ra (Output layers)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Transfer learning là xương sống của AI hiện tại. Bạn 'đứng trên vai người khổng lồ'. Lớp thấp học đặc trưng chung chung (rất quý giá), bạn giữ lại (Freeze). Lớp cao trên cùng học đặc trưng chuyên biệt, bạn train lại."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép thuật toán Tối ưu hóa (Optimizers) với ý tưởng cốt lõi của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Momentum Optimization"
+            },
+            {
+                "id": "l2",
+                "text": "RMSProp"
+            },
+            {
+                "id": "l3",
+                "text": "Adam (Adaptive Moment Estimation)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Giống như quả bóng lăn xuống dốc, nó TÍCH LŨY vận tốc (quán tính) qua các bước. Vượt qua điểm trũng (local minima) dễ dàng hơn SGD rất nhiều."
+            },
+            {
+                "id": "r2",
+                "text": "Giải quyết vấn đề tốc độ học giảm quá nhanh bằng cách chỉ lấy trung bình nhân di động theo cấp số nhân (Exponential Moving Average) của các đạo hàm GẦN ĐÂY NHẤT. Cực kỳ xuất sắc."
+            },
+            {
+                "id": "r3",
+                "text": "Thuật toán quốc dân. Là sự kết hợp sức mạnh của cả Momentum (Quán tính) và RMSProp (Tự chỉnh tốc độ học theo độ dốc)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Đừng bao giờ dùng SGD trơn. Adam luôn là sự lựa chọn đầu tiên (Mặc định). Nesterov Accelerated Gradient (NAG) là bản nâng cấp nhỏ nhưng lợi hại của Momentum."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng Lập lịch Tốc độ học (Learning Rate Scheduling) giải quyết vấn đề gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó giúp mô hình huấn luyện vào ban đêm tự động."
+            },
+            {
+                "id": "b",
+                "text": "Nếu tốc độ học cố định quá to, thuật toán sẽ nhảy loạn xạ quanh đáy thung lũng (không bao giờ chạm đáy). Nếu cố định quá nhỏ, train mất cả năm. LR Scheduling bắt đầu với TỐC ĐỘ LỚN (để đi nhanh), sau đó TỪ TỪ GIẢM NHỎ LẠI khi tiến gần đến đích (để hạ cánh êm ái)."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự động bỏ qua những hình ảnh lỗi."
+            },
+            {
+                "id": "d",
+                "text": "Nó giảm số lượng Nơ-ron qua mỗi epoch."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Scheduling giống như đạp phanh xe. Khi mới chạy thì đạp ga hết cỡ (LR lớn). Gần đến vạch đích thì từ từ rà phanh (LR nhỏ) để dừng đúng vạch."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Hai kỹ thuật Chính quy hóa (Regularization) truyền thống nào được dùng để chống Overfitting trong Mạng Nơ-ron (giống hệt như mô hình tuyến tính)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "K-Means và DBSCAN."
+            },
+            {
+                "id": "b",
+                "text": "L1 (Lasso) và L2 (Ridge) Regularization (trong Keras gọi là kernel_regularizer)."
+            },
+            {
+                "id": "c",
+                "text": "PCA và t-SNE."
+            },
+            {
+                "id": "d",
+                "text": "Grid Search và Random Search."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "L1 giúp tạo ra mạng thưa thớt (Sparse - ép nhiều trọng số về 0). L2 (Thường dùng hơn) giúp kiềm chế tất cả các trọng số không được phép quá lớn. Bạn có thể chèn nó vào thẳng tham số của lớp Dense."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Cách thức Dropout - Một trong những kỹ thuật chống Overfitting nổi tiếng nhất - hoạt động (tưởng tượng 1 công ty làm việc):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Ở mỗi bước huấn luyện (training step), mọi nơ-ron (trừ output) có một xác suất 'p' (thường 50%) bị 'Tắt tạm thời' (Dropped out)."
+            },
+            {
+                "id": "2",
+                "text": "Nơ-ron bị tắt sẽ hoàn toàn bị ngó lơ, không nhận tín hiệu vào, không truyền tín hiệu ra trong mẻ dữ liệu đó."
+            },
+            {
+                "id": "3",
+                "text": "Hậu quả: Các nơ-ron không thể 'ỷ lại' vào một vài nơ-ron đồng nghiệp tài giỏi bên cạnh. Chúng buộc phải TỰ MÌNH học các đặc trưng hữu ích. Trọng số của mạng sẽ phân tán đều đặn hơn."
+            },
+            {
+                "id": "4",
+                "text": "Lúc suy luận thực tế (Testing): TẤT CẢ nơ-ron được bật lại (không ai bị tắt), nhưng trọng số của chúng bị nhân với (1-p) để cân bằng lại tín hiệu."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Dropout (của Geoffrey Hinton) hoạt động cực kỳ thô bạo nhưng lại là kỹ thuật xuất sắc nhất. Nó giống như việc mỗi ngày công ty cho nghỉ ngẫu nhiên 50% nhân viên, buộc người ở lại phải gánh vác mọi vị trí (đa năng)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Phương pháp Monte Carlo (MC) Dropout:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Thông thường, Dropout bị TẮT đi lúc Predict. Yarin Gal đề xuất rằng, nếu chúng ta CỐ TÌNH BẬT Dropout lúc Predict (bằng tham số training=True) và bắt mô hình dự đoán cùng 1 tấm ảnh 100 lần. Kết quả sẽ tạo ra 100 đáp án hơi khác nhau (do các mạng nơ-ron ngẫu nhiên khác nhau xử lý). Bằng cách lấy <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của 100 dự đoán này, độ chính xác sẽ cao hơn. Tuyệt vời hơn, bằng cách đo lường độ phân tán của 100 đáp án, ta có thể đánh giá được <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> của mô hình (Mô hình có 'tự tin' không hay đang 'đoán bừa').",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Trung bình cộng"
+            },
+            {
+                "id": "w2",
+                "text": "Độ bất định (Uncertainty)"
+            },
+            {
+                "id": "w3",
+                "text": "Giá trị Max"
+            },
+            {
+                "id": "w4",
+                "text": "Tốc độ học (Learning Rate)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "MC Dropout biến 1 mạng duy nhất thành 1 Rừng Ngẫu Nhiên (Random Forest of Neural Nets). Việc đo được 'Uncertainty' cực kỳ quan trọng cho các hệ thống như Xe Tự Lái (nếu mô hình báo 'đang rất bối rối', xe sẽ báo động cho tài xế)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Max-Norm Regularization có tác dụng gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chuẩn hóa dữ liệu đầu vào sao cho giá trị lớn nhất là 1."
+            },
+            {
+                "id": "b",
+                "text": "Đối với mỗi nơ-ron, nó ràng buộc trọng số (weights) của nơ-ron đó sao cho chuẩn L2 (tổng bình phương) KHÔNG ĐƯỢC VƯỢT QUÁ một giá trị max_norm (Ví dụ r=1.0). Nếu vượt quá, trọng số bị thu nhỏ lại ngay lập tức."
+            },
+            {
+                "id": "c",
+                "text": "Nó xóa các nơ-ron có giá trị cao nhất."
+            },
+            {
+                "id": "d",
+                "text": "Nó thay thế hoàn toàn Batch Normalization."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Max-norm hoạt động như 1 cái lồng. Nó không thêm trực tiếp vào Loss Function như L2. Nó dùng thuật toán Cắt bớt (Clipping) ép trọng số luôn nằm trong giới hạn an toàn."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Bản tóm tắt mặc định (Default configuration) cho một mạng Nơ-ron sâu trong HẦU HẾT các trường hợp:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Hàm Khởi tạo (Initialization)"
+            },
+            {
+                "id": "l2",
+                "text": "Hàm Kích hoạt (Activation)"
+            },
+            {
+                "id": "l3",
+                "text": "Tối ưu hóa (Optimizer)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "He Normal (hoặc He Uniform)"
+            },
+            {
+                "id": "r2",
+                "text": "MReLU (Mish) / Swish / hoặc phổ biến nhất là ReLU (hoặc LeakyReLU)"
+            },
+            {
+                "id": "r3",
+                "text": "Nadam hoặc Adam (Có bật Learning Rate Scheduling)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Nếu bạn bị mất phương hướng khi xây mạng Deep Learning, hãy áp dụng Combo 'Quốc dân' này: Lớp Dense + Hàm ReLU + Khởi tạo He + Optimizer Adam."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tối ưu hóa 'AdaGrad' hoạt động theo cơ chế nào và tại sao Keras lại CẢNH BÁO không nên dùng nó cho Mạng Nơ-ron sâu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó tăng Learning rate lên vô cực."
+            },
+            {
+                "id": "b",
+                "text": "Nó đoạt độ dốc bằng Random Forest."
+            },
+            {
+                "id": "c",
+                "text": "AdaGrad tự động hạ Learning Rate cho các đặc trưng dốc, và giữ Learning Rate cao cho đặc trưng ít dốc. NHƯNG nó TÍCH LŨY TOÀN BỘ quá khứ, khiến Learning Rate tụt giảm QUÁ NHANH. Mạng Nơ-ron sâu thường bị CHẾT YỂU (dừng học) trước khi tới đích."
+            },
+            {
+                "id": "d",
+                "text": "Nó không hỗ trợ đạo hàm ngược."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "AdaGrad (Adaptive Gradient) rất xuất sắc cho Hồi quy tuyến tính, nhưng thảm họa cho Deep Learning. RMSProp ra đời để cứu AdaGrad bằng cách chỉ nhớ 'Quá khứ gần đây' (Exponential Decay) thay vì nhớ toàn bộ từ lúc bắt đầu."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Transfer Learning với Data Augmentation (Tăng cường dữ liệu):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Khi mượn một mô hình khổng lồ (như VGG16), nếu chúng ta freeze các lớp dưới. Bạn có thể tăng tốc cực mạnh bằng cách cho toàn bộ ảnh chạy qua VGG16 một lần duy nhất, lấy đầu ra lưu vào <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Sau đó dùng đầu ra này để train lớp Output nhỏ xíu của bạn. NHƯNG bạn KHÔNG THỂ áp dụng mẹo này nếu bạn có sử dụng kỹ thuật <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (xoay ảnh, lật ảnh liên tục), vì khi đó mỗi tấm ảnh ở mỗi Epoch đều biến đổi, bắt buộc phải chạy xuyên qua lại toàn bộ mạng.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "RAM / Ổ cứng (Cache)"
+            },
+            {
+                "id": "w2",
+                "text": "Data Augmentation"
+            },
+            {
+                "id": "w3",
+                "text": "Batch Normalization"
+            },
+            {
+                "id": "w4",
+                "text": "Dropout"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Caching đặc trưng (bottleneck features) giúp train Transfer Learning trên CPU mất 5 phút (thay vì 5 tiếng). Tuy nhiên Data Augmentation (Tăng sinh hình học) đẻ ra ảnh ngẫu nhiên mỗi Epoch, phá vỡ tính cố định của Caching."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Nếu mô hình mạng Nơ-ron của bạn gặp hiện tượng UNDERFITTING (học không nổi, điểm Train và Test đều thấp), bạn KHÔNG NÊN làm điều gì dưới đây?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Thêm Dropout với rate=0.5."
+            },
+            {
+                "id": "b",
+                "text": "Tăng số lượng Nơ-ron ở các lớp Ẩn."
+            },
+            {
+                "id": "c",
+                "text": "Thêm một số lớp Ẩn mới (làm mạng sâu hơn)."
+            },
+            {
+                "id": "d",
+                "text": "Tắt bớt các hàm Regularization như L1, L2."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Underfitting nghĩa là mạng của bạn quá YẾU KÉM, nó bị đần độn. Nếu lúc này bạn còn xài Dropout (sa thải nhân viên) hoặc Regularization (trói tay) thì mạng sẽ gục hẳn. Bạn phải thả rông (tháo L2/Dropout) và bơm thuốc tăng lực (thêm nơ-ron, thêm layers)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "1Cycle Scheduling - Lịch trình Learning Rate của siêu sao Leslie Smith (Được áp dụng rất nhiều trong FastAI):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Bắt đầu với một Learning Rate (LR) nhỏ: LR0."
+            },
+            {
+                "id": "2",
+                "text": "Nửa đầu (Half 1): Tăng DẦN ĐỀU (tuyến tính) LR từ LR0 lên tới cực đại (LR_max) - điều này tạo lực đẩy cực mạnh vượt qua mọi hố sâu local minima."
+            },
+            {
+                "id": "3",
+                "text": "Nửa sau (Half 2): Giảm DẦN ĐỀU LR từ LR_max trở về lại LR0."
+            },
+            {
+                "id": "4",
+                "text": "Cuối cùng: Ở vài Epoch chót, đột ngột giảm LR xuống siêu nhỏ (giảm vài chục lần) để tinh chỉnh cực nhỏ cho mô hình hội tụ sắc nét ở đích."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "1Cycle phá vỡ nguyên lý 'Learning rate chỉ được phép giảm'. Leslie phát hiện ra việc bơm mạnh LR ở giữa vòng đời giúp đào thải các mớ bòng bong sai lệch, giúp mô hình mạnh mẽ đột phá. Đây là bí quyết train Neural Networks siêu tốc."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng 'Alpha Dropout' trong Keras được sinh ra dành riêng cho cấu hình mạng nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dành cho Mạng Tích chập (CNN)."
+            },
+            {
+                "id": "b",
+                "text": "Dành riêng cho mạng tự chuẩn hóa (Self-Normalizing Networks) dùng hàm SELU. Vì Dropout thường làm hỏng tính chất Mean=0, Std=1, Alpha Dropout được thiết kế khéo léo để bảo toàn Mean và Phương sai của mạng."
+            },
+            {
+                "id": "c",
+                "text": "Dành cho việc xóa ảnh nền (Background removal)."
+            },
+            {
+                "id": "d",
+                "text": "Dành cho mạng dùng Batch Normalization."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nếu bạn hâm mộ bài báo của SELU và muốn xài tính năng 'tự chuẩn hóa', bạn cấm được dùng Dropout thông thường. Bạn phải xài AlphaDropout thì mọi thứ toán học mới không bị đổ vỡ."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi thực hiện Transfer Learning (Học chuyển giao), lý do chính đáng nhất để bạn UNFREEZE (Mở khóa huấn luyện) 1 hoặc 2 lớp cấp cao cùng của mạng gốc (pretrained network) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để xóa các lớp đó đi."
+            },
+            {
+                "id": "b",
+                "text": "Khi tập dữ liệu mới của bạn khá lớn, và có tính chất HƠI KHÁC với tập dữ liệu mà mạng gốc từng học (Ví dụ mạng gốc học xe hơi, mèo, chó. Bạn bắt nó phân tích ảnh X-quang y tế). Mở khóa giúp mạng từ từ uốn nắn lại các đặc trưng cao cấp cho vừa khớp với chuyên ngành của bạn."
+            },
+            {
+                "id": "c",
+                "text": "Để máy tính chạy nhanh hơn."
+            },
+            {
+                "id": "d",
+                "text": "Để giảm RAM GPU xuống."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Bước 1: Freeze toàn bộ mạng gốc, chỉ train lớp Output của bạn. Bước 2 (Fine-tuning): Unfreeze dần dần 1-2 lớp trên cùng (top layers) với Learning Rate cực nhỏ để trau chuốt lại chi tiết. Nếu Unfreeze ngay từ đầu, gradient khổng lồ của Output mới gắn sẽ phá nát toàn bộ mạng."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép thuật ngữ về Tối ưu hóa Gradient:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Epoch"
+            },
+            {
+                "id": "l2",
+                "text": "Batch Size"
+            },
+            {
+                "id": "l3",
+                "text": "Iteration (Step)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Một vòng đời - Mô hình đã lướt qua TOÀN BỘ dữ liệu huấn luyện đúng 1 lần."
+            },
+            {
+                "id": "r2",
+                "text": "Kích thước mẻ - Số lượng mẫu dữ liệu gộp chung lại để tính 1 lần đạo hàm."
+            },
+            {
+                "id": "r3",
+                "text": "Số bước - Số lần mô hình cập nhật lại trọng số. (Total Steps = Total Data / Batch Size)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Học thuộc 3 từ vựng nền tảng này là điều kiện tiên quyết để nắm rõ Deep Learning."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Kỹ thuật Label Smoothing (Làm mịn nhãn):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong bài toán phân loại, hàm loss thường ép mạng xuất ra xác suất bằng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cho nhãn đúng và 0 cho các nhãn sai. Việc mạng quá tự tin vào đáp án của mình đôi khi dẫn tới Overfitting. Label Smoothing sửa đổi nhãn đúng thành <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Ví dụ 0.9) và chia 10% còn lại cho các lớp sai. Thủ thuật đơn giản này giúp mạng mềm mỏng hơn, cải thiện tính khái quát hóa (generalization).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "1 (100%)"
+            },
+            {
+                "id": "w2",
+                "text": "Nhỏ hơn 1 một chút"
+            },
+            {
+                "id": "w3",
+                "text": "0"
+            },
+            {
+                "id": "w4",
+                "text": "Vô cực"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Cross Entropy Loss sẽ đẩy trọng số ra vô cực nếu nó muốn đạt được xác suất chuẩn 1.0. Label Smoothing (giảm đỉnh nhãn cứng xuống 0.9 hoặc 0.95) khiến mạng dừng lại ở mức 'khá tự tin' thay vì 'mù quáng tự tin', giúp chống Overfit rất tốt."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Keras Optimizer Adam, tham số 'beta_1' và 'beta_2' kiểm soát điều gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Beta_1 là Tốc độ học, Beta_2 là Số lượng epoch."
+            },
+            {
+                "id": "b",
+                "text": "Beta_1 kiểm soát Quán tính (Momentum decay - mặc định 0.9). Beta_2 kiểm soát RMSProp (Scaling decay - mặc định 0.999). Hầu hết mọi trường hợp bạn KHÔNG BAO GIỜ cần chạm vào sửa đổi hai tham số này."
+            },
+            {
+                "id": "c",
+                "text": "Chúng dùng để tính Dropout."
+            },
+            {
+                "id": "d",
+                "text": "Chúng quy định kích thước Batch Size."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Adam (Adaptive Moment Estimation) theo dõi 2 thứ: Đạo hàm bậc 1 (Momentum - beta1) và Đạo hàm bậc 2 không trung tâm (RMSProp variance - beta2). Mặc định của Keras cho 2 tham số này là sự tối ưu hoàn hảo qua hàng chục ngàn thực nghiệm."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Nesterov Accelerated Gradient (NAG) tại sao lại hội tụ nhanh hơn Momentum thông thường?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó dùng vi xử lý GPU mạnh hơn."
+            },
+            {
+                "id": "b",
+                "text": "Thay vì tính đạo hàm TẠI vị trí hiện tại (như Momentum thường). NAG cực kỳ thông minh: Nó 'nhìn trước' vị trí mà viên bi sắp lăn tới (nhờ cộng Quán tính), và tính đạo hàm ở TƯƠNG LAI MỘT CHÚT đó. Điều này giúp viên bi tự biết 'rà phanh' nếu đoạn đường phía trước bất ngờ trũng lên."
+            },
+            {
+                "id": "c",
+                "text": "Nó bỏ qua hoàn toàn đạo hàm."
+            },
+            {
+                "id": "d",
+                "text": "Nó xóa các dữ liệu ngoại lai."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "NAG (nesterov=True) chỉ tính trước vị trí hờ (lookahead). Thay vì lăn ẩu rồi mới biết mình lố đà, NAG nhận ra sườn dốc phía trước đang cong lên nên nó tự giảm lực đẩy xuống. Sự hiệu chỉnh nhỏ này tạo ra khác biệt lớn."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép thuật toán Khởi tạo trọng số với người phát minh hoặc tên thường gọi:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Xavier Glorot"
+            },
+            {
+                "id": "l2",
+                "text": "Kaiming He"
+            },
+            {
+                "id": "l3",
+                "text": "Yann LeCun"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Glorot Initialization (Cho Sigmoid, Tanh)"
+            },
+            {
+                "id": "r2",
+                "text": "He Initialization (Cho ReLU, đỉnh cao của Computer Vision hiện đại)"
+            },
+            {
+                "id": "r3",
+                "text": "LeCun Initialization (Cho SELU, người cha của CNN)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Những tên tuổi vĩ đại này (Bengio, He, LeCun) đã đặt nền móng toán học cho việc giải cứu Mạng Nơ-ron khỏi cái chết Gradient triệt tiêu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Vì sao đôi khi người ta thích dùng 'Performance Scheduling' (ReduceLROnPlateau Callback của Keras) hơn là giảm Learning Rate theo một lịch trình toán học cứng nhắc?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó đẹp hơn."
+            },
+            {
+                "id": "b",
+                "text": "Lịch trình toán học (như Exponential Scheduling) cứ giảm LR bất chấp mô hình đang tốt hay xấu. ReduceLROnPlateau sẽ theo dõi điểm Validation Loss. CHỈ KHI NÀO điểm Loss này ngừng cải thiện (đi ngang - plateau) trong 5 Epochs, nó mới tự động chia đôi (giảm) Learning Rate để mô hình rà soát kỹ hơn."
+            },
+            {
+                "id": "c",
+                "text": "Vì nó tự động thêm lớp Ẩn."
+            },
+            {
+                "id": "d",
+                "text": "Nó giúp xóa bớt Dropout."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "ReduceLROnPlateau cực kỳ linh hoạt và phổ biến. Mô hình đang học bon bon thì cứ để ga lớn. Chừng nào kẹt (không tiến bộ) thì tự động trả số nhỏ lại để bò qua chướng ngại vật."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Mối quan hệ giữa Số lượng tham số và khả năng học:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Mạng Nơ-ron càng sâu (nhiều layers) và càng rộng (nhiều nơ-ron) thì nó chứa càng nhiều tham số (Trọng số w và Độ lệch b). Một mạng có hàng chục triệu tham số có một sức mạnh biểu diễn dữ liệu khủng khiếp, nó có khả năng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> toàn bộ một tập dữ liệu lớn. Tuy nhiên, sức mạnh này là con dao hai lưỡi. Nếu bạn không có hàng triệu tấm ảnh (Data nhỏ) mà dùng mạng khổng lồ, chắc chắn bạn sẽ bị <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> nặng nề. Đó là lý do Regularization (Dropout, L2, Early Stopping) ra đời.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Học thuộc lòng (Memorize)"
+            },
+            {
+                "id": "w2",
+                "text": "Overfitting (Quá khớp)"
+            },
+            {
+                "id": "w3",
+                "text": "Underfitting (Chưa khớp)"
+            },
+            {
+                "id": "w4",
+                "text": "Tối ưu hóa (Optimize)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Deep Learning có khả năng nội suy vĩ đại. Nó có thể vẽ ra 1 đường cong ziczac bao bọc lấy 1 triệu điểm dữ liệu mà không sai ly nào (Overfit hoàn toàn). Chống Overfitting là nghệ thuật lớn nhất trong DL."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 13</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Tính năng cốt lõi của thư viện `tf.data` trong TensorFlow là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Đóng vai trò như một cơ sở dữ liệu SQL."
+            },
+            {
+                "id": "b",
+                "text": "Tạo ra một 'Ống dẫn dữ liệu' (Data Pipeline) hiệu năng cực cao, giúp tải, biến đổi, xáo trộn và nhóm mẻ (batch) dữ liệu từ ổ cứng (hoặc RAM) để đẩy liên tục vào GPU mà không gây ra hiện tượng thắt cổ chai (bottleneck)."
+            },
+            {
+                "id": "c",
+                "text": "Phân tích cú pháp HTML từ các trang web."
+            },
+            {
+                "id": "d",
+                "text": "Vẽ biểu đồ hình tròn cho dữ liệu phân loại."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi huấn luyện Deep Learning, GPU tính toán rất nhanh. Nếu CPU đọc dữ liệu từ ổ cứng quá chậm, GPU sẽ phải 'ngồi chơi xơi nước'. `tf.data` giải quyết triệt để vấn đề này."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Lệnh `tf.data.Dataset.from_tensor_slices(X)` hoạt động như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó cắt ma trận X thành 2 nửa bằng nhau."
+            },
+            {
+                "id": "b",
+                "text": "Nó nhận một Tensor (hoặc NumPy array) nhiều chiều, và cắt nó DỌC THEO CHIỀU ĐẦU TIÊN (chiều số 0 - thường là số lượng mẫu). Kết quả tạo ra một Dataset trong đó mỗi phần tử là một điểm dữ liệu (1 hàng) của X."
+            },
+            {
+                "id": "c",
+                "text": "Nó lấy ngẫu nhiên 10 phần tử từ X."
+            },
+            {
+                "id": "d",
+                "text": "Nó biến X thành một file văn bản."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Ví dụ X là mảng [1000, 28, 28] (1000 tấm ảnh). `from_tensor_slices(X)` sẽ tạo ra 1 dataset chứa 1000 phần tử, mỗi phần tử là 1 tấm ảnh [28, 28]."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép các phương thức biến đổi Dataset (Dataset transformations) với chức năng của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "dataset.repeat(3)"
+            },
+            {
+                "id": "l2",
+                "text": "dataset.batch(32)"
+            },
+            {
+                "id": "l3",
+                "text": "dataset.map(lambda x: x*2)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Nhân bản dữ liệu lên 3 lần liên tiếp. (Thường dùng khi muốn lặp lại dataset qua nhiều epoch)."
+            },
+            {
+                "id": "r2",
+                "text": "Gộp các mục dữ liệu rời rạc thành từng mảng lớn chứa 32 mục. Rất cần thiết cho GPU."
+            },
+            {
+                "id": "r3",
+                "text": "Áp dụng một hàm số lên TỪNG PHẦN TỬ của dataset (Ví dụ: nhân đôi giá trị, hoặc giải mã ảnh JPEG)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Đây là 3 thao tác cơ bản nhất. Bạn thường xếp chuỗi chúng lại: `dataset.repeat().batch(32).map(preprocess)`."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Kỹ thuật Xáo trộn Dữ liệu (Shuffling) cực lớn:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Lệnh `dataset.shuffle(buffer_size=10000)` hoạt động bằng cách tải lên RAM 10.000 phần tử đầu tiên vào một 'cái thau' (buffer). Khi lấy ra 1 phần tử ngẫu nhiên từ thau, nó sẽ lấy phần tử thứ 10.001 bù vào chỗ trống. NGUY HIỂM: Nếu file dữ liệu của bạn có 1 triệu ảnh được sắp xếp theo thứ tự (ví dụ: Chó nằm đầu, Mèo nằm cuối), thì buffer 10.000 là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Mạng nơ-ron sẽ chỉ thấy toàn Chó trong 100 batch đầu tiên! Để khắc phục dữ liệu quá lớn, ta phải xáo trộn file gốc trên đĩa, hoặc đọc đồng thời và xáo trộn từ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> file con cùng một lúc (Interleaving).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Quá nhỏ (Vô dụng)"
+            },
+            {
+                "id": "w2",
+                "text": "Quá lớn (Tràn RAM)"
+            },
+            {
+                "id": "w3",
+                "text": "Nhiều"
+            },
+            {
+                "id": "w4",
+                "text": "Một"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Shuffle buffer size phải đủ lớn để trộn đều dữ liệu. Nhưng nếu dữ liệu hàng chục GB, bạn không thể nhét hết vào buffer. Chia nhỏ thành nhiều file `.csv` hoặc `.tfrecord` rồi đọc trộn lẫn (interleave) từ nhiều file là giải pháp bắt buộc."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi sử dụng hàm `dataset.map(preprocess_func)`, làm thế nào để tăng tốc quá trình tiền xử lý bằng cách dùng Đa luồng (Multi-threading)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dùng thư viện `threading` của Python."
+            },
+            {
+                "id": "b",
+                "text": "Gọi lệnh `dataset.map(preprocess_func, num_parallel_calls=tf.data.AUTOTUNE)`. TensorFlow sẽ tự động kích hoạt nhiều luồng C++ chạy song song dựa trên số lõi CPU hiện có của máy tính."
+            },
+            {
+                "id": "c",
+                "text": "Bật chế độ Eager Execution."
+            },
+            {
+                "id": "d",
+                "text": "Mua thêm GPU."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Quá trình đọc file ảnh từ ổ cứng và giải mã JPEG (trong hàm map) tốn rất nhiều CPU. Nếu không bật `num_parallel_calls`, nó sẽ chỉ chạy 1 luồng rất chậm. Dùng `AUTOTUNE` là 'câu thần chú' để TensorFlow tự vắt kiệt sức mạnh CPU."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Sắp xếp cấu trúc Pipeline chuẩn mực và hiệu năng cao nhất để load dữ liệu lớn (Big Data) trong TensorFlow:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Dùng `interleave` để đọc ngẫu nhiên đồng thời từ danh sách các files (VD: 10 files CSV hoặc TFRecord)."
+            },
+            {
+                "id": "2",
+                "text": "Dùng `shuffle(buffer_size)` để trộn đều dữ liệu trong RAM."
+            },
+            {
+                "id": "3",
+                "text": "Dùng `map(parse_fn, num_parallel_calls=AUTOTUNE)` để giải mã, chuẩn hóa ảnh/văn bản nhanh bằng đa luồng."
+            },
+            {
+                "id": "4",
+                "text": "Dùng `batch(batch_size)` để gom thành mẻ."
+            },
+            {
+                "id": "5",
+                "text": "Cuối cùng, dùng `prefetch(AUTOTUNE)` để CPU âm thầm chuẩn bị mẻ tiếp theo trong khi GPU đang huấn luyện mẻ trước."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Đây là mẫu thiết kế (Design pattern) kinh điển mà Google khuyên dùng. Interleave -> Shuffle -> Map -> Batch -> Prefetch. Pipeline này đảm bảo GPU luôn đạt 100% công suất tải."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Lệnh `dataset.prefetch(1)` mang lại sức mạnh ma thuật gì cho quá trình huấn luyện?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó xóa dữ liệu rác trong ổ cứng."
+            },
+            {
+                "id": "b",
+                "text": "Nó ngắt kết nối internet của TensorFlow."
+            },
+            {
+                "id": "c",
+                "text": "Nó tách biệt (Decouple) thời gian chạy của CPU và GPU. Thông thường, GPU train xong phải ĐỢI CPU đọc mẻ mới. Có prefetch, trong lúc GPU đang train mẻ số 1, CPU sẽ LÀM VIỆC ĐỒNG THỜI để đọc và xử lý sẵn mẻ số 2 ném vào RAM chờ. Nhờ đó, GPU vừa train xong mẻ 1 là có ngay mẻ 2 để làm, loại bỏ hoàn toàn thời gian chết (idle time)."
+            },
+            {
+                "id": "d",
+                "text": "Nó giảm số lượng tham số của mạng nơ-ron."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Prefetch (Lấy trước) biến quá trình huấn luyện từ 'tuần tự' (CPU làm -> GPU làm -> CPU làm) thành 'đường ống' (Pipelining - CPU và GPU làm cùng lúc chồng lấp lên nhau). Nó tăng tốc gấp đôi thời gian train."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Định dạng `TFRecord` là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là một định dạng file âm thanh chất lượng cao."
+            },
+            {
+                "id": "b",
+                "text": "Là một định dạng file nhị phân (binary) tùy chỉnh của TensorFlow, dùng để lưu trữ tuần tự hàng triệu bản ghi dữ liệu nối tiếp nhau. Nó giúp quá trình đọc dữ liệu từ ổ cứng (đặc biệt là ổ HDD) cực kỳ trơn tru và siêu tốc."
+            },
+            {
+                "id": "c",
+                "text": "Là một file Excel mở rộng."
+            },
+            {
+                "id": "d",
+                "text": "Là phần mềm quay video màn hình của Google."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Đọc 1 triệu file `.jpg` nhỏ lẻ sẽ bắt kim đọc của ổ cứng chạy loạn xạ (Random Access - rất chậm). Đóng gói chúng vào 1 file `.tfrecord` bự, kim đọc chỉ cần trượt thẳng một đường (Sequential Access - siêu nhanh)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Protocol Buffers (Protobuf) trong TFRecord:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "TFRecord chỉ hiểu các Byte (nhị phân). Để lưu các định dạng phức tạp như mảng số thực hay chuỗi văn bản, TensorFlow sử dụng công nghệ nén <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của Google. Bạn phải bọc dữ liệu của mình vào trong thông điệp có tên là `tf.train.Example`. Một `Example` chứa nhiều `Features`. Mỗi `Feature` có thể là 1 trong 3 kiểu: <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (để lưu String/Byte/Ảnh JPEG), `FloatList` (để lưu số thực), hoặc `Int64List` (để lưu số nguyên/nhãn).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Protocol Buffers"
+            },
+            {
+                "id": "w2",
+                "text": "BytesList"
+            },
+            {
+                "id": "w3",
+                "text": "JSON"
+            },
+            {
+                "id": "w4",
+                "text": "XML"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Protobuf hiệu quả hơn JSON hay XML rất nhiều vì nó được thiết kế dạng nhị phân, tiết kiệm dung lượng và thời gian phân giải. TensorFlow cung cấp 3 cấu trúc List cơ bản (Bytes, Float, Int) để đóng gói mọi thứ trên đời."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi bạn đọc lại file TFRecord bằng lệnh `tf.data.TFRecordDataset`, dữ liệu lấy ra sẽ ở dạng chuỗi byte (string). Làm sao để biến nó lại thành Tensor số học?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dùng lệnh `json.loads()`."
+            },
+            {
+                "id": "b",
+                "text": "Bạn phải dùng hàm `tf.io.parse_single_example()`. Hàm này ĐÒI HỎI BẠN PHẢI CUNG CẤP một cuốn từ điển (Feature Description). Trong đó định nghĩa rõ ràng: cột A là float32, cột B là string... Nếu bạn không khai báo Description, nó không biết cách giải mã (decode) khối nhị phân đó."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự động trở thành ma trận ảnh."
+            },
+            {
+                "id": "d",
+                "text": "TensorFlow không cho phép đọc lại file TFRecord."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Vì TFRecord ghi dữ liệu cứng nhắc dính liền vào nhau không có thẻ tag nhãn (như JSON). Nên khi bung nén, bạn phải cấp cho nó 1 cái khung khuôn mẫu (Ví dụ: `{'image': tf.io.FixedLenFeature([], tf.string)}`) để nó cắt dữ liệu ra đúng vị trí."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép các công cụ để mã hóa biến Phân loại (Categorical variables) như (Màu: Xanh, Đỏ, Tím):",
+        "left": [
+            {
+                "id": "l1",
+                "text": "One-Hot Encoding"
+            },
+            {
+                "id": "l2",
+                "text": "Embedding (Nhúng)"
+            },
+            {
+                "id": "l3",
+                "text": "StringLookup (Keras Layer)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Biến đổi mỗi danh mục thành một véc-tơ có 1 số 1 và toàn số 0. Tốt cho các biến có ít danh mục (dưới 50)."
+            },
+            {
+                "id": "r2",
+                "text": "Biến đổi mỗi danh mục thành một véc-tơ số thực DÀY ĐẶC (Dense Vector) mà MẠNG CÓ THỂ HỌC ĐƯỢC. Tốt cho các biến có hàng ngàn danh mục (ví dụ Từ vựng ngôn ngữ)."
+            },
+            {
+                "id": "r3",
+                "text": "Lớp chuyển đổi Text thành Số nguyên (ID). (Ví dụ: 'Đỏ' -> 1, 'Xanh' -> 2)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Nếu tập từ vựng của bạn là 100.000 từ. Dùng One-Hot sẽ tạo ra vector 100.000 chiều (chứa 99.999 số 0), vô cùng tốn RAM. Embedding nén nó lại thành vector 50 chiều (chứa số thực), và mạng sẽ TỰ HỌC ý nghĩa của từ đó."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Ý nghĩa thực sự của 'Word Embeddings' (Lớp Nhúng từ) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó dịch từ tiếng Anh sang tiếng Việt."
+            },
+            {
+                "id": "b",
+                "text": "Nó chuyển từ ngữ thành chữ in hoa."
+            },
+            {
+                "id": "c",
+                "text": "Nó ÁNH XẠ mỗi từ vựng thành một điểm tọa độ trong một Không gian nhiều chiều (ví dụ 300D). Những từ CÓ NGHĨA GIỐNG NHAU (ví dụ 'King' và 'Queen') sẽ bị mô hình tự động 'kéo' lại GẦN NHAU trong không gian đó suốt quá trình huấn luyện. Chúng còn hỗ trợ cả phép toán học: vector('King') - vector('Man') + vector('Woman') ≈ vector('Queen')."
+            },
+            {
+                "id": "d",
+                "text": "Nó tự động xóa các từ viết sai chính tả."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Embedding là phát minh mang tính cách mạng của NLP (Xử lý ngôn ngữ tự nhiên). Thay vì gán một ID vô nghĩa cho chữ, Embedding cấp cho chữ đó một 'linh hồn' toán học để máy tính hiểu được 'sự tương đồng' ngữ nghĩa."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng `tf.keras.layers.TextVectorization` hoạt động như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó vẽ chữ lên hình ảnh."
+            },
+            {
+                "id": "b",
+                "text": "Nó tự động gom nhóm ảnh."
+            },
+            {
+                "id": "c",
+                "text": "Nó thay thế thư viện Pandas."
+            },
+            {
+                "id": "d",
+                "text": "Nó nhận vào Câu văn thô (String). Tự động tách từ bằng dấu cách, chuyển chữ thường, xóa dấu câu, và quy đổi từng từ thành số nguyên ID dựa trên Bộ từ vựng nó đã học qua hàm `.adapt(text_data)`."
+            }
+        ],
+        "correctAnswer": "d",
+        "explanation": "Lớp `TextVectorization` giúp bạn tích hợp TRỰC TIẾP bước tiền xử lý văn bản vào BÊN TRONG Mô hình Keras. Bạn có thể xuất mô hình này cho Mobile và đút thẳng chữ vào mà không cần code lại bước tách từ bằng C++."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Các bước biến 1 câu văn thành Đầu vào cho Mạng Nơ-ron bằng Keras:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Chuẩn bị dữ liệu text. Ví dụ: ['Tôi yêu chó', 'Tôi ghét mèo']"
+            },
+            {
+                "id": "2",
+                "text": "Khởi tạo `vectorize_layer = TextVectorization()`. Gọi `vectorize_layer.adapt(data)` để nó học từ vựng và cấp ID (Tôi=1, yêu=2...)."
+            },
+            {
+                "id": "3",
+                "text": "Dùng layer đó chuyển đổi Text: 'Tôi yêu chó' -> [1, 2, 3]."
+            },
+            {
+                "id": "4",
+                "text": "Đưa dãy số nguyên này qua lớp `Embedding(vocab_size, embedding_dim)` để biến mỗi ID thành một vector số thực [0.4, -0.1, 0.9...]. Đưa vector này vào Lớp Dense / RNN."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Text (Chữ) -> Vectorization (Số nguyên ID) -> Embedding (Vector số thực Dense) -> Neural Network. Đây là quy trình bất di bất dịch của Deep Learning ngôn ngữ."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Sự lệch pha giữa Huấn luyện và Suy luận (Training/Serving Skew):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Nếu bạn viết một hàm Python (hoặc Pandas) để trừ đi giá trị Mean (chuẩn hóa dữ liệu) TRƯỚC KHI đưa dữ liệu vào mô hình. Đến lúc triển khai (Serving) mô hình lên App Điện thoại, bạn buộc phải code lại hàm trừ Mean đó bằng ngôn ngữ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Việc code lại dễ gây ra lỗi lệch pha thuật toán (Training-Serving Skew). Giải pháp hoàn hảo nhất của TensorFlow là nhét luân các bước tiền xử lý này thành một lớp Keras (Ví dụ `tf.keras.layers.Normalization`) để nó GẮN CHẶT vào <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Khi xuất mô hình, nó mang theo cả thuật toán chuẩn hóa.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Java / Swift / C++"
+            },
+            {
+                "id": "w2",
+                "text": "Kiến trúc mô hình (Model Graph)"
+            },
+            {
+                "id": "w3",
+                "text": "Excel"
+            },
+            {
+                "id": "w4",
+                "text": "Đĩa cứng"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Đừng bao giờ tiền xử lý dữ liệu bằng mã Python rời rạc nếu bạn định đưa mô hình lên Mobile/Web. Hãy biến mọi bước tiền xử lý thành Keras Preprocessing Layers."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Lớp `tf.keras.layers.Normalization` có chức năng gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xóa các hình ảnh bị mờ."
+            },
+            {
+                "id": "b",
+                "text": "Dịch văn bản."
+            },
+            {
+                "id": "c",
+                "text": "Nó thay thế thư viện StandardScaler của Scikit-Learn. Bạn gọi hàm `.adapt(X_train)`, nó sẽ tính và ghi nhớ Mean và Phương sai của dữ liệu. Sau đó, nó tự động chuẩn hóa mọi dữ liệu chạy ngang qua nó: (X - Mean) / Variance."
+            },
+            {
+                "id": "d",
+                "text": "Tính toán hàm Softmax."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Đây là lớp tiện lợi nhất để chuẩn hóa dữ liệu dạng Bảng (Tabular). Các chỉ số Mean/Variance được lưu thẳng vào h5 file như các tham số không huấn luyện (Non-trainable weights)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các công cụ Keras Preprocessing cho Ảnh và Text:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Resizing"
+            },
+            {
+                "id": "l2",
+                "text": "RandomFlip, RandomRotation"
+            },
+            {
+                "id": "l3",
+                "text": "Hashing (Feature Hashing)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Tự động cắt/giãn ảnh về cùng 1 kích thước (VD: 224x224). Bắt buộc cho mô hình nhận diện ảnh."
+            },
+            {
+                "id": "r2",
+                "text": "Dùng để Tăng cường dữ liệu (Data Augmentation). Xoay, lật ảnh ngẫu nhiên TRONG LÚC TRAIN để chống Overfitting."
+            },
+            {
+                "id": "r3",
+                "text": "Mã hóa danh mục thành ID bằng hàm băm (Hash). Dùng khi tập từ vựng quá KHỔNG LỒ (hàng triệu từ) không thể chứa nổi trên RAM."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Keras cung cấp sẵn tất cả các khối tiền xử lý. Đặc biệt là nhóm Data Augmentation, chúng cực kỳ thông minh: Tự động BẬT lúc đang Train (để tạo ảnh mới) và tự động TẮT lúc Predict (để dự đoán ảnh gốc)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Công cụ TensorFlow Transform (TFT) thuộc hệ sinh thái TFX được sinh ra để giải quyết triệt để vấn đề gì khi huấn luyện mô hình trên dữ liệu HÀNG TERABYTE?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Giúp nén ảnh nhỏ lại."
+            },
+            {
+                "id": "b",
+                "text": "Lớp `Normalization` của Keras tuy tốt nhưng nó BẮT BUỘC phải tải toàn bộ dữ liệu vào RAM 1 lần để gọi hàm `.adapt()`. Nếu dữ liệu 10TB thì vỡ RAM. TFT dùng nền tảng Apache Beam phân tán hàng ngàn máy chủ để quét toàn bộ dữ liệu 1 lần, lấy ra Mean/Var, sau đó tạo ra hàm tf.function để nhúng thẳng vào Model."
+            },
+            {
+                "id": "c",
+                "text": "Giúp dịch C++ sang Python."
+            },
+            {
+                "id": "d",
+                "text": "Là một thuật toán giống GAN."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Tiền xử lý trong mô hình (Preprocessing Layers) rất tiện, nhưng khi gọi .adapt() nó gom dữ liệu lên RAM một cục. Khi dữ liệu của công ty quá bự, ta phải dùng công cụ Big Data như TF Transform."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hàm tf.io.decode_csv()",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Đôi khi bạn không muốn dùng TFRecord mà muốn đọc trực tiếp file CSV. Bạn có thể dùng `tf.data.TextLineDataset` để đọc file CSV từng dòng một (dưới dạng chuỗi string). Sau đó, trong hàm `map()`, bạn gọi hàm `tf.io.decode_csv(line, record_defaults)`. Tham số `record_defaults` cực kỳ quan trọng, nó báo cho TF biết <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của từng cột là gì (float, int, string), và giá trị <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> là gì nếu như ô dữ liệu trong file CSV bị bỏ trống.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Kiểu dữ liệu (Data type)"
+            },
+            {
+                "id": "w2",
+                "text": "Mặc định (Default value)"
+            },
+            {
+                "id": "w3",
+                "text": "Mật khẩu"
+            },
+            {
+                "id": "w4",
+                "text": "IP Máy chủ"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Đọc CSV trong TensorFlow mệt hơn Pandas (read_csv) một chút. Vì TF yêu cầu quy định khuôn khổ tĩnh (static typing), bạn phải mớm cho nó danh sách mặc định để xử lý lỗi thiếu dữ liệu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Tính năng `dataset.cache()` có chức năng gì trong chuỗi Pipeline dữ liệu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xóa toàn bộ cache trình duyệt web."
+            },
+            {
+                "id": "b",
+                "text": "Nó ghi nhớ (Lưu trữ) toàn bộ dữ liệu VÀO RAM hoặc ổ cứng ngay sau epoch đầu tiên. Kể từ epoch thứ 2 trở đi, nó sẽ đọc dữ liệu trực tiếp từ RAM, không cần phải cày ải ổ cứng HDD hay thực hiện lại các phép biến đổi nặng nhọc (như giải nén ảnh)."
+            },
+            {
+                "id": "c",
+                "text": "Nó làm chậm mô hình đi 2 lần."
+            },
+            {
+                "id": "d",
+                "text": "Nó chia mảng thành các phần nhỏ."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nút thắt cổ chai lớn nhất là giải mã ảnh `.jpg` thành ma trận điểm ảnh. Nếu dữ liệu của bạn ĐỦ NHỎ để nhét vừa RAM, hãy gọi `.cache()` ngay sau bước `.map()`. Tốc độ epoch 2 sẽ bay như tên lửa."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Lựa chọn VỊ TRÍ để gọi `dataset.cache()` sao cho tối ưu nhất khi Huấn luyện với Data Augmentation (Tăng cường dữ liệu bằng lớp map):",
+        "instruction": "(Sắp xếp pipeline sao cho ảnh gốc được cache, nhưng thao tác Augmentation vẫn sinh ngẫu nhiên)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Đọc các file bằng TFRecordDataset."
+            },
+            {
+                "id": "2",
+                "text": "Gọi `.map(parse_fn)` để giải mã thành ảnh gốc."
+            },
+            {
+                "id": "3",
+                "text": "Gọi `.cache()`. Lúc này RAM sẽ lưu trữ các tấm ảnh gốc cực sạch."
+            },
+            {
+                "id": "4",
+                "text": "Gọi `.shuffle()` để xáo trộn tập ảnh vừa cache."
+            },
+            {
+                "id": "5",
+                "text": "Gọi `.map(random_augmentation_fn)`. Việc này phải đặt SAU cache, để mỗi epoch hàm này tạo ra các biến thể xoay lật MỚI trên nền ảnh gốc trong RAM."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Đừng bao giờ đặt Data Augmentation TRƯỚC `.cache()`. Nếu làm vậy, ảnh xoay ngang sẽ bị cache lại vĩnh viễn, các epoch sau mô hình chỉ thấy đúng cái ảnh xoay ngang đó, phá vỡ tác dụng tăng cường dữ liệu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "TensorFlow Datasets (TFDS) khác gì với `tf.data`?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chúng là một."
+            },
+            {
+                "id": "b",
+                "text": "Là một thư viện riêng biệt chứa SẴN HÀNG TRĂM bộ dữ liệu nổi tiếng (như MNIST, ImageNet, IMDB). Nó sẽ tự động Tải file từ internet về máy bạn, giải nén và BỌC SẴN nó dưới định dạng `tf.data.Dataset` hoàn hảo để bạn đút thẳng vào mô hình."
+            },
+            {
+                "id": "c",
+                "text": "Là một cấu trúc dữ liệu của C++."
+            },
+            {
+                "id": "d",
+                "text": "Chỉ dùng cho mạng ngôn ngữ tự nhiên."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Thay vì phải lên Kaggle tải file, viết code giải nén, viết hàm đọc ảnh lằng nhằng. Bạn chỉ cần gõ `tfds.load('mnist')`. Nó xử lý mọi thứ cho bạn. TFDS là kho đạn dược khổng lồ của lập trình viên AI."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Hàm `tf.one_hot(indices, depth)` biến số nguyên `1` thành mảng gì nếu `depth = 4`?",
+        "options": [
+            {
+                "id": "a",
+                "text": "[1, 1, 1, 1]"
+            },
+            {
+                "id": "b",
+                "text": "[1, 0, 0, 0]"
+            },
+            {
+                "id": "c",
+                "text": "[0, 1, 0, 0]"
+            },
+            {
+                "id": "d",
+                "text": "[4]"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "One-hot sẽ tạo mảng 4 chiều (toàn số 0), và cắm một số 1 vào VỊ TRÍ tương ứng với index. Index = 1 => vị trí số 1 (do bắt đầu đếm từ 0 là [0,1,0,0])."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Sử dụng tính năng tf.keras.layers.Discretization (Rời rạc hóa):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Nếu bạn có một đặc trưng số thực liên tục là 'Tuổi' (từ 1 đến 100). Đôi khi việc giữ nguyên số thực không tốt bằng việc CHIA NHÓM (Bucketing). Hàm Discretization cho phép bạn phân 'Tuổi' thành các <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Ví dụ: [0-18], [19-60], [60-100]). Tính năng này giúp mô hình nắm bắt được các đặc trưng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. (Vì sự khác biệt giữa 17 và 19 tuổi lớn hơn rất nhiều so với sự khác biệt giữa 37 và 39 tuổi, chia nhóm giúp mạng nhận diện ranh giới này).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Nhóm / Giỏ (Bins/Buckets)"
+            },
+            {
+                "id": "w2",
+                "text": "Phi tuyến tính (Non-linear)"
+            },
+            {
+                "id": "w3",
+                "text": "Tuyến tính (Linear)"
+            },
+            {
+                "id": "w4",
+                "text": "Màu sắc"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Đừng nghĩ số liên tục lúc nào cũng tốt. Mô hình học 'ngưỡng tuổi vị thành niên 18' rất khó trên một đường thẳng liên tục. Nếu ta chia Buckets (0-18, 18+), mô hình lập tức sở hữu đặc trưng này mà không tốn công học."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các chế độ đầu ra (Output modes) của lớp TextVectorization:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "int (Số nguyên)"
+            },
+            {
+                "id": "l2",
+                "text": "multi_hot"
+            },
+            {
+                "id": "l3",
+                "text": "tf_idf"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Trả về một mảng ID các từ. Giữ nguyên ĐÚNG THỨ TỰ từ trong câu. Dùng để đút vào mô hình ngôn ngữ như RNN / Transformer."
+            },
+            {
+                "id": "r2",
+                "text": "Trả về một vector 0/1 bằng kích cỡ từ vựng. Đánh dấu 1 nếu từ đó XUẤT HIỆN trong câu (Mô hình Bag of Words). Mất sạch thứ tự từ."
+            },
+            {
+                "id": "r3",
+                "text": "Giống multi-hot nhưng thay vì số 1, nó gán TRỌNG SỐ. Từ nào càng hiếm gặp nhưng xuất hiện trong câu thì trọng số càng cao (rất giá trị)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Output 'int' là tiêu chuẩn hiện đại (giữ lại ngữ cảnh câu). Output 'multi_hot' / 'tf-idf' là kỹ thuật cũ nhưng chạy siêu lẹ cho bài toán phân loại đơn giản."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tính năng OOV (Out-Of-Vocabulary) Token trong TextVectorization hoặc StringLookup hoạt động như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó làm văng lỗi chương trình."
+            },
+            {
+                "id": "b",
+                "text": "Dành riêng 1 ID (thường là số 0 hoặc 1) đại diện chung cho MỌI TỪ MỚI LẠ. Nếu lúc test xuất hiện từ 'Sars-Cov-2' mà lúc train chưa từng thấy, thay vì báo lỗi, nó sẽ gán từ này vào giỏ OOV. Nhờ đó mô hình không bị vỡ trận."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự động tìm kiếm trên Google nghĩa của từ."
+            },
+            {
+                "id": "d",
+                "text": "Nó loại bỏ hẳn từ đó khỏi câu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Từ vựng tiếng người là vô hạn. Bạn chỉ học được 100.000 từ phổ biến. Giỏ OOV (Out-Of-Vocab) là cái sọt rác thần thánh hứng mọi từ lạ lùng, giúp hệ thống chịu lỗi (fault-tolerant) tuyệt đối."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi xử lý hình ảnh lớn không vừa RAM, việc kết hợp `tf.keras.utils.image_dataset_from_directory` có lợi ích gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Không có lợi ích gì."
+            },
+            {
+                "id": "b",
+                "text": "Chỉ cần bạn sắp xếp thư mục ổ cứng (VD: Thư mục `Mèo` chứa ảnh mèo, `Chó` chứa ảnh chó). Hàm này sẽ quét ổ cứng, tự dán nhãn, tự đọc ảnh từ từ (batching) dưới dạng đối tượng `tf.data.Dataset` hoàn hảo để fit() thẳng vào mô hình."
+            },
+            {
+                "id": "c",
+                "text": "Nó nén ảnh lại thành tệp zip."
+            },
+            {
+                "id": "d",
+                "text": "Nó tăng độ phân giải ảnh lên 4K."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Thay vì hì hục tự viết mã quét file ảnh, cắt chuỗi dán nhãn, chuyển mảng NumPy. Công cụ này xử lý trong 1 dòng code. Rất phổ biến cho anh em làm Computer Vision."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Luồng đi của dữ liệu từ khi làm một Tensor rời rạc đến khi vào tới Model:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "X_train (Mảng số liệu NumPy)."
+            },
+            {
+                "id": "2",
+                "text": "Tạo đối tượng: `tf.data.Dataset.from_tensor_slices(X_train)`."
+            },
+            {
+                "id": "3",
+                "text": "Thêm biến đổi: `.shuffle().batch(32).prefetch(1)`."
+            },
+            {
+                "id": "4",
+                "text": "Chuyền cả đối tượng Dataset vào hàm `model.fit(dataset, epochs=10)`."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Trước kia `model.fit()` nhận X_train, y_train. Bây giờ cách chuẩn mực nhất là đóng gói mọi thứ vào `dataset` rồi ném cục dataset đó vào `model.fit()`."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong TensorFlow, tính năng 'Masking' khi sử dụng lớp Embedding mang lại điều gì cho xử lý Ngôn ngữ Tự nhiên?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Làm mờ thông tin cá nhân."
+            },
+            {
+                "id": "b",
+                "text": "Câu văn có độ dài ngắn khác nhau. Ta buộc phải thêm các số 0 (Padding) vào cuối để chúng thành ma trận chữ nhật bằng nhau. 'Masking' (Mặt nạ) sẽ báo hiệu cho các lớp RNN / LSTM phía sau rằng: 'Ê, mấy số 0 này là giả đấy, ngó lơ nó đi, đừng tính toán làm sai lệch kết quả'."
+            },
+            {
+                "id": "c",
+                "text": "Nó tìm kiếm khuôn mặt có đeo khẩu trang."
+            },
+            {
+                "id": "d",
+                "text": "Che giấu mã nguồn."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Padding (chèn số 0) là bắt buộc. Nhưng số 0 sẽ làm thuật toán RNN bị 'nhiễu'. Khai báo `Embedding(..., mask_zero=True)` sẽ phóng ra 1 tia 'Mặt nạ' chạy xuyên suốt mạng nơ-ron, dập tắt tính toán tại vị trí có số 0."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Sự thống nhất của tf.data và Keras:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có 2 nơi để đặt lớp Preprocessing (như chuẩn hóa, chuyển chữ thành số). 1 là bỏ vào trong hàm `map()` của <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>, việc này giúp CPU tiền xử lý siêu nhanh bằng đa luồng và prefetch. 2 là bỏ trực tiếp vào <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>, việc này giúp gom tiền xử lý vào thành một cục với kiến trúc, thuận lợi cho việc chia sẻ, deploy lên Web/Mobile không bị sai lệch cấu hình. Tùy vào bạn ưu tiên Tốc độ huấn luyện hay Tính đóng gói mà chọn vị trí đặt.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "tf.data.Dataset"
+            },
+            {
+                "id": "w2",
+                "text": "Bên trong Mô hình (Keras Model)"
+            },
+            {
+                "id": "w3",
+                "text": "Bảng tính CSV"
+            },
+            {
+                "id": "w4",
+                "text": "GPU Memory"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Để train siêu tốc độ: đặt Preprocessing vào `dataset.map(..., num_parallel_calls)`. Để xuất xưởng: gỡ ra và gắn lại vào `Sequential()` model trước khi Export."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>
