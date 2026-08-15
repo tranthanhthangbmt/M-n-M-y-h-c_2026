@@ -561,6 +561,7 @@
     let isFitMode = false;
     let scrollAnimationId = null;
     let currentSlideIndex = 1; // Slide bắt đầu từ 1
+    let isPlayingMode = false;
     let isAutoscrollEnabled = true;
 
     /* ================= UI HELPER ================= */
@@ -681,6 +682,7 @@
         if (e && e.stopPropagation) e.stopPropagation();
 
         try {
+          isPlayingMode = true; // User interacted!
           await videoElement.play();
         } catch (e) {
           console.error("Play failed (User can now use native controls)", e);
@@ -691,21 +693,25 @@
       bigPlayBtn.onclick = triggerPlay;
 
       // Play Logic with Muted Fallback
-      try {
-        await videoElement.play();
-      } catch (e) {
-        console.warn("Autoplay with sound failed. Retrying muted...", e);
+      if (isPlayingMode) {
         try {
-          // Mobile Browser often allow autoplay if MUTED
-          videoElement.muted = true;
           await videoElement.play();
-          console.log("Muted autoplay started.");
-          videoPlayOverlay.classList.remove('visible'); // Success! Hide overlay
-        } catch (errMuted) {
-          console.error("Muted autoplay also failed.", errMuted);
-          // Only NOW show the big manual play button
-          videoPlayOverlay.classList.add('visible');
+        } catch (e) {
+          console.warn("Autoplay with sound failed. Retrying muted...", e);
+          try {
+            // Mobile Browser often allow autoplay if MUTED
+            videoElement.muted = true;
+            await videoElement.play();
+            console.log("Muted autoplay started.");
+            videoPlayOverlay.classList.remove('visible'); // Success! Hide overlay
+          } catch (errMuted) {
+            console.error("Muted autoplay also failed.", errMuted);
+            // Only NOW show the big manual play button
+            videoPlayOverlay.classList.add('visible');
+          }
         }
+      } else {
+        videoPlayOverlay.classList.add('visible');
       }
 
       // Native Auto-Advance
@@ -764,12 +770,15 @@
         // trình duyệt (đặc biệt iOS/Android) sẽ ngưng tải Image khiến Audio không bao giờ được play.
         slideAudio.src = `${AUDIO_PREFIX}${index}${AUD_EXT}`;
         
-        slideAudio.play().then(() => {
-          startAutoScrollIfNeeded();
-        }).catch(err => {
-          console.log("Autoplay blocked or waiting for interaction", err);
-          playPauseBtn.innerHTML = '▶️'; 
-        });
+        if (isPlayingMode) {
+          slideAudio.play().then(() => {
+            startAutoScrollIfNeeded();
+          }).catch(err => {
+            console.log("Autoplay blocked or waiting for interaction", err);
+            isPlayingMode = false;
+            playPauseBtn.innerHTML = '▶️'; 
+          });
+        }
 
         // 2. Tải ảnh chạy ngầm, xong lúc nào thì hiển thị lúc đó
         resourceManager.loadImage(index).then(() => {
@@ -876,8 +885,13 @@
 
     // Buttons
     playPauseBtn.addEventListener('click', () => {
-      if (slideAudio.paused) slideAudio.play();
-      else slideAudio.pause();
+      if (slideAudio.paused) {
+        isPlayingMode = true;
+        slideAudio.play();
+      } else {
+        isPlayingMode = false;
+        slideAudio.pause();
+      }
     });
 
     prevBtn.addEventListener('click', () => {
