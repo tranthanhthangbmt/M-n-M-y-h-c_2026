@@ -1165,7 +1165,8 @@ so sánh các hình ảnh trực quan thu được. Các giải pháp cho các b
 
 
 #### ** 📝 Trắc nghiệm **
-*Đang cập nhật...*
+
+<iframe src="quizzes/Chapter08/index.html" style="width: 100%; min-height: 700px; border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></iframe>
 
 #### ** 💻 Thực hành **
 

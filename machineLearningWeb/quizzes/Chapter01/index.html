@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Học máy (Machine Learning) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là quá trình con người tự viết các quy tắc cứng để giải quyết vấn đề."
+            },
+            {
+                "id": "b",
+                "text": "Là khoa học và nghệ thuật lập trình máy tính để chúng có thể học từ dữ liệu."
+            },
+            {
+                "id": "c",
+                "text": "Là việc tải một bản sao Wikipedia vào máy tính để nó thông minh hơn."
+            },
+            {
+                "id": "d",
+                "text": "Là một loại phần cứng máy tính mới."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Học máy là khoa học (và nghệ thuật) lập trình máy tính để chúng có thể học từ dữ liệu, thay vì được lập trình rõ ràng bằng các quy tắc cứng."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Điền từ thích hợp vào chỗ trống trong định nghĩa kinh điển của Tom Mitchell (1997):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Một chương trình máy tính được cho là học từ kinh nghiệm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> đối với một nhiệm vụ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> và một thước đo hiệu suất <span class=\"blank-slot\" data-id=\"3\">___(3)___</span>, nếu hiệu suất của nó trên (2), được đo bằng (3), cải thiện theo kinh nghiệm (1).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "E"
+            },
+            {
+                "id": "w2",
+                "text": "T"
+            },
+            {
+                "id": "w3",
+                "text": "P"
+            },
+            {
+                "id": "w4",
+                "text": "M"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2",
+            "3": "w3"
+        },
+        "explanation": "Kinh nghiệm là E (Experience), Nhiệm vụ là T (Task), Thước đo hiệu suất là P (Performance)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép nối các thuật ngữ học máy với ví dụ tương ứng từ bộ lọc thư rác:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Tập huấn luyện (Training set)"
+            },
+            {
+                "id": "l2",
+                "text": "Trường hợp huấn luyện (Training instance)"
+            },
+            {
+                "id": "l3",
+                "text": "Độ chính xác (Accuracy)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Các ví dụ về email (cả thư rác và thư thường) được cung cấp để hệ thống học."
+            },
+            {
+                "id": "r2",
+                "text": "Một email cụ thể cùng với nhãn 'thư rác' hoặc 'thư thường'."
+            },
+            {
+                "id": "r3",
+                "text": "Tỷ lệ email được hệ thống phân loại đúng (Thước đo hiệu suất P)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Tập huấn luyện là tập hợp các dữ liệu; mỗi ví dụ gọi là trường hợp huấn luyện (instance); Độ chính xác là thước đo hiệu suất."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Trong học máy, tại sao phương pháp học tự động lại tốt hơn phương pháp lập trình truyền thống đối với bộ lọc thư rác?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó tạo ra một danh sách dài các quy tắc phức tạp dễ bảo trì."
+            },
+            {
+                "id": "b",
+                "text": "Vì máy tính xử lý các câu lệnh if-else nhanh hơn."
+            },
+            {
+                "id": "c",
+                "text": "Vì nó tự động học và phát hiện các mẫu từ có tần suất bất thường, dễ thích nghi với thay đổi."
+            },
+            {
+                "id": "d",
+                "text": "Vì nó không cần bất kỳ dữ liệu huấn luyện nào."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Học máy tự động nhận thấy các mẫu mới và đánh dấu chúng mà không cần sự can thiệp lập trình liên tục từ con người, giúp thích nghi tốt hơn."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Sắp xếp các bước cơ bản trong một phương pháp lập trình quy tắc truyền thống (ví dụ: tạo bộ lọc thư rác):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Kiểm tra xem thư rác thường trông như thế nào (tìm từ khóa)."
+            },
+            {
+                "id": "2",
+                "text": "Viết một thuật toán phát hiện cho mỗi mẫu quy tắc đó."
+            },
+            {
+                "id": "3",
+                "text": "Kiểm tra chương trình."
+            },
+            {
+                "id": "4",
+                "text": "Lặp lại quá trình cho đến khi chương trình đủ tốt."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Lập trình truyền thống yêu cầu con người phân tích -> mã hóa quy tắc cứng -> kiểm tra -> lặp lại."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khai phá dữ liệu (Data mining) liên quan đến học máy như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Khai phá dữ liệu không sử dụng học máy."
+            },
+            {
+                "id": "b",
+                "text": "Việc áp dụng các mô hình học máy vào lượng lớn dữ liệu để khám phá các mẫu ẩn được gọi là khai phá dữ liệu."
+            },
+            {
+                "id": "c",
+                "text": "Học máy là một lĩnh vực con của khai phá dữ liệu."
+            },
+            {
+                "id": "d",
+                "text": "Chúng là hai tên gọi khác nhau của cùng một phương pháp."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Các mô hình ML có thể được kiểm tra để tiết lộ những gì chúng đã học. Việc đào sâu vào lượng lớn dữ liệu để khám phá mẫu ẩn này chính là khai phá dữ liệu."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các bài toán thực tế với nhánh công nghệ học máy tương ứng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Phân tích hình ảnh sản phẩm để tự động phân loại"
+            },
+            {
+                "id": "l2",
+                "text": "Tự động phân loại các bài báo tin tức"
+            },
+            {
+                "id": "l3",
+                "text": "Xây dựng bot thông minh cho trò chơi"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Thị giác máy tính (Computer Vision / CNNs)"
+            },
+            {
+                "id": "r2",
+                "text": "Xử lý ngôn ngữ tự nhiên (NLP / RNNs, Transformers)"
+            },
+            {
+                "id": "r3",
+                "text": "Học tăng cường (Reinforcement Learning)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Hình ảnh dùng CNNs, văn bản dùng NLP, bot chơi game dùng học tăng cường."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Đâu là một ví dụ về bài toán Hồi quy (Regression)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Phát hiện email có phải là thư rác hay không."
+            },
+            {
+                "id": "b",
+                "text": "Dự báo doanh thu của công ty vào năm tới."
+            },
+            {
+                "id": "c",
+                "text": "Phân đoạn hình ảnh khối u."
+            },
+            {
+                "id": "d",
+                "text": "Nhóm khách hàng thành các cụm tương đồng."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Hồi quy là dự đoán một giá trị số liên tục (như doanh thu, giá xe), trong khi phân loại (thư rác/không thư rác) dự đoán lớp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hệ thống ML có thể được phân loại dựa trên những tiêu chí nào sau đây?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Cách chúng được giám sát trong quá trình huấn luyện."
+            },
+            {
+                "id": "b",
+                "text": "Khả năng học tăng cường trực tuyến (online) hay lô (batch)."
+            },
+            {
+                "id": "c",
+                "text": "Cách chúng tổng quát hóa: dựa trên thực thể hay mô hình."
+            },
+            {
+                "id": "d",
+                "text": "Tất cả các đáp án trên đều đúng."
+            }
+        ],
+        "correctAnswer": "d",
+        "explanation": "ML có 3 tiêu chí phân loại chính: mức độ giám sát, cách thức học theo thời gian, và cách thức tổng quát hóa."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Dễ",
+        "question": "Học có giám sát (Supervised learning) là gì?",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong học có giám sát, tập huấn luyện mà bạn cung cấp cho thuật toán bao gồm các giải pháp mong muốn, được gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "nhãn (labels)"
+            },
+            {
+                "id": "w2",
+                "text": "đặc trưng (features)"
+            },
+            {
+                "id": "w3",
+                "text": "siêu tham số"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1"
+        },
+        "explanation": "Trong học có giám sát, mỗi trường hợp dữ liệu (ví dụ) đi kèm với một nhãn (label) là đáp án mong muốn."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép nối các thuật toán học không giám sát với bài toán tiêu biểu:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Phân cụm (Clustering)"
+            },
+            {
+                "id": "l2",
+                "text": "Trực quan hóa và Giảm chiều"
+            },
+            {
+                "id": "l3",
+                "text": "Phát hiện bất thường"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Nhóm khách truy cập blog thành các tập khách hàng tương tự nhau."
+            },
+            {
+                "id": "r2",
+                "text": "Gộp thuộc tính tuổi và số dặm của ô tô thành đặc trưng hao mòn, vẽ biểu đồ 2D."
+            },
+            {
+                "id": "r3",
+                "text": "Phát hiện giao dịch thẻ tín dụng gian lận."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Phân cụm chia nhóm, giảm chiều đơn giản hóa dữ liệu, phát hiện bất thường tìm điểm dữ liệu dị thường."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Sự khác biệt chính giữa 'Phát hiện bất thường' (Anomaly detection) và 'Phát hiện sự mới lạ' (Novelty detection) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Không có sự khác biệt, hai khái niệm này là một."
+            },
+            {
+                "id": "b",
+                "text": "Phát hiện sự mới lạ yêu cầu tập huấn luyện rất 'sạch', không có bất kỳ trường hợp nào bạn muốn phát hiện; trong khi phát hiện bất thường thường huấn luyện trên dữ liệu chứa cả trường hợp bình thường (chiếm đa số)."
+            },
+            {
+                "id": "c",
+                "text": "Phát hiện bất thường dùng học có giám sát, còn sự mới lạ dùng học không giám sát."
+            },
+            {
+                "id": "d",
+                "text": "Phát hiện sự mới lạ dùng để phân nhóm dữ liệu, còn bất thường dùng để giảm chiều dữ liệu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Novelty detection yêu cầu dữ liệu huấn luyện là hoàn toàn bình thường (không bị ô nhiễm), trong khi Anomaly detection có thể chịu đựng một số nhiễu trong quá trình học."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Sắp xếp quy trình Học bán giám sát (ví dụ như Google Photos) theo thứ tự thực hiện:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Hệ thống tự động sử dụng phân cụm để nhóm các khuôn mặt giống nhau (Không giám sát)."
+            },
+            {
+                "id": "2",
+                "text": "Người dùng thêm nhãn tên cho mỗi cụm khuôn mặt."
+            },
+            {
+                "id": "3",
+                "text": "Hệ thống truyền nhãn đó cho toàn bộ các bức ảnh trong cụm."
+            },
+            {
+                "id": "4",
+                "text": "Hệ thống sử dụng các thuật toán có giám sát sau khi toàn bộ dữ liệu đã có nhãn."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Học bán giám sát thường kết hợp học không giám sát (phân cụm) trước, sau đó dùng nhãn người dùng gán để huấn luyện có giám sát."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Học tự giám sát (Self-supervised learning) thường được coi là thuộc nhóm nào, và quá trình huấn luyện của nó diễn ra như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Thuộc học tăng cường, bằng cách nhận phần thưởng từ hệ thống."
+            },
+            {
+                "id": "b",
+                "text": "Nó lấy nhãn tự động từ chính tập dữ liệu không nhãn (ví dụ che 1 phần ảnh để đoán), vì vậy nó xử lý dữ liệu không nhãn nhưng quá trình huấn luyện giống học có giám sát."
+            },
+            {
+                "id": "c",
+                "text": "Thuộc học phân cụm, nhóm các bức ảnh giống nhau thành một nhóm."
+            },
+            {
+                "id": "d",
+                "text": "Là một loại học thuộc lòng (instance-based learning)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Học tự giám sát sinh ra các nhãn từ dữ liệu không nhãn (ví dụ giấu đi 1 phần của bức ảnh để mô hình dự đoán phần bị giấu), nên kỹ thuật tương tự học có giám sát."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Điền từ thích hợp mô tả Học tăng cường (Reinforcement Learning):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Hệ thống học được gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nó quan sát môi trường, thực hiện hành động, và nhận lại <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hoặc hình phạt. Từ đó nó tự học <span class=\"blank-slot\" data-id=\"3\">___(3)___</span> tốt nhất để đạt điểm cao nhất.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "tác nhân (agent)"
+            },
+            {
+                "id": "w2",
+                "text": "phần thưởng (reward)"
+            },
+            {
+                "id": "w3",
+                "text": "chính sách (policy)"
+            },
+            {
+                "id": "w4",
+                "text": "bất thường"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2",
+            "3": "w3"
+        },
+        "explanation": "Trong RL, Agent tương tác với môi trường, nhận Reward và tìm ra Policy tối ưu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "AlphaGo của DeepMind đánh bại nhà vô địch cờ vây thế giới bằng cách sử dụng phương pháp học nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Học bán giám sát"
+            },
+            {
+                "id": "b",
+                "text": "Học không giám sát"
+            },
+            {
+                "id": "c",
+                "text": "Học tăng cường (Reinforcement Learning)"
+            },
+            {
+                "id": "d",
+                "text": "Phân tích thành phần chính (PCA)"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "AlphaGo sử dụng Học tăng cường, chơi hàng triệu ván cờ với chính nó để tối đa hóa phần thưởng (chiến thắng)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong học theo lô (Batch learning), điều gì xảy ra khi hệ thống cần học dữ liệu mới?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó cập nhật thêm một chút dữ liệu vào mô hình hiện tại."
+            },
+            {
+                "id": "b",
+                "text": "Nó cần được huấn luyện lại từ đầu bằng toàn bộ tập dữ liệu (cũ + mới) rồi mới đưa vào sản xuất."
+            },
+            {
+                "id": "c",
+                "text": "Nó học tự động từng điểm dữ liệu khi người dùng gửi tới."
+            },
+            {
+                "id": "d",
+                "text": "Mô hình không bao giờ bị trôi dữ liệu (data drift)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Học theo lô (offline learning) không thể học tăng dần. Khi có dữ liệu mới, phải huấn luyện lại một mô hình mới trên toàn bộ dữ liệu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hiện tượng 'phân rã mô hình' (model rot) hay 'trôi dữ liệu' (data drift) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mô hình bị hỏng do phần cứng máy tính xuống cấp."
+            },
+            {
+                "id": "b",
+                "text": "Hiệu suất mô hình suy giảm theo thời gian vì thế giới thực tiếp tục thay đổi trong khi mô hình bị cố định."
+            },
+            {
+                "id": "c",
+                "text": "Mô hình quên đi dữ liệu cũ do tốc độ học quá cao."
+            },
+            {
+                "id": "d",
+                "text": "Dữ liệu bị rò rỉ sang internet."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Phân rã mô hình là khi một mô hình học theo lô được đưa vào sản xuất nhưng dữ liệu trong thực tế thay đổi, làm mô hình không còn chính xác."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối tham số của Học trực tuyến (Online learning) với ý nghĩa của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Học trực tuyến (Online learning)"
+            },
+            {
+                "id": "l2",
+                "text": "Học ngoài bộ nhớ (Out-of-core learning)"
+            },
+            {
+                "id": "l3",
+                "text": "Tốc độ học (Learning rate)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Huấn luyện hệ thống tăng dần bằng các nhóm dữ liệu nhỏ (mini-batches)."
+            },
+            {
+                "id": "r2",
+                "text": "Dùng thuật toán trực tuyến để huấn luyện trên tập dữ liệu khổng lồ không vừa với bộ nhớ RAM."
+            },
+            {
+                "id": "r3",
+                "text": "Tốc độ mô hình thích nghi với dữ liệu thay đổi; mức cao thì học nhanh nhưng nhanh quên."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Học trực tuyến học tăng dần; Out-of-core dùng học trực tuyến để xử lý dữ liệu lớn; Tốc độ học quyết định sự thích nghi."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Điền từ để hoàn thiện ý: Thách thức của học trực tuyến khi gặp dữ liệu xấu.",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Nếu <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> được đưa vào hệ thống trực tuyến, hiệu suất sẽ suy giảm nhanh chóng. Để giảm thiểu rủi ro, cần <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hệ thống chặt chẽ và nhanh chóng <span class=\"blank-slot\" data-id=\"3\">___(3)___</span> chế độ học nếu phát hiện vấn đề.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "dữ liệu xấu"
+            },
+            {
+                "id": "w2",
+                "text": "theo dõi (monitor)"
+            },
+            {
+                "id": "w3",
+                "text": "tắt (hoặc quay lui)"
+            },
+            {
+                "id": "w4",
+                "text": "tăng tốc"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2",
+            "3": "w3"
+        },
+        "explanation": "Học trực tuyến có nhược điểm là rất nhạy cảm với dữ liệu sai/xấu, nên cần theo dõi liên tục và tắt/rollback khi cần."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Học dựa trên thực thể (Instance-based learning) đưa ra dự đoán cho dữ liệu mới bằng cách nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xây dựng một phương trình toán học phức tạp."
+            },
+            {
+                "id": "b",
+                "text": "Học thuộc lòng các ví dụ huấn luyện và sử dụng thước đo tương đồng để so sánh điểm mới với các ví dụ đã học."
+            },
+            {
+                "id": "c",
+                "text": "Gửi dữ liệu lên API đám mây."
+            },
+            {
+                "id": "d",
+                "text": "Ngẫu nhiên chọn một nhãn."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nó học thuộc (rote learning) và đánh giá độ tương đồng (similarity) với các mẫu đã có."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Sắp xếp quy trình dự đoán trong Học dựa trên mô hình (Model-based learning):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Nghiên cứu tập dữ liệu huấn luyện."
+            },
+            {
+                "id": "2",
+                "text": "Lựa chọn một loại mô hình thuật toán."
+            },
+            {
+                "id": "3",
+                "text": "Huấn luyện mô hình để tối ưu hóa tham số (giảm hàm chi phí)."
+            },
+            {
+                "id": "4",
+                "text": "Áp dụng mô hình để đưa ra dự đoán trên các trường hợp mới."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Phân tích dữ liệu -> Chọn mô hình -> Huấn luyện mô hình -> Đưa ra dự đoán."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong học có giám sát, một bài toán 'Phân loại' (Classification) và 'Hồi quy' (Regression) khác nhau ở điểm nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Phân loại dành cho dữ liệu không nhãn, Hồi quy dành cho dữ liệu có nhãn."
+            },
+            {
+                "id": "b",
+                "text": "Phân loại dự đoán lớp/danh mục (ví dụ thư rác), Hồi quy dự đoán giá trị số (ví dụ giá xe)."
+            },
+            {
+                "id": "c",
+                "text": "Phân loại dùng trong học theo lô, Hồi quy dùng trong học trực tuyến."
+            },
+            {
+                "id": "d",
+                "text": "Hồi quy không phải là thuật toán của học máy."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Classification dự đoán class/category; Regression dự đoán numerical value."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Ví dụ nào sau đây KHÔNG phải là Học không giám sát (Unsupervised Learning)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Giảm chiều (Dimensionality reduction)."
+            },
+            {
+                "id": "b",
+                "text": "Phát hiện bất thường (Anomaly detection)."
+            },
+            {
+                "id": "c",
+                "text": "Mạng nơ-ron tích chập (CNN) phân loại chó và mèo từ bộ dữ liệu đã được gán nhãn."
+            },
+            {
+                "id": "d",
+                "text": "Phân cụm khách hàng (Clustering)."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Phân loại với bộ dữ liệu ĐÃ ĐƯỢC GÁN NHÃN là học có giám sát. Các mục khác đều là kỹ thuật học không giám sát."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép các ví dụ thực tiễn với bài toán ML:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Phát hiện gian lận thẻ tín dụng"
+            },
+            {
+                "id": "l2",
+                "text": "Dự đoán giá nhà ở Dĩ An Bình Dương"
+            },
+            {
+                "id": "l3",
+                "text": "Lọc thư rác trong Gmail"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Phát hiện bất thường (Anomaly Detection)"
+            },
+            {
+                "id": "r2",
+                "text": "Hồi quy (Regression)"
+            },
+            {
+                "id": "r3",
+                "text": "Phân loại (Classification)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Gian lận là bất thường; Giá nhà là biến số liên tục (Hồi quy); Thư rác/Không là nhãn rời rạc (Phân loại)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hoàn thiện các khái niệm trong ML:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Khả năng của hệ thống thực hiện tốt trên các ví dụ dữ liệu mới, chưa từng thấy được gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nếu mô hình hoạt động quá tốt trên tập huấn luyện nhưng lại rất tệ trên tập mới, đó là hiện tượng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "tổng quát hóa (generalization)"
+            },
+            {
+                "id": "w2",
+                "text": "overfitting (quá khớp)"
+            },
+            {
+                "id": "w3",
+                "text": "underfitting (chưa khớp)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Mục đích chính của ML là Tổng quát hóa. Quá khớp (Overfitting) là khi mô hình 'học vẹt' dữ liệu quá khứ mà thất bại trên dữ liệu mới."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hồi quy Logistic (Logistic Regression) thường được sử dụng cho loại bài toán nào mặc dù tên của nó là 'Hồi quy'?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Phân cụm"
+            },
+            {
+                "id": "b",
+                "text": "Hồi quy tuyến tính"
+            },
+            {
+                "id": "c",
+                "text": "Phân loại"
+            },
+            {
+                "id": "d",
+                "text": "Giảm chiều"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Hồi quy Logistic xuất ra xác suất thuộc về một lớp (VD: 80% là thư rác), vì vậy nó thường được sử dụng cho các bài toán phân loại."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Sắp xếp theo thứ tự phát triển của dữ liệu ML:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Thu thập dữ liệu thô."
+            },
+            {
+                "id": "2",
+                "text": "Xử lý dữ liệu và Trích xuất đặc trưng (Feature extraction)."
+            },
+            {
+                "id": "3",
+                "text": "Đưa đặc trưng vào mô hình học máy để huấn luyện."
+            },
+            {
+                "id": "4",
+                "text": "Đưa ra dự đoán cho điểm dữ liệu mới."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Dữ liệu thô cần được xử lý thành các đặc trưng trước khi huấn luyện mô hình."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Luật kết hợp (Association Rule Learning) thường được áp dụng trong tình huống nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dự đoán giá trị của cổ phiếu."
+            },
+            {
+                "id": "b",
+                "text": "Tìm ra mối quan hệ thú vị giữa các thuộc tính trong lượng lớn dữ liệu, ví dụ: 'Người mua khoai tây chiên cũng có xu hướng mua bít tết'."
+            },
+            {
+                "id": "c",
+                "text": "Phát hiện khối u trong ảnh quét não."
+            },
+            {
+                "id": "d",
+                "text": "Biểu diễn dữ liệu 3D sang 2D."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Luật kết hợp (như Apriori) là kỹ thuật không giám sát để tìm mối quan hệ (luật) trong cơ sở dữ liệu lớn (như giỏ hàng siêu thị)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Đâu KHÔNG phải là lợi ích chính của Học máy (Machine Learning)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Giải quyết các bài toán quá phức tạp đối với phương pháp truyền thống."
+            },
+            {
+                "id": "b",
+                "text": "Dễ dàng thích nghi với môi trường biến động."
+            },
+            {
+                "id": "c",
+                "text": "Hoàn toàn không cần máy tính để tính toán."
+            },
+            {
+                "id": "d",
+                "text": "Giúp con người thu được hiểu biết sâu sắc từ lượng dữ liệu khổng lồ."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Học máy yêu cầu khả năng tính toán mạnh mẽ của máy tính, nên 'không cần máy tính' là sai."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

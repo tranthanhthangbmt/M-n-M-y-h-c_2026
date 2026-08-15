@@ -1684,7 +1684,8 @@ Between Learning Algorithms”, Neural Computation 8, no. 7 (1996): 1341–1390.
 
 
 #### ** 📝 Trắc nghiệm **
-*Đang cập nhật...*
+
+<iframe src="quizzes/Chapter01/index.html" style="width: 100%; min-height: 700px; border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></iframe>
 
 #### ** 💻 Thực hành **
 
@@ -1718,5 +1719,7 @@ Between Learning Algorithms”, Neural Computation 8, no. 7 (1996): 1341–1390.
     <strong>Hoặc truy cập toàn bộ kho tài liệu:</strong> <a href="https://drive.google.com/drive/folders/1nRV7W748VkSldg-BaKdcejBV-sBP47_M?usp=sharing" target="_blank" style="color: #1a73e8; font-weight: bold;">Thư mục Google Drive Thực hành</a>
   </div>
 </div>
+
+
 
 <!-- tabs:end -->

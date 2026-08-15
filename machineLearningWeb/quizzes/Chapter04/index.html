@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 4</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Hai cách tiếp cận chính để tìm ra các tham số tối ưu cho mô hình Hồi quy tuyến tính là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hồi quy Lasso và Hồi quy Ridge."
+            },
+            {
+                "id": "b",
+                "text": "Sử dụng Phương trình chuẩn (Normal Equation) và sử dụng thuật toán tối ưu hóa Gradient Descent."
+            },
+            {
+                "id": "c",
+                "text": "Sử dụng Cây quyết định và Rừng ngẫu nhiên."
+            },
+            {
+                "id": "d",
+                "text": "Chia dữ liệu thành tập huấn luyện và tập kiểm thử."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Phương trình chuẩn giải toán học trực tiếp để tìm nghiệm (closed-form), trong khi Gradient Descent tìm nghiệm bằng cách lặp lại việc tinh chỉnh tham số."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Nhược điểm lớn nhất của Phương trình chuẩn (Normal Equation) trong Hồi quy tuyến tính là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó không bao giờ tìm được nghiệm chính xác hoàn toàn."
+            },
+            {
+                "id": "b",
+                "text": "Nó không thể sử dụng nếu dữ liệu có số âm."
+            },
+            {
+                "id": "c",
+                "text": "Độ phức tạp tính toán rất cao khi số lượng ĐẶC TRƯNG (features) lớn (nghịch đảo ma trận chậm)."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ hoạt động nếu số lượng MẪU (instances) rất lớn."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Việc đảo ngược ma trận (kích thước n x n với n là số đặc trưng) mất rất nhiều thời gian nếu n lớn (ví dụ n = 100,000)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Dễ",
+        "question": "Khái niệm về Gradient Descent (Hạ cánh dốc):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Gradient Descent là một thuật toán tối ưu hóa chung có khả năng tìm ra nghiệm tối ưu. Ý tưởng chính là tinh chỉnh các tham số lặp đi lặp lại để giảm thiểu <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Tham số quan trọng nhất của thuật toán này là kích thước của mỗi bước đi, được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Hàm chi phí (Cost Function)"
+            },
+            {
+                "id": "w2",
+                "text": "Hàm kích hoạt (Activation Function)"
+            },
+            {
+                "id": "w3",
+                "text": "Tỷ lệ học (Learning Rate)"
+            },
+            {
+                "id": "w4",
+                "text": "Số lượng Epochs"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Gradient Descent tìm cách đi xuống đáy thung lũng (giảm thiểu hàm chi phí). Bước đi dài hay ngắn được quyết định bởi Tỷ lệ học (Learning rate)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Điều gì xảy ra nếu Learning Rate (Tỷ lệ học) trong Gradient Descent quá lớn?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Thuật toán sẽ hội tụ đến nghiệm tối ưu cực kỳ nhanh."
+            },
+            {
+                "id": "b",
+                "text": "Thuật toán sẽ dừng lại ngay lập tức."
+            },
+            {
+                "id": "c",
+                "text": "Thuật toán có thể nhảy qua rãnh, bật sang phía bên kia và ngày càng phân kỳ ra xa khỏi nghiệm tối ưu."
+            },
+            {
+                "id": "d",
+                "text": "Thuật toán sẽ tự động chuyển sang sử dụng Phương trình chuẩn."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Nếu bước đi quá lớn, thay vì đi xuống đáy thung lũng, thuật toán sẽ nhảy vọt lên vách đá đối diện và cao dần lên (phân kỳ)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hình dáng của Hàm chi phí MSE (Mean Squared Error) đối với Hồi quy tuyến tính có đặc điểm gì đặc biệt?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó là một hàm lồi (convex function), nghĩa là nó chỉ có một cực tiểu toàn cục (global minimum) duy nhất mà không có cực tiểu cục bộ."
+            },
+            {
+                "id": "b",
+                "text": "Nó có rất nhiều cực tiểu cục bộ đan xen nhau."
+            },
+            {
+                "id": "c",
+                "text": "Nó là một đường thẳng hoàn hảo."
+            },
+            {
+                "id": "d",
+                "text": "Nó giống như một bậc thang."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Vì MSE là hàm lồi hình cái bát, Gradient Descent luôn được đảm bảo tiến tới đáy (cực tiểu toàn cục) nếu Learning Rate không quá lớn và có đủ thời gian."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các biến thể của thuật toán Gradient Descent với đặc điểm của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Batch Gradient Descent"
+            },
+            {
+                "id": "l2",
+                "text": "Stochastic Gradient Descent (SGD)"
+            },
+            {
+                "id": "l3",
+                "text": "Mini-batch Gradient Descent"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Sử dụng TOÀN BỘ tập dữ liệu ở mỗi bước. Hội tụ rất mượt mà nhưng rất chậm nếu tập dữ liệu lớn."
+            },
+            {
+                "id": "r2",
+                "text": "Chọn NGẪU NHIÊN một mẫu duy nhất ở mỗi bước. Rất nhanh, quỹ đạo đi ngoằn ngoèo, không bao giờ dừng hẳn lại tại đáy."
+            },
+            {
+                "id": "r3",
+                "text": "Sử dụng một tập hợp nhỏ các mẫu ngẫu nhiên. Nhanh hơn Batch và hội tụ ổn định hơn SGD (đặc biệt khi dùng GPU)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Batch dùng toàn bộ dữ liệu. Stochastic (Ngẫu nhiên) dùng 1 mẫu. Mini-batch dùng một nhóm mẫu nhỏ (thường từ 32-256 mẫu)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tại sao Stochastic Gradient Descent (SGD) lại có cơ hội 'thoát khỏi' các cực tiểu cục bộ (local minima) tốt hơn Batch Gradient Descent?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó tính toán gradient chính xác hơn."
+            },
+            {
+                "id": "b",
+                "text": "Vì quỹ đạo đi xuống của nó rất thất thường (erratic), có thể giúp thuật toán vô tình nhảy ra khỏi các hố cục bộ để tìm đến cực tiểu toàn cục."
+            },
+            {
+                "id": "c",
+                "text": "Vì nó sử dụng toàn bộ tập dữ liệu cùng lúc."
+            },
+            {
+                "id": "d",
+                "text": "Bởi vì nó tự động giảm learning rate."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Bản chất ngẫu nhiên và ngoằn ngoèo của SGD (dựa trên 1 mẫu duy nhất mỗi bước) tạo ra các bước nhảy lớn ngẫu nhiên, giúp thoát khỏi các điểm trũng giả."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Sắp xếp thứ tự một vòng lặp cập nhật trọng số cơ bản trong Batch Gradient Descent:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Khởi tạo ngẫu nhiên các tham số (Random Initialization)."
+            },
+            {
+                "id": "2",
+                "text": "Tính toán độ dốc (Gradient) của Hàm chi phí trên toàn bộ tập dữ liệu huấn luyện."
+            },
+            {
+                "id": "3",
+                "text": "Nhân Gradient với tỷ lệ học (Learning rate)."
+            },
+            {
+                "id": "4",
+                "text": "Cập nhật các tham số (lấy tham số cũ trừ đi kết quả vừa nhân) và lặp lại bước 2."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Khởi tạo -> Tính Gradient -> Tính bước đi -> Cập nhật trọng số."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Khi sử dụng Gradient Descent, bạn PHẢI thực hiện bước tiền xử lý nào để đảm bảo thuật toán hội tụ nhanh chóng?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mã hóa One-Hot toàn bộ dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Giảm kích thước dữ liệu đi 10 lần."
+            },
+            {
+                "id": "c",
+                "text": "Co giãn đặc trưng (Feature Scaling - ví dụ StandardScaler)."
+            },
+            {
+                "id": "d",
+                "text": "Loại bỏ hoàn toàn các cột số nguyên."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Nếu các đặc trưng có thang đo khác nhau (ví dụ cái thì từ 1-10, cái thì 10,000-100,000), hình dáng hàm chi phí sẽ bị kéo dài ra, khiến thuật toán hội tụ cực kỳ chậm."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Khái niệm Hồi quy Đa thức (Polynomial Regression):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Nếu dữ liệu thực tế phức tạp hơn một đường thẳng, bạn có thể dùng một mô hình tuyến tính để khớp với dữ liệu phi tuyến tính này bằng cách thêm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> vào làm các đặc trưng mới (dùng `PolynomialFeatures`). Kỹ thuật này được gọi là Hồi quy Đa thức. Tuy nhiên, nếu bậc đa thức quá cao, mô hình sẽ cố gắng uốn lượn để đi qua từng điểm huấn luyện, dẫn đến hiện tượng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> nặng nề.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Bậc lũy thừa của các đặc trưng (Powers of features)"
+            },
+            {
+                "id": "w2",
+                "text": "Logarit tự nhiên"
+            },
+            {
+                "id": "w3",
+                "text": "Quá khớp (Overfitting)"
+            },
+            {
+                "id": "w4",
+                "text": "Chưa khớp (Underfitting)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Hồi quy đa thức sinh ra đặc trưng mới là lũy thừa của đặc trưng cũ. Bậc càng cao mô hình càng phức tạp, dễ bị quá khớp (overfitting)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Đường cong học tập (Learning Curves) biểu diễn điều gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Thời gian (tính bằng giây) để huấn luyện mô hình dựa trên số lượng siêu tham số."
+            },
+            {
+                "id": "b",
+                "text": "Hiệu suất của mô hình (thông thường là lỗi) trên cả tập huấn luyện và tập xác thực, xem như một hàm của KÍCH THƯỚC TẬP HUẤN LUYỆN (hoặc số epoch)."
+            },
+            {
+                "id": "c",
+                "text": "Độ cong của hàm chi phí trong Gradient Descent."
+            },
+            {
+                "id": "d",
+                "text": "Sự thay đổi của Learning Rate theo thời gian."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Learning Curves vẽ lỗi trên train/val theo kích thước của tập train (hoặc epoch). Nó là công cụ tuyệt vời để chẩn đoán xem mô hình đang underfit hay overfit."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trên đồ thị Đường cong học tập, nếu cả đường lỗi Huấn luyện (Train error) và đường lỗi Xác thực (Validation error) đều chạm đến mức giá trị RẤT CAO và nằm sát gần nhau, mô hình đang gặp vấn đề gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Overfitting (Quá khớp)."
+            },
+            {
+                "id": "b",
+                "text": "Underfitting (Chưa khớp)."
+            },
+            {
+                "id": "c",
+                "text": "Mô hình đang hoạt động hoàn hảo."
+            },
+            {
+                "id": "d",
+                "text": "Dữ liệu bị thiếu quá nhiều."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Lỗi cao trên tập train có nghĩa là mô hình không học được dữ liệu. Khoảng cách hẹp giữa train và val khẳng định nó không overfit. Lỗi cao ở cả hai = Underfitting."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các loại mô hình hồi quy với kỹ thuật Chính quy hóa (Regularization) của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Hồi quy Ridge (Tikhonov)"
+            },
+            {
+                "id": "l2",
+                "text": "Hồi quy Lasso"
+            },
+            {
+                "id": "l3",
+                "text": "Hồi quy Elastic Net"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Thêm hình phạt bằng ĐỘ LỚN TUYỆT ĐỐI (L1 norm) của trọng số. Có xu hướng loại bỏ hoàn toàn trọng số của đặc trưng vô dụng."
+            },
+            {
+                "id": "r2",
+                "text": "Thêm hình phạt bằng BÌNH PHƯƠNG (L2 norm) của trọng số. Giữ trọng số nhỏ nhưng không về hẳn 0."
+            },
+            {
+                "id": "r3",
+                "text": "Là sự kết hợp giữa hình phạt L1 và L2, có thể điều chỉnh tỷ lệ pha trộn r."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r2",
+            "l2": "r1",
+            "l3": "r3"
+        },
+        "explanation": "Ridge = L2 (Bình phương). Lasso = L1 (Tuyệt đối, sinh ra mô hình thưa - sparse). Elastic Net = Mix L1 + L2."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Đặc tính 'Sparcity' (Sự thưa thớt) là lợi thế lớn nhất của Hồi quy Lasso. Nó có nghĩa là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó làm cho dữ liệu trở nên thưa thớt (xóa bớt hàng)."
+            },
+            {
+                "id": "b",
+                "text": "Nó có xu hướng tự động loại bỏ các đặc trưng ít quan trọng nhất bằng cách đẩy trọng số của chúng về chính xác bằng 0 (chọn lọc đặc trưng)."
+            },
+            {
+                "id": "c",
+                "text": "Nó làm cho quá trình huấn luyện tốn ít RAM hơn."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ dự đoán ra các số nguyên."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Do hình dáng không khả vi tại gốc tọa độ của chuẩn L1, Lasso đẩy nhanh trọng số của các features vô dụng về 0, để lại một mô hình chỉ dùng các features quan trọng nhất."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm Early Stopping (Dừng sớm):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Một cách rất khác để chính quy hóa các thuật toán học lặp (như Gradient Descent) là dừng huấn luyện ngay khi lỗi trên tập xác thực (validation error) chạm tới mức <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Kỹ thuật này được Geoffrey Hinton gọi là 'bữa trưa miễn phí tuyệt đẹp' vì nó vừa giảm được hiện tượng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> lại vừa tiết kiệm thời gian.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Cao nhất (Maximum)"
+            },
+            {
+                "id": "w2",
+                "text": "Thấp nhất (Minimum)"
+            },
+            {
+                "id": "w3",
+                "text": "Quá khớp (Overfitting)"
+            },
+            {
+                "id": "w4",
+                "text": "Chưa khớp (Underfitting)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w2",
+            "2": "w3"
+        },
+        "explanation": "Early stopping dừng khi validation error thấp nhất (nếu train tiếp thì validation error sẽ tăng trở lại do overfitting)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Hồi quy Logistic (Logistic Regression) thường được sử dụng cho loại bài toán nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Bài toán Hồi quy dự đoán giá trị liên tục (như giá nhà)."
+            },
+            {
+                "id": "b",
+                "text": "Bài toán Phân loại (Classification - dự đoán xác suất thuộc về một lớp)."
+            },
+            {
+                "id": "c",
+                "text": "Bài toán Phân cụm không giám sát."
+            },
+            {
+                "id": "d",
+                "text": "Bài toán Khử nhiễu hình ảnh."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Dù có chữ 'Regression' trong tên, Logistic Regression thực chất là một mô hình Phân loại (đầu ra là xác suất từ 0 đến 1)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hàm Logistic (còn gọi là hàm Sigmoid) trong Hồi quy Logistic có đầu ra nằm trong khoảng nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Từ -1 đến 1"
+            },
+            {
+                "id": "b",
+                "text": "Từ 0 đến vô cùng"
+            },
+            {
+                "id": "c",
+                "text": "Từ 0 đến 1"
+            },
+            {
+                "id": "d",
+                "text": "Bất kỳ số thực nào"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Hàm Sigmoid có dạng chữ S, ép mọi giá trị đầu vào thành một con số nằm giữa 0 và 1, rất thích hợp để đại diện cho Xác suất."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Quy trình dự đoán nhãn của mô hình Hồi quy Logistic (Nhị phân):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tính tổng có trọng số (weighted sum) của các đặc trưng đầu vào cộng với hệ số chệch (bias)."
+            },
+            {
+                "id": "2",
+                "text": "Đưa tổng đó vào hàm Sigmoid (Logistic function) để chuyển nó thành giá trị từ 0 đến 1 (đây chính là Xác suất p^)."
+            },
+            {
+                "id": "3",
+                "text": "Kiểm tra xem xác suất p^ có lớn hơn hoặc bằng ngưỡng (thường là 0.5) hay không."
+            },
+            {
+                "id": "4",
+                "text": "Trích xuất nhãn cuối cùng: 1 nếu p^ >= 0.5, ngược lại là 0."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Hồi quy logistic tính linear sum -> nhét vào Sigmoid ra xác suất -> áp dụng threshold -> ra nhãn."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Hàm chi phí của Hồi quy Logistic được gọi là gì và có đặc điểm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hàm MSE (Mean Squared Error), có nhiều cực tiểu cục bộ."
+            },
+            {
+                "id": "b",
+                "text": "Hàm Log Loss (hoặc Cross-Entropy cho nhị phân), nó phạt rất nặng nếu mô hình tự tin dự đoán sai, và nó là hàm lồi."
+            },
+            {
+                "id": "c",
+                "text": "Hàm RMSE, luôn trả về giá trị nguyên."
+            },
+            {
+                "id": "d",
+                "text": "Hàm MAE, phạt tất cả các lỗi một cách tuyến tính."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Log Loss (-log(t)) phạt cực kỳ nặng (chi phí tiến tới vô cùng) nếu mô hình tự tin ra xác suất 99% cho một kết quả sai. Nó là hàm lồi nên dễ dùng Gradient Descent."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép các thuật toán với tên gọi tương ứng của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Linear Regression"
+            },
+            {
+                "id": "l2",
+                "text": "Logistic Regression"
+            },
+            {
+                "id": "l3",
+                "text": "Softmax Regression"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Hồi quy tuyến tính, dùng dự đoán giá trị liên tục."
+            },
+            {
+                "id": "r2",
+                "text": "Hồi quy dùng cho phân loại Nhị phân (2 lớp)."
+            },
+            {
+                "id": "r3",
+                "text": "Phiên bản tổng quát của Hồi quy Logistic dành cho Phân loại Đa lớp (Multiclass)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Linear = Hồi quy số. Logistic = Phân loại nhị phân. Softmax = Phân loại Đa lớp trực tiếp."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hoàn thiện cơ chế của Hồi quy Softmax:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Thay vì huấn luyện nhiều bộ phân loại nhị phân riêng biệt, Hồi quy Logistic có thể trực tiếp hỗ trợ phân loại đa lớp thông qua Hồi quy <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Mô hình sẽ tính điểm cho TẤT CẢ các lớp, sau đó đưa qua hàm Softmax để chuẩn hóa chúng thành các <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> có tổng bằng 1. Cuối cùng, mô hình chọn lớp có giá trị cao nhất.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Softmax"
+            },
+            {
+                "id": "w2",
+                "text": "Sigmoid"
+            },
+            {
+                "id": "w3",
+                "text": "Xác suất (Probabilities)"
+            },
+            {
+                "id": "w4",
+                "text": "Đạo hàm (Derivatives)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Softmax lấy điểm của tất cả các class (ví dụ 10 class) và biến chúng thành 10 xác suất có tổng bằng 100% (1.0)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hồi quy Softmax (hay Multinomial Logistic Regression) có khả năng dự đoán Đa nhãn (Multilabel) không?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Có, nó có thể dự đoán một bức ảnh có cả chó và mèo."
+            },
+            {
+                "id": "b",
+                "text": "Không, Hồi quy Softmax chỉ là mô hình Đa lớp (Multiclass), nghĩa là nó chỉ dự đoán 1 lớp duy nhất cho 1 mẫu (các lớp loại trừ lẫn nhau)."
+            },
+            {
+                "id": "c",
+                "text": "Có, nhưng chỉ khi có GPU."
+            },
+            {
+                "id": "d",
+                "text": "Không, nó chỉ dùng để dự đoán giá trị liên tục."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Softmax đưa ra xác suất có tổng bằng 1, nghĩa là các lớp phải mutually exclusive (loại trừ lẫn nhau). Nên nó là Multiclass, không phải Multilabel."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Hồi quy Softmax, hàm chi phí được sử dụng để tối ưu hóa có tên là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mean Squared Error (MSE)"
+            },
+            {
+                "id": "b",
+                "text": "Cross Entropy (Entropy chéo)"
+            },
+            {
+                "id": "c",
+                "text": "Gini Impurity"
+            },
+            {
+                "id": "d",
+                "text": "Huber Loss"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Cross Entropy thường được dùng để đo khoảng cách giữa hai phân phối xác suất (phân phối xác suất dự đoán của Softmax và phân phối thực tế của one-hot vector)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Trình tự tính toán của Hàm Softmax:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tính điểm tuyến tính (score) sk(x) cho mỗi lớp k."
+            },
+            {
+                "id": "2",
+                "text": "Tính hàm mũ (exponential: e^s) của mỗi điểm số."
+            },
+            {
+                "id": "3",
+                "text": "Tính tổng tất cả các hàm mũ của các lớp."
+            },
+            {
+                "id": "4",
+                "text": "Chia hàm mũ của mỗi lớp cho tổng để được xác suất p_k (từ 0 đến 1)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Công thức Softmax: p_k = exp(s_k) / sum(exp(s_i)). Điều này đảm bảo tất cả p_k là dương và tổng bằng 1."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Biên quyết định (Decision Boundary) của một mô hình Logistic Regression hoặc Linear Regression có hình dạng gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là các đường cong hình elip."
+            },
+            {
+                "id": "b",
+                "text": "Là một đường thẳng (hoặc mặt phẳng, siêu phẳng) tuyến tính."
+            },
+            {
+                "id": "c",
+                "text": "Là các bậc thang chia không gian thành nhiều ô vuông."
+            },
+            {
+                "id": "d",
+                "text": "Không có biên quyết định."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Vì dựa trên sự kết hợp tuyến tính (linear sum) của các đặc trưng, các mô hình này luôn có biên quyết định là đường thẳng (2D) hoặc mặt phẳng (3D)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép các tham số Scikit-Learn phổ biến của Hồi quy Tuyến tính với tác dụng thực sự:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "alpha (trong Ridge / Lasso)"
+            },
+            {
+                "id": "l2",
+                "text": "l1_ratio (trong Elastic Net)"
+            },
+            {
+                "id": "l3",
+                "text": "eta0 (trong SGDRegressor)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Mức độ cường độ của hình phạt chính quy hóa (Regularization strength)."
+            },
+            {
+                "id": "r2",
+                "text": "Tỷ lệ pha trộn: l1_ratio = 1 thì nó y hệt Lasso, = 0 thì y hệt Ridge."
+            },
+            {
+                "id": "r3",
+                "text": "Tỷ lệ học (Learning rate) ban đầu cho thuật toán Gradient Descent."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Alpha điều khiển sức mạnh của penalty. l1_ratio chia sẻ giữa L1 và L2. eta0 là Tỷ lệ học gốc trong SGD."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi có một tập dữ liệu với số lượng đặc trưng lớn hơn số lượng mẫu (ví dụ: vài ngàn gen nhưng chỉ có vài trăm bệnh nhân), bạn NÊN DÙNG thuật toán nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hồi quy tuyến tính thông thường không có chính quy hóa (LinearRegression)."
+            },
+            {
+                "id": "b",
+                "text": "Hồi quy Lasso hoặc Elastic Net (để tự động vứt bỏ các gen không liên quan)."
+            },
+            {
+                "id": "c",
+                "text": "Batch Gradient Descent mà không cần scale dữ liệu."
+            },
+            {
+                "id": "d",
+                "text": "Không thể dùng học máy trong trường hợp này."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi features > instances, Hồi quy tuyến tính cơ bản sẽ không tính được. Lasso/Elastic Net làm thưa (sparse) các trọng số, tự động giữ lại vài đặc trưng cốt lõi."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Dễ",
+        "question": "Phương pháp nào để biết mô hình Overfit hay Underfit?",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có hai cách phổ biến để kiểm tra xem một mô hình có bị quá khớp hay không: Cách thứ nhất là sử dụng Kiểm định chéo <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Cách thứ hai là vẽ đồ thị <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để xem lỗi theo kích thước tập huấn luyện.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Cross-Validation"
+            },
+            {
+                "id": "w2",
+                "text": "Learning Curves (Đường cong học tập)"
+            },
+            {
+                "id": "w3",
+                "text": "Softmax"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Cross-Validation so sánh điểm Train vs Validation. Learning Curves trực quan hóa quá trình đó theo lượng dữ liệu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tại sao đường cong Lỗi xác thực (Validation error) trong đồ thị Learning Curve ở giai đoạn cực sớm (chỉ có 1-2 mẫu huấn luyện) lại luôn RẤT CAO?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì mô hình chưa được khởi tạo."
+            },
+            {
+                "id": "b",
+                "text": "Vì mô hình học thuộc lòng 1-2 mẫu đó một cách hoàn hảo (overfit hoàn toàn), dẫn đến nó không có khả năng dự đoán đúng một tập xác thực hoàn toàn khác."
+            },
+            {
+                "id": "c",
+                "text": "Vì tập xác thực lúc đó cũng chỉ có 1-2 mẫu."
+            },
+            {
+                "id": "d",
+                "text": "Vì lỗi trên máy tính bị tràn bộ nhớ."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi train set quá nhỏ, mô hình dễ dàng học thuộc, train error bằng 0, nhưng nó không tổng quát hóa được tí nào nên val error chạm trần."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Mô hình nào sau đây tính toán ra 'Xác suất' thuộc về một lớp, chứ KHÔNG CHỈ là nhãn phân loại?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hồi quy tuyến tính (Linear Regression)"
+            },
+            {
+                "id": "b",
+                "text": "Hồi quy Ridge (Ridge Regression)"
+            },
+            {
+                "id": "c",
+                "text": "Hồi quy Logistic và Softmax (Logistic / Softmax Regression)"
+            },
+            {
+                "id": "d",
+                "text": "Support Vector Machine (SVM) cơ bản"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Cả Logistic và Softmax đều sử dụng các hàm (sigmoid, softmax) để xuất ra giá trị từ 0 đến 1, có thể diễn giải trực tiếp thành Xác suất (Probability)."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

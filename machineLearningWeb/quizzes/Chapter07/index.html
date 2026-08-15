@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 7</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Ý tưởng cốt lõi của Học Tổ hợp (Ensemble Learning) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Huấn luyện một mô hình duy nhất thật phức tạp để giải quyết mọi bài toán."
+            },
+            {
+                "id": "b",
+                "text": "Tập hợp các dự đoán của một nhóm mô hình dự đoán (gọi là một tổ hợp) để đạt được dự đoán tốt hơn so với mô hình dự đoán riêng lẻ tốt nhất."
+            },
+            {
+                "id": "c",
+                "text": "Chỉ sử dụng Mạng Nơ-ron Sâu (Deep Neural Networks) cho mọi bài toán."
+            },
+            {
+                "id": "d",
+                "text": "Bỏ qua các mô hình yếu và chỉ dùng mô hình mạnh nhất."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Giống như câu nói 'Một cây làm chẳng nên non, ba cây chụm lại nên hòn núi cao'. Sự kết hợp trí tuệ của đám đông (các mô hình yếu) thường tạo ra kết quả xuất sắc hơn một cá nhân kiệt xuất."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Bộ phân loại biểu quyết cứng (Hard Voting Classifier) hoạt động như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó yêu cầu tất cả các mô hình phải dự đoán ra cùng một lớp thì mới tính là hợp lệ."
+            },
+            {
+                "id": "b",
+                "text": "Nó lấy trung bình cộng tất cả các xác suất của các mô hình."
+            },
+            {
+                "id": "c",
+                "text": "Nó thu thập dự đoán nhãn từ tất cả các bộ phân loại độc lập, và quyết định lớp cuối cùng bằng cách chọn lớp chiếm đa số phiếu bầu (majority vote)."
+            },
+            {
+                "id": "d",
+                "text": "Nó loại bỏ mô hình dự đoán sai nhiều nhất."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Hard Voting đơn giản là đếm số phiếu (số lượng mô hình dự đoán nhãn A so với nhãn B). Nhãn nào nhiều phiếu hơn sẽ chiến thắng."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Biểu quyết cứng (Hard) vs Biểu quyết mềm (Soft):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Nếu tất cả các bộ phân loại đều có khả năng ước tính xác suất của từng lớp (có hàm `predict_proba()`), ta có thể cấu hình Scikit-Learn lấy trung bình các xác suất đó để đưa ra dự đoán. Kỹ thuật này gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Phương pháp này thường đem lại hiệu suất <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> so với biểu quyết cứng vì nó trao nhiều trọng lượng (tiếng nói) hơn cho các dự đoán có độ tự tin cao.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Biểu quyết mềm (Soft Voting)"
+            },
+            {
+                "id": "w2",
+                "text": "Biểu quyết cứng (Hard Voting)"
+            },
+            {
+                "id": "w3",
+                "text": "Cao hơn (Tốt hơn)"
+            },
+            {
+                "id": "w4",
+                "text": "Thấp hơn (Tệ hơn)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Soft Voting không chỉ đếm số phiếu mà còn xem xét 'độ chắc chắn' của từng phiếu. Một phiếu bầu với sự tự tin 99% sẽ lấn át nhiều phiếu bầu với sự tự tin 51%. Do đó nó thường hoạt động tốt hơn."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Điều kiện TỐI QUAN TRỌNG để các phương pháp Ensemble (như Voting) có thể hoạt động tốt hơn mô hình độc lập tốt nhất là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tất cả các bộ phân loại phải là Cây quyết định."
+            },
+            {
+                "id": "b",
+                "text": "Các bộ phân loại phải độc lập với nhau nhất có thể, tạo ra các lỗi không tương quan (uncorrelated errors). (Ví dụ: dùng các thuật toán khác nhau hoàn toàn)."
+            },
+            {
+                "id": "c",
+                "text": "Tất cả các bộ phân loại phải được huấn luyện trên cùng một GPU."
+            },
+            {
+                "id": "d",
+                "text": "Tất cả các bộ phân loại phải mắc cùng một lỗi giống nhau."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nếu tất cả mô hình đều sử dụng cùng thuật toán và mắc cùng một sai lầm, thì khi gộp lại chúng vẫn sẽ sai. Sức mạnh của Ensemble nằm ở sự đa dạng (diversity) - lỗi của mô hình này sẽ được bù đắp bởi mô hình kia."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Trong kỹ thuật Bagging và Pasting, thay vì dùng nhiều thuật toán khác nhau, ta dùng CÙNG một thuật toán (vd: Cây quyết định) huấn luyện nhiều lần. Làm sao để các mô hình này khác nhau?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Ta huấn luyện chúng vào các thời điểm khác nhau trong ngày."
+            },
+            {
+                "id": "b",
+                "text": "Ta thay đổi màu sắc của thuật toán."
+            },
+            {
+                "id": "c",
+                "text": "Ta huấn luyện chúng trên các tập con dữ liệu ngẫu nhiên (random subsets) được trích xuất từ tập huấn luyện gốc."
+            },
+            {
+                "id": "d",
+                "text": "Ta đảo ngược thứ tự của các đặc trưng (features)."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Bagging và Pasting tạo ra sự đa dạng bằng cách cung cấp cho mỗi mô hình một 'góc nhìn' (tập dữ liệu con) hơi khác nhau về tập dữ liệu tổng thể."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép nối đúng phương pháp lấy mẫu dữ liệu (Sampling) với tên gọi của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Lấy mẫu CÓ hoàn lại (Replacement) - Một mẫu có thể xuất hiện nhiều lần trong tập con."
+            },
+            {
+                "id": "l2",
+                "text": "Lấy mẫu KHÔNG hoàn lại (No replacement) - Một mẫu chỉ xuất hiện tối đa 1 lần trong tập con."
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Bagging (Bootstrap aggregating)"
+            },
+            {
+                "id": "r2",
+                "text": "Pasting"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2"
+        },
+        "explanation": "Bagging (Bootstrap) cho phép bốc 1 quả bóng ra, ghi lại, rồi bỏ ngược vào rổ để bốc tiếp (có hoàn lại). Pasting thì bốc ra là bỏ hẳn ra ngoài (không hoàn lại)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Ưu điểm của Bagging so với mô hình dự đoán độc lập (chưa qua Bagging) thường là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mô hình Bagging thường có phương sai (variance) nhỏ hơn đáng kể, trong khi độ chệch (bias) gần tương đương."
+            },
+            {
+                "id": "b",
+                "text": "Mô hình Bagging chạy nhanh hơn 100 lần."
+            },
+            {
+                "id": "c",
+                "text": "Mô hình Bagging không bao giờ bị Underfitting."
+            },
+            {
+                "id": "d",
+                "text": "Mô hình Bagging trở thành một mô hình tuyến tính."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Bagging (ví dụ: Random Forest) làm mịn ranh giới quyết định bằng cách lấy trung bình, do đó triệt tiêu được sự mất ổn định (phương sai cao) của một cây quyết định đơn lẻ, giúp mô hình bớt quá khớp (overfit)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Bagging (lấy mẫu có hoàn lại), người ta nhận thấy toán học chứng minh rằng trung bình chỉ có khoảng 63% mẫu dữ liệu gốc được mỗi mô hình chọn. Vậy 37% mẫu dữ liệu còn lại KHÔNG bao giờ được mô hình đó 'nhìn thấy' trong lúc huấn luyện được gọi là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Outliers (Dữ liệu ngoại lai)"
+            },
+            {
+                "id": "b",
+                "text": "Out-of-Bag (OOB) instances (Các mẫu nằm ngoài túi)"
+            },
+            {
+                "id": "c",
+                "text": "Test set (Tập kiểm tra)"
+            },
+            {
+                "id": "d",
+                "text": "Validation set (Tập xác thực)"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Các mẫu OOB (Out-of-Bag) này rất tuyệt vời vì mô hình chưa từng được huấn luyện trên chúng. Do đó, ta có thể dùng chính chúng để ĐÁNH GIÁ (evaluate) mô hình ngay lập tức mà không cần tách riêng một tập Validation set từ trước."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Lấy mẫu Đặc trưng (Feature Sampling):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bên cạnh việc lấy mẫu ngẫu nhiên các dòng dữ liệu (instances), Bagging còn hỗ trợ lấy mẫu ngẫu nhiên các <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (được điều khiển bằng `max_features` và `bootstrap_features`). Kỹ thuật chỉ lấy mẫu đặc trưng (giữ lại tất cả dữ liệu) được gọi là Random Subspaces. Kỹ thuật lấy mẫu CẢ đặc trưng LẪN dữ liệu được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Đặc trưng (Features/Columns)"
+            },
+            {
+                "id": "w2",
+                "text": "Hàng dữ liệu (Rows)"
+            },
+            {
+                "id": "w3",
+                "text": "Random Patches"
+            },
+            {
+                "id": "w4",
+                "text": "Random Forests"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Lấy mẫu Features rất hữu ích khi xử lý dữ liệu có quá nhiều chiều (như hình ảnh). Random Patches (Các mảnh vá ngẫu nhiên) ám chỉ việc bốc ngẫu nhiên cả số dòng lẫn số cột."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thuật toán Rừng ngẫu nhiên (Random Forest) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là một tập hợp (Ensemble) của các thuật toán Hồi quy Tuyến tính."
+            },
+            {
+                "id": "b",
+                "text": "Là một Mạng nơ-ron sâu được thiết kế giống hình cái cây."
+            },
+            {
+                "id": "c",
+                "text": "Là một tập hợp (Ensemble) của các Cây quyết định (Decision Trees), thường được huấn luyện thông qua phương pháp Bagging."
+            },
+            {
+                "id": "d",
+                "text": "Là thuật toán sinh ra cây quyết định nhanh nhất."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Random Forest = Bagging + Decision Trees. Tuy nhiên, Scikit-learn có lớp `RandomForestClassifier` tối ưu hóa riêng cho cây quyết định để chạy tiện lợi hơn dùng lớp Bagging chung."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Tại một nút trong thuật toán Rừng ngẫu nhiên (Random Forest), nó tìm điểm phân chia (split) như thế nào so với Cây quyết định thông thường?",
+        "instruction": "(Sắp xếp các bước để thấy sự khác biệt của Random Forest)",
+        "items": [
+            {
+                "id": "1",
+                "text": "CART thông thường sẽ tìm kiếm đặc trưng TỐT NHẤT trong TOÀN BỘ các đặc trưng để phân chia nút."
+            },
+            {
+                "id": "2",
+                "text": "Random Forest thì ngược lại, tại mỗi nút, nó chọn ngẫu nhiên một TẬP CON các đặc trưng (thường bằng căn bậc hai tổng số đặc trưng)."
+            },
+            {
+                "id": "3",
+                "text": "Sau đó, nó chỉ được phép tìm đặc trưng tốt nhất TRONG SỐ tập con ngẫu nhiên đó để chia nút."
+            },
+            {
+                "id": "4",
+                "text": "Điều này đánh đổi việc tăng thêm độ chệch (bias) một chút để đổi lấy việc giảm mạnh phương sai (variance), tạo ra mô hình xuất sắc."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Sự ngẫu nhiên thứ 2 của Random Forest: Không chỉ dữ liệu đầu vào bị lấy mẫu ngẫu nhiên (Bagging), mà ngay tại mỗi lần cắt cành, số lượng đặc trưng để lựa chọn cũng bị giới hạn ngẫu nhiên."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Thuật toán Extra-Trees (Extremely Randomized Trees) khác gì so với Random Forest truyền thống?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Extra-Trees thêm nhiều cây hơn so với Random Forest."
+            },
+            {
+                "id": "b",
+                "text": "Thay vì mất thời gian tìm ngưỡng tối ưu cho các đặc trưng ngẫu nhiên, Extra-Trees chọn NGẪU NHIÊN LUÔN CÁC NGƯỠNG (thresholds) cho từng đặc trưng, và chọn ngưỡng tốt nhất trong số các ngưỡng ngẫu nhiên đó."
+            },
+            {
+                "id": "c",
+                "text": "Extra-Trees không sử dụng Cây quyết định mà sử dụng SVM."
+            },
+            {
+                "id": "d",
+                "text": "Extra-Trees loại bỏ hoàn toàn việc sử dụng Bagging."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Tìm ngưỡng (threshold) tốt nhất là thao tác tốn thời gian nhất của cây quyết định. Bằng cách Randomize luôn cả ngưỡng, Extra-Trees huấn luyện cực kỳ nhanh và thường có phương sai thấp hơn cả Random Forest."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng tuyệt vời nào mà Random Forest cung cấp MIỄN PHÍ sau khi huấn luyện (rất hữu ích trong khám phá dữ liệu)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tự động dịch ngôn ngữ."
+            },
+            {
+                "id": "b",
+                "text": "Đo lường Mức độ quan trọng của đặc trưng (Feature Importance). Nó cho ta biết đặc trưng nào (ví dụ: Pixel ở giữa khuôn mặt) ảnh hưởng lớn nhất đến việc phân loại."
+            },
+            {
+                "id": "c",
+                "text": "Tự động chuẩn hóa (Scale) dữ liệu."
+            },
+            {
+                "id": "d",
+                "text": "Tự động sinh ra hình ảnh phân tích bằng Matplotlib."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Scikit-Learn tính toán xem một đặc trưng xuất hiện bao nhiêu lần, và làm giảm mức độ bất tinh khiết (Gini/Entropy) trung bình trên toàn bộ Rừng ngẫu nhiên bao nhiêu để đánh giá mức độ quan trọng."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "So sánh giữa Bagging và Boosting:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Bagging (ví dụ: Random Forest)"
+            },
+            {
+                "id": "l2",
+                "text": "Boosting (ví dụ: AdaBoost, Gradient Boosting)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Các mô hình được huấn luyện ĐỘC LẬP và SONG SONG. Không mô hình nào quan tâm mô hình kia làm gì."
+            },
+            {
+                "id": "r2",
+                "text": "Các mô hình được huấn luyện TUẦN TỰ (cái này nối tiếp cái kia). Mô hình sau cố gắng SỬA LỖI cho mô hình trước."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2"
+        },
+        "explanation": "Bagging tạo ra nhiều 'chuyên gia' ngẫu nhiên và lấy ý kiến chung. Boosting tạo ra một chuỗi 'học sinh', học sinh sau rút kinh nghiệm từ lỗi của học sinh trước."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Thuật toán AdaBoost (Adaptive Boosting) sửa lỗi của các mô hình dự đoán trước đó bằng cách nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó tăng Learning Rate lên gấp đôi sau mỗi vòng lặp."
+            },
+            {
+                "id": "b",
+                "text": "Nó thay đổi thuật toán ở mỗi bước (VD: Tree -> SVM -> Logistic)."
+            },
+            {
+                "id": "c",
+                "text": "Nó TĂNG TRỌNG SỐ tương đối của các mẫu huấn luyện bị mô hình trước ĐOÁN SAI. Do đó, mô hình tiếp theo sẽ tập trung hơn vào các trường hợp khó này."
+            },
+            {
+                "id": "d",
+                "text": "Nó xóa bỏ các mẫu dữ liệu dự đoán đúng."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "AdaBoost phạt các dự đoán sai bằng cách làm cho mẫu dữ liệu đó 'nặng' hơn. Mô hình thứ 2 buộc phải chú ý nhiều hơn đến các mẫu bị sai ở vòng 1."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Trọng số (Weight) trong AdaBoost:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong AdaBoost, mỗi bộ phân loại (ví dụ: một Gốc cây - Decision Stump) sau khi dự đoán sẽ được gán một trọng số (predictor weight) dựa trên tỷ lệ lỗi của nó. Mô hình dự đoán càng chính xác, trọng số của nó trong biểu quyết cuối cùng càng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nếu một mô hình dự đoán hoàn toàn ngẫu nhiên (50% sai), trọng số của nó sẽ gần bằng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Cao (Lớn)"
+            },
+            {
+                "id": "w2",
+                "text": "Thấp (Nhỏ)"
+            },
+            {
+                "id": "w3",
+                "text": "0"
+            },
+            {
+                "id": "w4",
+                "text": "1"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Mô hình càng xịn -> tiếng nói càng có trọng lượng (Cao). Mô hình đoán như tung đồng xu (tỷ lệ lỗi 0.5) -> Trọng số bằng 0 (tiếng nói không có giá trị). Nếu tỷ lệ lỗi > 0.5 (đoán toàn sai), trọng số sẽ ÂM."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Nhược điểm cực lớn của thuật toán Boosting (cả AdaBoost và Gradient Boosting) so với Random Forest trong kỹ thuật huấn luyện là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó dễ bị tràn bộ nhớ (Out of memory)."
+            },
+            {
+                "id": "b",
+                "text": "Do tính chất TUẦN TỰ (cái sau phụ thuộc vào cái trước), nó KHÔNG THỂ phân tán quá trình huấn luyện để chạy song song trên nhiều lõi CPU/GPU như Bagging/Random Forest."
+            },
+            {
+                "id": "c",
+                "text": "Nó không có tính năng Feature Importance."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ dùng được cho Phân loại (Classification)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Random Forest có thể train 100 cái cây cùng lúc trên 100 lõi CPU. Boosting phải train xong cây 1, tính lỗi, rồi mới train được cây 2. Do đó Boosting khó scale up (song song hóa) hơn nhiều."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Gradient Boosting (GBRT) sửa lỗi của mô hình trước đó BẰNG CÁCH NÀO (điểm khác biệt cốt lõi với AdaBoost)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Gradient Boosting tăng trọng số các điểm sai giống hệt AdaBoost."
+            },
+            {
+                "id": "b",
+                "text": "Gradient Boosting huấn luyện mô hình tiếp theo DỰA TRÊN CÁC SAI SỐ THẶNG DƯ (Residual Errors) của mô hình trước đó, thay vì thay đổi trọng số dữ liệu."
+            },
+            {
+                "id": "c",
+                "text": "Nó tính đạo hàm trực tiếp trên Cây quyết định."
+            },
+            {
+                "id": "d",
+                "text": "Nó tự động tăng tốc độ xử lý GPU."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nếu mô hình 1 dự đoán bạn nặng 60kg, thực tế bạn 65kg (Sai số dư: +5kg). Mô hình 2 sẽ không học trên nhãn '65kg' gốc nữa, mà học trên nhãn dư '+5kg' này để bù đắp sai số."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Nguyên lý làm việc của Gradient Boosting Regression Trees (GBRT):",
+        "instruction": "(Sắp xếp để thấy quá trình bù đắp sai số liên tục)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Huấn luyện Cây quyết định 1 (Tree 1) trên dữ liệu đầu vào (X) và nhãn gốc (y)."
+            },
+            {
+                "id": "2",
+                "text": "Tính Sai số thặng dư (y2 = y - dự đoán của Tree 1)."
+            },
+            {
+                "id": "3",
+                "text": "Huấn luyện Tree 2 trên dữ liệu đầu vào (X) và nhãn mới là phần Sai số (y2)."
+            },
+            {
+                "id": "4",
+                "text": "Tính Sai số thặng dư mới (y3 = y2 - dự đoán của Tree 2), rồi train Tree 3 trên y3."
+            },
+            {
+                "id": "5",
+                "text": "Dự đoán cuối cùng bằng CỘNG tất cả dự đoán của Tree 1 + Tree 2 + Tree 3 lại với nhau."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Các cây sau chỉ sửa phần 'còn dư' mà cây trước chưa làm được. Đến cuối cùng, cộng dồn mọi kết quả lại sẽ tiệm cận mục tiêu ban đầu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Gradient Boosting, hiện tượng gì sẽ xảy ra nếu ta thêm QUÁ NHIỀU Cây quyết định (ví dụ: `n_estimators = 10000`)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Không sao cả, mô hình càng nhiều cây càng chính xác."
+            },
+            {
+                "id": "b",
+                "text": "Mô hình sẽ bị Quá khớp (Overfitting). Các cây phía sau sẽ bắt đầu học các nhiễu (noise) trong tập dữ liệu."
+            },
+            {
+                "id": "c",
+                "text": "Mô hình sẽ tự động chuyển sang Underfitting."
+            },
+            {
+                "id": "d",
+                "text": "Sai số thặng dư sẽ tự động tăng lên vô cực."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khác với Random Forest (càng nhiều cây càng chống overfit), Gradient Boosting học liên tục từ sai số. Nếu cho nó học quá nhiều, nó sẽ cố gắng sửa từng hạt sạn (nhiễu) nhỏ nhất trong dữ liệu huấn luyện, dẫn đến Overfitting."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép siêu tham số của Gradient Boosting (trong sklearn) với phương pháp chính quy hóa (chống overfit) tương ứng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "learning_rate"
+            },
+            {
+                "id": "l2",
+                "text": "n_estimators (kết hợp với early stopping)"
+            },
+            {
+                "id": "l3",
+                "text": "subsample = 0.25"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Shrinkage (Co ngót): Nếu đặt thấp (ví dụ 0.1), mỗi cây sẽ đóng góp ít hơn vào kết quả, ta sẽ cần nhiều cây hơn nhưng mô hình sẽ tổng quát hóa tốt hơn."
+            },
+            {
+                "id": "r2",
+                "text": "Dừng sớm: Ngừng thêm cây mới khi thấy sai số trên tập Validation không giảm nữa (chống số lượng cây quá nhiều)."
+            },
+            {
+                "id": "r3",
+                "text": "Stochastic Gradient Boosting: Mỗi cây chỉ được huấn luyện trên 25% dữ liệu được lấy ngẫu nhiên (đổi bias lấy variance thấp, và tăng tốc huấn luyện)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "learning_rate kiểm soát sức mạnh mỗi cây. n_estimators + early_stopping giới hạn số cây. subsample đưa yếu tố ngẫu nhiên (Stochastic) vào Boosting."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "XGBoost (Extreme Gradient Boosting) nổi tiếng trong giới khoa học dữ liệu (đặc biệt là thi đấu Kaggle) vì lý do gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó là thuật toán duy nhất miễn phí."
+            },
+            {
+                "id": "b",
+                "text": "Nó được tối ưu hóa cực kỳ tốt về tốc độ, hiệu năng bộ nhớ và khả năng mở rộng. Nó cung cấp các công cụ xử lý Gradient Boosting mạnh mẽ, nhanh hơn và chính xác hơn bản gốc sklearn."
+            },
+            {
+                "id": "c",
+                "text": "Nó là Mạng Nơ-ron 100 lớp."
+            },
+            {
+                "id": "d",
+                "text": "Vì nó tự động thu thập dữ liệu trên internet."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "XGBoost là thư viện độc lập (bên ngoài sklearn), là vua của các bài toán dữ liệu dạng bảng (Tabular Data). LightGBM và CatBoost cũng là các biến thể hiện đại rất mạnh."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm Stacking (Stacked Generalization):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Thay vì dùng các hàm đơn giản (như biểu quyết cứng) để tổng hợp các dự đoán của tổ hợp, Stacking đề xuất: Tại sao không huấn luyện một <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> để làm việc tổng hợp này? Các mô hình bên dưới (base predictors) đưa ra các dự đoán, và các dự đoán này trở thành <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> đầu vào cho mô hình tổng hợp (blender/meta-learner) để đưa ra phán quyết cuối cùng.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Con người (Manual)"
+            },
+            {
+                "id": "w2",
+                "text": "Mô hình Học máy (Machine Learning Model)"
+            },
+            {
+                "id": "w3",
+                "text": "Đặc trưng (Features)"
+            },
+            {
+                "id": "w4",
+                "text": "Nhiễu (Noise)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w2",
+            "2": "w3"
+        },
+        "explanation": "Stacking nâng tầm Ensemble: Lấy kết quả dự đoán (output) của layer 1 làm đầu vào (input/features) để train cho một mô hình khác ở layer 2."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Cách chia dữ liệu để huấn luyện mô hình Stacking (có 1 lớp blender):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Chia tập huấn luyện ban đầu làm hai tập con: Tập con 1 và Tập con 2 (Hold-out set)."
+            },
+            {
+                "id": "2",
+                "text": "Dùng Tập con 1 để huấn luyện các bộ phân loại lớp thứ nhất (Base predictors)."
+            },
+            {
+                "id": "3",
+                "text": "Sau đó dùng các Base predictors dự đoán nhãn cho Tập con 2. (Kết quả dự đoán này chính là đặc trưng mới)."
+            },
+            {
+                "id": "4",
+                "text": "Sử dụng các dự đoán mới trên Tập con 2 làm input để huấn luyện Blender (Mô hình tổng hợp)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Ta không thể dùng cùng 1 tập dữ liệu để train cả Layer 1 và Layer 2, vì layer 2 sẽ học thuộc (overfit). Do đó phải dùng kỹ thuật tách Hold-out set hoặc dùng Out-of-fold predictions."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Scikit-Learn, lớp nào được sử dụng để xây dựng một kiến trúc Stacking dễ dàng?",
+        "options": [
+            {
+                "id": "a",
+                "text": "StackingClassifier và StackingRegressor."
+            },
+            {
+                "id": "b",
+                "text": "VotingClassifier."
+            },
+            {
+                "id": "c",
+                "text": "BaggingClassifier."
+            },
+            {
+                "id": "d",
+                "text": "Scikit-Learn không hỗ trợ Stacking."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Kể từ phiên bản 0.22, scikit-learn đã hỗ trợ StackingClassifier. Mặc định nó sử dụng Cross-validation để sinh dữ liệu train cho Blender (gọi là out-of-fold predictions) thay vì hold-out set, giúp tiết kiệm dữ liệu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Rừng ngẫu nhiên (Random Forest) có một ngoại lệ về thuộc tính so với Cây quyết định thông thường (Decision Tree). Nó không phải là một mô hình dạng Hộp trắng. Điều này đúng hay sai?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Đúng. 100 cái Cây kết hợp lại thành 1 Rừng thì con người không thể nào phân tích trực quan mạng lưới quyết định được nữa. Nó trở thành Hộp đen."
+            },
+            {
+                "id": "b",
+                "text": "Sai. Random Forest vẫn vẽ được biểu đồ rõ ràng toàn bộ hệ thống bằng Graphviz."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Đánh đổi lớn nhất khi Ensemble: Bạn đổi lấy tính chính xác cao để mất đi tính dễ diễn giải (interpretability). Random Forest là một Black-box model."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Early Stopping (Dừng sớm) trong Gradient Boosting được thực hiện như thế nào ở Scikit-Learn?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Sử dụng GradientBoostingClassifier và gọi hàm stop() thủ công."
+            },
+            {
+                "id": "b",
+                "text": "Sử dụng tham số `n_iter_no_change` (ví dụ = 10). Nếu sai số validation không cải thiện sau 10 lần thêm cây liên tiếp, quá trình train tự ngắt."
+            },
+            {
+                "id": "c",
+                "text": "Rút điện máy tính."
+            },
+            {
+                "id": "d",
+                "text": "Chỉ dùng XGBoost mới có Early stopping."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Thay vì set n_estimators quá lớn và cầu nguyện, ta thêm n_iter_no_change. Thuật toán sẽ train đến khi thấy không còn tiến triển thì tự động dừng lại, giữ lại mô hình tối ưu nhất."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "HistGradientBoosting (Thuật toán Boosting tối ưu hóa):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Scikit-Learn cung cấp `HistGradientBoostingClassifier`, một phiên bản lấy cảm hứng từ LightGBM. Nó hoạt động bằng cách <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (binning) các đặc trưng liên tục vào các hộp (thường là 256 hộp). Dù làm giảm độ chính xác cục bộ (đóng vai trò như chính quy hóa), phương pháp này giảm độ phức tạp thời gian huấn luyện từ O(m x n) xuống chỉ còn <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>, khiến nó chạy cực kỳ nhanh trên tập dữ liệu lớn.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Rời rạc hóa / Gom nhóm (Discretize)"
+            },
+            {
+                "id": "w2",
+                "text": "Sao chép nguyên bản"
+            },
+            {
+                "id": "w3",
+                "text": "O(b x n)"
+            },
+            {
+                "id": "w4",
+                "text": "O(m^2)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Histogram-based Gradient Boosting là bước tiến cực lớn. Binning (gom giá trị thực vào 256 khoảng/b = bins) giúp thuật toán không cần sắp xếp dữ liệu (việc tốn kém nhất), tốc độ train tăng lên hàng chục lần."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng tuyệt vời của Histogram-based Gradient Boosting (HGB) trong việc xử lý Dữ liệu khuyết thiếu (Missing values - NaNs) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó sẽ báo lỗi và buộc bạn phải dùng SimpleImputer."
+            },
+            {
+                "id": "b",
+                "text": "Nó tự động điền trung bình (Mean) vào tất cả chỗ trống."
+            },
+            {
+                "id": "c",
+                "text": "Nó hỗ trợ XỬ LÝ TRỰC TIẾP dữ liệu khuyết thiếu MÀ KHÔNG CẦN TIỀN XỬ LÝ (Imputation). Khi cắt cây, nó sẽ tìm ra nhánh tốt nhất để đưa các dữ liệu khuyết thiếu vào đó."
+            },
+            {
+                "id": "d",
+                "text": "Nó xóa mọi dòng có NaN."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Một trong những tiện ích lớn nhất của LightGBM/XGBoost/HistGradientBoosting là nó có sẵn cơ chế đưa (route) missing values sang nhánh tối ưu (trái hoặc phải) mà không cần ta phải điền trung bình/trung vị trước đó."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "So với một Cây quyết định đơn lẻ (Decision Tree), một mô hình Rừng ngẫu nhiên (Random Forest) có nhược điểm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó tiêu tốn nhiều bộ nhớ RAM hơn và chậm hơn đáng kể trong việc đưa ra dự đoán thực tế (vì phải chạy dữ liệu qua hàng trăm cây thay vì 1 cây)."
+            },
+            {
+                "id": "b",
+                "text": "Nó dễ bị quá khớp (overfitting) hơn."
+            },
+            {
+                "id": "c",
+                "text": "Nó không dùng được cho Bài toán Hồi quy."
+            },
+            {
+                "id": "d",
+                "text": "Nó mất đi tính phi tuyến."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Random Forest nặng nề hơn rất nhiều. Nếu cần suy luận (inference) tính bằng mili-giây trên điện thoại di động, 1 cái Decision Tree có thể được ưu tiên hơn một Forest gồm 500 cây."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

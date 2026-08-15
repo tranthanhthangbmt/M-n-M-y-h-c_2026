@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 5</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thuật toán Máy học Véc-tơ Hỗ trợ (SVM) có thể thực hiện được những loại bài toán nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chỉ thực hiện được phân loại nhị phân."
+            },
+            {
+                "id": "b",
+                "text": "Phân loại (Classification), Hồi quy (Regression) và Phát hiện bất thường (Outlier Detection)."
+            },
+            {
+                "id": "c",
+                "text": "Chỉ sử dụng cho hệ thống gợi ý (Recommender Systems)."
+            },
+            {
+                "id": "d",
+                "text": "Chỉ thực hiện được Học Không Giám Sát (Unsupervised Learning)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "SVM là một trong những mô hình phổ biến và linh hoạt nhất, có thể dùng cho cả classification, regression và outlier detection (tuy nhiên ít dùng cho các tập dữ liệu cực kỳ lớn)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Ý tưởng cốt lõi của 'Phân loại lề lớn' (Large Margin Classification) trong SVM là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vẽ một đường cong ngoằn ngoèo để ôm sát tất cả các điểm dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Chỉ dựa vào phần tử có giá trị trung bình để phân loại."
+            },
+            {
+                "id": "c",
+                "text": "Vẽ một đường thẳng (hoặc siêu phẳng) phân chia hai lớp sao cho khoảng cách từ đường thẳng đó đến các điểm dữ liệu gần nhất của cả hai lớp là RỘNG NHẤT có thể."
+            },
+            {
+                "id": "d",
+                "text": "Tính xác suất từng lớp và chọn lớp có xác suất cao nhất."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Hãy tưởng tượng lề (margin) như một 'con đường' rộng nhất có thể phân chia hai lớp. Đường thẳng (siêu phẳng quyết định) nằm ở chính giữa con đường này."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Dễ",
+        "question": "Khái niệm 'Véc-tơ hỗ trợ' (Support Vectors):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong SVM, lề (margin) được xác định hoàn toàn bởi các điểm dữ liệu nằm ngay trên mép của lề. Thêm hoặc bớt các điểm dữ liệu nằm xa lề sẽ không làm thay đổi ranh giới quyết định. Các điểm dữ liệu nằm trên mép lề này được gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Do tính chất này, SVM đặc biệt nhạy cảm với <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> của dữ liệu đầu vào.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Véc-tơ hỗ trợ (Support Vectors)"
+            },
+            {
+                "id": "w2",
+                "text": "Điểm nhiễu (Outliers)"
+            },
+            {
+                "id": "w3",
+                "text": "Thang đo (Feature Scaling)"
+            },
+            {
+                "id": "w4",
+                "text": "Siêu phẳng (Hyperplane)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Support Vectors là những điểm chống đỡ lề. Vì khoảng cách (lề) rất quan trọng, nếu các đặc trưng không được co giãn (scale), lề sẽ bị kéo lệch sang đặc trưng có giá trị lớn."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Sự khác biệt giữa Hard Margin Classification (Phân loại lề cứng) và Soft Margin Classification (Phân loại lề mềm) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hard Margin chỉ dùng cho Hồi quy, Soft Margin dùng cho Phân loại."
+            },
+            {
+                "id": "b",
+                "text": "Hard Margin yêu cầu KHÔNG CÓ BẤT KỲ ĐIỂM NÀO nằm trong lề hoặc sai phía (chỉ hoạt động nếu dữ liệu phân tách tuyến tính hoàn hảo). Soft Margin cho phép một số điểm vi phạm lề để lề rộng hơn và mô hình tổng quát hóa tốt hơn."
+            },
+            {
+                "id": "c",
+                "text": "Hard Margin tính toán cực kỳ nhanh nhờ phần cứng GPU, Soft Margin chạy bằng phần mềm (CPU)."
+            },
+            {
+                "id": "d",
+                "text": "Soft Margin tự động xóa các điểm vi phạm lề khỏi tập dữ liệu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Lề cứng (Hard margin) rất cực đoan, nếu có 1 điểm nhiễu (outlier) lọt vào giữa 2 lớp thì nó sẽ không tìm được nghiệm. Lề mềm (Soft margin) linh hoạt hơn, cho phép 'vi phạm lề' (margin violations)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Siêu tham số `C` trong Scikit-Learn (dùng cho SVM) điều khiển điều gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Giá trị C càng thấp, mô hình càng cho phép NHIỀU điểm vi phạm lề (lề rộng hơn, nhưng có thể bị underfit). Giá trị C cao làm lề hẹp lại và phạt nặng các điểm vi phạm."
+            },
+            {
+                "id": "b",
+                "text": "Giá trị C càng thấp, thời gian huấn luyện càng lâu."
+            },
+            {
+                "id": "c",
+                "text": "C là số lượng Cluster (cụm) cần phân chia."
+            },
+            {
+                "id": "d",
+                "text": "Giá trị C càng thấp thì lề (margin) càng hẹp."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Trong SVM, C tỷ lệ nghịch với độ rộng của lề. C nhỏ -> Lề rộng (Nhiều vi phạm, mô hình đơn giản/chính quy hóa mạnh). C lớn -> Lề hẹp (Ít vi phạm, dễ overfit)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các lớp triển khai SVM tuyến tính trong Scikit-Learn với đặc điểm của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "LinearSVC"
+            },
+            {
+                "id": "l2",
+                "text": "SVC(kernel=\"linear\")"
+            },
+            {
+                "id": "l3",
+                "text": "SGDClassifier(loss=\"hinge\")"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Sử dụng thư viện liblinear, chạy RẤT NHANH với dữ liệu lớn, nhưng không hỗ trợ Kernel trick."
+            },
+            {
+                "id": "r2",
+                "text": "Sử dụng thư viện libsvm, chậm hơn rất nhiều nếu tập dữ liệu lớn (thời gian tính toán O(m^2) đến O(m^3))."
+            },
+            {
+                "id": "r3",
+                "text": "Sử dụng Gradient Descent, hữu ích cho tập dữ liệu cực lớn không vừa bộ nhớ (Out-of-core training) hoặc học trực tuyến (Online learning)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Mặc dù cả 3 đều tính toán SVM tuyến tính, LinearSVC tối ưu hóa riêng cho tuyến tính nên nhanh nhất. SVC(kernel='linear') dựa trên framework phi tuyến nên chậm. SGDClassifier dùng Gradient descent."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Nếu tập dữ liệu KHÔNG phân tách tuyến tính (ví dụ: các điểm của lớp A nằm kẹp giữa các điểm của lớp B trên trục x), cách đơn giản nhất để làm nó có thể phân tách tuyến tính là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xóa các điểm của lớp B."
+            },
+            {
+                "id": "b",
+                "text": "Thêm đặc trưng đa thức (Polynomial Features) ví dụ x^2. Bằng cách nâng số chiều lên, dữ liệu có thể trở nên phân tách tuyến tính ở chiều không gian cao hơn."
+            },
+            {
+                "id": "c",
+                "text": "Thay đổi tham số C thành 0."
+            },
+            {
+                "id": "d",
+                "text": "Giảm tỷ lệ học (Learning rate) xuống."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Thêm các đặc trưng bậc cao (như bình phương x2 = (x1)^2) sẽ tạo đường cong dạng parabol ở không gian mới, cho phép siêu phẳng tuyến tính cắt qua và phân tách 2 lớp."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Sắp xếp quy trình thiết lập mô hình SVM phi tuyến tính bằng đa thức trong Scikit-Learn (sử dụng Pipeline):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Sử dụng PolynomialFeatures(degree=3) để tạo ra các đặc trưng bậc 3."
+            },
+            {
+                "id": "2",
+                "text": "Sử dụng StandardScaler để co giãn dữ liệu (bắt buộc với SVM)."
+            },
+            {
+                "id": "3",
+                "text": "Sử dụng LinearSVC(C=10, loss='hinge') để huấn luyện trên các đặc trưng mới."
+            },
+            {
+                "id": "4",
+                "text": "Đưa cả 3 bước vào một Pipeline và gọi hàm fit()."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Thứ tự chuẩn: Tạo đặc trưng (Polynomial) -> Co giãn (Scale) -> Huấn luyện (LinearSVC) -> Gói tất cả vào Pipeline."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Vấn đề của việc sử dụng PolynomialFeatures khi bậc (degree) rất cao là gì và 'Kernel Trick' (Thủ thuật Kernel) giải quyết nó như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Bậc cao làm mất dữ liệu. Kernel Trick bù đắp dữ liệu bằng cách sinh số ngẫu nhiên."
+            },
+            {
+                "id": "b",
+                "text": "Bậc cao tạo ra số lượng đặc trưng khổng lồ khiến mô hình chạy quá chậm (tốn RAM). Kernel Trick cho phép tính toán kết quả tương tự MÀ KHÔNG CẦN thực sự phải thêm các đặc trưng đó vào bộ nhớ."
+            },
+            {
+                "id": "c",
+                "text": "Bậc cao gây underfitting. Kernel Trick ép mô hình overfit."
+            },
+            {
+                "id": "d",
+                "text": "Bậc cao bị lỗi cú pháp trong Python. Kernel trick bỏ qua lỗi cú pháp này."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Kernel trick là một phép toán thần kỳ: Nó trả về cùng một kết quả như khi bạn biến đổi dữ liệu sang không gian chiều cực cao, nhưng thực tế nó chỉ tính toán dựa trên các vector ở không gian chiều thấp ban đầu."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hiểu về Kernel Đa thức trong SVM:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Để sử dụng Kernel Đa thức trong Scikit-Learn, ta dùng lớp `SVC` với tham số `kernel='poly'`. Có hai tham số phụ quan trọng: tham số `degree` xác định bậc của đa thức, và tham số <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> kiểm soát xem mô hình sẽ bị ảnh hưởng nhiều bởi các đặc trưng bậc cao hay đặc trưng bậc thấp. Nếu mô hình đang bị quá khớp (overfitting), bạn nên <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> bậc của đa thức.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "coef0"
+            },
+            {
+                "id": "w2",
+                "text": "gamma"
+            },
+            {
+                "id": "w3",
+                "text": "Giảm (Decrease)"
+            },
+            {
+                "id": "w4",
+                "text": "Tăng (Increase)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Tham số `coef0` (r) giúp cân bằng tỷ trọng giữa bậc cao và bậc thấp. Để chống quá khớp do mô hình quá phức tạp, cần GIẢM bậc đa thức (degree)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Ngoài đặc trưng đa thức, một kỹ thuật khác để xử lý dữ liệu phi tuyến là sử dụng Đặc trưng tương đồng (Similarity Features). Hàm phổ biến nhất được dùng để đo tính tương đồng trong SVM là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hàm Sigmoid"
+            },
+            {
+                "id": "b",
+                "text": "Hàm Softmax"
+            },
+            {
+                "id": "c",
+                "text": "Hàm cơ sở hướng tâm Gauss (Gaussian Radial Basis Function - RBF)"
+            },
+            {
+                "id": "d",
+                "text": "Hàm ReLU"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Gaussian RBF đo khoảng cách từ mỗi điểm dữ liệu đến một điểm mốc (landmark). Khoảng cách càng gần, giá trị tương đồng càng tiến về 1. Khoảng cách xa, tiến về 0. Nó tạo ra đồ thị hình chuông."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Gaussian RBF Kernel của SVM (`kernel='rbf'`), siêu tham số `gamma` (γ) có tác dụng gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó thay thế hoàn toàn tham số C."
+            },
+            {
+                "id": "b",
+                "text": "Gamma quyết định độ rộng của đường cong hình chuông. Gamma LỚN làm hình chuông HẸP lại (ảnh hưởng của mỗi mẫu nhỏ đi, ranh giới uốn lượn nhiều -> dễ overfit). Gamma NHỎ làm hình chuông RỘNG ra (ranh giới mượt mà hơn)."
+            },
+            {
+                "id": "c",
+                "text": "Gamma chỉ là learning rate cho thuật toán Gradient Descent."
+            },
+            {
+                "id": "d",
+                "text": "Gamma LỚN giúp mô hình chạy nhanh hơn bằng cách bỏ qua các ngoại lệ."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Gamma hoạt động giống như một núm điều chỉnh độ 'chú ý' của mô hình vào từng điểm dữ liệu đơn lẻ. Gamma cao = mô hình quá chú ý tiểu tiết (uốn lượn quanh từng điểm, gây overfit). Gamma thấp = nhìn bức tranh tổng quát (mượt mà)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Kết hợp cách tinh chỉnh Gamma (γ) và C để điều chỉnh độ phức tạp của mô hình SVM RBF:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Mô hình đang bị Overfitting (Quá khớp)"
+            },
+            {
+                "id": "l2",
+                "text": "Mô hình đang bị Underfitting (Chưa khớp)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Nên GIẢM gamma và/hoặc GIẢM C (để làm mượt ranh giới, mở rộng lề)."
+            },
+            {
+                "id": "r2",
+                "text": "Nên TĂNG gamma và/hoặc TĂNG C (để ranh giới bám sát dữ liệu hơn)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2"
+        },
+        "explanation": "C và Gamma đều có xu hướng làm mô hình phức tạp hơn khi TĂNG. Do đó, để chống overfit, ta phải GIẢM chúng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Theo kinh nghiệm thực tiễn (Rule of thumb), bạn nên luôn bắt đầu thử nghiệm với Kernel nào đầu tiên khi dùng SVM?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Kernel Đa thức (Poly) với degree=10."
+            },
+            {
+                "id": "b",
+                "text": "Luôn luôn thử Linear Kernel (như LinearSVC) đầu tiên vì nó rất nhanh. Đặc biệt khi dữ liệu có nhiều đặc trưng."
+            },
+            {
+                "id": "c",
+                "text": "Luôn thử Sigmoid Kernel đầu tiên."
+            },
+            {
+                "id": "d",
+                "text": "Kernel Tùy chỉnh (Custom Kernel)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "LinearSVC chạy cực nhanh và thường đủ tốt nếu dữ liệu có nhiều đặc trưng (VD văn bản). Nếu dữ liệu không quá lớn và Linear không hiệu quả, mới thử đến Gaussian RBF."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Độ phức tạp tính toán của SVM:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Lớp `LinearSVC` mở rộng (scale) rất tốt theo số lượng mẫu và số lượng đặc trưng, với thời gian huấn luyện tỷ lệ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> với số mẫu (O(m x n)). Tuy nhiên, lớp `SVC` (có hỗ trợ Kernel Trick) lại mở rộng rất kém, với thời gian huấn luyện tỷ lệ từ O(m^2 x n) đến O(m^3 x n). Điều này có nghĩa là `SVC` sẽ trở nên <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> nếu số lượng mẫu huấn luyện quá lớn (ví dụ: vài trăm ngàn mẫu).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Tuyến tính (Linear)"
+            },
+            {
+                "id": "w2",
+                "text": "Bậc hai (Quadratic)"
+            },
+            {
+                "id": "w3",
+                "text": "Quá chậm (Cực kỳ lâu)"
+            },
+            {
+                "id": "w4",
+                "text": "Chạy nhanh hơn"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "LinearSVC có O(m) nên nhanh. SVC có kernel tính toán O(m^2) đến O(m^3), nên với m > 100,000, nó sẽ chạy cực kỳ chậm."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "SVM giải quyết bài toán Hồi quy (SVM Regression) như thế nào, và nó khác gì so với Phân loại?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó đảo ngược bài toán: Thay vì cố gắng đẩy các điểm ra khỏi lề (như Phân loại), Hồi quy SVM cố gắng CHỨA CÀNG NHIỀU ĐIỂM CÀNG TỐT vào bên trong lề, đồng thời giới hạn các điểm vi phạm lề."
+            },
+            {
+                "id": "b",
+                "text": "Hồi quy SVM chỉ dùng Logistic Regression ở lớp cuối cùng."
+            },
+            {
+                "id": "c",
+                "text": "Hồi quy SVM tìm một đường thẳng cắt qua tất cả các điểm hỗ trợ."
+            },
+            {
+                "id": "d",
+                "text": "Không thể dùng SVM cho Hồi quy."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Trong Classification: 'Lề phải rộng, các điểm phải nằm NGOÀI lề'. Trong Regression: 'Lề chứa dữ liệu, các điểm phải nằm TRONG lề (cái lề này bao quanh đường dự đoán)'."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Hồi quy SVM (LinearSVR), siêu tham số nào kiểm soát độ rộng của 'đường lề' (margin) chứa các điểm dữ liệu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "C"
+            },
+            {
+                "id": "b",
+                "text": "gamma (γ)"
+            },
+            {
+                "id": "c",
+                "text": "epsilon (ε)"
+            },
+            {
+                "id": "d",
+                "text": "degree"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Epsilon (ε) xác định khoảng cách lề. Nghĩa là, mọi sai số dự đoán nhỏ hơn ε sẽ bị bỏ qua (mô hình không bị phạt). Tính chất này gọi là ε-insensitive."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Cơ chế hoạt động của Hàm Quyết định (Decision Function) trong SVM Tuyến tính khi dự đoán nhãn cho mẫu thử mới (x):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Lấy tích vô hướng (dot product) giữa véc-tơ trọng số (w) và mẫu thử (x)."
+            },
+            {
+                "id": "2",
+                "text": "Cộng thêm sai số chệch (bias term - b). (Đây là hàm số: w.x + b)."
+            },
+            {
+                "id": "3",
+                "text": "Dựa vào dấu của kết quả: Nếu lớn hơn hoặc bằng 0, mô hình dự đoán lớp 1 (Positive)."
+            },
+            {
+                "id": "4",
+                "text": "Nếu kết quả nhỏ hơn 0, mô hình dự đoán lớp 0 (Negative)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "SVM tuyến tính đơn thuần tính tổng trọng số w*x + b. Nếu điểm (score) là số dương -> Lớp 1. Nếu số âm -> Lớp 0."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Mục tiêu (Objective) của quá trình huấn luyện Hard Margin SVM (Lề cứng) có thể diễn đạt bằng toán học là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tối đa hóa ||w|| (chuẩn của w)."
+            },
+            {
+                "id": "b",
+                "text": "Giảm thiểu ||w|| (chuẩn của w), đồng thời tuân thủ điều kiện mọi điểm dữ liệu phải nằm đúng phía và xa lề ít nhất là 1."
+            },
+            {
+                "id": "c",
+                "text": "Tối đa hóa số lượng Support Vectors."
+            },
+            {
+                "id": "d",
+                "text": "Giảm thiểu hệ số chệch (b)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Độ rộng của lề tỷ lệ nghịch với ||w|| (độ lớn của trọng số w). Để tối đa hóa lề (tức là làm con đường rộng nhất), ta phải cực tiểu hóa ||w||."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép các khái niệm tối ưu hóa toán học của SVM với định nghĩa:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Primal Problem (Bài toán nguyên thủy)"
+            },
+            {
+                "id": "l2",
+                "text": "Dual Problem (Bài toán đối ngẫu)"
+            },
+            {
+                "id": "l3",
+                "text": "Kernel Trick (Thủ thuật Kernel)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Bài toán tối ưu tìm trực tiếp (w và b) dựa trên số lượng đặc trưng n. Nhanh nếu số lượng điểm m lớn, n nhỏ."
+            },
+            {
+                "id": "r2",
+                "text": "Bài toán được chuyển đổi toán học, cho cùng đáp án nhưng dựa trên số lượng mẫu m. Là cơ sở toán học bắt buộc để dùng Kernel trick."
+            },
+            {
+                "id": "r3",
+                "text": "Cách tính tích vô hướng ở chiều cao hơn trực tiếp bằng hàm K(a, b) mà không cần biến đổi các mẫu a, b."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Dual problem đổi bài toán từ không gian n chiều (features) sang không gian m chiều (instances). Nhờ đó Kernel trick mới có thể áp dụng được."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Vai trò của hàm Hinge Loss trong SVM:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong SGDClassifier huấn luyện SVM Tuyến tính, hàm mất mát (loss function) được sử dụng mặc định là hàm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Hàm này có đặc điểm là: Nó bằng 0 nếu điểm số $t \\ge 1$ (tức là mẫu nằm xa an toàn ngoài lề). Nếu mẫu nằm trong lề hoặc sai phía ($t < 1$), giá trị mất mát sẽ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> tỷ lệ thuận với khoảng cách vi phạm.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Hinge Loss (Loss bản lề)"
+            },
+            {
+                "id": "w2",
+                "text": "MSE (Mean Squared Error)"
+            },
+            {
+                "id": "w3",
+                "text": "Tăng dần (Increase)"
+            },
+            {
+                "id": "w4",
+                "text": "Giảm dần (Decrease)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Hàm max(0, 1-t) được gọi là Hinge Loss vì đồ thị của nó giống cái bản lề. Bất kỳ mẫu nào 'an toàn' (t>=1) sẽ không bị phạt (loss=0)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Vì sao SVM được cho là mô hình mang tính 'chống đỡ' (Support)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Bởi vì nó được hỗ trợ bởi công ty Google."
+            },
+            {
+                "id": "b",
+                "text": "Vì mô hình chỉ lưu lại và đưa ra dự đoán dựa trên một số ít điểm dữ liệu nằm sát lề (các điểm chống đỡ lề - support vectors). Mọi điểm ở xa lề không hề ảnh hưởng đến mô hình."
+            },
+            {
+                "id": "c",
+                "text": "Vì nó hỗ trợ nhiều loại ngôn ngữ lập trình."
+            },
+            {
+                "id": "d",
+                "text": "Vì nó luôn tạo ra mô hình chạy song song (multithreading)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Đúng như tên gọi 'Support Vector', đường ranh giới được 'chống đỡ' hoàn toàn bởi các điểm nằm trên ranh giới. Xóa đi các điểm an toàn không làm ảnh hưởng mô hình."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Sự khác biệt quan trọng giữa Hồi quy Logistic (Logistic Regression) và Hồi quy SVM Tuyến tính (Linear SVM)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Logistic Regression xuất ra xác suất (probabilty) còn SVM Tuyến tính mặc định KHÔNG xuất ra xác suất, nó chỉ xuất ra một khoảng cách tuyến tính so với ranh giới và quyết định nhãn."
+            },
+            {
+                "id": "b",
+                "text": "Logistic Regression nhanh hơn gấp 100 lần."
+            },
+            {
+                "id": "c",
+                "text": "SVM Tuyến tính chỉ hỗ trợ dữ liệu hình ảnh."
+            },
+            {
+                "id": "d",
+                "text": "Logistic Regression không thể dùng Gradient Descent."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Logistic Regression sử dụng hàm Sigmoid nên đầu ra là Xác suất p=[0,1]. SVM dùng hàm Hinge Loss và quyết định cứng (Hard decision) dựa trên dấu của (w.x+b), do đó không cung cấp xác suất một cách tự nhiên (trừ khi đặt tham số probability=True, rất tốn kém thời gian)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Khi nào thì việc sử dụng Dual Problem (Bài toán đối ngẫu) của SVM nhanh hơn Primal Problem (Bài toán nguyên thủy)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Khi số lượng mẫu huấn luyện (m) nhỏ hơn rất nhiều so với số lượng đặc trưng (n)."
+            },
+            {
+                "id": "b",
+                "text": "Khi số lượng mẫu huấn luyện (m) lớn hơn hàng triệu lần số lượng đặc trưng (n)."
+            },
+            {
+                "id": "c",
+                "text": "Khi sử dụng LinearSVC."
+            },
+            {
+                "id": "d",
+                "text": "Không bao giờ, Dual Problem luôn chậm hơn."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Bài toán đối ngẫu tính toán m x m (số mẫu x số mẫu). Primal tính toán n x n (số features x số features). Do đó, Dual sẽ cực nhanh nếu m < n (ví dụ: y khoa có 500 mẫu nhưng 10,000 features)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Nguyên lý đằng sau Kernel Trick (Dựa trên Định lý Mercer):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Giả sử ta muốn ánh xạ các điểm a, b vào một không gian chiều rất cao bằng hàm ánh xạ phi(a), phi(b)."
+            },
+            {
+                "id": "2",
+                "text": "Thay vì thực sự tính toán phi(a) và phi(b) rất tốn kém (thậm chí chiều vô hạn như RBF)."
+            },
+            {
+                "id": "3",
+                "text": "Định lý Mercer chứng minh rằng tồn tại một hàm K(a,b) (Kernel) trả về kết quả BẰNG CHÍNH Tích vô hướng của phi(a) và phi(b)."
+            },
+            {
+                "id": "4",
+                "text": "Ta chỉ việc gọi hàm K(a,b) dựa trên các giá trị a,b gốc ở chiều thấp để giải bài toán đối ngẫu."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Đây chính là 'phép thuật' của Kernel. K(a,b) = phi(a) dot phi(b). Ta tính trực tiếp K(a,b) mà chẳng bao giờ cần phải biết phi(a) trông như thế nào."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các Kernel phổ biến với tính toán toán học tương đương của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Linear Kernel"
+            },
+            {
+                "id": "l2",
+                "text": "Polynomial Kernel"
+            },
+            {
+                "id": "l3",
+                "text": "Gaussian RBF Kernel"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "K(a, b) = a^T . b (Chỉ là tích vô hướng thông thường)"
+            },
+            {
+                "id": "r2",
+                "text": "K(a, b) = (gamma * a^T . b + r)^d (Tích vô hướng lũy thừa bậc d)"
+            },
+            {
+                "id": "r3",
+                "text": "K(a, b) = exp(-gamma * ||a - b||^2) (Hàm mũ của bình phương khoảng cách)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Công thức toán học của các Kernel: Linear = Tích vô hướng. Poly = Tích vô hướng lũy thừa. RBF = Dựa trên khoảng cách ||a-b||."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hàm Hinge Loss có thể đạo hàm tại điểm t=1 không?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Có, đạo hàm của nó luôn bằng 1."
+            },
+            {
+                "id": "b",
+                "text": "Không, hàm Hinge Loss max(0, 1-t) KHÔNG khả vi (không có đạo hàm) tại điểm t=1 (giống như đầu nhọn của hình chữ V)."
+            },
+            {
+                "id": "c",
+                "text": "Có, vì mọi hàm chi phí đều phải khả vi."
+            },
+            {
+                "id": "d",
+                "text": "Đạo hàm tại t=1 luôn bằng vô cực."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Giống như hàm Lasso (L1) không khả vi tại 0, hàm Hinge Loss không khả vi tại t=1. Để dùng Gradient Descent (SGDClassifier), thuật toán phải sử dụng Subgradient (đạo hàm dưới) tại điểm đó."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Đặc trưng của Soft Margin trong SVM:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Để thực hiện Soft Margin (Lề mềm), hàm mục tiêu được bổ sung thêm một biến được gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cho mỗi mẫu dữ liệu. Biến này đo lường mức độ mà một mẫu được phép vi phạm lề. Giờ đây, bài toán trở thành sự đánh đổi: ta muốn làm cho Lề rộng nhất (nhỏ hóa w) nhưng đồng thời lại muốn các vi phạm lề (biến này) là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Siêu tham số C quyết định sự đánh đổi giữa hai mục tiêu này.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Slack variable (Biến chùng, zeta)"
+            },
+            {
+                "id": "w2",
+                "text": "Bias variable (Biến chệch, b)"
+            },
+            {
+                "id": "w3",
+                "text": "Nhỏ nhất có thể (Minimize)"
+            },
+            {
+                "id": "w4",
+                "text": "Lớn nhất có thể (Maximize)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Slack variable (ζ) đo mức độ vi phạm của 1 điểm. Thuật toán cố gắng thu nhỏ tổng tất cả các vi phạm (minimize slack) đồng thời mở rộng lề."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Trong Hồi quy SVM phi tuyến (SVR), tham số tương đương với việc sử dụng Kernel Đa thức trong Phân loại (SVC) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hoàn toàn tương tự, ta dùng SVR(kernel='poly', degree=...) hoặc SVR(kernel='rbf')."
+            },
+            {
+                "id": "b",
+                "text": "SVR không hỗ trợ Kernel trick."
+            },
+            {
+                "id": "c",
+                "text": "Dùng SGDRegressor."
+            },
+            {
+                "id": "d",
+                "text": "Chỉ có thể dùng SVR(kernel='linear')."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Các kernel (poly, rbf, sigmoid) dùng cho Phân loại (SVC) cũng có thể áp dụng nguyên si cho Hồi quy (SVR)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Một sinh viên phàn nàn: 'Mô hình SVM của tôi sử dụng Kernel RBF chạy quá chậm, tôi có 1 triệu điểm dữ liệu!'. Bạn khuyên gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Đổi tham số gamma lên mức thật cao."
+            },
+            {
+                "id": "b",
+                "text": "Tăng tham số C lên mức thật cao."
+            },
+            {
+                "id": "c",
+                "text": "Lớp SVC với Kernel (O(m^2) đến O(m^3)) không phù hợp cho 1 triệu dữ liệu. Hãy chuyển sang LinearSVC, hoặc nếu bắt buộc phải phi tuyến, hãy thử lấy ngẫu nhiên 1 tập con dữ liệu (subsample) hoặc dùng mô hình khác như RandomForest."
+            },
+            {
+                "id": "d",
+                "text": "Đổi hàm kích hoạt thành Softmax."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Điểm yếu chí mạng của SVM Kernel là độ phức tạp thời gian tăng theo bình phương/lập phương của m. Trên 100,000 dòng, nó bắt đầu chậm không tưởng tượng nổi."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

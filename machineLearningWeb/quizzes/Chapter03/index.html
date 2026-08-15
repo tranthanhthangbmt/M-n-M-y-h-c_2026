@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 3</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Tập dữ liệu MNIST thường được ví như gì trong lĩnh vực Học máy?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hệ điều hành của học máy"
+            },
+            {
+                "id": "b",
+                "text": "Chương trình 'Hello World' của học máy"
+            },
+            {
+                "id": "c",
+                "text": "Đỉnh Everest của học máy"
+            },
+            {
+                "id": "d",
+                "text": "Gót chân Achilles của học máy"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "MNIST được gọi là 'Hello World' của học máy vì bất cứ khi nào có thuật toán phân loại mới, người ta đều chạy thử nó trên MNIST đầu tiên."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Bộ phân loại nhị phân (Binary Classifier) '5-detector' trong ví dụ của sách có mục đích gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Phân biệt 5 loại chữ số khác nhau."
+            },
+            {
+                "id": "b",
+                "text": "Phân loại một hình ảnh thành 2 nhóm: 'là số 5' và 'không phải là số 5'."
+            },
+            {
+                "id": "c",
+                "text": "Tìm ra 5 hình ảnh có lỗi nhiều nhất."
+            },
+            {
+                "id": "d",
+                "text": "Xếp hạng 5 mô hình học máy tốt nhất."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Phân loại nhị phân (Binary) chỉ có 2 lớp kết quả. Ở đây là phân biệt '5' và 'không phải 5'."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hoàn thiện nhận định về Thước đo độ chính xác (Accuracy):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Độ chính xác (Accuracy) thường KHÔNG phải là thước đo hiệu suất ưu tiên cho các bộ phân loại, đặc biệt là khi xử lý các tập dữ liệu bị <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Ví dụ, nếu chỉ có 10% hình ảnh là số 5, một mô hình luôn đoán 'không phải số 5' vẫn đạt độ chính xác lên tới <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Lệch (Skewed)"
+            },
+            {
+                "id": "w2",
+                "text": "Cân bằng (Balanced)"
+            },
+            {
+                "id": "w3",
+                "text": "90%"
+            },
+            {
+                "id": "w4",
+                "text": "100%"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Khi dữ liệu bị lệch (một lớp chiếm đa số), đoán mò theo lớp đa số cũng cho Accuracy rất cao (90%), khiến Accuracy trở thành thước đo lừa dối."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Ma trận nhầm lẫn (Confusion Matrix), 'False Positive' (Dương tính giả) có nghĩa là gì đối với bài toán nhận diện số 5?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mô hình dự đoán 'không phải 5' cho một hình ảnh thực chất là số 5."
+            },
+            {
+                "id": "b",
+                "text": "Mô hình dự đoán '5' cho một hình ảnh thực chất là số 5."
+            },
+            {
+                "id": "c",
+                "text": "Mô hình dự đoán '5' cho một hình ảnh thực chất KHÔNG phải là số 5 (ví dụ số 3)."
+            },
+            {
+                "id": "d",
+                "text": "Mô hình dự đoán 'không phải 5' cho một hình ảnh thực chất không phải 5."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Dương tính giả (False Positive) là khi mô hình 'báo động giả': khẳng định hình ảnh là 5 (Dương tính) nhưng sự thật nó là sai (Giả) vì hình đó là số khác."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các khái niệm trong Confusion Matrix với tên gọi:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Dự đoán là lớp âm tính (Negative), và thực tế đúng là âm tính."
+            },
+            {
+                "id": "l2",
+                "text": "Dự đoán là lớp dương tính (Positive), nhưng thực tế lại là âm tính."
+            },
+            {
+                "id": "l3",
+                "text": "Dự đoán là lớp âm tính (Negative), nhưng thực tế lại là dương tính."
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "True Negative (TN)"
+            },
+            {
+                "id": "r2",
+                "text": "False Positive (FP)"
+            },
+            {
+                "id": "r3",
+                "text": "False Negative (FN)"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "TN = Âm tính thật; FP = Dương tính giả (Đoán dương nhưng sai); FN = Âm tính giả (Đoán âm nhưng sai)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Công thức tính Precision (Độ chuẩn xác) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "TP / (TP + FN)"
+            },
+            {
+                "id": "b",
+                "text": "TP / (TP + FP)"
+            },
+            {
+                "id": "c",
+                "text": "TN / (TN + FP)"
+            },
+            {
+                "id": "d",
+                "text": "FP / (FP + TN)"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Precision = TP / (TP + FP). Nó trả lời câu hỏi: Trong số TẤT CẢ những trường hợp mô hình DỰ ĐOÁN là dương tính, có bao nhiêu % thực sự đúng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Thuật ngữ 'Recall' (Độ thu hồi) còn có tên gọi khác phổ biến là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Độ đặc hiệu (Specificity)"
+            },
+            {
+                "id": "b",
+                "text": "Độ nhạy (Sensitivity) hoặc Tỷ lệ dương tính thật (TPR)"
+            },
+            {
+                "id": "c",
+                "text": "Độ chuẩn xác (Precision)"
+            },
+            {
+                "id": "d",
+                "text": "Tỷ lệ âm tính giả (FNR)"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Recall = TP / (TP + FN). Nó đo lường khả năng mô hình 'thu hồi' / phát hiện ra được bao nhiêu % trong TỔNG SỐ các ca dương tính THỰC TẾ, nên còn gọi là Độ nhạy (Sensitivity) hay TPR."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Hiện tượng 'Sự đánh đổi giữa Precision và Recall' (Precision/Recall Trade-off) hoạt động ra sao khi ta TĂNG ngưỡng quyết định (Threshold)?",
+        "instruction": "Sắp xếp theo logic chuỗi sự kiện khi TĂNG ngưỡng (Threshold):",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tăng ngưỡng quyết định (Threshold) của mô hình lên mức khắt khe hơn."
+            },
+            {
+                "id": "2",
+                "text": "Mô hình ít đưa ra dự đoán Dương tính (Positive) hơn, loại bỏ các dự đoán kém chắc chắn (giảm FP)."
+            },
+            {
+                "id": "3",
+                "text": "Vì giảm FP, độ chuẩn xác (Precision) TĂNG lên."
+            },
+            {
+                "id": "4",
+                "text": "Tuy nhiên, vì mô hình khắt khe quá nên bỏ sót nhiều trường hợp Dương tính thực sự (tăng FN), làm Recall GIẢM xuống."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Khi tăng ngưỡng, mô hình khó tính hơn -> ít đoán sai thành dương (tăng Precision) nhưng lại bỏ lỡ nhiều ca bệnh thật (giảm Recall)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "F1 Score là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Trung bình cộng của Precision và Recall."
+            },
+            {
+                "id": "b",
+                "text": "Trung bình điều hòa (Harmonic mean) của Precision và Recall, ưu tiên các giá trị thấp."
+            },
+            {
+                "id": "c",
+                "text": "Giá trị lớn nhất giữa Precision và Recall."
+            },
+            {
+                "id": "d",
+                "text": "Hiệu số giữa Precision và Recall."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "F1 Score là trung bình điều hòa. Tính chất của trung bình điều hòa là nó chỉ đạt giá trị cao nếu CẢ HAI thành phần (Precision và Recall) đều cao."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Tùy thuộc vào bối cảnh dự án, bạn sẽ ưu tiên Precision hay Recall?",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong bài toán phát hiện nội dung an toàn cho trẻ em (lọc video xấu), bạn muốn đảm bảo video được giữ lại CHẮC CHẮN là an toàn dù có vô tình lọc nhầm vài video tốt, do đó bạn cần <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cao. Ngược lại, trong bài toán phát hiện kẻ trộm qua camera an ninh, bạn thà để bảo vệ phải kiểm tra vài cảnh báo giả (FP) còn hơn bỏ sót kẻ trộm thực sự, nên bạn ưu tiên <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> cao.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Precision (Độ chuẩn xác)"
+            },
+            {
+                "id": "w2",
+                "text": "Recall (Độ thu hồi)"
+            },
+            {
+                "id": "w3",
+                "text": "Accuracy (Độ chính xác)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Bảo vệ trẻ em -> không chấp nhận lọt video xấu (yêu cầu Precision cao). Bắt trộm -> thà bắt lầm hơn bỏ sót (yêu cầu Recall cao)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Đường cong ROC (Receiver Operating Characteristic) biểu diễn mối quan hệ giữa hai đại lượng nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Precision và Recall"
+            },
+            {
+                "id": "b",
+                "text": "Tỷ lệ dương tính thật (TPR) và Tỷ lệ dương tính giả (FPR)"
+            },
+            {
+                "id": "c",
+                "text": "Tỷ lệ dương tính thật (TPR) và Tỷ lệ âm tính thật (TNR)"
+            },
+            {
+                "id": "d",
+                "text": "Độ nhạy (Sensitivity) và Độ chuẩn xác (Precision)"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "ROC vẽ đồ thị Tỷ lệ dương tính thật (TPR - Recall) so với Tỷ lệ dương tính giả (FPR)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Diện tích dưới đường cong ROC (AUC - Area Under the Curve) của một bộ phân loại hoàn hảo (perfect classifier) là bao nhiêu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "0.0"
+            },
+            {
+                "id": "b",
+                "text": "0.5"
+            },
+            {
+                "id": "c",
+                "text": "1.0"
+            },
+            {
+                "id": "d",
+                "text": "100"
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "ROC AUC tối đa là 1.0 (mô hình hoàn hảo). Mô hình dự đoán ngẫu nhiên (hoàn toàn vô dụng) sẽ có ROC AUC = 0.5."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các thuật ngữ với ý nghĩa tương đương của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Recall"
+            },
+            {
+                "id": "l2",
+                "text": "Specificity (Độ đặc hiệu)"
+            },
+            {
+                "id": "l3",
+                "text": "FPR (Tỷ lệ dương tính giả)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Tỷ lệ dương tính thật (TPR / Sensitivity)"
+            },
+            {
+                "id": "r2",
+                "text": "Tỷ lệ âm tính thật (TNR)"
+            },
+            {
+                "id": "r3",
+                "text": "1 - Specificity"
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Recall = TPR. Specificity = TNR. FPR (False Positive Rate) chính là phần bù của Specificity (1 - TNR)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Theo quy tắc thông thường, khi nào bạn nên ưu tiên sử dụng đường cong PR (Precision-Recall) thay vì đường cong ROC?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Bất cứ khi nào bạn sử dụng mô hình Random Forest."
+            },
+            {
+                "id": "b",
+                "text": "Khi tập dữ liệu đã được cân bằng hoàn hảo giữa các lớp."
+            },
+            {
+                "id": "c",
+                "text": "Khi lớp Dương tính (Positive class) rất hiếm, hoặc khi bạn quan tâm đến False Positives nhiều hơn False Negatives."
+            },
+            {
+                "id": "d",
+                "text": "Khi bạn cần đo lường thời gian huấn luyện mô hình."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Đường cong ROC có thể trông rất đẹp (AUC cao) ngay cả khi mô hình đoán lớp Dương tính rất kém, nếu số lượng lớp Dương tính quá ít (dữ liệu lệch). Khi đó PR curve sẽ phản ánh chính xác hơn."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hoàn thiện kiến thức về Bộ phân loại đa lớp (Multiclass Classifier):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Thuật toán <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> là các bộ phân loại nhị phân nguyên bản (strictly binary). Tuy nhiên, ta vẫn có thể dùng chúng cho bài toán đa lớp (ví dụ phân loại 10 chữ số) thông qua các chiến lược như OvR hoặc OvO. Trái lại, thuật toán <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> có khả năng xử lý nhiều lớp một cách trực tiếp mà không cần dùng chiến lược OvR/OvO.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Support Vector Machine (SVM) / Linear Classifiers"
+            },
+            {
+                "id": "w2",
+                "text": "Random Forest / Naive Bayes"
+            },
+            {
+                "id": "w3",
+                "text": "K-Means"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "SVM, Hồi quy logistic là các thuật toán nhị phân bẩm sinh. Decision Tree, Random Forest, Naive Bayes có thể trực tiếp xử lý đa lớp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Chiến lược One-versus-the-Rest (OvR - còn gọi là One-versus-All) hoạt động như thế nào trong bài toán phân loại 10 chữ số (0-9)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Huấn luyện 10 bộ phân loại nhị phân, mỗi bộ phân biệt một chữ số với TẤT CẢ các chữ số còn lại."
+            },
+            {
+                "id": "b",
+                "text": "Huấn luyện 45 bộ phân loại, mỗi bộ phân biệt một CẶP chữ số (ví dụ: 0 vs 1, 0 vs 2...)."
+            },
+            {
+                "id": "c",
+                "text": "Huấn luyện 1 bộ phân loại duy nhất có 10 nơ-ron đầu ra."
+            },
+            {
+                "id": "d",
+                "text": "Gộp tất cả 10 lớp thành 1 lớp duy nhất."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "OvR (Một-chống-lại-phần-còn-lại) sẽ tạo N mô hình (N là số lớp). Đối với 10 số, nó tạo 10 mô hình (ví dụ mô hình 'là số 0' hay 'không phải số 0')."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Đối với bài toán phân loại 10 chữ số (0-9), chiến lược One-versus-One (OvO) sẽ yêu cầu huấn luyện bao nhiêu bộ phân loại nhị phân?",
+        "options": [
+            {
+                "id": "a",
+                "text": "10"
+            },
+            {
+                "id": "b",
+                "text": "45"
+            },
+            {
+                "id": "c",
+                "text": "100"
+            },
+            {
+                "id": "d",
+                "text": "2"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Công thức OvO là N × (N - 1) / 2. Với N=10, số lượng mô hình = 10 * 9 / 2 = 45 mô hình phân biệt từng cặp chữ số."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Scikit-Learn sẽ tự động làm gì khi bạn dùng một thuật toán nhị phân (như Logistic Regression) để phân loại đa lớp (multiclass)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Báo lỗi và dừng chương trình."
+            },
+            {
+                "id": "b",
+                "text": "Xóa ngẫu nhiên các lớp thừa cho đến khi chỉ còn 2 lớp."
+            },
+            {
+                "id": "c",
+                "text": "Tự động phát hiện và áp dụng chiến lược OvR (hoặc OvO tùy thuộc vào thuật toán)."
+            },
+            {
+                "id": "d",
+                "text": "Chuyển dữ liệu sang định dạng hình ảnh."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Scikit-Learn rất thông minh, nó sẽ phát hiện bạn đang truyền nhiều hơn 2 lớp vào mô hình nhị phân và ngầm tự động chạy OvR hoặc OvO (đối với SVM)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Trình tự điển hình để thực hiện 'Phân tích Lỗi' (Error Analysis) nhằm cải thiện mô hình phân loại đa lớp:",
+        "instruction": "Sắp xếp theo các bước phân tích ma trận nhầm lẫn:",
+        "items": [
+            {
+                "id": "1",
+                "text": "Huấn luyện mô hình và tạo Ma trận nhầm lẫn (Confusion Matrix) trên tập kiểm định chéo."
+            },
+            {
+                "id": "2",
+                "text": "Chia mỗi giá trị trong ma trận cho số lượng hình ảnh tương ứng của lớp đó để tính tỷ lệ lỗi (thay vì số lượng tuyệt đối)."
+            },
+            {
+                "id": "3",
+                "text": "Điền số 0 vào đường chéo chính (nơi chứa dự đoán đúng) để chỉ giữ lại các lỗi (Errors)."
+            },
+            {
+                "id": "4",
+                "text": "Trực quan hóa ma trận lỗi (vẽ biểu đồ nhiệt - heatmap) để xem mô hình thường nhầm lẫn lớp nào với lớp nào."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Việc chuẩn hóa bằng cách chia tỷ lệ giúp so sánh công bằng giữa các lớp to/nhỏ. Việc xóa đường chéo chính giúp làm nổi bật các ô chứa lỗi."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Khi phân tích Ma trận lỗi (Error Matrix) được biểu diễn bằng hình ảnh (heatmap), các ô sáng màu (bright squares) ở NGOÀI đường chéo chính có ý nghĩa gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Cho thấy mô hình dự đoán đúng với độ tự tin cao."
+            },
+            {
+                "id": "b",
+                "text": "Cho thấy khu vực mô hình đang mắc nhiều lỗi sai (nhầm lẫn giữa lớp thực tế và lớp dự đoán)."
+            },
+            {
+                "id": "c",
+                "text": "Cho thấy dữ liệu bị khuyết thiếu (NaN)."
+            },
+            {
+                "id": "d",
+                "text": "Đó là những hình ảnh có chất lượng sáng nhất trong tập dữ liệu MNIST."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Trong error heatmap, vùng tối có nghĩa là ít lỗi, vùng sáng/màu nổi (như trắng hoặc vàng) chỉ ra số lượng lỗi lớn tại ô (Thực tế, Dự đoán) đó."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Điền từ vào khái niệm 'Phân loại đa nhãn' (Multilabel Classification):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Cho đến nay, mỗi mẫu (instance) luôn được gán vào một và chỉ một lớp duy nhất. Tuy nhiên, trong nhận diện khuôn mặt, một bức ảnh có thể có sự xuất hiện của cả Alice và Bob. Nếu bộ phân loại có khả năng trả ra kết quả mảng nhị phân `[1, 0, 1]` tương ứng với `[Alice, Charlie, Bob]`, nó được gọi là hệ thống <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Mô hình <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hỗ trợ natively loại phân loại này.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Phân loại đa nhãn (Multilabel)"
+            },
+            {
+                "id": "w2",
+                "text": "Phân loại đa lớp (Multiclass)"
+            },
+            {
+                "id": "w3",
+                "text": "KNeighborsClassifier"
+            },
+            {
+                "id": "w4",
+                "text": "LinearRegression"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Đa nhãn (Multilabel) có nghĩa là 1 mẫu dữ liệu có thể chứa NHIỀU nhãn cùng lúc (ví dụ ảnh có nhiều người). KNeighborsClassifier hỗ trợ tính năng này."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Khái niệm 'Phân loại đa đầu ra' (Multioutput-multiclass classification) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mô hình kết hợp dữ liệu văn bản và hình ảnh cùng lúc."
+            },
+            {
+                "id": "b",
+                "text": "Sự tổng quát hóa của phân loại đa nhãn (multilabel), trong đó MỖI nhãn (label) lại có thể có đa lớp (multiclass) thay vì chỉ là nhị phân (0 hoặc 1)."
+            },
+            {
+                "id": "c",
+                "text": "Mô hình chạy song song trên nhiều máy tính (multi-output devices)."
+            },
+            {
+                "id": "d",
+                "text": "Mô hình in kết quả ra nhiều định dạng file khác nhau."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Multioutput là sự kết hợp: Có nhiều nhãn cần dự đoán, VÀ mỗi nhãn lại có thể nhận nhiều giá trị khác nhau."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Ví dụ kinh điển của bài toán 'Phân loại đa đầu ra' (Multioutput) được mô tả trong chương 3 là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hệ thống dự đoán giá nhà ở California."
+            },
+            {
+                "id": "b",
+                "text": "Hệ thống loại bỏ nhiễu (khử nhiễu - denoising) cho hình ảnh, dự đoán cường độ điểm ảnh sạch cho TỪNG pixel."
+            },
+            {
+                "id": "c",
+                "text": "Hệ thống lọc thư rác (Spam filter)."
+            },
+            {
+                "id": "d",
+                "text": "Hệ thống khuyến nghị video trên YouTube."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Trong bài toán khử nhiễu ảnh, mỗi pixel của ảnh đầu ra là một 'nhãn', và mỗi pixel có thể nhận cường độ từ 0 đến 255 (đa lớp). Do đó nó là Multioutput."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép các loại bài toán Phân loại với đặc trưng của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Binary Classification (Nhị phân)"
+            },
+            {
+                "id": "l2",
+                "text": "Multiclass Classification (Đa lớp)"
+            },
+            {
+                "id": "l3",
+                "text": "Multilabel Classification (Đa nhãn)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Mỗi mẫu chỉ thuộc về 1 lớp, và chỉ có đúng 2 lớp có thể chọn (VD: Chó hoặc Không phải Chó)."
+            },
+            {
+                "id": "r2",
+                "text": "Mỗi mẫu chỉ thuộc về 1 lớp, nhưng có >2 lớp để chọn (VD: Chó, Mèo, hoặc Chim)."
+            },
+            {
+                "id": "r3",
+                "text": "Mỗi mẫu có thể chứa NHIỀU lớp cùng lúc (VD: Ảnh có cả Chó và Mèo)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Binary = 2 class (nhận 1). Multiclass = Nhiều class (nhận 1). Multilabel = Nhiều class (nhận nhiều)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Scikit-Learn, hàm 'cross_val_predict()' khác với 'cross_val_score()' ở điểm nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "cross_val_score trả về điểm số hiệu suất (accuracy, f1...), còn cross_val_predict trả về các DỰ ĐOÁN cụ thể (y_pred) cho mỗi mẫu trong tập dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "cross_val_predict chạy nhanh hơn cross_val_score gấp 10 lần."
+            },
+            {
+                "id": "c",
+                "text": "cross_val_predict chỉ dùng cho tập Test, còn cross_val_score dùng cho tập Train."
+            },
+            {
+                "id": "d",
+                "text": "Không có sự khác biệt, hai hàm này là bí danh (alias) của nhau."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "cross_val_predict thực hiện k-fold CV nhưng thay vì trả về điểm, nó trả về các nhãn dự đoán được thực hiện bởi mô hình khi dữ liệu đó ở fold Test."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Các bước để vẽ Đường cong ROC bằng Scikit-Learn:",
+        "instruction": "Sắp xếp theo thứ tự thực hiện:",
+        "items": [
+            {
+                "id": "1",
+                "text": "Sử dụng `cross_val_predict` với tham số `method='decision_function'` (hoặc `predict_proba`) để lấy điểm số dự đoán của mô hình."
+            },
+            {
+                "id": "2",
+                "text": "Sử dụng hàm `roc_curve(y_train, y_scores)` để tính toán FPR, TPR và Thresholds."
+            },
+            {
+                "id": "3",
+                "text": "Dùng matplotlib plot(fpr, tpr) để vẽ biểu đồ."
+            },
+            {
+                "id": "4",
+                "text": "Tính diện tích dưới đường cong bằng `roc_auc_score(y_train, y_scores)` để có con số đánh giá tổng quát."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Để vẽ ROC, trước tiên bạn cần điểm số / xác suất của mô hình (không phải nhãn cứng 0/1). Sau đó tính FPR/TPR, vẽ biểu đồ và tính AUC."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Thuật toán 'RandomForestClassifier' có phương thức `decision_function()` để tính điểm số đánh giá trực tiếp như `SGDClassifier` không?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Có, nó dùng chung hàm decision_function()."
+            },
+            {
+                "id": "b",
+                "text": "Không, Random Forest không có decision_function(). Thay vào đó nó có phương thức `predict_proba()` trả về mảng xác suất một mẫu thuộc về một lớp."
+            },
+            {
+                "id": "c",
+                "text": "Không, Random Forest không thể vẽ được đường cong ROC."
+            },
+            {
+                "id": "d",
+                "text": "Có, nhưng nó trả về tọa độ cây thay vì điểm số."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Do bản chất của các thuật toán, thuật toán dựa trên khoảng cách/siêu phẳng (SVM, SGD) dùng decision_function. Thuật toán tập hợp (Random Forest) dùng xác suất (predict_proba)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Tối ưu hóa siêu tham số và Tiền xử lý cho phân loại:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Khác với Hồi quy Tuyến tính, một số thuật toán phân loại như SGD (Stochastic Gradient Descent) rất nhạy cảm với thang đo của dữ liệu. Do đó, trước khi huấn luyện bộ phân loại ảnh MNIST, bạn luôn nên áp dụng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> để cải thiện độ chính xác. Để tăng kích thước tập huấn luyện lên nhân tạo (ví dụ bằng cách dịch chuyển ảnh MNIST lên, xuống, trái, phải 1 pixel), ta gọi kỹ thuật này là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "StandardScaler (Co giãn dữ liệu)"
+            },
+            {
+                "id": "w2",
+                "text": "Data Augmentation (Tăng cường dữ liệu)"
+            },
+            {
+                "id": "w3",
+                "text": "GridSearchCV"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Thuật toán Gradient Descent cần dữ liệu được scale (StandardScaler) để hội tụ nhanh/chính xác. Tăng số lượng mẫu bằng cách biến đổi ảnh gọi là Data Augmentation."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Nếu một người tuyên bố: 'Tôi đã xây dựng một mô hình đạt độ chính xác 99%!', bạn nên phản ứng đầu tiên như thế nào (dựa trên bài học ở Chương 3)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Khen ngợi họ vì 99% luôn luôn là một kết quả tuyệt vời."
+            },
+            {
+                "id": "b",
+                "text": "Hỏi họ xem tập dữ liệu có bị lệch (skewed) không, và yêu cầu xem ma trận nhầm lẫn (Confusion Matrix)."
+            },
+            {
+                "id": "c",
+                "text": "Nói với họ rằng học máy không thể vượt quá 95%."
+            },
+            {
+                "id": "d",
+                "text": "Yêu cầu họ tăng số lượng K-fold Cross Validation lên."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Độ chính xác (Accuracy) 99% là vô nghĩa nếu dữ liệu quá lệch (VD: bệnh hiểm nghèo chỉ chiếm 1%). Phải xem Confusion Matrix và Precision/Recall để biết chắc chắn."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi sử dụng hàm `DummyClassifier` của Scikit-Learn, chuyện gì xảy ra?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó tạo ra một mạng nơ-ron cực kỳ lớn nhưng ngẫu nhiên."
+            },
+            {
+                "id": "b",
+                "text": "Nó tự động làm sạch dữ liệu 'ngu ngốc' (dummy data)."
+            },
+            {
+                "id": "c",
+                "text": "Nó tạo ra một bộ phân loại rất đơn giản (ví dụ: luôn luôn đoán lớp đa số). Nó được dùng làm baseline (mốc cơ sở) để so sánh các mô hình thực sự."
+            },
+            {
+                "id": "d",
+                "text": "Nó là một mô hình giả mạo sẽ trả về lỗi nếu chạy thử."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "DummyClassifier là mô hình cơ sở ngốc nghếch (luôn đoán most_frequent hoặc ngẫu nhiên). Bất kỳ mô hình học máy thực sự nào cũng phải đánh bại được mốc cơ sở này."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

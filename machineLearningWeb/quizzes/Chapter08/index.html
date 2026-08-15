@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 8</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thuật ngữ 'Lời nguyền Số chiều' (Curse of Dimensionality) trong học máy dùng để chỉ vấn đề gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Việc có quá nhiều đặc trưng (features) khiến mô hình chạy cực kỳ chậm và dễ bị quá khớp (overfitting) do không gian dữ liệu trở nên quá thưa thớt."
+            },
+            {
+                "id": "b",
+                "text": "Việc máy tính không đủ RAM để lưu trữ dữ liệu 3D."
+            },
+            {
+                "id": "c",
+                "text": "Việc thuật toán không thể xử lý dữ liệu nhiều hơn 2 chiều."
+            },
+            {
+                "id": "d",
+                "text": "Việc dữ liệu bị giảm chiều sẽ làm mất thông tin."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Khi số chiều (số lượng đặc trưng) tăng lên, không gian dữ liệu mở rộng theo cấp số nhân khiến các điểm dữ liệu nằm rất xa nhau. Điều này làm cho việc dự đoán trở nên khó khăn và rất dễ xảy ra hiện tượng overfitting."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Hai phương pháp tiếp cận chính để Giảm chiều dữ liệu là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Phân loại (Classification) và Hồi quy (Regression)."
+            },
+            {
+                "id": "b",
+                "text": "Phép chiếu (Projection) và Học đa tạp (Manifold Learning)."
+            },
+            {
+                "id": "c",
+                "text": "Học có giám sát (Supervised) và Học không giám sát (Unsupervised)."
+            },
+            {
+                "id": "d",
+                "text": "Bagging và Boosting."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Projection chiếu thẳng dữ liệu từ không gian cao xuống không gian thấp (ví dụ PCA). Manifold Learning cố gắng 'trải phẳng' một cấu trúc uốn lượn phức tạp (ví dụ con cuộn Swiss roll) trong không gian cao xuống không gian thấp."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm về Đa tạp (Manifold):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Đa tạp (Manifold) 2D là một hình dạng 2D có thể bị uốn cong và xoắn lại trong không gian 3D chiều cao hơn. Ví dụ điển hình nhất là tập dữ liệu <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Giả thuyết Đa tạp (Manifold Hypothesis) cho rằng hầu hết các tập dữ liệu có số chiều rất cao trong thực tế thực chất lại nằm rất gần với một đa tạp có số chiều <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hơn nhiều.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Cuộn Thụy Sĩ (Swiss Roll)"
+            },
+            {
+                "id": "w2",
+                "text": "Thấp (Lower)"
+            },
+            {
+                "id": "w3",
+                "text": "Cao (Higher)"
+            },
+            {
+                "id": "w4",
+                "text": "Hình vuông (Square)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Ví dụ Swiss Roll: Một tờ giấy 2D bị cuộn tròn lại trong không gian 3D. Giả thuyết đa tạp tin rằng dù dữ liệu ảnh có 1 triệu chiều (pixel), cấu trúc thực sự của bức ảnh đó có thể chỉ biểu diễn được bằng vài chục chiều."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thuật toán Giảm chiều dữ liệu nào là phổ biến nhất hiện nay?",
+        "options": [
+            {
+                "id": "a",
+                "text": "LLE (Locally Linear Embedding)."
+            },
+            {
+                "id": "b",
+                "text": "PCA (Phân tích Thành phần Chính - Principal Component Analysis)."
+            },
+            {
+                "id": "c",
+                "text": "T-SNE."
+            },
+            {
+                "id": "d",
+                "text": "Isomap."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "PCA là thuật toán giảm chiều quốc dân. Nó hoạt động bằng cách xác định các siêu phẳng gần nhất với dữ liệu và chiếu (projection) dữ liệu lên đó."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi chọn trục để chiếu dữ liệu lên trong PCA, mục tiêu cốt lõi của PCA là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tối đa hóa số lượng điểm dữ liệu bị loại bỏ."
+            },
+            {
+                "id": "b",
+                "text": "Tìm trục bảo toàn được PHƯƠNG SAI (Variance) tối đa. Tức là trục mà khi chiếu xuống, các điểm dữ liệu trải rộng ra nhiều nhất, mất ít thông tin nhất."
+            },
+            {
+                "id": "c",
+                "text": "Tối thiểu hóa phương sai của dữ liệu."
+            },
+            {
+                "id": "d",
+                "text": "Tìm trục song song với tất cả các đặc trưng ban đầu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Hãy tưởng tượng chiếu một nhóm điểm xuống 1 đường thẳng. Nếu đường thẳng đó song song với hướng phân bố của nhóm điểm (phương sai lớn nhất), các điểm chiếu xuống sẽ không bị chồng chéo lên nhau, giữ lại được hình dáng (thông tin) ban đầu."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các khái niệm liên quan đến Phân tích Thành phần Chính (PCA):",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Principal Component (Thành phần chính)"
+            },
+            {
+                "id": "l2",
+                "text": "SVD (Singular Value Decomposition)"
+            },
+            {
+                "id": "l3",
+                "text": "Explained Variance Ratio (Tỷ lệ phương sai giải thích)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Trục (véc-tơ đơn vị) mà dữ liệu được chiếu lên. PC thứ nhất mang phương sai lớn nhất, PC thứ 2 trực giao với PC thứ 1..."
+            },
+            {
+                "id": "r2",
+                "text": "Kỹ thuật phân tích ma trận toán học tiêu chuẩn mà PCA sử dụng để tìm ra các Thành phần chính."
+            },
+            {
+                "id": "r3",
+                "text": "Cho biết tỷ lệ thông tin (phương sai) của tập dữ liệu gốc nằm dọc theo từng Thành phần chính là bao nhiêu %."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "PCA sử dụng toán học SVD để tìm các trục (PC). Sau đó, nó tính toán xem mỗi trục này lưu giữ bao nhiêu % thông tin (Explained variance)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Scikit-Learn, CÁCH TỐT NHẤT để chọn số chiều (n_components) phù hợp khi dùng PCA là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Luôn luôn đặt `n_components = 2` để có thể vẽ đồ thị 2D."
+            },
+            {
+                "id": "b",
+                "text": "Đặt `n_components` là một số thập phân từ 0.0 đến 1.0 (ví dụ `n_components=0.95`). Scikit-Learn sẽ tự động tính toán số chiều tối thiểu cần thiết để bảo toàn được 95% phương sai (thông tin) ban đầu."
+            },
+            {
+                "id": "c",
+                "text": "Đoán bừa một số nguyên và kiểm tra lại."
+            },
+            {
+                "id": "d",
+                "text": "Luôn chia đôi số lượng chiều ban đầu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Thay vì tự tính toán cộng dồn Explained Variance Ratio, bạn chỉ cần báo cho sklearn biết bạn muốn giữ lại bao nhiêu phần trăm thông tin (VD: 95%). Nó sẽ tự chọn số nguyên n chiều tối ưu."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Quy trình sử dụng PCA để Nén và Giải nén dữ liệu hình ảnh (ví dụ: MNIST):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tập dữ liệu gốc có 784 chiều (pixel) cho mỗi bức ảnh."
+            },
+            {
+                "id": "2",
+                "text": "Sử dụng PCA(n_components=0.95) và hàm transform() để NÉN dữ liệu xuống chỉ còn khoảng 154 chiều (giữ lại 95% thông tin)."
+            },
+            {
+                "id": "3",
+                "text": "Sử dụng hàm inverse_transform() của PCA để GIẢI NÉN dữ liệu từ 154 chiều ngược trở lại 784 chiều."
+            },
+            {
+                "id": "4",
+                "text": "Bức ảnh giải nén (Reconstruction) sẽ trông gần giống ảnh gốc nhưng hơi mờ hơn một chút vì đã mất 5% thông tin."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "PCA là một công cụ nén (compression) tuyệt vời. Nó giảm dung lượng lưu trữ cực mạnh (từ 784 xuống 154) mà hình dáng con số vẫn được giữ nguyên."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Hạn chế của PCA truyền thống và Giải pháp:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Lớp `PCA` thông thường sử dụng thuật toán SVD toàn bộ, yêu cầu TẤT CẢ dữ liệu huấn luyện phải nằm vừa trong <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> máy tính. Nếu tập dữ liệu quá khổng lồ, bạn phải sử dụng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Thuật toán này chia tập dữ liệu thành các mini-batch (nhóm nhỏ) và huấn luyện từng nhóm một cách tuần tự (rất hữu ích cho Online Learning).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Bộ nhớ (RAM)"
+            },
+            {
+                "id": "w2",
+                "text": "Ổ cứng (HDD/SSD)"
+            },
+            {
+                "id": "w3",
+                "text": "Incremental PCA (IPCA)"
+            },
+            {
+                "id": "w4",
+                "text": "Randomized PCA"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "SVD tiêu chuẩn tốn RAM cực kì. Khi dữ liệu quá lớn để nhét vào RAM, giải pháp duy nhất là chia nhỏ dữ liệu ra và đưa vào từ từ (incremental)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Thuật toán Randomized PCA (PCA ngẫu nhiên) trong Scikit-Learn hoạt động dựa trên nguyên lý nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó lấy ngẫu nhiên các hàng dữ liệu (như Bagging)."
+            },
+            {
+                "id": "b",
+                "text": "Nó dùng một thuật toán ngẫu nhiên (stochastic) cực nhanh để TÌM RA ƯỚC LƯỢNG (approximate) cho d thành phần chính đầu tiên. Khi d (số chiều mục tiêu) nhỏ hơn nhiều so với n (số chiều gốc), nó nhanh hơn SVD tiêu chuẩn rất nhiều."
+            },
+            {
+                "id": "c",
+                "text": "Nó thêm nhiễu ngẫu nhiên vào dữ liệu để mô hình mạnh mẽ hơn."
+            },
+            {
+                "id": "d",
+                "text": "Nó là Rừng ngẫu nhiên (Random Forest) kết hợp với PCA."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Randomized PCA là phiên bản 'tính xấp xỉ/ước lượng' của PCA. Bằng cách không cố tính toán số liệu chính xác tuyệt đối mà dùng tính ngẫu nhiên, tốc độ của nó nhanh hơn SVD thông thường theo cấp số nhân khi cần giảm số chiều xuống rất thấp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Khoảng cách tái tạo (Reconstruction Error) trong PCA là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là thời gian cần thiết để giải nén dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Là khoảng cách bình phương trung bình (MSE) giữa Dữ liệu Gốc ban đầu và Dữ liệu đã được nén rồi Giải nén (Reconstructed data). Khoảng cách này càng nhỏ nghĩa là mô hình giữ được càng nhiều thông tin gốc."
+            },
+            {
+                "id": "c",
+                "text": "Là khoảng cách giữa điểm lớn nhất và nhỏ nhất của đa tạp."
+            },
+            {
+                "id": "d",
+                "text": "Là lỗi lập trình do thiếu RAM."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi bạn ép dữ liệu từ 3D xuống 2D (mất thông tin chiều Z), rồi phồng lại thành 3D, tọa độ mới sẽ bị sai lệch so với tọa độ cũ. Sự sai lệch đó chính là Reconstruction Error."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các thuật toán giảm chiều với tính chất cốt lõi của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "PCA (Phân tích Thành phần Chính)"
+            },
+            {
+                "id": "l2",
+                "text": "LLE (Locally Linear Embedding)"
+            },
+            {
+                "id": "l3",
+                "text": "t-SNE (t-Distributed Stochastic Neighbor Embedding)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Phương pháp Phép chiếu tuyến tính (Linear Projection). Tìm trục có phương sai lớn nhất."
+            },
+            {
+                "id": "r2",
+                "text": "Phương pháp Học đa tạp phi tuyến (Non-Linear Manifold). Cố gắng đo khoảng cách của mỗi điểm huấn luyện với các điểm HÀNG XÓM LÂN CẬN (local) của nó, rồi bảo tồn khoảng cách lân cận đó ở không gian chiều thấp."
+            },
+            {
+                "id": "r3",
+                "text": "Chủ yếu dùng để Trực quan hóa (Visualization) cụm dữ liệu ở 2D hoặc 3D. Giữ các điểm giống nhau ở GẦN nhau, đẩy các điểm khác nhau ra XA."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "PCA là tuyến tính. LLE là phi tuyến dựa trên khoảng cách láng giềng gần. t-SNE cực đỉnh trong việc vẽ đồ thị phân cụm, nhưng tính toán cực chậm."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Thuật toán LLE (Locally Linear Embedding) thực hiện quá trình 'mở cuộn' (unrolling) ví dụ Swiss Roll như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó chiếu thẳng tia X qua cuộn Swiss roll giống như PCA."
+            },
+            {
+                "id": "b",
+                "text": "Nó hoạt động bằng cách đo mối quan hệ tuyến tính của mỗi điểm với các láng giềng gần nhất (k-nearest neighbors) của nó, sau đó tìm một không gian chiều thấp nơi các mối quan hệ CỤC BỘ này được bảo tồn tốt nhất."
+            },
+            {
+                "id": "c",
+                "text": "Nó sử dụng mạng nơ-ron hồi quy (RNN)."
+            },
+            {
+                "id": "d",
+                "text": "Nó tự động phân lớp dữ liệu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "LLE hoàn toàn bỏ qua bức tranh toàn cảnh (global). Nó chỉ yêu cầu mỗi điểm dữ liệu phải giữ khoảng cách không đổi với những 'người hàng xóm' sát vách của nó khi bị ném xuống không gian 2D. Kết quả là cả cuộn dây sẽ tự động được trải phẳng."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Dễ",
+        "question": "Tính chất quan trọng trước khi dùng PCA:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Một bước tiền xử lý CỰC KỲ QUAN TRỌNG trước khi áp dụng PCA là dữ liệu bắt buộc phải được <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Trong Scikit-Learn, lớp PCA sẽ tự động đảm nhiệm việc Đưa dữ liệu về tâm (Centering - trừ đi giá trị trung bình). Tuy nhiên, nếu các đặc trưng có thang đo khác nhau (ví dụ: mét và kilomet), bạn bắt buộc phải dùng thêm công cụ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trước khi đưa dữ liệu vào PCA.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Co giãn (Scale/Standardize)"
+            },
+            {
+                "id": "w2",
+                "text": "Xóa bỏ ngoại lệ (Remove outliers)"
+            },
+            {
+                "id": "w3",
+                "text": "StandardScaler"
+            },
+            {
+                "id": "w4",
+                "text": "PolynomialFeatures"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Vì PCA tìm phương sai lớn nhất. Nếu 1 đặc trưng đo bằng milimet (số rất lớn), PCA sẽ hiểu nhầm đó là hướng có phương sai lớn nhất. Do đó luôn phải StandardScaler trước khi dùng PCA."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Một nhược điểm lớn của các thuật toán Học Đa tạp (Manifold Learning) như LLE, Isomap hay t-SNE so với PCA là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chúng không có khả năng nén dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Chúng không có hàm `inverse_transform()`. Rất khó (hoặc không thể) để đưa dữ liệu mới từ không gian chiều thấp quay ngược trở lại không gian chiều cao gốc ban đầu."
+            },
+            {
+                "id": "c",
+                "text": "Chúng chỉ chạy được với dữ liệu văn bản."
+            },
+            {
+                "id": "d",
+                "text": "Chúng chỉ hỗ trợ giảm xuống đúng 2 chiều."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "PCA có ma trận toán học rõ ràng để nhân ngược lại (inverse_transform). Các mô hình phi tuyến (Manifold) tính toán dựa trên tối ưu khoảng cách, do đó chúng một đi không trở lại, không thể khôi phục ảnh gốc từ dữ liệu đã nén."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Thuật toán LLE hoạt động như thế nào qua 2 bước:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Bước 1. Lập mô hình quan hệ cục bộ: Đối với mỗi điểm dữ liệu, xác định k láng giềng gần nhất của nó."
+            },
+            {
+                "id": "2",
+                "text": "Tính toán Trọng số (W) sao cho điểm dữ liệu đó có thể được tái tạo lại bằng một tổ hợp tuyến tính từ chính k láng giềng này."
+            },
+            {
+                "id": "3",
+                "text": "Bước 2. Chuyển vào không gian mới: Cố định ma trận Trọng số (W) vừa tính được ở không gian chiều cao."
+            },
+            {
+                "id": "4",
+                "text": "Tìm kiếm Tọa độ mới cho các điểm dữ liệu trong không gian chiều thấp, sao cho mối quan hệ tuyến tính (Trọng số W) đó vẫn được giữ nguyên (tối thiểu hóa sai số)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "LLE là: 'Ở nhà cũ (chiều cao), tôi đứng cách anh hàng xóm bao xa. Khi chuyển sang nhà mới (chiều thấp), tôi phải đứng cách anh hàng xóm đúng bằng chừng đó khoảng cách'."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Scikit-Learn, tham số `svd_solver` của PCA dùng để làm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dùng để chuyển PCA thành Neural Network."
+            },
+            {
+                "id": "b",
+                "text": "Kiểm soát thuật toán phân tích SVD. 'auto' (mặc định) sẽ tự động chọn 'randomized' nếu dữ liệu cực lớn, và chọn 'full' (toàn bộ) nếu dữ liệu nhỏ."
+            },
+            {
+                "id": "c",
+                "text": "Chỉ định số lượng CPU Core được dùng."
+            },
+            {
+                "id": "d",
+                "text": "Chỉ định có tự động StandardScaler hay không."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "svd_solver='auto' rất thông minh. Nếu m > 500 và n > 500 và số lượng component muốn lấy ít hơn 80% ban đầu, nó sẽ tự xài Randomized PCA để tăng tốc. Nếu không nó xài full SVD truyền thống."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép thuật toán Giảm chiều với ĐIỂM YẾU lớn nhất của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "PCA (Phân tích thành phần chính)"
+            },
+            {
+                "id": "l2",
+                "text": "LLE (Locally Linear Embedding)"
+            },
+            {
+                "id": "l3",
+                "text": "t-SNE"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Là mô hình Tuyến tính, do đó KHÔNG THỂ trải phẳng các cấu trúc phi tuyến phức tạp (như cuộn Swiss roll, PCA sẽ làm dập nát dữ liệu)."
+            },
+            {
+                "id": "r2",
+                "text": "Mở rộng rất kém với các bộ dữ liệu khổng lồ (độ phức tạp O(m^2)). Không có inverse_transform."
+            },
+            {
+                "id": "r3",
+                "text": "Tốn cực kỳ nhiều thời gian tính toán. Chỉ nên dùng để vẽ đồ thị 2D, 3D chứ hiếm khi dùng làm bước tiền xử lý cho mô hình khác."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "PCA không giải quyết được hình phi tuyến. LLE giải được phi tuyến nhưng chậm vô đối với dữ liệu cực lớn. t-SNE chuyên dùng vẽ hình."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Lợi ích của Giảm chiều dữ liệu:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Mục đích chính của việc Giảm chiều dữ liệu trước khi đưa vào mô hình Học máy (như Random Forest, SVM) là để <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thời gian huấn luyện. Tuy nhiên, trong một số trường hợp rất hiếm, việc lọc bỏ nhiễu bằng PCA còn có thể giúp mô hình đạt được độ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> cao hơn đôi chút, mặc dù điều này không phổ biến bằng việc tốc độ được cải thiện.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Tăng tốc (Speed up)"
+            },
+            {
+                "id": "w2",
+                "text": "Làm chậm (Slow down)"
+            },
+            {
+                "id": "w3",
+                "text": "Chính xác (Accuracy)"
+            },
+            {
+                "id": "w4",
+                "text": "Kích thước mô hình (Size)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Giảm chiều luôn làm mất thông tin, nên thường độ chính xác sẽ giảm một tí tẹo, bù lại tốc độ tăng gấp nhiều lần. Đôi khi nếu chiều bị vứt đi toàn là nhiễu, độ chính xác có thể tăng lên."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Mục đích chính của việc sử dụng các thuật toán như t-SNE hay PCA với `n_components=2` hoặc `3` là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để Trực quan hóa dữ liệu (Data Visualization). Giúp con người có thể vẽ được đồ thị 2D, 3D và quan sát bằng mắt thường cấu trúc ẩn của dữ liệu phức tạp."
+            },
+            {
+                "id": "b",
+                "text": "Để mã hóa bảo mật thông tin."
+            },
+            {
+                "id": "c",
+                "text": "Để thay thế hoàn toàn thuật toán học máy dự đoán phân loại."
+            },
+            {
+                "id": "d",
+                "text": "Để tăng số chiều dữ liệu lên mức cao nhất."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Mắt người chỉ nhìn được tối đa 3 chiều. Giảm chiều dữ liệu xuống 2 hoặc 3 chiều là cách duy nhất để vẽ biểu đồ cho các bộ dữ liệu 100 chiều."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Kỹ thuật LDA (Linear Discriminant Analysis) - Phân tích Phân biệt Tuyến tính - khác với PCA ở điểm nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "LDA và PCA là một, chỉ khác tên gọi."
+            },
+            {
+                "id": "b",
+                "text": "PCA là phương pháp KHÔNG GIÁM SÁT (không quan tâm nhãn của dữ liệu, chỉ tìm hướng có phương sai lớn). LDA là phương pháp CÓ GIÁM SÁT, nó học các TRỤC giúp tối đa hóa KHOẢNG CÁCH GIỮA CÁC LỚP, cực kỳ tốt để giảm chiều trước khi dùng bộ phân loại (Classifier)."
+            },
+            {
+                "id": "c",
+                "text": "LDA chỉ dùng cho Học sâu."
+            },
+            {
+                "id": "d",
+                "text": "LDA là phương pháp giảm chiều phi tuyến."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Vì LDA nhìn thấy Nhãn (Labels), nó sẽ xoay dữ liệu sao cho các lớp tách rời nhau xa nhất có thể. PCA thì 'mù' nhãn, nó chỉ cần điểm phân bố rộng là được, đôi khi khiến 2 lớp đè lên nhau."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Sử dụng Incremental PCA với dữ liệu không vừa bộ nhớ bằng NumPy `memmap`:",
+        "instruction": "(Sắp xếp các bước để xử lý file dữ liệu khổng lồ trên ổ cứng)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tạo một mảng numpy map trực tiếp vào file trên ổ cứng (numpy.memmap) mà không load toàn bộ vào RAM."
+            },
+            {
+                "id": "2",
+                "text": "Khởi tạo đối tượng IncrementalPCA (ví dụ n_components=154)."
+            },
+            {
+                "id": "3",
+                "text": "Lặp qua các batch dữ liệu nhỏ (ví dụ mỗi batch lấy 1000 hàng từ memmap)."
+            },
+            {
+                "id": "4",
+                "text": "Gọi hàm partial_fit(batch) ở mỗi vòng lặp để cập nhật PCA dần dần."
+            },
+            {
+                "id": "5",
+                "text": "Sau khi lặp hết file, gọi hàm transform() để lấy kết quả giảm chiều."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "IPCA dùng hàm partial_fit (huấn luyện một phần) thay vì fit. Bạn phải tự code vòng lặp để đút từng mẩu dữ liệu nhỏ (batch) cho nó học dần."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Python Scikit-Learn, thuộc tính nào của `PCA` dùng để truy xuất các trục Thành phần Chính (Principal Components) đã được tính toán?",
+        "options": [
+            {
+                "id": "a",
+                "text": ".components_"
+            },
+            {
+                "id": "b",
+                "text": ".explained_variance_ratio_"
+            },
+            {
+                "id": "c",
+                "text": ".feature_importances_"
+            },
+            {
+                "id": "d",
+                "text": ".eigenvalues_"
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Thuộc tính `components_` chứa ma trận các véc-tơ đơn vị của các trục thành phần chính (mỗi hàng tương ứng với 1 chiều PC)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Hiện tượng 'Giả thuyết Đa tạp' có luôn đúng?",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Mặc dù Giả thuyết đa tạp cho rằng việc giảm chiều sẽ làm bài toán đơn giản hơn, nhưng điều này KHÔNG PHẢI LUÔN LUÔN ĐÚNG. Đôi khi, sau khi 'mở cuộn' một đa tạp phức tạp (ví dụ từ 3D xuống 2D), ranh giới phân loại (decision boundary) của bài toán thực tế lại trở nên <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> và khó phân tách hơn ở không gian chiều thấp so với ở không gian chiều <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> gốc.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Phức tạp hơn (More complex)"
+            },
+            {
+                "id": "w2",
+                "text": "Đơn giản hơn (Simpler)"
+            },
+            {
+                "id": "w3",
+                "text": "Cao (High)"
+            },
+            {
+                "id": "w4",
+                "text": "Thấp (Low)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Nếu ranh giới quyết định (Decision Boundary) trong không gian 3D vốn đã là một mặt phẳng đơn giản, thì việc ép nó thành 2D có thể làm các điểm đè lên nhau, khiến ranh giới trở nên ngoằn ngoèo khó tách."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép thuật toán Phân tích Đa tạp với đặc điểm:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "MDS (Multidimensional Scaling)"
+            },
+            {
+                "id": "l2",
+                "text": "Isomap"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Giảm chiều dữ liệu trong khi cố gắng bảo toàn KHOẢNG CÁCH TUYỆT ĐỐI (tuyến tính) giữa các điểm."
+            },
+            {
+                "id": "r2",
+                "text": "Tạo một đồ thị (graph) nối các láng giềng gần nhất, rồi giảm chiều trong khi cố gắng bảo toàn KHOẢNG CÁCH ĐƯỜNG ĐI NGẮN NHẤT (Geodesic distance) dọc theo đồ thị."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2"
+        },
+        "explanation": "MDS giữ nguyên khoảng cách đường chim bay. Isomap giữ nguyên khoảng cách 'đi bộ' qua các điểm trên bề mặt đa tạp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "PCA là thuật toán học máy có giám sát (Supervised Learning). Đúng hay sai?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Đúng, vì nó cần nhãn (labels) để tính phương sai."
+            },
+            {
+                "id": "b",
+                "text": "Sai, PCA hoàn toàn là một thuật toán Không giám sát (Unsupervised Learning). Nó không quan tâm đến biến mục tiêu (y) mà chỉ phân tích đặc trưng đầu vào (X)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Vì là Unsupervised, PCA hàm transform/fit chỉ nhận X làm tham số đầu vào. Nó không hề biết điểm dữ liệu đó thuộc lớp chó hay lớp mèo."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi bạn dùng `PCA(n_components=0.95)`, bạn có thể kiểm tra xem mô hình đã chọn giảm dữ liệu xuống còn bao nhiêu chiều thực tế bằng cách nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Sử dụng thuộc tính `.n_components_` của mô hình sau khi gọi `fit()`."
+            },
+            {
+                "id": "b",
+                "text": "Đếm thủ công số lượng biến."
+            },
+            {
+                "id": "c",
+                "text": "Số lượng chiều luôn luôn là 95."
+            },
+            {
+                "id": "d",
+                "text": "Scikit-Learn không lưu thông tin này."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Thuộc tính có đuôi `_` được sklearn sinh ra sau khi hàm fit() hoàn tất. `.n_components_` (số nguyên) sẽ cho biết PCA đã quyết định chọn bao nhiêu chiều để đáp ứng được 95%."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Khái niệm 'Intrinsic Dimensionality' (Số chiều nội tại) nghĩa là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Là số lượng cột (features) tối đa của file CSV."
+            },
+            {
+                "id": "b",
+                "text": "Là số lượng chiều (Kích thước) THỰC SỰ cần thiết (tối thiểu) để biểu diễn một tập dữ liệu mà không làm mất đi các thông tin cấu trúc quan trọng. Dù dữ liệu được lưu dưới dạng ảnh 1000 pixel (chiều), số chiều nội tại của nó có thể chỉ là 3."
+            },
+            {
+                "id": "c",
+                "text": "Là một hằng số bằng 2."
+            },
+            {
+                "id": "d",
+                "text": "Là số lượng dữ liệu bị thiếu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Ví dụ 1 bức ảnh chụp quả bóng di chuyển trên một đường thẳng. Dù có 1 triệu pixel, trạng thái thực sự của hệ thống chỉ cần 1 chiều duy nhất (Tọa độ X của quả bóng). Đó là số chiều nội tại."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Pipeline kết hợp PCA:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có thể dùng PCA như một bước <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> trong một Pipeline. Sau khi giảm số lượng lớn đặc trưng dư thừa (ví dụ từ 784 pixel xuống còn 154), dữ liệu nén sẽ được chuyển cho <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> ở cuối Pipeline (như Random Forest hay SVM) để huấn luyện nhanh và nhẹ hơn.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Tiền xử lý (Preprocessing)"
+            },
+            {
+                "id": "w2",
+                "text": "Dự đoán (Predictor)"
+            },
+            {
+                "id": "w3",
+                "text": "Bộ phân loại (Classifier)"
+            },
+            {
+                "id": "w4",
+                "text": "Siêu tham số (Hyperparameter)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "PCA không đưa ra dự đoán nhãn. Nó chỉ biến đổi (Transformer) dữ liệu X thành X_reduced. Do đó nó luôn đứng trước Classifier trong Pipeline."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Dễ",
+        "question": "Trình tự chọn số chiều tối ưu bằng cách vẽ đồ thị (Elbow Curve):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Huấn luyện PCA trên tập dữ liệu mà không giới hạn n_components (mặc định lấy hết số chiều)."
+            },
+            {
+                "id": "2",
+                "text": "Sử dụng hàm np.cumsum(pca.explained_variance_ratio_) để tính tích lũy phương sai giải thích."
+            },
+            {
+                "id": "3",
+                "text": "Vẽ biểu đồ đường: Trục X là số lượng chiều (Dimensions), Trục Y là % Phương sai tích lũy."
+            },
+            {
+                "id": "4",
+                "text": "Quan sát biểu đồ, tìm vị trí 'Khửu tay' (Elbow) nơi đồ thị bắt đầu đi ngang không tăng thêm giá trị nhiều, và chọn số chiều tại đó."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Phương pháp Elbow rất trực quan. Nếu tới chiều thứ 100 mà giữ được 95% thông tin, từ chiều 101 tới 700 chỉ giữ thêm 5%, thì ta chặt bỏ đuôi đó đi."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Trắc Nghiệm Chương 6</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --success: #1e8e3e;
+            --error: #d93025;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e8eaed;
+            border-radius: 8px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: var(--primary);
+            background-color: #f1f3f4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #e8f0fe;
+        }
+        
+        .option-label.disabled {
+            cursor: default;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .option-label.disabled .option-input {
+            cursor: default;
+        }
+
+        /* Matching */
+        .matching-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .matching-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .matching-left {
+            flex: 1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .matching-right {
+            flex: 2;
+        }
+
+        .matching-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        
+        .matching-select:focus {
+            border-color: var(--primary);
+        }
+        
+        .matching-select:disabled {
+            opacity: 1;
+            color: var(--text);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Ordering */
+        .ordering-pool, .ordering-selected {
+            min-height: 50px;
+            padding: 15px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ordering-selected {
+            border-color: var(--primary);
+            background-color: #f8faff;
+        }
+
+        .order-item {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-item:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .order-item.disabled {
+            cursor: default;
+        }
+        
+        .ordering-selected .order-item::before {
+            content: counter(order-counter) ". ";
+            counter-increment: order-counter;
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ordering-selected {
+            counter-reset: order-counter;
+        }
+
+        /* Fill in Blanks */
+        .fill-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .blank-slot {
+            display: inline-block;
+            min-width: 150px;
+            height: 30px;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 5px;
+            vertical-align: bottom;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0 10px;
+            background-color: #f8faff;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.2s;
+        }
+        
+        .blank-slot.active {
+            background-color: #e8f0fe;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .blank-slot.disabled {
+            cursor: default;
+            background-color: transparent;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .word-item:hover:not(.disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .word-item.used {
+            opacity: 0.5;
+            pointer-events: none;
+            background: #e8eaed;
+        }
+        
+        .word-item.disabled {
+            cursor: default;
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8ab4f8;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f1f3f4;
+            color: var(--text);
+        }
+        
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .feedback-container.correct {
+            background-color: #e6f4ea;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-container.incorrect {
+            background-color: #fce8e6;
+            border: 1px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct .feedback-title { color: var(--success); }
+        .incorrect .feedback-title { color: var(--error); }
+
+        .explanation {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e8eaed 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-screen">
+        <div class="header">
+            <span id="question-counter" style="font-weight: 600; color: var(--text-secondary);">Câu hỏi</span>
+            <span class="badge" style="background: #e8eaed; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;" id="difficulty-badge">Dễ</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="question-content">
+            <!-- Content gets injected here -->
+        </div>
+
+        <div class="feedback-container" id="feedback">
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="explanation" id="explanation"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-outline" id="btn-prev" style="min-width: 110px;" title="Câu trước">&lt; Quay lại</button>
+            <button class="btn btn-primary" id="btn-check" style="flex-grow: 1; max-width: 250px; margin: 0 15px;">Kiểm tra</button>
+            <button class="btn btn-outline" id="btn-next" style="min-width: 110px;" title="Câu tiếp theo">Tiếp theo &gt;</button>
+        </div>
+    </div>
+    
+    <div id="result-screen" class="result-screen" style="display: none;">
+        <h2>Chúc mừng bạn đã hoàn thành!</h2>
+        <div class="score-circle" id="score-circle">
+            <div class="score-inner">
+                <span class="score-text" id="final-score">0</span>
+                <span class="score-label">Điểm</span>
+            </div>
+        </div>
+        <p id="result-message" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-secondary);"></p>
+        <button class="btn btn-outline" onclick="location.reload()">Làm lại bài kiểm tra</button>
+    </div>
+</div>
+
+<script>
+    // DATA INJECTED HERE
+    const questions = [
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thuật toán Cây quyết định (Decision Trees) có thể thực hiện được những loại bài toán nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chỉ Phân loại (Classification)."
+            },
+            {
+                "id": "b",
+                "text": "Phân loại (Classification), Hồi quy (Regression) và Phân loại đa đầu ra (Multioutput)."
+            },
+            {
+                "id": "c",
+                "text": "Chỉ Hồi quy (Regression)."
+            },
+            {
+                "id": "d",
+                "text": "Chỉ Dịch máy (Machine Translation)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Cây quyết định rất linh hoạt, có thể xử lý tốt cả Phân loại và Hồi quy, đồng thời là thành phần cơ bản của thuật toán Rừng ngẫu nhiên (Random Forest)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Lợi thế rất lớn của Cây quyết định về mặt tiền xử lý dữ liệu là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó yêu cầu dữ liệu phải được chuẩn hóa (Standardization) cực kỳ nghiêm ngặt."
+            },
+            {
+                "id": "b",
+                "text": "Nó gần như không yêu cầu chuẩn bị dữ liệu. Cây quyết định KHÔNG cần co giãn đặc trưng (feature scaling) hay đưa dữ liệu về tâm (centering)."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự động loại bỏ tất cả các điểm nhiễu (outliers)."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ chạy được trên GPU."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khác với SVM hay Gradient Descent rất nhạy cảm với thang đo dữ liệu, Cây quyết định chỉ quan tâm đến các ngưỡng cắt (splits), do đó việc Scale dữ liệu là không cần thiết."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Dễ",
+        "question": "Cấu trúc của một Cây quyết định:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong Cây quyết định, thuật toán bắt đầu từ nút trên cùng gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nếu nút này hỏi một câu hỏi (ví dụ 'Chiều dài cánh hoa < 2.45cm?') và chia dữ liệu ra các hướng khác nhau, nó được gọi là nút trung gian. Cuối cùng, khi thuật toán đi đến một nút không hỏi thêm câu hỏi nào nữa mà đưa ra luôn kết quả dự đoán, đó được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Nút gốc (Root Node)"
+            },
+            {
+                "id": "w2",
+                "text": "Nút lá (Leaf Node)"
+            },
+            {
+                "id": "w3",
+                "text": "Nút nhánh (Branch Node)"
+            },
+            {
+                "id": "w4",
+                "text": "Nút ẩn (Hidden Node)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Bắt đầu ở Root Node (Nút gốc), đi qua các điều kiện, và kết thúc ở Leaf Node (Nút lá - nơi chứa dự đoán cuối cùng)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong hình vẽ đồ thị của Cây quyết định, thuộc tính `value=[0, 49, 5]` của một nút lá có ý nghĩa gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Đó là điểm số của 3 thuật toán đang cạnh tranh nhau."
+            },
+            {
+                "id": "b",
+                "text": "Đó là toạ độ hình học 3D của nút lá đó."
+            },
+            {
+                "id": "c",
+                "text": "Nó cho biết có bao nhiêu mẫu huấn luyện (training instances) của TỪNG LỚP rơi vào nút lá đó. (Ví dụ: 0 mẫu lớp 1, 49 mẫu lớp 2, 5 mẫu lớp 3)."
+            },
+            {
+                "id": "d",
+                "text": "Nó là độ sâu (depth) tối đa của cây."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Thuộc tính 'value' lưu mảng đếm số lượng mẫu của từng lớp tại nút đó. Dựa vào 'value', cây sẽ gán xác suất cao nhất cho lớp có số mẫu nhiều nhất."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm 'White-box model' (Mô hình Hộp trắng) và 'Black-box model' (Mô hình Hộp đen) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Hộp trắng là học máy, hộp đen là học sâu."
+            },
+            {
+                "id": "b",
+                "text": "Hộp trắng (như Cây quyết định) giải thích rõ ràng TẠI SAO nó đưa ra quyết định đó. Hộp đen (như Rừng ngẫu nhiên, Mạng Nơ-ron) đưa ra dự đoán xuất sắc nhưng con người rất khó hiểu CÁCH nó suy luận."
+            },
+            {
+                "id": "c",
+                "text": "Hộp trắng xử lý ảnh sáng, hộp đen xử lý ảnh tối."
+            },
+            {
+                "id": "d",
+                "text": "Hộp trắng dễ bị hack, hộp đen bảo mật tuyệt đối."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Cây quyết định rất trực quan và dễ diễn giải quy tắc (NẾU... THÌ...), nên được gọi là hộp trắng (White-box)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các công thức đo lường độ 'không tinh khiết' (Impurity) phổ biến trong Cây quyết định:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Gini Impurity = 0"
+            },
+            {
+                "id": "l2",
+                "text": "Gini Impurity (Độ tạp chất Gini)"
+            },
+            {
+                "id": "l3",
+                "text": "Entropy"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Nút đó là 'tinh khiết' hoàn toàn (tất cả các mẫu trong nút đều thuộc về MỘT LỚP DUY NHẤT)."
+            },
+            {
+                "id": "r2",
+                "text": "Thước đo mặc định của Scikit-Learn. Thường tính toán nhanh hơn một chút vì không dùng hàm Log."
+            },
+            {
+                "id": "r3",
+                "text": "Thước đo bắt nguồn từ Nhiệt động lực học và Lý thuyết thông tin (Claude Shannon). Dùng hàm Log để phạt nặng các nút hỗn hợp."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Gini = 0 nghĩa là 100% tinh khiết. Gini mặc định của sklearn. Entropy là khái niệm lý thuyết thông tin, có xu hướng tạo ra cây cân bằng hơn một chút so với Gini."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Đặc tính cơ bản của thuật toán CART (Classification And Regression Tree) khi huấn luyện là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó là một thuật toán 'Tham lam' (Greedy). Nó tìm kiếm điểm cắt tối ưu tại TỪNG NÚT một cách cục bộ, mà KHÔNG kiểm tra xem điểm cắt đó có dẫn đến một cái cây tối ưu nhất ở tầng cuối cùng hay không."
+            },
+            {
+                "id": "b",
+                "text": "Nó tìm ra Cây quyết định tối ưu toàn cục (Global optimum) hoàn hảo 100%."
+            },
+            {
+                "id": "c",
+                "text": "Nó tự động sử dụng Rừng ngẫu nhiên bên trong."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ cắt dữ liệu ở một độ sâu duy nhất."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Thuật toán CART phân chia đệ quy từng nút một. Vì tìm Cây tối ưu toàn cục là bài toán NP-Hoàn chỉnh (không thể tính toán nổi), nên CART buộc phải dùng chiến lược Tham lam (chọn cái tốt nhất ngay trước mắt)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Trình tự thuật toán CART phân chia dữ liệu để tạo Cây:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "CART duyệt qua tất cả các đặc trưng và tất cả các ngưỡng (threshold) của đặc trưng đó."
+            },
+            {
+                "id": "2",
+                "text": "CART chọn cặp (đặc trưng, ngưỡng) sao cho làm GIẢM độ không tinh khiết Gini nhiều nhất ở 2 nút con."
+            },
+            {
+                "id": "3",
+                "text": "CART chia tập huấn luyện thành 2 tập con dựa trên cặp (đặc trưng, ngưỡng) vừa chọn."
+            },
+            {
+                "id": "4",
+                "text": "Thuật toán lặp lại đệ quy quá trình này cho đến khi đạt độ sâu tối đa (max_depth) hoặc không thể giảm thêm độ tạp chất."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Quy trình: Duyệt qua mọi đặc trưng/ngưỡng -> Chọn cái tốt nhất -> Cắt đôi dữ liệu -> Lặp lại đệ quy."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Làm thế nào Cây quyết định đưa ra xác suất (Probability) của một mẫu thử đối với từng lớp?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Sử dụng hàm Softmax ở cuối."
+            },
+            {
+                "id": "b",
+                "text": "Nó duyệt từ gốc đến chiếc lá chứa mẫu thử đó, rồi trả về tỷ lệ phần trăm các mẫu huấn luyện thuộc từng lớp ĐANG NẰM CÙNG TẠI CHIẾC LÁ ĐÓ."
+            },
+            {
+                "id": "c",
+                "text": "Nó nhân tất cả các ngưỡng (threshold) lại với nhau."
+            },
+            {
+                "id": "d",
+                "text": "Cây quyết định không thể trả về xác suất, chỉ trả về nhãn cứng."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Xác suất của cây quyết định đơn giản là tỷ lệ: (Số mẫu của Lớp A tại nút lá) / (Tổng số mẫu tại nút lá)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Độ phức tạp tính toán (Computational Complexity):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Để đưa ra dự đoán, Cây quyết định cực kỳ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> vì nó chỉ cần duyệt qua các nút từ gốc đến lá (Độ phức tạp $O(\\log_2(m))$ với cây cân bằng). Tuy nhiên, quá trình HUẤN LUYỆN lại tốn kém hơn nhiều, vì thuật toán CART phải so sánh tất cả các đặc trưng trên tất cả các mẫu tại từng nút. Độ phức tạp huấn luyện là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Nhanh (Fast)"
+            },
+            {
+                "id": "w2",
+                "text": "Chậm (Slow)"
+            },
+            {
+                "id": "w3",
+                "text": "$O(n \\times m \\log(m))$"
+            },
+            {
+                "id": "w4",
+                "text": "$O(1)$"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Dự đoán = Nhanh ($O(\\log_2(m))$). Huấn luyện = Chậm ($O(n \\times m \\log(m))$). Nếu $m$ (số mẫu) cực lớn, huấn luyện sẽ rất mất thời gian."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Scikit-Learn, tại sao nói Cây quyết định là một mô hình Không tham số (Non-parametric model)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì bạn không thể truyền bất kỳ tham số nào vào hàm của nó."
+            },
+            {
+                "id": "b",
+                "text": "Vì số lượng tham số KHÔNG ĐƯỢC XÁC ĐỊNH TRƯỚC trước khi huấn luyện (cây có thể mọc to nhỏ tùy thuộc vào dữ liệu). Dẫn đến nguy cơ Overfitting rất cao."
+            },
+            {
+                "id": "c",
+                "text": "Vì nó bỏ qua tất cả các tham số và chỉ dùng số nguyên."
+            },
+            {
+                "id": "d",
+                "text": "Vì nó là một mô hình tuyến tính hoàn hảo."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Mô hình tham số (như Linear Regression) có số tham số cố định (số đường thẳng). Cây quyết định không giới hạn kích thước, nó sẽ tự do mọc 'cành' ôm sát vào dữ liệu nếu không bị kiểm soát, gây quá khớp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Siêu tham số phổ biến nhất để chống quá khớp (Overfitting) cho Cây quyết định là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tăng Learning Rate."
+            },
+            {
+                "id": "b",
+                "text": "Đặt `max_depth` (độ sâu tối đa của cây). Giới hạn độ sâu giúp ngăn cây mọc quá dài và học thuộc các điểm nhiễu."
+            },
+            {
+                "id": "c",
+                "text": "Thay thế Gini bằng Entropy."
+            },
+            {
+                "id": "d",
+                "text": "Bật tính năng `fit_intercept=False`."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "max_depth là cách trực tiếp và hiệu quả nhất để chính quy hóa (regularize) một cây quyết định. (Scikit-learn mặc định max_depth=None, tức là cây mọc tự do)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép các siêu tham số (Hyperparameters) chính quy hóa của Cây quyết định với tác dụng của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "min_samples_split"
+            },
+            {
+                "id": "l2",
+                "text": "min_samples_leaf"
+            },
+            {
+                "id": "l3",
+                "text": "max_leaf_nodes"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Số lượng mẫu TỐI THIỂU phải có tại một nút để nút đó ĐƯỢC PHÉP CHIA TIẾP."
+            },
+            {
+                "id": "r2",
+                "text": "Số lượng mẫu TỐI THIỂU bắt buộc phải có ở một NÚT LÁ (nếu chia ra mà 1 bên lá có quá ít mẫu, phép chia sẽ bị hủy)."
+            },
+            {
+                "id": "r3",
+                "text": "Số lượng NÚT LÁ (leaf nodes) TỐI ĐA mà cây được phép có."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Tăng các biến bắt đầu bằng min_*, hoặc giảm các biến bắt đầu bằng max_*, sẽ làm tăng tính chính quy hóa (giảm overfitting)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Khi áp dụng Cây quyết định cho bài toán Hồi quy (Regression - dự đoán số liên tục), tại mỗi nút lá nó trả về giá trị gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Một xác suất từ 0 đến 1."
+            },
+            {
+                "id": "b",
+                "text": "Trung bình (Mean) của tất cả các giá trị mục tiêu (y) của các mẫu huấn luyện rơi vào nút lá đó."
+            },
+            {
+                "id": "c",
+                "text": "Giá trị lớn nhất của lớp đó."
+            },
+            {
+                "id": "d",
+                "text": "Hệ số góc của đường thẳng."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Trong Hồi quy, một chiếc lá không trả về class (nhãn), mà trả về giá trị Trung bình (average) của tất cả các điểm dữ liệu nằm trong chiếc lá đó."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hồi quy Cây quyết định và Overfitting:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Tương tự như Phân loại, Hồi quy bằng Cây quyết định cũng có nguy cơ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> rất cao. Nếu bạn để `max_depth=None` (không giới hạn), đồ thị dự đoán của cây sẽ có hình dạng vô số các bậc thang nhỏ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hoàn hảo tất cả các điểm dữ liệu huấn luyện, thay vì dự đoán ra một đường cong tổng quát.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Quá khớp (Overfitting)"
+            },
+            {
+                "id": "w2",
+                "text": "Chưa khớp (Underfitting)"
+            },
+            {
+                "id": "w3",
+                "text": "Bám sát (Chạm vào)"
+            },
+            {
+                "id": "w4",
+                "text": "Bỏ qua"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Cây quyết định hồi quy không vẽ đường trơn, nó vẽ các 'bậc thang'. Nếu không có max_depth, nó sẽ tạo ra hàng ngàn bậc thang li ti bám khít từng điểm dữ liệu (overfit nặng)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Đặc điểm 'Các đường ranh giới quyết định trực giao (Orthogonal decision boundaries)' của Cây quyết định nghĩa là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Cây quyết định vẽ các vòng tròn để chia dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Cây quyết định chỉ có thể tạo ra các đường cắt VUÔNG GÓC với trục tọa độ (x, y) (vì mỗi lần cắt nó chỉ xét 1 đặc trưng)."
+            },
+            {
+                "id": "c",
+                "text": "Cây quyết định có thể tự động tạo ra đường cắt chéo mọi góc độ giống như SVM."
+            },
+            {
+                "id": "d",
+                "text": "Cây quyết định sử dụng đạo hàm trực giao để tối ưu hóa."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Do nguyên lý 'Tại 1 nút, chọn 1 đặc trưng X và cắt ở ngưỡng Y', mọi đường chia của Cây quyết định đều thẳng đứng hoặc nằm ngang tạo thành các ô vuông góc (Orthogonal)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Vì Cây quyết định có đặc tính tạo ranh giới trực giao (vuông góc với trục), điều gì xảy ra nếu ta Xoay (Rotate) dữ liệu đi 45 độ?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Cây quyết định không hề bị ảnh hưởng."
+            },
+            {
+                "id": "b",
+                "text": "Cây quyết định sẽ phải tạo ra một đường cắt bậc thang rất zíc-zắc và phức tạp để cố gắng khớp với đường chéo 45 độ đó, làm mô hình dễ bị overfit."
+            },
+            {
+                "id": "c",
+                "text": "Cây quyết định tự động chuyển sang mô hình Linear Regression."
+            },
+            {
+                "id": "d",
+                "text": "Thuật toán CART sẽ bị lỗi vòng lặp vô hạn."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Cây quyết định cực kỳ nhạy cảm với hướng xoay của trục tọa độ. Một tập dữ liệu chia bởi một đường chéo sẽ trở thành thảm họa bậc thang zíc-zắc đối với Cây quyết định (PCA có thể giúp giải quyết bằng cách xoay trục tọa độ lại cho tối ưu)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Trình tự xuất cây quyết định thành file ảnh để dễ hiểu (sử dụng thư viện graphviz):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Huấn luyện mô hình (ví dụ: tree_clf.fit(X, y))"
+            },
+            {
+                "id": "2",
+                "text": "Dùng hàm export_graphviz() của Scikit-Learn để xuất ra file định dạng .dot"
+            },
+            {
+                "id": "3",
+                "text": "Sử dụng công cụ command line `dot -Tpng iris_tree.dot -o iris_tree.png`"
+            },
+            {
+                "id": "4",
+                "text": "Mở file PNG lên và quan sát cấu trúc cây 'hộp trắng'."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Quy trình tiêu chuẩn: Train mô hình -> Xuất ra .dot -> Convert .dot sang ảnh (như png, pdf) bằng Graphviz."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Nhược điểm lớn nhất (và cũng là vấn đề căn cốt) của Cây quyết định được nhắc đến ở cuối Chương 6 là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó không hỗ trợ dữ liệu kiểu chuỗi."
+            },
+            {
+                "id": "b",
+                "text": "Sự thiếu ổn định (High Variance): Chỉ một thay đổi nhỏ xíu trong dữ liệu huấn luyện (ví dụ xóa đi 1 mẫu) cũng có thể làm thuật toán sinh ra một cái Cây khác hoàn toàn."
+            },
+            {
+                "id": "c",
+                "text": "Nó không thể sử dụng cho dữ liệu lớn hơn 1MB."
+            },
+            {
+                "id": "d",
+                "text": "Quá trình dự đoán (Prediction) chậm nhất trong tất cả các thuật toán."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Sự mất ổn định (High Variance) là lý do ra đời của Random Forest. Bằng cách gộp nhiều cây mất ổn định lại (lấy trung bình), ta sẽ có một mô hình ổn định và mạnh mẽ hơn nhiều."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Dễ",
+        "question": "Ghép tên của Thuật toán Cây quyết định với vai trò/tác dụng của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "DecisionTreeClassifier"
+            },
+            {
+                "id": "l2",
+                "text": "DecisionTreeRegressor"
+            },
+            {
+                "id": "l3",
+                "text": "export_graphviz"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Dự đoán lớp nhãn phân loại (Ví dụ: Chó, Mèo, Chim)."
+            },
+            {
+                "id": "r2",
+                "text": "Dự đoán giá trị số liên tục (Ví dụ: Giá trị nhà ở, nhiệt độ)."
+            },
+            {
+                "id": "r3",
+                "text": "Hàm dùng để chuyển đổi cây thành biểu đồ (graph) để trực quan hóa."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Classifier phân loại, Regressor hồi quy, export_graphviz tạo file .dot mô tả biểu đồ đồ thị."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Hàm Mục Tiêu (Cost Function) của CART trong Phân loại:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong bước phân chia tại mỗi nút, CART cố gắng tối thiểu hóa Hàm chi phí. Hàm chi phí này bằng tổng có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của Độ tạp chất ở hai nút con (trái và phải). Nút con nào có nhiều mẫu hơn sẽ được nhân với trọng số <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>, do đó CART ưu tiên tạo ra các nút con vừa tinh khiết vừa chứa nhiều mẫu dữ liệu.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Trọng số (Weighted sum)"
+            },
+            {
+                "id": "w2",
+                "text": "Trung bình (Mean)"
+            },
+            {
+                "id": "w3",
+                "text": "Lớn hơn (Larger)"
+            },
+            {
+                "id": "w4",
+                "text": "Nhỏ hơn (Smaller)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Công thức Cost Function J(k, t_k) = (m_left/m)*Gini_left + (m_right/m)*Gini_right. Có nghĩa là nút con lớn hơn (nhiều mẫu hơn) sẽ có trọng số lớn hơn trong hàm chi phí."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Nếu trong Scikit-Learn bạn sử dụng Random State mặc định (hoặc không truyền `random_state`), điều gì có thể xảy ra khi bạn huấn luyện Cây quyết định 2 lần liên tiếp trên CÙNG 1 bộ dữ liệu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Bạn sẽ luôn nhận được 2 cây hoàn toàn giống hệt nhau."
+            },
+            {
+                "id": "b",
+                "text": "Bạn có thể nhận được 2 cây rất khác nhau, bởi vì scikit-learn tối ưu quá trình bằng cách chọn Ngẫu nhiên (Randomly) một số lượng đặc trưng để đánh giá tại mỗi nút (đây là lý do cây quyết định Stochastic/Stochasticity)."
+            },
+            {
+                "id": "c",
+                "text": "Sẽ báo lỗi do trùng lặp."
+            },
+            {
+                "id": "d",
+                "text": "Lần thứ 2 mô hình huấn luyện sẽ nhanh gấp 2 lần."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Scikit-Learn sử dụng bản cập nhật ngẫu nhiên khi tìm điểm cắt (nó đảo ngẫu nhiên danh sách feature). Điều này có nghĩa là bạn sẽ có Cây khác nhau nếu không set `random_state` cố định."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Làm thế nào để kiểm tra tính quan trọng của các Đặc trưng (Feature Importance) sau khi huấn luyện Cây quyết định?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Truy cập thuộc tính `.feature_importances_` của mô hình."
+            },
+            {
+                "id": "b",
+                "text": "Cây quyết định không thể cung cấp độ quan trọng của đặc trưng."
+            },
+            {
+                "id": "c",
+                "text": "Gọi hàm `check_importance()`."
+            },
+            {
+                "id": "d",
+                "text": "Lấy tổng của tất cả các biến Gini."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Scikit-Learn tính tổng mức độ giảm Gini/Entropy do từng đặc trưng mang lại trong toàn bộ cây, và cung cấp kết quả qua biến `.feature_importances_`."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Tính toán chỉ số Gini (Độ tạp chất) cho một Nút lá (Node):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Giả sử nút đang xét có 100 mẫu, bao gồm 40 táo (lớp 1) và 60 cam (lớp 2)."
+            },
+            {
+                "id": "2",
+                "text": "Tính tỷ lệ phần trăm (p_i) của từng lớp: Táo = 0.4, Cam = 0.6."
+            },
+            {
+                "id": "3",
+                "text": "Tính bình phương tỷ lệ phần trăm: (0.4)^2 = 0.16 và (0.6)^2 = 0.36."
+            },
+            {
+                "id": "4",
+                "text": "Áp dụng công thức Gini = 1 - (tổng các bình phương) = 1 - (0.16 + 0.36) = 1 - 0.52 = 0.48."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Công thức Gini: G_i = 1 - sum(p_{i,k}^2). Nếu p_1=1.0 và p_2=0.0 (tinh khiết), Gini = 1 - 1 = 0."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khi nào thì Gini Impurity (Độ tạp chất) của một nút đạt giá trị TỐI ĐA?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Khi tất cả các mẫu đều thuộc một lớp (100%)."
+            },
+            {
+                "id": "b",
+                "text": "Khi nút đó không chứa mẫu nào cả."
+            },
+            {
+                "id": "c",
+                "text": "Khi các mẫu phân bố ĐỀU HOÀN TOÀN giữa tất cả các lớp (ví dụ: 50% lớp A, 50% lớp B). Trạng thái này là hỗn loạn/ít thông tin nhất."
+            },
+            {
+                "id": "d",
+                "text": "Khi số lượng mẫu huấn luyện vượt quá 1 triệu."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Khi phân bố hoàn toàn đều đặn (50-50), Gini = 1 - (0.5^2 + 0.5^2) = 0.5. Đây là mức tạp chất cực đại cho 2 lớp (max Gini = 1 - (1/k))."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Phân biệt Gini Impurity và Entropy trong Scikit-Learn:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Gini Impurity"
+            },
+            {
+                "id": "l2",
+                "text": "Entropy (Shannon)"
+            },
+            {
+                "id": "l3",
+                "text": "Tiêu chí mặc định (Default criterion)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Có xu hướng cô lập riêng lớp thường gặp nhất (most frequent class) sang một nhánh của cây."
+            },
+            {
+                "id": "r2",
+                "text": "Thích tạo ra những cái cây cân bằng hơn một chút (balanced trees) ở cả hai nhánh."
+            },
+            {
+                "id": "r3",
+                "text": "Gini Impurity (vì tính toán nhanh hơn)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Hầu hết các trường hợp Gini và Entropy cho ra Cây giống hệt nhau. Tuy nhiên Entropy làm cây đối xứng hơn, trong khi Gini thích 'nhốt' lớp đông đúc nhất vào 1 nhánh."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong bài toán hồi quy (Regression), thuật toán CART tối thiểu hóa mục tiêu nào ở mỗi bước cắt (split)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tối thiểu hóa Gini Impurity."
+            },
+            {
+                "id": "b",
+                "text": "Tối thiểu hóa Entropy."
+            },
+            {
+                "id": "c",
+                "text": "Tối thiểu hóa MSE (Mean Squared Error). Nó tìm điểm cắt sao cho Phương sai (Variance) ở hai nhánh con là nhỏ nhất có thể (các điểm dữ liệu ở cùng 1 lá càng giống nhau càng tốt)."
+            },
+            {
+                "id": "d",
+                "text": "Tối đa hóa khoảng cách Lề (Margin)."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Vì là Hồi quy số nên không có 'lớp' để tính Gini. CART sẽ chia dữ liệu sao cho MSE (phương sai) tại 2 nhánh con là nhỏ nhất so với giá trị trung bình."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Thực tiễn áp dụng Cây quyết định:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Cây quyết định rất mạnh mẽ, nhưng thường không được dùng làm mô hình cuối cùng trong sản xuất thực tế vì nó có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> rất cao. Tuy nhiên, nếu bạn xây dựng hàng trăm cái Cây quyết định khác nhau và lấy kết quả dự đoán bằng cách <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Bầu chọn số đông), bạn sẽ có mô hình Random Forest (Rừng ngẫu nhiên), một trong những thuật toán tốt nhất hiện nay.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Phương sai (Variance/Instability)"
+            },
+            {
+                "id": "w2",
+                "text": "Độ chệch (Bias)"
+            },
+            {
+                "id": "w3",
+                "text": "Lấy biểu quyết (Voting)"
+            },
+            {
+                "id": "w4",
+                "text": "Xóa ngẫu nhiên"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w3"
+        },
+        "explanation": "Bản thân Cây quyết định rất yếu (mất ổn định - high variance). Ensemble (Tập hợp) nhiều Cây quyết định lại với nhau thông qua Voting sẽ khắc phục nhược điểm này."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "PCA (Phân tích thành phần chính) có thể giúp Cây quyết định cải thiện hiệu suất như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Bằng cách Xoay (rotate) dữ liệu sao cho sự biến thiên tối đa nằm trên một đường song song với các trục tọa độ, giúp Cây không phải cắt zíc-zắc nhiều."
+            },
+            {
+                "id": "b",
+                "text": "Bằng cách thay đổi màu sắc của cây."
+            },
+            {
+                "id": "c",
+                "text": "Bằng cách tăng kích thước dữ liệu lên 100 lần."
+            },
+            {
+                "id": "d",
+                "text": "PCA không có tác dụng gì với Cây quyết định."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Vì Cây quyết định chỉ cắt vuông góc (trực giao), việc dùng PCA để xoay tập dữ liệu về trạng thái vuông vắn so với trục sẽ giúp cây đơn giản hóa đường cắt."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong Scikit-Learn, tại sao tham số `min_samples_split=2` thường dễ dẫn đến quá khớp (overfitting)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì giá trị này quá lớn."
+            },
+            {
+                "id": "b",
+                "text": "Vì nó cho phép một nút chỉ cần có 2 mẫu là đã được phép chia đôi ra tiếp, dẫn đến việc cây có thể mọc sâu tận tới mức mỗi nút lá chỉ chứa 1 mẫu duy nhất (thuộc lòng dữ liệu huấn luyện)."
+            },
+            {
+                "id": "c",
+                "text": "Vì thuật toán không hiểu số 2."
+            },
+            {
+                "id": "d",
+                "text": "Vì nó bỏ qua các điểm nhiễu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "min_samples_split=2 là giá trị mặc định. Nếu nút có 2 phần tử khác lớp, thuật toán sẽ chia đôi ra 2 lá, mỗi lá 1 phần tử (overfit hoàn hảo)."
+    }
+];
+
+    let currentQ = 0;
+
+    // Shuffle utility
+    function shuffleArray(array) {
+        let curId = array.length, temp, randId;
+        while (0 !== curId) {
+            randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            temp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = temp;
+        }
+        return array;
+    }
+
+    // Initialize states
+    questions.forEach(q => {
+        if (!q.initialized) {
+            if (q.type === 'ordering') q.shuffledItems = shuffleArray([...q.items]);
+            if (q.type === 'matching') q.shuffledRight = shuffleArray([...q.right]);
+            q.userAnswered = false;
+            q.isCorrect = false;
+            q.initialized = true;
+        }
+    });
+
+    const contentDiv = document.getElementById('question-content');
+    const checkBtn = document.getElementById('btn-check');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const feedback = document.getElementById('feedback');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanation = document.getElementById('explanation');
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        
+        // Navigation buttons state
+        prevBtn.disabled = currentQ === 0;
+        
+        if (currentQ === questions.length - 1) {
+            nextBtn.innerHTML = 'Hoàn thành';
+            nextBtn.style.backgroundColor = 'var(--success)';
+            nextBtn.style.color = 'white';
+            nextBtn.style.borderColor = 'var(--success)';
+        } else {
+            nextBtn.innerHTML = 'Tiếp theo &gt;';
+            nextBtn.style.backgroundColor = 'transparent';
+            nextBtn.style.color = 'var(--text-secondary)';
+            nextBtn.style.borderColor = 'var(--border)';
+        }
+        
+        document.getElementById('question-counter').innerText = `Câu hỏi ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('difficulty-badge').innerText = q.difficulty;
+        document.getElementById('progress-bar').style.width = `${((currentQ) / questions.length) * 100}%`;
+        
+        let instruction = q.instruction ? `<p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -10px;">${q.instruction}</p>` : '';
+        let html = `<div class="question-title">${q.question}</div>${instruction}`;
+
+        if (q.type === 'multiple_choice') {
+            html += `<div class="options-container">`;
+            q.options.forEach(opt => {
+                let isSelected = q.userAnswered && q.userSelection === opt.id;
+                let classNames = "option-label";
+                if(q.userAnswered) classNames += " disabled";
+                
+                let styles = "";
+                if (q.userAnswered) {
+                    if (opt.id === q.correctAnswer) {
+                        styles = "background-color: #e6f4ea; border-color: var(--success);";
+                    } else if (isSelected) {
+                        styles = "background-color: #fce8e6; border-color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <label class="${classNames}" id="label-${opt.id}" style="${styles}">
+                        <input type="radio" name="mcq" value="${opt.id}" class="option-input" ${isSelected ? 'checked' : ''} ${q.userAnswered ? 'disabled' : ''} onclick="selectOption('${opt.id}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+        } 
+        else if (q.type === 'ordering') {
+            let selectedHtml = '';
+            let poolHtml = '';
+            
+            if (q.userAnswered) {
+                // Render according to userSelection
+                q.userSelection.forEach(id => {
+                    let item = q.items.find(i => i.id === id);
+                    selectedHtml += `<div class="order-item disabled" data-id="${item.id}" style="${q.isCorrect ? 'border-color: var(--success);' : 'border-color: var(--error);'}">${item.text}</div>`;
+                });
+                
+                let unselected = q.items.filter(i => !q.userSelection.includes(i.id));
+                unselected.forEach(item => {
+                    poolHtml += `<div class="order-item disabled" data-id="${item.id}" style="opacity: 0.5;">${item.text}</div>`;
+                });
+            } else {
+                q.shuffledItems.forEach(item => {
+                    poolHtml += `<div class="order-item" onclick="moveItem(this, '${item.id}')" data-id="${item.id}">${item.text}</div>`;
+                });
+            }
+
+            html += `
+                <div class="ordering-selected" id="order-selected">${selectedHtml}</div>
+                <h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Các mục có sẵn:</h4>
+                <div class="ordering-pool" id="order-pool">${poolHtml}</div>
+            `;
+            if(q.userAnswered && !q.isCorrect) {
+                 html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Thứ tự đúng:</strong><br> ` + q.correctOrder.map(id => q.items.find(i=>i.id===id).text).join(' ➔ ') + `</div>`;
+            }
+        }
+        else if (q.type === 'matching') {
+            html += `<div class="matching-container">`;
+            q.left.forEach(leftItem => {
+                let optionsHtml = `<option value="">-- Chọn đáp án --</option>`;
+                q.shuffledRight.forEach(r => {
+                    let selected = (q.userAnswered && q.userSelection && q.userSelection[leftItem.id] === r.id) ? 'selected' : '';
+                    optionsHtml += `<option value="${r.id}" ${selected}>${r.text}</option>`;
+                });
+                
+                let selectStyle = "";
+                if (q.userAnswered) {
+                    let userVal = q.userSelection ? q.userSelection[leftItem.id] : null;
+                    if (userVal === q.correctPairs[leftItem.id]) {
+                        selectStyle = "background-color: #e6f4ea; border-color: var(--success); font-weight: 500; color: var(--success);";
+                    } else {
+                        selectStyle = "background-color: #fce8e6; border-color: var(--error); font-weight: 500; color: var(--error);";
+                    }
+                }
+                
+                html += `
+                    <div class="matching-row">
+                        <div class="matching-left">${leftItem.text}</div>
+                        <div class="matching-right">
+                            <select class="matching-select" id="match-${leftItem.id}" ${q.userAnswered ? 'disabled' : ''} style="${selectStyle}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            if(q.userAnswered && !q.isCorrect) {
+                let correctStr = q.left.map(l => `<li>${l.text} ➔ <strong>${q.right.find(r=>r.id===q.correctPairs[l.id]).text}</strong></li>`).join('');
+                html += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Ghép nối đúng:</strong><ul style="margin-top:5px;">${correctStr}</ul></div>`;
+            }
+        }
+        else if (q.type === 'fill_in_blanks') {
+            html += `<div class="fill-text">${q.text}</div>`;
+            html += `<h4 style="margin: 0 0 10px 0; color: var(--text-secondary); font-size: 0.95rem;">Ngân hàng từ:</h4>`;
+            
+            let usedWords = [];
+            if (q.userAnswered && q.userSelection) {
+                usedWords = Object.values(q.userSelection);
+            }
+            
+            html += `<div class="word-bank">`;
+            q.words.forEach(w => {
+                let isUsed = usedWords.includes(w.id);
+                let classes = "word-item";
+                if(isUsed) classes += " used";
+                if(q.userAnswered) classes += " disabled";
+                
+                html += `<div class="${classes}" id="word-${w.id}" ${q.userAnswered ? '' : `onclick="selectWord('${w.id}', '${w.text}')"`}>${w.text}</div>`;
+            });
+            html += `</div>`;
+        }
+
+        contentDiv.innerHTML = html;
+        
+        // Post-render bindings for fill-in-blanks
+        if (q.type === 'fill_in_blanks') {
+            document.querySelectorAll('.blank-slot').forEach(el => {
+                let blankId = el.getAttribute('data-id');
+                if (q.userAnswered && q.userSelection && q.userSelection[blankId]) {
+                    let wordId = q.userSelection[blankId];
+                    let wordText = q.words.find(w => w.id === wordId).text;
+                    el.innerText = wordText;
+                    el.classList.add('disabled');
+                    
+                    if (wordId === q.correctAnswers[blankId]) {
+                         el.style.borderBottomColor = 'var(--success)';
+                         el.style.color = 'var(--success)';
+                    } else {
+                         el.style.borderBottomColor = 'var(--error)';
+                         el.style.color = 'var(--error)';
+                    }
+                }
+                
+                if (!q.userAnswered) {
+                    el.addEventListener('click', () => activateBlank(el));
+                }
+            });
+            
+            if (q.userAnswered && !q.isCorrect) {
+                 let correctStr = Object.keys(q.correctAnswers).map(k => `(${k}) <strong>${q.words.find(w=>w.id===q.correctAnswers[k]).text}</strong>`).join(', ');
+                 contentDiv.innerHTML += `<div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);"><strong>Đáp án đúng:</strong> ${correctStr}</div>`;
+            }
+        }
+
+        // Setup UI states
+        if (q.userAnswered) {
+            checkBtn.style.display = 'none';
+            feedback.className = `feedback-container show ${q.isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackTitle.innerHTML = q.isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!';
+            explanation.innerHTML = q.explanation;
+        } else {
+            checkBtn.style.display = 'inline-flex';
+            feedback.className = 'feedback-container';
+        }
+        
+        // Reset volatile state for blanks
+        activeBlank = null;
+        if (!q.userAnswered) {
+            blankAnswers = {};
+        }
+    }
+
+    // -- Interaction logic --
+    function selectOption(id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
+        document.getElementById(`label-${id}`).classList.add('selected');
+    }
+
+    window.moveItem = function(elem, id) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        const pool = document.getElementById('order-pool');
+        const selected = document.getElementById('order-selected');
+        
+        if (elem.parentElement.id === 'order-pool') {
+            selected.appendChild(elem);
+        } else {
+            pool.appendChild(elem);
+        }
+    }
+
+    let activeBlank = null;
+    let blankAnswers = {};
+
+    window.activateBlank = function(elem) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        document.querySelectorAll('.blank-slot').forEach(e => e.classList.remove('active'));
+        elem.classList.add('active');
+        activeBlank = elem;
+    }
+
+    window.selectWord = function(id, text) {
+        const q = questions[currentQ];
+        if(q.userAnswered) return;
+        if (!activeBlank) {
+            alert('Vui lòng chọn một chỗ trống trước!');
+            return;
+        }
+        
+        let blankId = activeBlank.getAttribute('data-id');
+        if (blankAnswers[blankId]) {
+            document.getElementById(`word-${blankAnswers[blankId]}`).classList.remove('used');
+        }
+        
+        activeBlank.innerText = text;
+        activeBlank.classList.remove('active');
+        blankAnswers[blankId] = id;
+        
+        document.getElementById(`word-${id}`).classList.add('used');
+        activeBlank = null;
+    }
+
+    // -- Check answer --
+    checkBtn.addEventListener('click', () => {
+        const q = questions[currentQ];
+        if (q.userAnswered) return;
+        
+        if (q.type === 'multiple_choice') {
+            const selected = document.querySelector('input[name="mcq"]:checked');
+            if (!selected) return alert('Vui lòng chọn một đáp án!');
+            q.userSelection = selected.value;
+            q.isCorrect = q.userSelection === q.correctAnswer;
+        } 
+        else if (q.type === 'ordering') {
+            const selectedItems = Array.from(document.getElementById('order-selected').children).map(el => el.getAttribute('data-id'));
+            if (selectedItems.length < q.items.length) return alert('Vui lòng sắp xếp tất cả các mục!');
+            q.userSelection = selectedItems;
+            q.isCorrect = JSON.stringify(q.userSelection) === JSON.stringify(q.correctOrder);
+        }
+        else if (q.type === 'matching') {
+            let allSelected = true;
+            let correctCount = 0;
+            q.userSelection = {};
+            q.left.forEach(leftItem => {
+                const val = document.getElementById(`match-${leftItem.id}`).value;
+                if (!val) allSelected = false;
+                q.userSelection[leftItem.id] = val;
+                if (val === q.correctPairs[leftItem.id]) correctCount++;
+            });
+            if (!allSelected) return alert('Vui lòng ghép nối tất cả các mục!');
+            q.isCorrect = correctCount === q.left.length;
+        }
+        else if (q.type === 'fill_in_blanks') {
+            let allFilled = true;
+            let correctCount = 0;
+            q.userSelection = {...blankAnswers};
+            Object.keys(q.correctAnswers).forEach(key => {
+                if (!q.userSelection[key]) allFilled = false;
+                if (q.userSelection[key] === q.correctAnswers[key]) correctCount++;
+            });
+            if (!allFilled) return alert('Vui lòng điền vào tất cả chỗ trống!');
+            q.isCorrect = correctCount === Object.keys(q.correctAnswers).length;
+        }
+
+        q.userAnswered = true;
+        renderQuestion(); // Re-render to show feedback and lock inputs
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQ > 0) {
+            currentQ--;
+            renderQuestion();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQ < questions.length - 1) {
+            currentQ++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    });
+
+    function showResult() {
+        // Evaluate unattended questions as incorrect
+        questions.forEach(q => {
+            if (!q.userAnswered) {
+                q.userAnswered = true;
+                q.isCorrect = false;
+            }
+        });
+        
+        document.getElementById('quiz-screen').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        
+        let score = questions.filter(q => q.isCorrect).length;
+        document.getElementById('final-score').innerText = `${score}/${questions.length}`;
+        const pct = (score / questions.length) * 100;
+        document.getElementById('score-circle').style.background = `conic-gradient(var(--primary) ${pct}%, #e8eaed 0%)`;
+        
+        const msg = document.getElementById('result-message');
+        if(score === questions.length) msg.innerText = "Tuyệt vời! Bạn đã nắm vững toàn bộ kiến thức.";
+        else if (score >= questions.length / 2) msg.innerText = "Làm tốt lắm! Hãy ôn tập lại một chút để đạt điểm tối đa nhé.";
+        else msg.innerText = "Cố gắng lên! Bạn nên đọc lại tài liệu để củng cố kiến thức.";
+    }
+
+    // Initialize
+    renderQuestion();
+
+</script>
+</body>
+</html>
