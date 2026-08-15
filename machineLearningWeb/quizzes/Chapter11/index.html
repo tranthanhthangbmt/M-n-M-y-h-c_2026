@@ -479,7 +479,7 @@
             },
             {
                 "id": "c",
-                "text": "Khi đạo hàm (gradients) ngày càng NHỎ DẦN đi lúc truyền ngược từ lớp Output về các lớp Input. Kết quả là các lớp đầu tiên của mạng không nhận được tín hiệu để cập nhật trọng số và 'ngừng học'."
+                "text": "Khi đạo hàm (gradients) ngày càng NHỎ DẦN đi lúc truyền ngược từ lớp Output về các lớp Input."
             },
             {
                 "id": "d",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Vanishing Gradients là cơn ác mộng lớn nhất của Deep Learning thời kỳ đầu. Do sử dụng hàm Sigmoid, mỗi lần đạo hàm truyền qua 1 lớp nó lại bị nhân với 1 số < 0.25. Truyền qua 10 lớp thì đạo hàm tụt về 0. Lớp đầu vào coi như bị 'tê liệt'."
+        "explanation": "Kết quả là các lớp đầu tiên của mạng không nhận được tín hiệu để cập nhật trọng số và 'ngừng học'. Vanishing Gradients là cơn ác mộng lớn nhất của Deep Learning thời kỳ đầu. Do sử dụng hàm Sigmoid, mỗi lần đạo hàm truyền qua 1 lớp nó lại bị nhân với 1 số < 0.25. Truyền qua 10 lớp thì đạo hàm tụt về 0. Lớp đầu vào coi như bị 'tê liệt'."
     },
     {
         "type": "multiple_choice",
@@ -504,7 +504,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó giữ cho phương sai (variance) của các tín hiệu đi qua mỗi lớp luôn ĐỒNG ĐỀU nhau (phương sai đầu vào bằng phương sai đầu ra), bằng cách khởi tạo trọng số ngẫu nhiên theo một phân phối dựa trên số lượng Nơ-ron đầu vào (fan-in) và đầu ra (fan-out)."
+                "text": "Nó giữ cho phương sai (variance) của các tín hiệu đi qua mỗi lớp luôn ĐỒNG ĐỀU nhau"
             },
             {
                 "id": "d",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Năm 2010, Glorot và Bengio chỉ ra rằng việc khởi tạo trọng số ngẫu nhiên thông thường khiến tín hiệu bị teo nhỏ dần hoặc phình to dần qua các lớp. Khởi tạo Glorot scale trọng số rất khéo để tín hiệu chảy mượt mà từ đầu đến cuối mạng."
+        "explanation": "(phương sai đầu vào bằng phương sai đầu ra) bằng cách khởi tạo trọng số ngẫu nhiên theo một phân phối dựa trên số lượng Nơ-ron đầu vào (fan-in) và đầu ra (fan-out). Năm 2010, Glorot và Bengio chỉ ra rằng việc khởi tạo trọng số ngẫu nhiên thông thường khiến tín hiệu bị teo nhỏ dần hoặc phình to dần qua các lớp. Khởi tạo Glorot scale trọng số rất khéo để tín hiệu chảy mượt mà từ đầu đến cuối mạng."
     },
     {
         "type": "matching",
@@ -594,7 +594,7 @@
             },
             {
                 "id": "b",
-                "text": "Tính tự chuẩn hóa (Self-Normalizing). Nếu mạng là các lớp Dense xếp chồng liên tiếp, sử dụng LeCun initialization, thì mạng sẽ TỰ DUY TRÌ đầu ra của mỗi lớp có mean = 0 và variance = 1. Giải quyết triệt để Vanishing Gradients mà không cần Batch Normalization."
+                "text": "Tính tự chuẩn hóa (Self-Normalizing)."
             },
             {
                 "id": "c",
@@ -606,7 +606,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "SELU là một hàm kích hoạt mang tính đột phá được giới thiệu năm 2017. Bạn ghép SELU + Khởi tạo LeCun, mạng của bạn sẽ tự động cân bằng số liệu mà khỏi cần chèn thêm các lớp chuẩn hóa lằng nhằng."
+        "explanation": "Nếu mạng là các lớp Dense xếp chồng liên tiếp, sử dụng LeCun initialization, thì mạng sẽ TỰ DUY TRÌ đầu ra của mỗi lớp có mean = 0 và variance = 1. Giải quyết triệt để Vanishing Gradients mà không cần Batch Normalization. SELU là một hàm kích hoạt mang tính đột phá được giới thiệu năm 2017. Bạn ghép SELU + Khởi tạo LeCun, mạng của bạn sẽ tự động cân bằng số liệu mà khỏi cần chèn thêm các lớp chuẩn hóa lằng nhằng."
     },
     {
         "type": "multiple_choice",
@@ -619,7 +619,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó tự động CHUẨN HÓA (zero-centering và dãn phương sai = 1) đầu ra của lớp trước ĐANG BAY (on the fly), ngay cả khi mạng đang huấn luyện. Nó chèn thêm 2 tham số (scale và shift) để tự học cách chuẩn hóa tốt nhất cho mạng."
+                "text": "Nó tự động CHUẨN HÓA (zero-centering và dãn phương sai = 1) đầu ra của lớp trước ĐANG BAY"
             },
             {
                 "id": "c",
@@ -631,7 +631,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Batch Normalization (BN) là cứu cánh vĩ đại nhất của Deep Learning hiện đại. Nó cho phép bạn xài Learning Rate khổng lồ, dùng bất kỳ hàm kích hoạt nào mà không sợ Vanishing/Exploding Gradients."
+        "explanation": "(on the fly) ngay cả khi mạng đang huấn luyện. Nó chèn thêm 2 tham số (scale và shift) để tự học cách chuẩn hóa tốt nhất cho mạng. Batch Normalization (BN) là cứu cánh vĩ đại nhất của Deep Learning hiện đại. Nó cho phép bạn xài Learning Rate khổng lồ, dùng bất kỳ hàm kích hoạt nào mà không sợ Vanishing/Exploding Gradients."
     },
     {
         "type": "ordering",
@@ -666,7 +666,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Vì mô hình predict chỉ nhận 1 tấm ảnh (batch_size=1), không thể tính trung bình mẻ. BN sẽ sử dụng Trung bình chạy (Moving Average) của toàn bộ dữ liệu học mà nó đã âm thầm tích lũy từ lúc huấn luyện."
+                "text": "Vì mô hình predict chỉ nhận 1 tấm ảnh"
             },
             {
                 "id": "b",
@@ -682,7 +682,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Batch Normalization hành xử RẤT KHÁC NHAU ở lúc Train và lúc Test. Lúc Train nó tính mean/std của mẻ đó. Lúc Test nó xài mean/std tổng quát mà nó đã ghi nhớ (Non-trainable params)."
+        "explanation": "(batch_size=1) không thể tính trung bình mẻ. BN sẽ sử dụng Trung bình chạy (Moving Average) của toàn bộ dữ liệu học mà nó đã âm thầm tích lũy từ lúc huấn luyện. Batch Normalization hành xử RẤT KHÁC NHAU ở lúc Train và lúc Test. Lúc Train nó tính mean/std của mẻ đó. Lúc Test nó xài mean/std tổng quát mà nó đã ghi nhớ (Non-trainable params)."
     },
     {
         "type": "multiple_choice",
@@ -699,7 +699,7 @@
             },
             {
                 "id": "c",
-                "text": "Mạng nơ-ron Hồi quy (RNN - Recurrent Neural Networks), vì Batch Normalization hoạt động rất tệ trên chuỗi thời gian, nên người ta phải 'cắt gọt' thẳng tay các đạo hàm nếu nó vượt qua một ngưỡng cố định (ví dụ clipvalue=1.0)."
+                "text": "Mạng nơ-ron Hồi quy (RNN - Recurrent Neural Networks)"
             },
             {
                 "id": "d",
@@ -707,7 +707,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Khác với Vanishing (triệt tiêu), Bùng nổ (Exploding) là khi đạo hàm to đến mức lỗi tràn RAM (NaN). Keras cung cấp optimizer=SGD(clipvalue=1.0) để chặt cụt mọi giá trị > 1.0. Rất hữu ích cho RNN/LSTM."
+        "explanation": "Vì Batch Normalization hoạt động rất tệ trên chuỗi thời gian, nên người ta phải 'cắt gọt' thẳng tay các đạo hàm nếu nó vượt qua một ngưỡng cố định (ví dụ clipvalue=1.0). Khác với Vanishing (triệt tiêu), Bùng nổ (Exploding) là khi đạo hàm to đến mức lỗi tràn RAM (NaN). Keras cung cấp optimizer=SGD(clipvalue=1.0) để chặt cụt mọi giá trị > 1.0. Rất hữu ích cho RNN/LSTM."
     },
     {
         "type": "fill_in_blanks",
@@ -789,7 +789,7 @@
             },
             {
                 "id": "b",
-                "text": "Nếu tốc độ học cố định quá to, thuật toán sẽ nhảy loạn xạ quanh đáy thung lũng (không bao giờ chạm đáy). Nếu cố định quá nhỏ, train mất cả năm. LR Scheduling bắt đầu với TỐC ĐỘ LỚN (để đi nhanh), sau đó TỪ TỪ GIẢM NHỎ LẠI khi tiến gần đến đích (để hạ cánh êm ái)."
+                "text": "Nếu tốc độ học cố định quá to, thuật toán sẽ nhảy loạn xạ quanh đáy thung lũng"
             },
             {
                 "id": "c",
@@ -801,7 +801,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Scheduling giống như đạp phanh xe. Khi mới chạy thì đạp ga hết cỡ (LR lớn). Gần đến vạch đích thì từ từ rà phanh (LR nhỏ) để dừng đúng vạch."
+        "explanation": "(không bao giờ chạm đáy). Nếu cố định quá nhỏ, train mất cả năm. LR Scheduling bắt đầu với TỐC ĐỘ LỚN (để đi nhanh), sau đó TỪ TỪ GIẢM NHỎ LẠI khi tiến gần đến đích (để hạ cánh êm ái). Scheduling giống như đạp phanh xe. Khi mới chạy thì đạp ga hết cỡ (LR lớn). Gần đến vạch đích thì từ từ rà phanh (LR nhỏ) để dừng đúng vạch."
     },
     {
         "type": "multiple_choice",
@@ -814,7 +814,7 @@
             },
             {
                 "id": "b",
-                "text": "L1 (Lasso) và L2 (Ridge) Regularization (trong Keras gọi là kernel_regularizer)."
+                "text": "L1 (Lasso) và L2 (Ridge) Regularization"
             },
             {
                 "id": "c",
@@ -826,7 +826,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "L1 giúp tạo ra mạng thưa thớt (Sparse - ép nhiều trọng số về 0). L2 (Thường dùng hơn) giúp kiềm chế tất cả các trọng số không được phép quá lớn. Bạn có thể chèn nó vào thẳng tham số của lớp Dense."
+        "explanation": "(trong Keras gọi là kernel_regularizer). L1 giúp tạo ra mạng thưa thớt (Sparse - ép nhiều trọng số về 0). L2 (Thường dùng hơn) giúp kiềm chế tất cả các trọng số không được phép quá lớn. Bạn có thể chèn nó vào thẳng tham số của lớp Dense."
     },
     {
         "type": "ordering",
@@ -900,7 +900,7 @@
             },
             {
                 "id": "b",
-                "text": "Đối với mỗi nơ-ron, nó ràng buộc trọng số (weights) của nơ-ron đó sao cho chuẩn L2 (tổng bình phương) KHÔNG ĐƯỢC VƯỢT QUÁ một giá trị max_norm (Ví dụ r=1.0). Nếu vượt quá, trọng số bị thu nhỏ lại ngay lập tức."
+                "text": "Đối với mỗi nơ-ron, nó ràng buộc trọng số"
             },
             {
                 "id": "c",
@@ -912,7 +912,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Max-norm hoạt động như 1 cái lồng. Nó không thêm trực tiếp vào Loss Function như L2. Nó dùng thuật toán Cắt bớt (Clipping) ép trọng số luôn nằm trong giới hạn an toàn."
+        "explanation": "(weights) của nơ-ron đó sao cho chuẩn L2 (tổng bình phương) KHÔNG ĐƯỢC VƯỢT QUÁ một giá trị max_norm (Ví dụ r=1.0). Nếu vượt quá, trọng số bị thu nhỏ lại ngay lập tức. Max-norm hoạt động như 1 cái lồng. Nó không thêm trực tiếp vào Loss Function như L2. Nó dùng thuật toán Cắt bớt (Clipping) ép trọng số luôn nằm trong giới hạn an toàn."
     },
     {
         "type": "matching",
@@ -968,7 +968,7 @@
             },
             {
                 "id": "c",
-                "text": "AdaGrad tự động hạ Learning Rate cho các đặc trưng dốc, và giữ Learning Rate cao cho đặc trưng ít dốc. NHƯNG nó TÍCH LŨY TOÀN BỘ quá khứ, khiến Learning Rate tụt giảm QUÁ NHANH. Mạng Nơ-ron sâu thường bị CHẾT YỂU (dừng học) trước khi tới đích."
+                "text": "AdaGrad tự động hạ Learning Rate cho các đặc trưng dốc và giữ Learning Rate cao cho đặc trưng ít dốc."
             },
             {
                 "id": "d",
@@ -976,7 +976,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "AdaGrad (Adaptive Gradient) rất xuất sắc cho Hồi quy tuyến tính, nhưng thảm họa cho Deep Learning. RMSProp ra đời để cứu AdaGrad bằng cách chỉ nhớ 'Quá khứ gần đây' (Exponential Decay) thay vì nhớ toàn bộ từ lúc bắt đầu."
+        "explanation": "NHƯNG nó TÍCH LŨY TOÀN BỘ quá khứ, khiến Learning Rate tụt giảm QUÁ NHANH. Mạng Nơ-ron sâu thường bị CHẾT YỂU (dừng học) trước khi tới đích. AdaGrad (Adaptive Gradient) rất xuất sắc cho Hồi quy tuyến tính, nhưng thảm họa cho Deep Learning. RMSProp ra đời để cứu AdaGrad bằng cách chỉ nhớ 'Quá khứ gần đây' (Exponential Decay) thay vì nhớ toàn bộ từ lúc bắt đầu."
     },
     {
         "type": "fill_in_blanks",
@@ -1075,7 +1075,7 @@
             },
             {
                 "id": "b",
-                "text": "Dành riêng cho mạng tự chuẩn hóa (Self-Normalizing Networks) dùng hàm SELU. Vì Dropout thường làm hỏng tính chất Mean=0, Std=1, Alpha Dropout được thiết kế khéo léo để bảo toàn Mean và Phương sai của mạng."
+                "text": "Dành riêng cho mạng tự chuẩn hóa"
             },
             {
                 "id": "c",
@@ -1087,7 +1087,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Nếu bạn hâm mộ bài báo của SELU và muốn xài tính năng 'tự chuẩn hóa', bạn cấm được dùng Dropout thông thường. Bạn phải xài AlphaDropout thì mọi thứ toán học mới không bị đổ vỡ."
+        "explanation": "(Self-Normalizing Networks) dùng hàm SELU. Vì Dropout thường làm hỏng tính chất Mean=0, Std=1, Alpha Dropout được thiết kế khéo léo để bảo toàn Mean và Phương sai của mạng. Nếu bạn hâm mộ bài báo của SELU và muốn xài tính năng 'tự chuẩn hóa', bạn cấm được dùng Dropout thông thường. Bạn phải xài AlphaDropout thì mọi thứ toán học mới không bị đổ vỡ."
     },
     {
         "type": "multiple_choice",
@@ -1100,7 +1100,7 @@
             },
             {
                 "id": "b",
-                "text": "Khi tập dữ liệu mới của bạn khá lớn, và có tính chất HƠI KHÁC với tập dữ liệu mà mạng gốc từng học (Ví dụ mạng gốc học xe hơi, mèo, chó. Bạn bắt nó phân tích ảnh X-quang y tế). Mở khóa giúp mạng từ từ uốn nắn lại các đặc trưng cao cấp cho vừa khớp với chuyên ngành của bạn."
+                "text": "Khi tập dữ liệu mới của bạn khá lớn và có tính chất HƠI KHÁC với tập dữ liệu mà mạng gốc từng học"
             },
             {
                 "id": "c",
@@ -1112,7 +1112,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bước 1: Freeze toàn bộ mạng gốc, chỉ train lớp Output của bạn. Bước 2 (Fine-tuning): Unfreeze dần dần 1-2 lớp trên cùng (top layers) với Learning Rate cực nhỏ để trau chuốt lại chi tiết. Nếu Unfreeze ngay từ đầu, gradient khổng lồ của Output mới gắn sẽ phá nát toàn bộ mạng."
+        "explanation": "(Ví dụ mạng gốc học xe hơi, mèo, chó. Bạn bắt nó phân tích ảnh X-quang y tế). Mở khóa giúp mạng từ từ uốn nắn lại các đặc trưng cao cấp cho vừa khớp với chuyên ngành của bạn. Bước 1: Freeze toàn bộ mạng gốc, chỉ train lớp Output của bạn. Bước 2 (Fine-tuning): Unfreeze dần dần 1-2 lớp trên cùng (top layers) với Learning Rate cực nhỏ để trau chuốt lại chi tiết. Nếu Unfreeze ngay từ đầu, gradient khổng lồ của Output mới gắn sẽ phá nát toàn bộ mạng."
     },
     {
         "type": "matching",
@@ -1194,7 +1194,7 @@
             },
             {
                 "id": "b",
-                "text": "Beta_1 kiểm soát Quán tính (Momentum decay - mặc định 0.9). Beta_2 kiểm soát RMSProp (Scaling decay - mặc định 0.999). Hầu hết mọi trường hợp bạn KHÔNG BAO GIỜ cần chạm vào sửa đổi hai tham số này."
+                "text": "Beta_1 kiểm soát Quán tính (Momentum decay - mặc định 0.9)."
             },
             {
                 "id": "c",
@@ -1206,7 +1206,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Adam (Adaptive Moment Estimation) theo dõi 2 thứ: Đạo hàm bậc 1 (Momentum - beta1) và Đạo hàm bậc 2 không trung tâm (RMSProp variance - beta2). Mặc định của Keras cho 2 tham số này là sự tối ưu hoàn hảo qua hàng chục ngàn thực nghiệm."
+        "explanation": "Beta_2 kiểm soát RMSProp (Scaling decay - mặc định 0.999). Hầu hết mọi trường hợp bạn KHÔNG BAO GIỜ cần chạm vào sửa đổi hai tham số này. Adam (Adaptive Moment Estimation) theo dõi 2 thứ: Đạo hàm bậc 1 (Momentum - beta1) và Đạo hàm bậc 2 không trung tâm (RMSProp variance - beta2). Mặc định của Keras cho 2 tham số này là sự tối ưu hoàn hảo qua hàng chục ngàn thực nghiệm."
     },
     {
         "type": "multiple_choice",
@@ -1219,7 +1219,7 @@
             },
             {
                 "id": "b",
-                "text": "Thay vì tính đạo hàm TẠI vị trí hiện tại (như Momentum thường). NAG cực kỳ thông minh: Nó 'nhìn trước' vị trí mà viên bi sắp lăn tới (nhờ cộng Quán tính), và tính đạo hàm ở TƯƠNG LAI MỘT CHÚT đó. Điều này giúp viên bi tự biết 'rà phanh' nếu đoạn đường phía trước bất ngờ trũng lên."
+                "text": "Thay vì tính đạo hàm TẠI vị trí hiện tại"
             },
             {
                 "id": "c",
@@ -1231,7 +1231,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "NAG (nesterov=True) chỉ tính trước vị trí hờ (lookahead). Thay vì lăn ẩu rồi mới biết mình lố đà, NAG nhận ra sườn dốc phía trước đang cong lên nên nó tự giảm lực đẩy xuống. Sự hiệu chỉnh nhỏ này tạo ra khác biệt lớn."
+        "explanation": "(như Momentum thường). NAG cực kỳ thông minh: Nó 'nhìn trước' vị trí mà viên bi sắp lăn tới (nhờ cộng Quán tính), và tính đạo hàm ở TƯƠNG LAI MỘT CHÚT đó. Điều này giúp viên bi tự biết 'rà phanh' nếu đoạn đường phía trước bất ngờ trũng lên. NAG (nesterov=True) chỉ tính trước vị trí hờ (lookahead). Thay vì lăn ẩu rồi mới biết mình lố đà, NAG nhận ra sườn dốc phía trước đang cong lên nên nó tự giảm lực đẩy xuống. Sự hiệu chỉnh nhỏ này tạo ra khác biệt lớn."
     },
     {
         "type": "matching",
@@ -1283,7 +1283,7 @@
             },
             {
                 "id": "b",
-                "text": "Lịch trình toán học (như Exponential Scheduling) cứ giảm LR bất chấp mô hình đang tốt hay xấu. ReduceLROnPlateau sẽ theo dõi điểm Validation Loss. CHỈ KHI NÀO điểm Loss này ngừng cải thiện (đi ngang - plateau) trong 5 Epochs, nó mới tự động chia đôi (giảm) Learning Rate để mô hình rà soát kỹ hơn."
+                "text": "Lịch trình toán học (như Exponential Scheduling) cứ giảm LR bất chấp mô hình đang tốt hay xấu."
             },
             {
                 "id": "c",
@@ -1295,7 +1295,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "ReduceLROnPlateau cực kỳ linh hoạt và phổ biến. Mô hình đang học bon bon thì cứ để ga lớn. Chừng nào kẹt (không tiến bộ) thì tự động trả số nhỏ lại để bò qua chướng ngại vật."
+        "explanation": "ReduceLROnPlateau sẽ theo dõi điểm Validation Loss. CHỈ KHI NÀO điểm Loss này ngừng cải thiện (đi ngang - plateau) trong 5 Epochs, nó mới tự động chia đôi (giảm) Learning Rate để mô hình rà soát kỹ hơn. ReduceLROnPlateau cực kỳ linh hoạt và phổ biến. Mô hình đang học bon bon thì cứ để ga lớn. Chừng nào kẹt (không tiến bộ) thì tự động trả số nhỏ lại để bò qua chướng ngại vật."
     },
     {
         "type": "fill_in_blanks",

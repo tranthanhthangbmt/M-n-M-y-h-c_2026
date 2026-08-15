@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Sử dụng Phương trình chuẩn (Normal Equation) và sử dụng thuật toán tối ưu hóa Gradient Descent."
+                "text": "Sử dụng Phương trình chuẩn"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Phương trình chuẩn giải toán học trực tiếp để tìm nghiệm (closed-form), trong khi Gradient Descent tìm nghiệm bằng cách lặp lại việc tinh chỉnh tham số."
+        "explanation": "(Normal Equation) và sử dụng thuật toán tối ưu hóa Gradient Descent. Phương trình chuẩn giải toán học trực tiếp để tìm nghiệm (closed-form), trong khi Gradient Descent tìm nghiệm bằng cách lặp lại việc tinh chỉnh tham số."
     },
     {
         "type": "multiple_choice",
@@ -504,7 +504,7 @@
             },
             {
                 "id": "c",
-                "text": "Độ phức tạp tính toán rất cao khi số lượng ĐẶC TRƯNG (features) lớn (nghịch đảo ma trận chậm)."
+                "text": "Độ phức tạp tính toán rất cao khi số lượng ĐẶC TRƯNG"
             },
             {
                 "id": "d",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Việc đảo ngược ma trận (kích thước n x n với n là số đặc trưng) mất rất nhiều thời gian nếu n lớn (ví dụ n = 100,000)."
+        "explanation": "(features) lớn (nghịch đảo ma trận chậm). Việc đảo ngược ma trận (kích thước n x n với n là số đặc trưng) mất rất nhiều thời gian nếu n lớn (ví dụ n = 100,000)."
     },
     {
         "type": "fill_in_blanks",
@@ -559,7 +559,7 @@
             },
             {
                 "id": "c",
-                "text": "Thuật toán có thể nhảy qua rãnh, bật sang phía bên kia và ngày càng phân kỳ ra xa khỏi nghiệm tối ưu."
+                "text": "Thuật toán có thể nhảy qua rãnh bật sang phía bên kia và ngày càng phân kỳ ra xa khỏi nghiệm tối ưu."
             },
             {
                 "id": "d",
@@ -576,7 +576,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Nó là một hàm lồi (convex function), nghĩa là nó chỉ có một cực tiểu toàn cục (global minimum) duy nhất mà không có cực tiểu cục bộ."
+                "text": "Nó là một hàm lồi (convex function)"
             },
             {
                 "id": "b",
@@ -592,7 +592,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Vì MSE là hàm lồi hình cái bát, Gradient Descent luôn được đảm bảo tiến tới đáy (cực tiểu toàn cục) nếu Learning Rate không quá lớn và có đủ thời gian."
+        "explanation": "Nghĩa là nó chỉ có một cực tiểu toàn cục (global minimum) duy nhất mà không có cực tiểu cục bộ. Vì MSE là hàm lồi hình cái bát, Gradient Descent luôn được đảm bảo tiến tới đáy (cực tiểu toàn cục) nếu Learning Rate không quá lớn và có đủ thời gian."
     },
     {
         "type": "matching",
@@ -644,7 +644,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì quỹ đạo đi xuống của nó rất thất thường (erratic), có thể giúp thuật toán vô tình nhảy ra khỏi các hố cục bộ để tìm đến cực tiểu toàn cục."
+                "text": "Vì quỹ đạo đi xuống của nó rất thất thường (erratic) có thể"
             },
             {
                 "id": "c",
@@ -656,7 +656,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bản chất ngẫu nhiên và ngoằn ngoèo của SGD (dựa trên 1 mẫu duy nhất mỗi bước) tạo ra các bước nhảy lớn ngẫu nhiên, giúp thoát khỏi các điểm trũng giả."
+        "explanation": "Giúp thuật toán vô tình nhảy ra khỏi các hố cục bộ để tìm đến cực tiểu toàn cục. Bản chất ngẫu nhiên và ngoằn ngoèo của SGD (dựa trên 1 mẫu duy nhất mỗi bước) tạo ra các bước nhảy lớn ngẫu nhiên, giúp thoát khỏi các điểm trũng giả."
     },
     {
         "type": "ordering",
@@ -755,7 +755,7 @@
             },
             {
                 "id": "b",
-                "text": "Hiệu suất của mô hình (thông thường là lỗi) trên cả tập huấn luyện và tập xác thực, xem như một hàm của KÍCH THƯỚC TẬP HUẤN LUYỆN (hoặc số epoch)."
+                "text": "Hiệu suất của mô hình (thông thường là lỗi) trên cả tập huấn luyện và tập xác thực xem như một hàm của KÍCH THƯỚC TẬP HUẤN LUYỆN"
             },
             {
                 "id": "c",
@@ -767,7 +767,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Learning Curves vẽ lỗi trên train/val theo kích thước của tập train (hoặc epoch). Nó là công cụ tuyệt vời để chẩn đoán xem mô hình đang underfit hay overfit."
+        "explanation": "(hoặc số epoch). Learning Curves vẽ lỗi trên train/val theo kích thước của tập train (hoặc epoch). Nó là công cụ tuyệt vời để chẩn đoán xem mô hình đang underfit hay overfit."
     },
     {
         "type": "multiple_choice",
@@ -844,7 +844,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó có xu hướng tự động loại bỏ các đặc trưng ít quan trọng nhất bằng cách đẩy trọng số của chúng về chính xác bằng 0 (chọn lọc đặc trưng)."
+                "text": "Nó có xu hướng tự động loại bỏ các đặc trưng ít quan trọng nhất bằng cách đẩy trọng số của chúng về chính xác bằng 0"
             },
             {
                 "id": "c",
@@ -856,7 +856,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Do hình dáng không khả vi tại gốc tọa độ của chuẩn L1, Lasso đẩy nhanh trọng số của các features vô dụng về 0, để lại một mô hình chỉ dùng các features quan trọng nhất."
+        "explanation": "(chọn lọc đặc trưng). Do hình dáng không khả vi tại gốc tọa độ của chuẩn L1, Lasso đẩy nhanh trọng số của các features vô dụng về 0, để lại một mô hình chỉ dùng các features quan trọng nhất."
     },
     {
         "type": "fill_in_blanks",
@@ -980,7 +980,7 @@
             },
             {
                 "id": "b",
-                "text": "Hàm Log Loss (hoặc Cross-Entropy cho nhị phân), nó phạt rất nặng nếu mô hình tự tin dự đoán sai, và nó là hàm lồi."
+                "text": "Hàm Log Loss (hoặc Cross-Entropy cho nhị phân) nó phạt rất nặng nếu mô hình tự tin dự đoán sai,"
             },
             {
                 "id": "c",
@@ -992,7 +992,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Log Loss (-log(t)) phạt cực kỳ nặng (chi phí tiến tới vô cùng) nếu mô hình tự tin ra xác suất 99% cho một kết quả sai. Nó là hàm lồi nên dễ dùng Gradient Descent."
+        "explanation": "Và nó là hàm lồi. Log Loss (-log(t)) phạt cực kỳ nặng (chi phí tiến tới vô cùng) nếu mô hình tự tin ra xác suất 99% cho một kết quả sai. Nó là hàm lồi nên dễ dùng Gradient Descent."
     },
     {
         "type": "matching",
@@ -1074,7 +1074,7 @@
             },
             {
                 "id": "b",
-                "text": "Không, Hồi quy Softmax chỉ là mô hình Đa lớp (Multiclass), nghĩa là nó chỉ dự đoán 1 lớp duy nhất cho 1 mẫu (các lớp loại trừ lẫn nhau)."
+                "text": "Không, Hồi quy Softmax chỉ là mô hình Đa lớp (Multiclass)"
             },
             {
                 "id": "c",
@@ -1086,7 +1086,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Softmax đưa ra xác suất có tổng bằng 1, nghĩa là các lớp phải mutually exclusive (loại trừ lẫn nhau). Nên nó là Multiclass, không phải Multilabel."
+        "explanation": "Nghĩa là nó chỉ dự đoán 1 lớp duy nhất cho 1 mẫu (các lớp loại trừ lẫn nhau). Softmax đưa ra xác suất có tổng bằng 1, nghĩa là các lớp phải mutually exclusive (loại trừ lẫn nhau). Nên nó là Multiclass, không phải Multilabel."
     },
     {
         "type": "multiple_choice",
@@ -1219,7 +1219,7 @@
             },
             {
                 "id": "b",
-                "text": "Hồi quy Lasso hoặc Elastic Net (để tự động vứt bỏ các gen không liên quan)."
+                "text": "Hồi quy Lasso hoặc Elastic Net"
             },
             {
                 "id": "c",
@@ -1231,7 +1231,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi features > instances, Hồi quy tuyến tính cơ bản sẽ không tính được. Lasso/Elastic Net làm thưa (sparse) các trọng số, tự động giữ lại vài đặc trưng cốt lõi."
+        "explanation": "(để tự động vứt bỏ các gen không liên quan). Khi features > instances, Hồi quy tuyến tính cơ bản sẽ không tính được. Lasso/Elastic Net làm thưa (sparse) các trọng số, tự động giữ lại vài đặc trưng cốt lõi."
     },
     {
         "type": "fill_in_blanks",
@@ -1270,7 +1270,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì mô hình học thuộc lòng 1-2 mẫu đó một cách hoàn hảo (overfit hoàn toàn), dẫn đến nó không có khả năng dự đoán đúng một tập xác thực hoàn toàn khác."
+                "text": "Vì mô hình học thuộc lòng 1-2 mẫu đó một cách hoàn hảo"
             },
             {
                 "id": "c",
@@ -1282,7 +1282,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi train set quá nhỏ, mô hình dễ dàng học thuộc, train error bằng 0, nhưng nó không tổng quát hóa được tí nào nên val error chạm trần."
+        "explanation": "(overfit hoàn toàn) dẫn đến nó không có khả năng dự đoán đúng một tập xác thực hoàn toàn khác. Khi train set quá nhỏ, mô hình dễ dàng học thuộc, train error bằng 0, nhưng nó không tổng quát hóa được tí nào nên val error chạm trần."
     },
     {
         "type": "multiple_choice",

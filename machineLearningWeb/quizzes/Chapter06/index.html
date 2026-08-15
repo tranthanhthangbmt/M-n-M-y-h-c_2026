@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Phân loại (Classification), Hồi quy (Regression) và Phân loại đa đầu ra (Multioutput)."
+                "text": "Phân loại (Classification), Hồi quy"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Cây quyết định rất linh hoạt, có thể xử lý tốt cả Phân loại và Hồi quy, đồng thời là thành phần cơ bản của thuật toán Rừng ngẫu nhiên (Random Forest)."
+        "explanation": "(Regression) và Phân loại đa đầu ra (Multioutput). Cây quyết định rất linh hoạt, có thể xử lý tốt cả Phân loại và Hồi quy, đồng thời là thành phần cơ bản của thuật toán Rừng ngẫu nhiên (Random Forest)."
     },
     {
         "type": "multiple_choice",
@@ -500,7 +500,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó gần như không yêu cầu chuẩn bị dữ liệu. Cây quyết định KHÔNG cần co giãn đặc trưng (feature scaling) hay đưa dữ liệu về tâm (centering)."
+                "text": "Nó gần như không yêu cầu chuẩn bị dữ liệu."
             },
             {
                 "id": "c",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khác với SVM hay Gradient Descent rất nhạy cảm với thang đo dữ liệu, Cây quyết định chỉ quan tâm đến các ngưỡng cắt (splits), do đó việc Scale dữ liệu là không cần thiết."
+        "explanation": "Cây quyết định KHÔNG cần co giãn đặc trưng (feature scaling) hay đưa dữ liệu về tâm (centering). Khác với SVM hay Gradient Descent rất nhạy cảm với thang đo dữ liệu, Cây quyết định chỉ quan tâm đến các ngưỡng cắt (splits), do đó việc Scale dữ liệu là không cần thiết."
     },
     {
         "type": "fill_in_blanks",
@@ -559,7 +559,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó cho biết có bao nhiêu mẫu huấn luyện (training instances) của TỪNG LỚP rơi vào nút lá đó. (Ví dụ: 0 mẫu lớp 1, 49 mẫu lớp 2, 5 mẫu lớp 3)."
+                "text": "Nó cho biết có bao nhiêu mẫu huấn luyện"
             },
             {
                 "id": "d",
@@ -567,7 +567,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Thuộc tính 'value' lưu mảng đếm số lượng mẫu của từng lớp tại nút đó. Dựa vào 'value', cây sẽ gán xác suất cao nhất cho lớp có số mẫu nhiều nhất."
+        "explanation": "(training instances) của TỪNG LỚP rơi vào nút lá đó. (Ví dụ: 0 mẫu lớp 1, 49 mẫu lớp 2, 5 mẫu lớp 3). Thuộc tính 'value' lưu mảng đếm số lượng mẫu của từng lớp tại nút đó. Dựa vào 'value', cây sẽ gán xác suất cao nhất cho lớp có số mẫu nhiều nhất."
     },
     {
         "type": "multiple_choice",
@@ -580,7 +580,7 @@
             },
             {
                 "id": "b",
-                "text": "Hộp trắng (như Cây quyết định) giải thích rõ ràng TẠI SAO nó đưa ra quyết định đó. Hộp đen (như Rừng ngẫu nhiên, Mạng Nơ-ron) đưa ra dự đoán xuất sắc nhưng con người rất khó hiểu CÁCH nó suy luận."
+                "text": "Hộp trắng (như Cây quyết định) giải thích rõ ràng TẠI SAO nó đưa ra quyết định đó."
             },
             {
                 "id": "c",
@@ -592,7 +592,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Cây quyết định rất trực quan và dễ diễn giải quy tắc (NẾU... THÌ...), nên được gọi là hộp trắng (White-box)."
+        "explanation": "Hộp đen (như Rừng ngẫu nhiên, Mạng Nơ-ron) đưa ra dự đoán xuất sắc nhưng con người rất khó hiểu CÁCH nó suy luận. Cây quyết định rất trực quan và dễ diễn giải quy tắc (NẾU... THÌ...), nên được gọi là hộp trắng (White-box)."
     },
     {
         "type": "matching",
@@ -640,7 +640,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Nó là một thuật toán 'Tham lam' (Greedy). Nó tìm kiếm điểm cắt tối ưu tại TỪNG NÚT một cách cục bộ, mà KHÔNG kiểm tra xem điểm cắt đó có dẫn đến một cái cây tối ưu nhất ở tầng cuối cùng hay không."
+                "text": "Nó là một thuật toán 'Tham lam' (Greedy)."
             },
             {
                 "id": "b",
@@ -656,7 +656,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Thuật toán CART phân chia đệ quy từng nút một. Vì tìm Cây tối ưu toàn cục là bài toán NP-Hoàn chỉnh (không thể tính toán nổi), nên CART buộc phải dùng chiến lược Tham lam (chọn cái tốt nhất ngay trước mắt)."
+        "explanation": "Nó tìm kiếm điểm cắt tối ưu tại TỪNG NÚT một cách cục bộ, mà KHÔNG kiểm tra xem điểm cắt đó có dẫn đến một cái cây tối ưu nhất ở tầng cuối cùng hay không. Thuật toán CART phân chia đệ quy từng nút một. Vì tìm Cây tối ưu toàn cục là bài toán NP-Hoàn chỉnh (không thể tính toán nổi), nên CART buộc phải dùng chiến lược Tham lam (chọn cái tốt nhất ngay trước mắt)."
     },
     {
         "type": "ordering",
@@ -700,7 +700,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó duyệt từ gốc đến chiếc lá chứa mẫu thử đó, rồi trả về tỷ lệ phần trăm các mẫu huấn luyện thuộc từng lớp ĐANG NẰM CÙNG TẠI CHIẾC LÁ ĐÓ."
+                "text": "Nó duyệt từ gốc đến chiếc lá chứa mẫu thử đó rồi trả về tỷ lệ phần trăm các mẫu huấn luyện thuộc từng lớp ĐANG NẰM CÙNG TẠI CHIẾC LÁ ĐÓ."
             },
             {
                 "id": "c",
@@ -755,7 +755,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì số lượng tham số KHÔNG ĐƯỢC XÁC ĐỊNH TRƯỚC trước khi huấn luyện (cây có thể mọc to nhỏ tùy thuộc vào dữ liệu). Dẫn đến nguy cơ Overfitting rất cao."
+                "text": "Vì số lượng tham số KHÔNG ĐƯỢC XÁC ĐỊNH TRƯỚC trước khi huấn luyện"
             },
             {
                 "id": "c",
@@ -767,7 +767,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Mô hình tham số (như Linear Regression) có số tham số cố định (số đường thẳng). Cây quyết định không giới hạn kích thước, nó sẽ tự do mọc 'cành' ôm sát vào dữ liệu nếu không bị kiểm soát, gây quá khớp."
+        "explanation": "(cây có thể mọc to nhỏ tùy thuộc vào dữ liệu). Dẫn đến nguy cơ Overfitting rất cao. Mô hình tham số (như Linear Regression) có số tham số cố định (số đường thẳng). Cây quyết định không giới hạn kích thước, nó sẽ tự do mọc 'cành' ôm sát vào dữ liệu nếu không bị kiểm soát, gây quá khớp."
     },
     {
         "type": "multiple_choice",
@@ -780,7 +780,7 @@
             },
             {
                 "id": "b",
-                "text": "Đặt `max_depth` (độ sâu tối đa của cây). Giới hạn độ sâu giúp ngăn cây mọc quá dài và học thuộc các điểm nhiễu."
+                "text": "Đặt `max_depth` (độ sâu tối đa của cây)."
             },
             {
                 "id": "c",
@@ -792,7 +792,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "max_depth là cách trực tiếp và hiệu quả nhất để chính quy hóa (regularize) một cây quyết định. (Scikit-learn mặc định max_depth=None, tức là cây mọc tự do)."
+        "explanation": "Giới hạn độ sâu giúp ngăn cây mọc quá dài và học thuộc các điểm nhiễu. max_depth là cách trực tiếp và hiệu quả nhất để chính quy hóa (regularize) một cây quyết định. (Scikit-learn mặc định max_depth=None, tức là cây mọc tự do)."
     },
     {
         "type": "matching",
@@ -844,7 +844,7 @@
             },
             {
                 "id": "b",
-                "text": "Trung bình (Mean) của tất cả các giá trị mục tiêu (y) của các mẫu huấn luyện rơi vào nút lá đó."
+                "text": "Trung bình (Mean) của tất cả các giá trị mục tiêu"
             },
             {
                 "id": "c",
@@ -856,7 +856,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Trong Hồi quy, một chiếc lá không trả về class (nhãn), mà trả về giá trị Trung bình (average) của tất cả các điểm dữ liệu nằm trong chiếc lá đó."
+        "explanation": "(y) của các mẫu huấn luyện rơi vào nút lá đó. Trong Hồi quy, một chiếc lá không trả về class (nhãn), mà trả về giá trị Trung bình (average) của tất cả các điểm dữ liệu nằm trong chiếc lá đó."
     },
     {
         "type": "fill_in_blanks",
@@ -899,7 +899,7 @@
             },
             {
                 "id": "b",
-                "text": "Cây quyết định chỉ có thể tạo ra các đường cắt VUÔNG GÓC với trục tọa độ (x, y) (vì mỗi lần cắt nó chỉ xét 1 đặc trưng)."
+                "text": "Cây quyết định chỉ có thể tạo ra các đường cắt VUÔNG GÓC với trục tọa độ"
             },
             {
                 "id": "c",
@@ -911,7 +911,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Do nguyên lý 'Tại 1 nút, chọn 1 đặc trưng X và cắt ở ngưỡng Y', mọi đường chia của Cây quyết định đều thẳng đứng hoặc nằm ngang tạo thành các ô vuông góc (Orthogonal)."
+        "explanation": "(x y) (vì mỗi lần cắt nó chỉ xét 1 đặc trưng). Do nguyên lý 'Tại 1 nút, chọn 1 đặc trưng X và cắt ở ngưỡng Y', mọi đường chia của Cây quyết định đều thẳng đứng hoặc nằm ngang tạo thành các ô vuông góc (Orthogonal)."
     },
     {
         "type": "multiple_choice",
@@ -924,7 +924,7 @@
             },
             {
                 "id": "b",
-                "text": "Cây quyết định sẽ phải tạo ra một đường cắt bậc thang rất zíc-zắc và phức tạp để cố gắng khớp với đường chéo 45 độ đó, làm mô hình dễ bị overfit."
+                "text": "Cây quyết định sẽ phải tạo ra một đường cắt bậc thang rất zíc-zắc và phức tạp"
             },
             {
                 "id": "c",
@@ -936,7 +936,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Cây quyết định cực kỳ nhạy cảm với hướng xoay của trục tọa độ. Một tập dữ liệu chia bởi một đường chéo sẽ trở thành thảm họa bậc thang zíc-zắc đối với Cây quyết định (PCA có thể giúp giải quyết bằng cách xoay trục tọa độ lại cho tối ưu)."
+        "explanation": "Để cố gắng khớp với đường chéo 45 độ đó làm mô hình dễ bị overfit. Cây quyết định cực kỳ nhạy cảm với hướng xoay của trục tọa độ. Một tập dữ liệu chia bởi một đường chéo sẽ trở thành thảm họa bậc thang zíc-zắc đối với Cây quyết định (PCA có thể giúp giải quyết bằng cách xoay trục tọa độ lại cho tối ưu)."
     },
     {
         "type": "ordering",
@@ -980,7 +980,7 @@
             },
             {
                 "id": "b",
-                "text": "Sự thiếu ổn định (High Variance): Chỉ một thay đổi nhỏ xíu trong dữ liệu huấn luyện (ví dụ xóa đi 1 mẫu) cũng có thể làm thuật toán sinh ra một cái Cây khác hoàn toàn."
+                "text": "Sự thiếu ổn định (High Variance) Chỉ một thay đổi nhỏ xíu trong dữ liệu huấn luyện"
             },
             {
                 "id": "c",
@@ -992,7 +992,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Sự mất ổn định (High Variance) là lý do ra đời của Random Forest. Bằng cách gộp nhiều cây mất ổn định lại (lấy trung bình), ta sẽ có một mô hình ổn định và mạnh mẽ hơn nhiều."
+        "explanation": "(ví dụ xóa đi 1 mẫu) cũng có thể làm thuật toán sinh ra một cái Cây khác hoàn toàn. Sự mất ổn định (High Variance) là lý do ra đời của Random Forest. Bằng cách gộp nhiều cây mất ổn định lại (lấy trung bình), ta sẽ có một mô hình ổn định và mạnh mẽ hơn nhiều."
     },
     {
         "type": "matching",
@@ -1074,7 +1074,7 @@
             },
             {
                 "id": "b",
-                "text": "Bạn có thể nhận được 2 cây rất khác nhau, bởi vì scikit-learn tối ưu quá trình bằng cách chọn Ngẫu nhiên (Randomly) một số lượng đặc trưng để đánh giá tại mỗi nút (đây là lý do cây quyết định Stochastic/Stochasticity)."
+                "text": "Bạn có thể nhận được 2 cây rất khác nhau bởi"
             },
             {
                 "id": "c",
@@ -1086,7 +1086,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Scikit-Learn sử dụng bản cập nhật ngẫu nhiên khi tìm điểm cắt (nó đảo ngẫu nhiên danh sách feature). Điều này có nghĩa là bạn sẽ có Cây khác nhau nếu không set `random_state` cố định."
+        "explanation": "Vì scikit-learn tối ưu quá trình bằng cách chọn Ngẫu nhiên (Randomly) một số lượng đặc trưng để đánh giá tại mỗi nút (đây là lý do cây quyết định Stochastic/Stochasticity). Scikit-Learn sử dụng bản cập nhật ngẫu nhiên khi tìm điểm cắt (nó đảo ngẫu nhiên danh sách feature). Điều này có nghĩa là bạn sẽ có Cây khác nhau nếu không set `random_state` cố định."
     },
     {
         "type": "multiple_choice",
@@ -1159,7 +1159,7 @@
             },
             {
                 "id": "c",
-                "text": "Khi các mẫu phân bố ĐỀU HOÀN TOÀN giữa tất cả các lớp (ví dụ: 50% lớp A, 50% lớp B). Trạng thái này là hỗn loạn/ít thông tin nhất."
+                "text": "Khi các mẫu phân bố ĐỀU HOÀN TOÀN giữa tất cả các lớp"
             },
             {
                 "id": "d",
@@ -1167,7 +1167,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Khi phân bố hoàn toàn đều đặn (50-50), Gini = 1 - (0.5^2 + 0.5^2) = 0.5. Đây là mức tạp chất cực đại cho 2 lớp (max Gini = 1 - (1/k))."
+        "explanation": "(ví dụ 50% lớp A, 50% lớp B). Trạng thái này là hỗn loạn/ít thông tin nhất. Khi phân bố hoàn toàn đều đặn (50-50), Gini = 1 - (0.5^2 + 0.5^2) = 0.5. Đây là mức tạp chất cực đại cho 2 lớp (max Gini = 1 - (1/k))."
     },
     {
         "type": "matching",
@@ -1223,7 +1223,7 @@
             },
             {
                 "id": "c",
-                "text": "Tối thiểu hóa MSE (Mean Squared Error). Nó tìm điểm cắt sao cho Phương sai (Variance) ở hai nhánh con là nhỏ nhất có thể (các điểm dữ liệu ở cùng 1 lá càng giống nhau càng tốt)."
+                "text": "Tối thiểu hóa MSE (Mean Squared Error)."
             },
             {
                 "id": "d",
@@ -1231,7 +1231,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Vì là Hồi quy số nên không có 'lớp' để tính Gini. CART sẽ chia dữ liệu sao cho MSE (phương sai) tại 2 nhánh con là nhỏ nhất so với giá trị trung bình."
+        "explanation": "Nó tìm điểm cắt sao cho Phương sai (Variance) ở hai nhánh con là nhỏ nhất có thể (các điểm dữ liệu ở cùng 1 lá càng giống nhau càng tốt). Vì là Hồi quy số nên không có 'lớp' để tính Gini. CART sẽ chia dữ liệu sao cho MSE (phương sai) tại 2 nhánh con là nhỏ nhất so với giá trị trung bình."
     },
     {
         "type": "fill_in_blanks",
@@ -1270,7 +1270,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Bằng cách Xoay (rotate) dữ liệu sao cho sự biến thiên tối đa nằm trên một đường song song với các trục tọa độ, giúp Cây không phải cắt zíc-zắc nhiều."
+                "text": "Bằng cách Xoay (rotate) dữ liệu sao cho sự biến thiên tối đa nằm trên một đường song song với các trục tọa độ"
             },
             {
                 "id": "b",
@@ -1286,7 +1286,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Vì Cây quyết định chỉ cắt vuông góc (trực giao), việc dùng PCA để xoay tập dữ liệu về trạng thái vuông vắn so với trục sẽ giúp cây đơn giản hóa đường cắt."
+        "explanation": "Giúp Cây không phải cắt zíc-zắc nhiều. Vì Cây quyết định chỉ cắt vuông góc (trực giao), việc dùng PCA để xoay tập dữ liệu về trạng thái vuông vắn so với trục sẽ giúp cây đơn giản hóa đường cắt."
     },
     {
         "type": "multiple_choice",
@@ -1299,7 +1299,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì nó cho phép một nút chỉ cần có 2 mẫu là đã được phép chia đôi ra tiếp, dẫn đến việc cây có thể mọc sâu tận tới mức mỗi nút lá chỉ chứa 1 mẫu duy nhất (thuộc lòng dữ liệu huấn luyện)."
+                "text": "Vì nó cho phép một nút chỉ cần có 2 mẫu là đã được phép chia đôi ra tiếp dẫn đến việc cây có thể mọc sâu tận tới mức mỗi nút lá chỉ chứa 1 mẫu duy nhất"
             },
             {
                 "id": "c",
@@ -1311,7 +1311,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "min_samples_split=2 là giá trị mặc định. Nếu nút có 2 phần tử khác lớp, thuật toán sẽ chia đôi ra 2 lá, mỗi lá 1 phần tử (overfit hoàn hảo)."
+        "explanation": "(thuộc lòng dữ liệu huấn luyện). min_samples_split=2 là giá trị mặc định. Nếu nút có 2 phần tử khác lớp, thuật toán sẽ chia đôi ra 2 lá, mỗi lá 1 phần tử (overfit hoàn hảo)."
     }
 ];
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Trắc Nghiệm Chương 9</title>
+    <title>Bài Tập Trắc Nghiệm Chương 14</title>
     <style>
         :root {
             --primary: #1a73e8;
@@ -467,320 +467,193 @@
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Sự khác biệt cốt lõi giữa Phân loại (Classification) và Phân cụm (Clustering) là gì?",
+        "question": "Tại sao Mạng Nơ-ron Đa lớp (MLP) thông thường không phù hợp để xử lý hình ảnh lớn?",
         "options": [
             {
                 "id": "a",
-                "text": "Phân loại dùng cho dữ liệu văn bản, còn Phân cụm dùng cho dữ liệu hình ảnh."
+                "text": "Vì nó không hỗ trợ tính toán bằng số nguyên."
             },
             {
                 "id": "b",
-                "text": "Phân loại là học CÓ GIÁM SÁT (dữ liệu đã có sẵn nhãn)."
+                "text": "Vì để xử lý một ảnh lớn (VD: 1000x1000 pixel) nếu dùng MLP truyền thống,"
             },
             {
                 "id": "c",
-                "text": "Phân loại chậm hơn Phân cụm."
+                "text": "Vì MLP chỉ có thể xử lý văn bản."
             },
             {
                 "id": "d",
-                "text": "Phân cụm yêu cầu người dùng phải gán nhãn thủ công trước."
+                "text": "Vì MLP không thể huấn luyện bằng GPU."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Phân cụm là học KHÔNG GIÁM SÁT (dữ liệu hoàn toàn không có nhãn, thuật toán tự tìm ra các nhóm tương đồng). Trong Phân loại, ta biết trước ví dụ con chó, con mèo. Trong Phân cụm, ta chỉ đưa cho máy một đống ảnh động vật không có tên, và máy tự gộp những con có hình dáng giống nhau vào thành từng nhóm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Thuật toán K-Means hoạt động bằng cách nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tính khoảng cách tuyến tính giữa mọi cặp điểm dữ liệu."
-            },
-            {
-                "id": "b",
-                "text": "Nó thử tất cả các nhãn ngẫu nhiên cho đến khi tìm được nhãn đúng."
-            },
-            {
-                "id": "c",
-                "text": "Khởi tạo K tâm cụm (centroids) ngẫu nhiên gán mỗi điểm dữ liệu vào tâm gần nhất,"
-            },
-            {
-                "id": "d",
-                "text": "Nó xây dựng một cây phân quyết định."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Sau đó cập nhật lại vị trí tâm bằng trung bình của các điểm trong cụm, lặp lại cho đến khi tâm không đổi. K-Means cực kỳ đơn giản: Bốc bừa K điểm làm tâm -> Gom điểm gần tâm -> Tính lại tâm mới nằm giữa đám điểm vừa gom -> Lặp lại. Nó hội tụ rất nhanh."
+        "explanation": "Một lớp ẩn đầu tiên với 1000 nơ-ron sẽ đòi hỏi tới 1 tỷ tham số (trọng số). Điều này dẫn tới cạn kiệt bộ nhớ và mô hình rất dễ bị Overfitting. Đặc trưng của hình ảnh là có cấu trúc 2D và có quá nhiều điểm ảnh. Nếu ta kết nối mọi nơ-ron với TẤT CẢ điểm ảnh (Fully Connected), mô hình sẽ phát nổ về kích thước. CNN sinh ra để giải quyết chính xác sự lãng phí này."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Nhược điểm lớn nhất của K-Means:",
+        "question": "Hai khái niệm cốt lõi của Lớp Tích chập (Convolutional Layer) lấy cảm hứng từ cấu trúc Võng mạc sinh học:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Mặc dù K-Means rất nhanh, nhưng nhược điểm chết người của nó là bắt buộc bạn phải cung cấp số lượng cụm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> từ trước. Hơn nữa, nó rất nhạy cảm với việc khởi tạo tâm cụm ban đầu, nếu khởi tạo xui xẻo, K-Means có thể hội tụ về một nghiệm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (không phải nghiệm tối ưu toàn cục).",
+        "text": "Đầu tiên, mỗi nơ-ron Tích chập KHÔNG nhìn vào toàn bộ bức ảnh. Nó chỉ tập trung vào một ô vuông nhỏ trên ảnh gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Receptive Field). Thứ hai, tất cả các nơ-ron trên cùng một Lớp Tích chập đều SỬ DỤNG CHUNG một bộ Trọng số và Bias. Cơ chế này được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Parameter Sharing). Nhờ đó, nếu mạng học được cách nhận diện 'Con mèo' ở góc trái, nó cũng có thể tự nhận ra 'Con mèo' ở góc phải mà không cần học lại.",
         "words": [
             {
                 "id": "w1",
-                "text": "Tối ưu cục bộ (Local optimum)"
+                "text": "Trường Cảm thụ (Receptive Field)"
             },
             {
                 "id": "w2",
-                "text": "K (số lượng cluster)"
+                "text": "Chia sẻ Trọng số (Parameter Sharing)"
             },
             {
                 "id": "w3",
-                "text": "Max_iter (số vòng lặp)"
+                "text": "Hàm mất mát (Loss Function)"
             },
             {
                 "id": "w4",
-                "text": "Tối ưu toàn cục (Global optimum)"
+                "text": "Lan truyền ngược (Backprop)"
             }
         ],
         "correctAnswers": {
-            "1": "w2",
-            "2": "w1"
+            "1": "w1",
+            "2": "w2"
         },
-        "explanation": "Máy không tự biết trong dữ liệu có bao nhiêu cụm, bạn phải đoán số K. K-Means cũng hay bị mắc kẹt ở local optimum, do đó Scikit-Learn thường chạy thuật toán 10 lần với các khởi tạo ngẫu nhiên khác nhau (n_init=10) rồi lấy kết quả tốt nhất."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán K-Means++ (được Scikit-Learn dùng làm mặc định thay vì K-Means thường) giải quyết vấn đề gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tự động tìm ra số lượng cụm K."
-            },
-            {
-                "id": "b",
-                "text": "Nó thay đổi cách ĐÁNH GIÁ khoảng cách (dùng Manhattan thay vì Euclidean)."
-            },
-            {
-                "id": "c",
-                "text": "Nó giải quyết vấn đề KHỞI TẠO TÂM."
-            },
-            {
-                "id": "d",
-                "text": "Nó hỗ trợ chạy trên GPU."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Bằng cách chọn các tâm ban đầu nằm XA NHAU NHẤT CÓ THỂ, nó làm giảm đáng kể khả năng thuật toán hội tụ vào nghiệm tối ưu cục bộ tồi tệ. K-Means thường chọn K điểm ngẫu nhiên hoàn toàn. Nếu rủi ro chọn 2 điểm khởi tạo nằm cùng một chỗ, K-Means sẽ chia sai bét. K-Means++ đảm bảo các tâm khởi tạo trải đều ra toàn không gian."
-    },
-    {
-        "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Thuật toán Mini-batch K-Means được sử dụng khi nào?",
-        "instruction": "(Sắp xếp ưu điểm của Mini-batch K-Means so với K-Means truyền thống)",
-        "items": [
-            {
-                "id": "1",
-                "text": "Khi tập dữ liệu quá khổng lồ, không thể nạp tất cả vào RAM (Out-of-core)."
-            },
-            {
-                "id": "2",
-                "text": "Thay vì dùng toàn bộ dữ liệu ở mỗi lần lặp, nó chỉ dùng một lượng nhỏ (mini-batch) để di chuyển tâm cụm một chút."
-            },
-            {
-                "id": "3",
-                "text": "Kết quả: Tốc độ huấn luyện nhanh hơn gấp 3 đến 4 lần."
-            },
-            {
-                "id": "4",
-                "text": "Đánh đổi: Mô hình phân cụm cuối cùng thường kém chính xác (tệ hơn một chút) so với K-Means chạy full dữ liệu."
-            }
-        ],
-        "correctOrder": [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        "explanation": "Giống hệt Incremental PCA, Mini-batch K-Means hy sinh một phần nhỏ sự hoàn hảo để đổi lấy việc xử lý được Big Data và giảm sốc cho RAM."
+        "explanation": "Local Receptive Field (nhìn cục bộ) giảm số lượng tham số khổng lồ. Parameter Sharing (xài chung bộ lọc filter) tạo ra tính năng Dịch chuyển Bất biến (Translation Invariance) - Nhận dạng được vật thể dù nó nằm ở đâu trên ảnh."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Quán tính (Inertia) trong K-Means đo lường điều gì?",
+        "question": "Trong Lớp Tích chập (Conv2D), tham số 'Bộ lọc' (Filter hoặc Kernel) có ý nghĩa toán học là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Thời gian thuật toán chạy."
+                "text": "Nó làm mờ hình ảnh gốc."
             },
             {
                 "id": "b",
-                "text": "Khoảng cách bình phương trung bình giữa mỗi điểm dữ liệu đến TÂM CỤM GẦN NHẤT CỦA NÓ."
+                "text": "Là một ma trận nhỏ (VD: 3x3) chứa các trọng số."
             },
             {
                 "id": "c",
-                "text": "Khoảng cách giữa tâm cụm này với tâm cụm khác."
+                "text": "Là một hằng số để nén màu sắc ảnh."
             },
             {
                 "id": "d",
-                "text": "Số lượng cụm K."
+                "text": "Nó giúp đổi kích thước ảnh từ 4K xuống HD."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Inertia càng nhỏ thì các điểm trong cụm càng nén chặt (tốt). Inertia (Quán tính) là hàm mục tiêu mà K-Means cố gắng tối thiểu hóa. Tuy nhiên, ta không thể dùng Inertia để so sánh mô hình có K=3 với K=5, vì hiển nhiên khi K càng tăng (chia càng nhỏ), Inertia sẽ tự động giảm."
+        "explanation": "Trong quá trình học, mạng nơ-ron sẽ TỰ ĐỘNG thay đổi các con số trong ma trận này để nó hoạt động như một công cụ dò tìm đặc trưng. (Ví dụ: tự học cách phát hiện đường chéo, cạnh ngang, hoặc góc nhọn). Trước thời Deep Learning, các kỹ sư hình ảnh phải tự nghĩ ra các bộ lọc toán học (Sobel, Canny) bằng tay để dò cạnh. Với CNN, mạng Nơ-ron TỰ HỌC ra hàng ngàn bộ lọc (Filters) xịn hơn con người tự nghĩ ra rất nhiều."
     },
     {
         "type": "matching",
-        "difficulty": "Trung bình",
-        "question": "Ghép nối các phương pháp tìm số K (số lượng cụm) tối ưu:",
+        "difficulty": "Dễ",
+        "question": "Ghép nối các tham số cấu hình của Lớp Conv2D:",
         "left": [
             {
                 "id": "l1",
-                "text": "Quy tắc Khửu tay (Elbow Rule)"
+                "text": "padding='same'"
             },
             {
                 "id": "l2",
-                "text": "Điểm Silhouette (Silhouette Score)"
+                "text": "padding='valid'"
+            },
+            {
+                "id": "l3",
+                "text": "strides=2"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Vẽ biểu đồ Inertia theo số K. Chọn điểm mà đường cong bắt đầu bẻ gập nhanh (chững lại). Rất trực quan nhưng kém chính xác."
+                "text": "Bọc thêm các viền số 0 (Zero-padding) xung quanh ảnh gốc sao cho ảnh đầu ra (Output) CÙNG KÍCH THƯỚC (Chiều rộng/cao) với ảnh đầu vào."
             },
             {
                 "id": "r2",
-                "text": "Đo lường mức độ một điểm dữ liệu nằm GẦN các điểm cùng cụm (Cohesion) so với mức độ nó nằm XA các điểm ở cụm lân cận gần nhất (Separation). Trị số từ -1 đến +1, càng gần +1 càng tốt."
+                "text": "KHÔNG chèn thêm số 0 nào cả. Bộ lọc chỉ quét bên trong ảnh. Do đó, kích thước ảnh đầu ra sẽ BỊ NHỎ ĐI một chút."
+            },
+            {
+                "id": "r3",
+                "text": "Bước nhảy của bộ lọc. Thay vì nhích từng pixel một, bộ lọc nhảy 2 pixel mỗi bước. Làm giảm một nửa độ phân giải của Feature Map đầu ra."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Elbow dùng Inertia nên chỉ mang tính tương đối (vì Inertia luôn giảm khi K tăng). Silhouette Score đánh giá toàn diện hơn, +1 là gom cụm hoàn hảo, 0 là nằm sát biên, -1 là điểm bị gom nhầm cụm."
+        "explanation": "Nếu bạn không dùng Padding (valid), qua mỗi lớp Conv ảnh sẽ nhỏ dần lại. Stride (Bước nhảy) lớn hơn 1 là cách phổ biến để nén (Hạ lấy mẫu - Downsampling) hình ảnh."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Điểm yếu CHÍNH của thuật toán K-Means khi phân cụm là gì?",
+        "question": "Giả sử ảnh đầu vào có kích thước [224x224x3] (Ảnh màu RGB). Bạn dùng một lớp Conv2D với 64 bộ lọc (filters), mỗi bộ lọc kích thước 3x3. Vậy hình dáng CỦA MỘT BỘ LỌC và KÍCH THƯỚC ĐẦU RA (Output Feature Map) sẽ như thế nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó không thể xử lý dữ liệu lớn."
+                "text": "Bộ lọc là ma trận 3x3. Đầu ra là [224x224x1]."
             },
             {
                 "id": "b",
-                "text": "Nó giả định rằng các cụm có HÌNH CẦU"
+                "text": "Bộ lọc LÀ MỘT KHỐI 3D kích thước [3x3x3]"
             },
             {
                 "id": "c",
-                "text": "Nó quá phức tạp để cài đặt lập trình."
+                "text": "Bộ lọc là 3x3x1. Đầu ra là [224x224x3]."
             },
             {
                 "id": "d",
-                "text": "Nó luôn luôn yêu cầu phải chuẩn hóa dữ liệu."
+                "text": "Cả hai đều là 224x224."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(hoặc lồi) và KÍCH THƯỚC TƯƠNG ĐƯƠNG nhau. Nó sẽ thất bại thảm hại nếu các cụm có hình thuôn dài, kích thước khác nhau, hoặc lồng vào nhau (như hai vòng cung). Vì K-Means chỉ đo khoảng cách Euclidean tính từ tâm tròn, nó sẽ kéo mọi thứ thành hình cầu tròn. Nó không thể phân cụm dữ liệu hình mặt trăng khuyết, hình điếu xì gà, hoặc dữ liệu có độ lệch quá mạnh."
+        "explanation": "(do phải khớp với 3 kênh màu đầu vào). Kích thước Đầu ra sẽ là một khối 3D kích thước [224x224x64] (Vì có 64 bộ lọc, mỗi bộ lọc xuất ra 1 tấm bản đồ đặc trưng). Nhiều người lầm tưởng Filter là ảnh 2D. Sai! Filter LUÔN LUÔN quét sâu xuống TOÀN BỘ KÊNH MÀU của lớp trước. Do đầu vào có chiều sâu (depth) = 3 (RGB), nên filter cũng phải có chiều sâu = 3. Số lượng bộ lọc (64) sẽ quyết định chiều sâu (depth) của Đầu ra."
     },
     {
-        "type": "fill_in_blanks",
+        "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Ứng dụng K-Means cho Giảm chiều và Phân loại:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để Giảm chiều dữ liệu. Ví dụ dữ liệu có 1000 đặc trưng, bạn chạy K-Means với k=50. Sau đó dùng khoảng cách từ điểm dữ liệu đến 50 tâm cụm làm đặc trưng mới (giảm từ 1000 chiều xuống 50 chiều). Nếu bạn dùng tập 50 chiều này để huấn luyện một bộ Phân loại Logistic Regression, độ chính xác thường sẽ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do K-Means đã gom các điểm nhiễu thành các nhóm gọn gàng. Kỹ thuật này đôi khi được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Tăng lên / Cải thiện"
-            },
-            {
-                "id": "w2",
-                "text": "Giảm đi"
-            },
-            {
-                "id": "w3",
-                "text": "Biến đổi không gian cụm (Cluster-based Transform)"
-            },
-            {
-                "id": "w4",
-                "text": "Tăng số chiều"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w3"
-        },
-        "explanation": "Giống như biến 1 điểm tọa độ phức tạp thành 50 con số báo cáo 'Tôi cách quận A bao xa, cách quận B bao xa'. Việc này giúp Logistic Regression dễ thở hơn rất nhiều."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Kỹ thuật 'Truyền nhãn' (Label Propagation) trong Học Bán Giám Sát (Semi-supervised Learning) sử dụng K-Means như thế nào?",
+        "question": "Lớp Gộp (Pooling Layer), ví dụ MaxPooling2D, có tác dụng gì trong mạng CNN?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó dùng K-Means để xóa các nhãn."
+                "text": "Nó tăng độ nét cho hình ảnh."
             },
             {
                 "id": "b",
-                "text": "Khi bạn có 10.000 dữ liệu nhưng chỉ có tiền thuê người gán nhãn 50 dữ liệu."
+                "text": "Nó giúp mô hình vẽ thêm đặc trưng."
             },
             {
                 "id": "c",
-                "text": "Nó biến đổi K-Means thành mạng Neural network."
+                "text": "Tác dụng chính là THU NHỎ KÍCH THƯỚC (Subsampling) bức ảnh đầu vào"
             },
             {
                 "id": "d",
-                "text": "Nó sinh ra ngẫu nhiên nhãn cho toàn bộ dữ liệu."
+                "text": "Nó đổi ảnh màu thành ảnh đen trắng."
             }
         ],
-        "correctAnswer": "b",
-        "explanation": "Bạn dùng K=50. Lấy điểm nằm gần tâm nhất của 50 cụm (Representative instances) để gán nhãn thủ công. Sau đó TRUYỀN NHÃN đó cho toàn bộ các điểm còn lại trong cùng cụm. Học bán giám sát rất mạnh. Thay vì gán nhãn ngẫu nhiên 50 điểm (hiệu quả thấp), bạn gán nhãn cho 50 điểm ĐIỂN HÌNH NHẤT (Representative) của 50 cụm, rồi lây lan nhãn đó cho đồng bọn. Độ chính xác sẽ nhảy vọt."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "DBSCAN khác biệt lớn nhất so với K-Means ở điểm nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "DBSCAN bắt buộc phải cung cấp số lượng K."
-            },
-            {
-                "id": "b",
-                "text": "DBSCAN là thuật toán dựa trên MẬT ĐỘ (Density-based)."
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN chỉ chạy được trên 2 chiều."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN chạy nhanh hơn K-Means 100 lần."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Nó xác định các vùng có mật độ điểm cao (được ngăn cách bởi các vùng mật độ thấp). Nó không giới hạn hình dạng cụm và KHÔNG CẦN CHO TRƯỚC SỐ CỤM. DBSCAN hoạt động như giọt nước loang ra. Chỉ cần khoảng cách giữa các điểm còn đủ gần (mật độ dày), nó sẽ coi tất cả là 1 cụm dù nó ngoằn ngoèo hình mặt trăng khuyết hay chữ S."
+        "correctAnswer": "c",
+        "explanation": "Giúp GIẢM LƯỢNG TÍNH TOÁN, giảm nguy cơ Overfitting và cung cấp thêm một chút khả năng Bất biến dịch chuyển (nhận diện con mắt dù con mắt nhúc nhích 1 vài pixel). Pooling giống như việc bạn ép một bức ảnh 4K xuống thành HD. Nó loại bỏ các chi tiết thừa thãi và chỉ giữ lại 'Đặc điểm mạnh nhất' (nếu là MaxPooling). Một Lớp MaxPool 2x2 sẽ vứt bỏ 75% dữ liệu của bạn."
     },
     {
         "type": "ordering",
-        "difficulty": "Khó",
-        "question": "Cách DBSCAN hoạt động qua tham số epsilon (eps) và min_samples:",
+        "difficulty": "Trung bình",
+        "question": "Cách hoạt động của lớp `MaxPooling2D(pool_size=2, strides=2)` trên một ma trận 4x4:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "DBSCAN xét một điểm bất kỳ. Nó đếm xem có bao nhiêu điểm lân cận nằm trong vòng tròn bán kính 'eps' (epsilon)."
+                "text": "Trải một ô vuông kích thước 2x2 lên góc trên cùng bên trái của ma trận."
             },
             {
                 "id": "2",
-                "text": "Nếu số điểm lân cận này LỚN HƠN hoặc BẰNG tham số 'min_samples', điểm đó được phong danh hiệu 'Điểm Lõi' (Core Instance)."
+                "text": "Tìm giá trị LỚN NHẤT trong số 4 con số nằm bên trong ô vuông đó và ghi ra bản đồ đầu ra."
             },
             {
                 "id": "3",
-                "text": "Tất cả các điểm nằm trong vùng lân cận eps của Điểm Lõi sẽ được gom chung vào cùng 1 cụm."
+                "text": "Di chuyển ô vuông đó sang phải (hoặc xuống dưới) với bước nhảy bằng 2 (Nghĩa là các ô vuông không bị chồng lấp lên nhau)."
             },
             {
                 "id": "4",
-                "text": "Quá trình này lan truyền (chuỗi) sang các láng giềng. Bất kỳ điểm nào KHÔNG PHẢI là điểm lõi, và cũng KHÔNG NẰM trong vùng lân cận của bất kỳ điểm lõi nào, sẽ bị coi là Nhiễu (Anomaly/Noise)."
+                "text": "Lặp lại cho đến khi quét hết ma trận. Kết quả là ma trận 4x4 bị teo lại chỉ còn 2x2 (giảm 4 lần khối lượng)."
             }
         ],
         "correctOrder": [
@@ -789,330 +662,413 @@
             "3",
             "4"
         ],
-        "explanation": "DBSCAN có 2 siêu tham số cực kỳ quan trọng: eps (bán kính) và min_samples (số điểm tối thiểu để lập phường hội). Điểm bơ vơ sẽ bị vứt ra thành Nhiễu."
+        "explanation": "MaxPooling cực kỳ 'ngu ngốc' vì nó chả học cái gì cả (Không có tham số trọng số). Nhưng nó lại là linh hồn của CNN, giúp ép nhỏ dữ liệu thô kệch thành các cục dữ liệu tinh túy."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Điều gì xảy ra nếu điểm dữ liệu bị đánh dấu là Nhiễu (Noise) trong thuật toán DBSCAN (Scikit-Learn)?",
+        "question": "Điều gì là một nhược điểm chí mạng của lớp `MaxPooling`?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuật toán sẽ tự động dừng lại."
+                "text": "Nó chạy quá chậm."
             },
             {
                 "id": "b",
-                "text": "Dữ liệu đó sẽ bị xóa khỏi bộ nhớ gốc."
+                "text": "Nó rất hay gây lỗi RAM."
             },
             {
                 "id": "c",
-                "text": "Điểm đó sẽ được gán nhãn cụm"
+                "text": "Nó mang tính HUỶ DIỆT DỮ LIỆU rất lớn."
             },
             {
                 "id": "d",
-                "text": "Dữ liệu được chuyển về tâm tọa độ (0,0)."
+                "text": "Nó làm tăng số lượng Trọng số."
             }
         ],
         "correctAnswer": "c",
-        "explanation": "(cluster label) là `-1` trong thuộc tính `labels_`. Scikit-Learn dùng quy ước nhãn `-1` để ám chỉ Outliers/Noise/Anomalies. K-Means không bao giờ từ chối điểm nào (điểm xa cỡ nào cũng bị ép vô 1 cụm). DBSCAN có khả năng chỉ ra thẳng điểm nào là ngoại lai."
+        "explanation": "Ngay cả một lớp MaxPooling nhỏ (2x2) cũng ném bỏ tới 75% thông tin hình ảnh. Trong một số bài toán tinh tế (như phân vùng ảnh y tế - Semantic Segmentation), sự phá hoại cấu trúc không gian này là không thể chấp nhận được. Rất nhiều kiến trúc hiện đại ngày nay ghét MaxPooling. Thay vào đó, họ ép hình ảnh nhỏ lại bằng cách sử dụng luôn Lớp Conv2D với strides=2 (vừa ép nhỏ, vừa học được quy luật ép nhỏ thay vì ném bỏ bừa bãi)."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "Điểm yếu của DBSCAN:",
+        "question": "Độ sâu không gian (Feature Maps) trong kiến trúc CNN cổ điển:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "DBSCAN là một thuật toán rất tuyệt, nhưng nó sẽ gặp khó khăn lớn nếu các cụm trong tập dữ liệu có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thay đổi quá lớn (nơi rất dày đặc, nơi lại rất thưa thớt). Thuật toán này không cho phép dùng một siêu tham số `eps` (bán kính) chung cho tất cả. Ngoài ra, DBSCAN <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hàm `predict()` để dự đoán nhãn cho các điểm dữ liệu mới đến.",
+        "text": "Kiến trúc chung của mọi mạng CNN (như VGG, AlexNet) đều giống một hình phễu (kim tự tháp ngược). Khi đi từ đầu đến cuối mạng, kích thước Không gian (Chiều rộng, Chiều cao) sẽ ngày càng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do bị các lớp MaxPool hoặc Stride nén lại. NHƯNG bù lại, kích thước Chiều sâu (Số lượng Kênh / Filters) lại ngày càng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Cuối cùng, khối 3D nhỏ xíu đó sẽ được làm phẳng (Flatten) và đẩy vào các Lớp kết nối đầy đủ (Dense) để dự đoán.",
         "words": [
             {
                 "id": "w1",
-                "text": "Mật độ (Density)"
+                "text": "Nhỏ đi (Teo lại)"
             },
             {
                 "id": "w2",
-                "text": "Màu sắc (Color)"
+                "text": "Lớn lên (Phình to)"
             },
             {
                 "id": "w3",
-                "text": "KHÔNG CÓ (Does not have)"
+                "text": "Không đổi"
             },
             {
                 "id": "w4",
-                "text": "CÓ (Has)"
+                "text": "Lọc bằng màu sắc"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Nếu khu phố A nhà nằm sát nhau, khu phố B nhà cách nhau 10km. Bạn set eps=1km thì DBSCAN nhận diện được khu A nhưng đánh giá khu B là Rừng Hoang (Noise). Bạn set eps=15km thì nó nhận được khu B nhưng lại gộp luôn khu A vào chung với khu B. (DBSCAN không có predict, bạn phải dùng thuật toán KNN để gán điểm mới)."
+        "explanation": "Ảnh đầu vào to nhưng nông (Chỉ có 3 kênh RGB). Càng sâu vào mạng, ảnh càng nhỏ như hộp diêm, nhưng dày cộm (có thể lên tới 2048 kênh chiều sâu). Mỗi kênh ở cuối lưu trữ một đặc trưng siêu cao cấp (như Mắt, Mũi, Miệng)."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép thuật toán Phân cụm với tính chất phù hợp:",
+        "difficulty": "Trung bình",
+        "question": "Sự tiến hóa của các Siêu kiến trúc CNN qua các cuộc thi ImageNet:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "LeNet-5 (1998)"
             },
             {
                 "id": "l2",
-                "text": "DBSCAN"
+                "text": "AlexNet (2012)"
+            },
+            {
+                "id": "l3",
+                "text": "GoogLeNet / Inception (2014)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc cho trước số K. Thích cụm hình cầu. Nhạy cảm với nhiễu ngoại lai."
+                "text": "Ông tổ của mạng CNN, được Yann LeCun tạo ra dùng để nhận dạng số trên séc ngân hàng. Dùng hàm Tanh, Pooling kiểu Trung bình (Average)."
             },
             {
                 "id": "r2",
-                "text": "Tự động tìm số cụm. Xử lý tốt mọi hình dạng phức tạp. Chống nhiễu ngoại lai (tách riêng noise ra). Không thích hợp nếu mật độ các cụm khác nhau nhiều."
+                "text": "Phát súng mở màn kỷ nguyên Deep Learning. To hơn, sâu hơn LeNet. Lần đầu sử dụng Hàm ReLU (chống vanishing gradient) và kỹ thuật Dropout. Train trên GPU."
+            },
+            {
+                "id": "r3",
+                "text": "Giới thiệu module 'Inception'. Thay vì phân vân nên dùng Filter 1x1, 3x3 hay 5x5, tác giả nối MỌI BỘ LỌC song song nhau và cho mạng tự quyết định. Cực kỳ tiết kiệm tham số."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Đây là so sánh kinh điển giữa K-Means (Distance-based) và DBSCAN (Density-based)."
+        "explanation": "Lịch sử CNN là cuộc đua 'Ai làm mạng sâu hơn mà không bị gục'. Từ 5 lớp (LeNet) lên 8 lớp (AlexNet), rồi 22 lớp (GoogLeNet)."
     },
     {
-        "type": "multiple_choice",
+        "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Mô hình Hỗn hợp Gauss (Gaussian Mixture Models - GMM) là gì?",
-        "options": [
+        "question": "Mô-đun Inception trong GoogLeNet:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "GoogLeNet trông cực kỳ đồ sộ nhưng lại có số tham số (weights) ít hơn AlexNet tới 10 lần. Bí quyết là do nó sử dụng rất nhiều Lớp Tích chập <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Lớp này làm nhiệm vụ ép giảm Chiều sâu của luồng dữ liệu (Giống như cái cổ chai) trước khi thực hiện các phép chập lớn (như 3x3 hay 5x5). Thay vì phải tính chập trên khối dữ liệu dày 500 kênh, lớp này ép dữ liệu xuống còn 100 kênh, giúp <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> tính toán cực kỳ hiệu quả.",
+        "words": [
             {
-                "id": "a",
-                "text": "Là một biến thể của DBSCAN dùng phân phối Bernoulli."
+                "id": "w1",
+                "text": "1x1 (Conv 1x1)"
             },
             {
-                "id": "b",
-                "text": "Là một mô hình XÁC SUẤT giả định rằng toàn bộ các điểm dữ liệu được sinh ra từ việc trộn lẫn"
+                "id": "w2",
+                "text": "Giảm chi phí (Giảm chiều)"
             },
             {
-                "id": "c",
-                "text": "Là thuật toán học có giám sát dùng để phân loại văn bản."
+                "id": "w3",
+                "text": "Global Average Pooling"
             },
             {
-                "id": "d",
-                "text": "Là một thuật toán không thể giải quyết được cụm hình elip."
+                "id": "w4",
+                "text": "10x10"
             }
         ],
-        "correctAnswer": "b",
-        "explanation": "(mixture) một số lượng hữu hạn các phân phối Gaussian (hình quả chuông). Khác với K-Means gán 'Cứng' (Hard clustering - bạn chỉ có thể thuộc Cụm 1 hoặc Cụm 2). GMM dùng xác suất 'Mềm' (Soft clustering - bạn thuộc 80% Cụm 1, 20% Cụm 2). GMM giả định các cụm có hình Elip (bầu dục) ở các hướng và kích thước khác nhau."
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Conv 1x1 không quét không gian (vì nó 1x1). Nhưng nó quét xuyên thủng qua hàng trăm kênh RGB (channels). Do đó nó là một 'Lớp Fully Connected ẩn' dùng để Nén và Trộn các kênh lại với nhau mà siêu tiết kiệm RAM."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán nào đứng đằng sau quá trình hội tụ của Gaussian Mixture Model?",
+        "question": "Phát minh vĩ đại nhất của mạng ResNet (Residual Network - Mạng Thặng dư) ra đời năm 2015 là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Gradient Descent (Hạ gradient)."
+                "text": "Sử dụng Batch Normalization."
             },
             {
                 "id": "b",
-                "text": "Thuật toán EM (Expectation-Maximization - Cực đại hóa Kỳ vọng)."
+                "text": "Sử dụng cấu trúc Skip Connection (Kết nối Tắt)."
             },
             {
                 "id": "c",
-                "text": "Phương trình chuẩn (Normal Equation)."
+                "text": "Sử dụng hàm Mish thay cho ReLU."
             },
             {
                 "id": "d",
-                "text": "Backpropagation (Lan truyền ngược)."
+                "text": "Không dùng lớp Dense ở cuối."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "EM giống hệt cách K-Means hoạt động nhưng dành cho hình Elip. Bước E (Kỳ vọng): Ước tính xác suất mỗi điểm thuộc về cụm nào. Bước M (Cực đại hóa): Cập nhật lại hình dáng, vị trí, kích thước của Elip dựa trên các điểm vừa gom."
+        "explanation": "Thay vì luồng dữ liệu phải đi xuyên qua cực khổ từng lớp tích chập, ResNet cung cấp một đường cao tốc cho phép tín hiệu ĐI VÒNG QUA (bỏ qua) lớp đó và được CỘNG TRỰC TIẾP vào đầu ra. Nhờ vậy, mạng không bao giờ bị hội chứng 'Vanishing Gradients' và có thể xếp sâu hàng ngàn lớp. ResNet (Kaiming He) là một kiệt tác thiên tài. Khi mô hình quá sâu, lỗi học không trôi nổi về điểm xuất phát. Bằng cách nối thẳng dây điện từ đầu A tới đầu C (bỏ qua B), lỗi chạy băng băng trên cao tốc. Nhờ đó He train được mạng sâu 152 lớp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Global Average Pooling (GAP) thường được đặt ở ĐÂY trong các mạng CNN hiện đại (GoogLeNet, ResNet)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Ngay đầu mạng nơ-ron."
+            },
+            {
+                "id": "b",
+                "text": "Ở tận CÙNG của mạng Nơ-ron, TRƯỚC lớp Output phân loại cuối cùng."
+            },
+            {
+                "id": "c",
+                "text": "Sau mỗi lớp Conv2D."
+            },
+            {
+                "id": "d",
+                "text": "Ở bên trong hàm Custom Loss."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Thay vì dùng lệnh `Flatten()` (Trải phẳng 3D thành 1D rồi nhét vào hàng loạt lớp Dense tốn hàng triệu trọng số), GAP sẽ tính GIÁ TRỊ TRUNG BÌNH CỦA TỪNG BẢN ĐỒ ĐẶC TRƯNG. (Ví dụ: khối 7x7x2048 sẽ bị ép thành 1 vector 2048). Điều này tiết kiệm được 99% trọng số. Trong AlexNet/VGG, 90% số lượng Tham số (ngốn RAM nhất) nằm ở các Lớp Dense cuối cùng, chứ không phải ở Lớp Tích chập. GoogLeNet dẹp bỏ hoàn toàn lớp Dense bằng trò GAP này."
     },
     {
         "type": "ordering",
-        "difficulty": "Trung bình",
-        "question": "Cách GMM phân biệt và tạo thành cụm thông qua siêu tham số 'covariance_type':",
+        "difficulty": "Dễ",
+        "question": "Quy trình thực hiện Transfer Learning (Học chuyển giao) trong Keras để tận dụng mô hình ResNet50 siêu việt:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "'spherical' (Hình cầu): Rất giống K-Means, các cụm bị ép phải tròn xoe, nhưng mỗi cụm có thể có bán kính khác nhau."
+                "text": "Tải phần lõi (Backbone): `base_model = ResNet50(weights='imagenet', include_top=False)`."
             },
             {
                 "id": "2",
-                "text": "'diag' (Đường chéo): Các cụm có thể có hình elip (kéo dài trục X, Y khác nhau), nhưng các trục của elip phải SONG SONG với các trục tọa độ của đặc trưng."
+                "text": "Đóng băng (Freeze) lõi: `base_model.trainable = False` để tránh phá hỏng tri thức nó đã học."
             },
             {
                 "id": "3",
-                "text": "'tied' (Bị trói): Các cụm có thể có hình elip bất kỳ và nằm nghiêng, NHƯNG tất cả các cụm BẮT BUỘC phải chia sẻ CHUNG MỘT hình dạng, kích thước và góc nghiêng."
+                "text": "Thêm một lớp GlobalAveragePooling2D() và một lớp Dense() Output lên đỉnh phần lõi."
             },
             {
                 "id": "4",
-                "text": "'full' (Đầy đủ - Mặc định): Cho phép mỗi cụm thỏa sức có hình elip riêng biệt, kích thước riêng, độ nghiêng riêng biệt. (Nhưng tính toán tốn kém nhất)."
+                "text": "Huấn luyện nhẹ (Train) mô hình với Learning Rate khá lớn để lớp Output mới thích nghi với bài toán mới."
+            },
+            {
+                "id": "5",
+                "text": "Tinh chỉnh (Fine-tuning): Unfreeze (mở khóa) vài lớp Conv trên cùng của ResNet50, giảm nhỏ Learning Rate lại và train thêm vài vòng nữa."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "Tính linh hoạt của GMM nằm ở covariance_type (Ma trận hiệp phương sai). Bạn có thể giới hạn hình dáng của cụm để thuật toán chạy nhanh hơn."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Cách sử dụng GMM (Gaussian Mixture) phổ biến để 'Phát hiện Sự bất thường' (Anomaly Detection) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Các điểm dữ liệu nằm ở vùng có 'Xác suất Mật độ'"
-            },
-            {
-                "id": "b",
-                "text": "Các điểm dữ liệu nằm ngay tại trung tâm hình elip."
-            },
-            {
-                "id": "c",
-                "text": "Nó tự động gửi email báo cáo."
-            },
-            {
-                "id": "d",
-                "text": "Xóa hết toàn bộ dữ liệu."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "(PDF - Probability Density Function) RẤT THẤP (tức là nằm rìa nằm xa các hình elip của cụm) sẽ bị gắn cờ là Bất thường. Vì GMM là mô hình phân phối xác suất, nó biết rõ chỗ nào đông đúc, chỗ nào hoang vắng. Bạn chỉ cần đặt một ngưỡng tỷ lệ (ví dụ 4% điểm có xác suất thấp nhất) và quy chúng thành Nhiễu (Anomalies)."
+        "explanation": "Đây là Template vàng. Đừng bao giờ xây CNN từ đầu nếu bài toán của bạn là nhận dạng hình ảnh tự nhiên. Hãy đứng trên vai người khổng lồ (Transfer Learning)."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "Xác định số lượng cụm (K) cho GMM:",
+        "question": "Bài toán Ranh giới (Bounding Boxes) trong Object Detection:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn KHÔNG THỂ dùng Quán tính (Inertia) hay Silhouette Score cho GMM vì chúng không đo được hình dạng elip. Để tìm K tối ưu cho GMM, người ta sử dụng các tiêu chí thông tin lý thuyết như <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Bayesian Information Criterion) hoặc <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Akaike Information Criterion). Cả hai tiêu chí này sẽ HÌNH PHẠT các mô hình có quá nhiều thông số (quá nhiều cụm K). Mô hình có AIC/BIC THẤP NHẤT là mô hình tốt nhất.",
+        "text": "Phân loại hình ảnh (Image Classification) chỉ cho ra 1 nhãn (Ví dụ: 'Chó'). Nhưng Phát hiện đối tượng (Object Detection) đòi hỏi mạng phải vẽ một cái hộp bao quanh con chó. Mạng sẽ xuất ra 4 con số để biểu diễn cái hộp. Thường là: Tọa độ tâm (x, y), và <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> của hộp. Hàm mất mát (Loss) cho bài toán này thường được tính bằng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Điểm này tính phần diện tích Giao nhau của hộp dự đoán và hộp gốc chia cho diện tích Hợp của chúng (Càng gần 1 càng tốt).",
         "words": [
             {
                 "id": "w1",
-                "text": "BIC"
+                "text": "Chiều cao và Chiều rộng (h, w)"
             },
             {
                 "id": "w2",
-                "text": "AIC"
+                "text": "IoU (Intersection over Union)"
             },
             {
                 "id": "w3",
-                "text": "MSE"
+                "text": "Góc xoay (angle)"
             },
             {
                 "id": "w4",
-                "text": "Accuracy"
+                "text": "Mean Squared Error (MSE)"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "AIC và BIC phạt sự phức tạp của mô hình. Nếu bạn chia thành quá nhiều cụm (K lớn), mô hình khớp dữ liệu rất tốt (hàm log-likelihood tăng) nhưng AIC/BIC sẽ bị phạt cao lên. Điểm AIC/BIC thấp nhất chính là 'Điểm cân bằng' (Elbow) tối ưu."
+        "explanation": "Để đánh giá xem máy vẽ cái Bounding Box có khớp với viền thật (Ground Truth) không, ta dùng IoU. IoU > 0.5 coi như là một hộp tạm chấp nhận được."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tại sao YOLO (You Only Look Once) lại nhanh đến mức có thể chạy Phát hiện đối tượng trực tiếp trên Video thời gian thực (Real-time)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó dùng CPU."
+            },
+            {
+                "id": "b",
+                "text": "Các phương pháp cũ (như R-CNN) dùng chiến thuật 'Vẽ 2000 cái hộp gợi ý"
+            },
+            {
+                "id": "c",
+                "text": "Vì YOLO vẽ hộp có kích thước nhỏ."
+            },
+            {
+                "id": "d",
+                "text": "Vì nó làm mờ video trước."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Region Proposal) sau đó chạy mô hình CNN 2000 lần cho từng cái hộp' nên cực kỳ chậm rùa. YOLO cực kỳ thông minh: Nó biến bài toán dò tìm thành một bài toán Hồi quy duy nhất. Nó CHẠY ẢNH QUA MẠNG ĐÚNG 1 LẦN, và dùng một lớp lưới (Grid) ở đầu ra dự đoán HÀNG LOẠT cái hộp cùng một lúc. Nhanh gấp ngàn lần. Đúng như tên gọi 'You Only Look Once' (Bạn chỉ nhìn 1 lần). YOLO (phát minh bởi Joseph Redmon) là cuộc cách mạng tuyệt đối trong ngành thị giác máy tính."
     },
     {
         "type": "matching",
         "difficulty": "Trung bình",
-        "question": "Ghép nối 'Bayesian Gaussian Mixture' (Mô hình Hỗn hợp Gauss Bayes) so với GMM truyền thống:",
+        "question": "Ghép các công nghệ / thuật ngữ phát hiện đối tượng:",
         "left": [
             {
                 "id": "l1",
-                "text": "GMM (GaussianMixture)"
+                "text": "Non-Max Suppression (NMS)"
             },
             {
                 "id": "l2",
-                "text": "BGM (BayesianGaussianMixture)"
+                "text": "Anchor Boxes (Hộp mỏ neo)"
+            },
+            {
+                "id": "l3",
+                "text": "Semantic Segmentation (Phân vùng ngữ nghĩa)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc bạn phải chọn đúng số cụm (n_components) K. Nếu bạn nhập K dư thừa, nó vẫn sẽ cố chia ra K cụm."
+                "text": "Kỹ thuật HẬU XỬ LÝ (Post-processing) của YOLO. Khi YOLO tìm thấy 1 con chó, nó vô tình vẽ ra 5 cái hộp dính lẹo nhau bọc quanh con chó đó. Kỹ thuật này sẽ xóa 4 cái dở nhất, chỉ giữ lại 1 cái hộp điểm cao nhất."
             },
             {
                 "id": "r2",
-                "text": "Mô hình thông minh: Thay vì phải chọn đúng K, bạn cứ ném cho nó một số K RẤT LỚN (ví dụ 10). Thuật toán sẽ tự động ĐẨY TRỌNG SỐ của các cụm dư thừa về 0 (tự hủy các cụm không cần thiết), và trả lại cho bạn số lượng cụm thực sự (ví dụ 3)."
+                "text": "Thuật toán không bắt mạng tự đoán mù hình dáng hộp. Người ta cung cấp trước 5 hình dáng MẪU (Dọc cho người, Ngang cho xe). Mạng chỉ cần 'Tinh chỉnh' (Hồi quy) sự xê dịch dựa trên các hộp mẫu này."
+            },
+            {
+                "id": "r3",
+                "text": "Không vẽ Bounding Box nữa. Mà tô màu TỪNG ĐIỂM ẢNH MỘT trên bức hình. (VD: Tô điểm màu xanh nếu là mặt đường, tô màu đỏ nếu là xe hơi)."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Bayesian Gaussian Mixture tự động loại bỏ bớt các cụm không cần thiết bằng cơ chế tiên nghiệm (prior). Đây là tính năng 'tự động tìm số K' cực kỳ thần thánh của nó."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Một thuật toán khác cũng rất nổi tiếng dùng để Phát hiện Bất thường (Anomaly Detection) dựa trên khái niệm 'Rừng' (Trees) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Isolation Forest (Rừng cách ly)."
-            },
-            {
-                "id": "b",
-                "text": "Random Forest."
-            },
-            {
-                "id": "c",
-                "text": "Gradient Boosting."
-            },
-            {
-                "id": "d",
-                "text": "K-Nearest Neighbors."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "Isolation Forest hoạt động bằng cách chẻ (split) dữ liệu ngẫu nhiên. Các điểm bất thường (anomalies) thường đứng một mình xa đàn, nên chỉ cần CHẺ VÀI NHÁT là nó đã bị cô lập khỏi cụm dữ liệu gốc. Điểm nào bị cô lập ở các nhánh cây nông nhất (đường dẫn ngắn) chính là điểm bất thường."
+        "explanation": "NMS là thuật toán dọn rác phải có của Object Detection. Segmentation là đẳng cấp cao nhất của Computer Vision, chuyên dùng cho xe hơi tự lái."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Phát hiện sự bất thường (Anomaly Detection) khác với Phát hiện cái mới (Novelty Detection) ở điểm nào?",
+        "question": "Trong kiến trúc Fully Convolutional Network (FCN) dùng cho Semantic Segmentation (Tô màu từng pixel), người ta đã làm một việc 'động trời' gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Hai khái niệm này hoàn toàn giống hệt nhau."
+                "text": "Nó nhân đôi kích thước ảnh lên 4K."
             },
             {
                 "id": "b",
-                "text": "Anomaly Detection cho phép tập dữ liệu huấn luyện ĐÃ CHỨA SẴN các ngoại lệ/nhiễu"
+                "text": "Thay vì dùng lớp Phẳng"
             },
             {
                 "id": "c",
-                "text": "Novelty detection yêu cầu có nhãn."
+                "text": "Nó biến màu sắc thành âm thanh."
             },
             {
                 "id": "d",
-                "text": "Anomaly detection chậm hơn."
+                "text": "Nó cấm sử dụng ReLU."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(nó cố gắng tìm ra chúng). Novelty Detection yêu cầu tập huấn luyện phải 'SẠCH' 100% (chỉ chứa các ví dụ bình thường), và nó chỉ bắt lỗi ở các dữ liệu mới trong tương lai. Novelty: Bạn train mô hình trên hình ảnh 10.000 con chó (sạch bong). Ngày mai bạn đưa hình con mèo vào, nó kêu 'Đây là cái mới' (Novelty). Anomaly: Tập 10.000 ảnh gốc đã có lộn 10 con mèo trong đó, bạn yêu cầu mô hình lọc 10 con mèo đó ra (Anomaly)."
+        "explanation": "(Flatten) và Lớp kết nối đầy đủ (Dense) ở đỉnh chóp mạng. FCN CHUYỂN ĐỔI các Lớp Dense đó thành LỚP TÍCH CHẬP 1x1. Nhờ vậy, mạng không bị 'cứng nhắc' với 1 loại kích thước ảnh đầu vào. Bạn nhét ảnh 100x100 hay 500x500 vào nó đều chạy mượt. Lớp Dense yêu cầu kích thước Flatten phải cố định (Static). Nếu bạn thay Lớp Dense cuối bằng một Lớp Conv2D 1x1, mạng của bạn sẽ trở thành 'Fully Convolutional' (Tích chập 100%). Đầu vào bao nhiêu cũng xơi được."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Tính năng Phóng to (Upsampling) của FCN:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Kiến trúc CNN nén ảnh 224x224 dần dần xuống thành 1 khối không gian rất nhỏ (ví dụ 7x7). Nhưng trong Phân vùng ngữ nghĩa (Segmentation), ta cần TÔ MÀU ĐẦU RA Y HỆT kích thước ảnh 224x224. Để làm được, FCN xài một phép thuật gọi là Lớp <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Transposed Convolution Layer). Khác với lớp gộp (Pooling) làm teo ảnh, lớp này chèn các số 0 vào giữa các điểm ảnh và dùng bộ lọc học cách phóng to (upscale) bức ảnh trở lại kích thước to lớn ban đầu (Kỹ thuật này cũng dùng trong mạng sinh ảnh <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Tích chập Chuyển vị (Transposed Conv)"
+            },
+            {
+                "id": "w2",
+                "text": "GANs (Generative Adversarial Networks)"
+            },
+            {
+                "id": "w3",
+                "text": "MaxPooling2D"
+            },
+            {
+                "id": "w4",
+                "text": "GlobalAverage"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Tích chập chuyển vị (Transposed Conv) - hay còn bị gọi sai là Deconvolution (Giải chập) - là chìa khóa để vẽ hình ảnh TỪ KHÔNG KHÍ. Nó giúp phóng to độ phân giải một cách thông minh (có học hỏi) thay vì nội suy (Bilinear) mờ nhạt."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Kiến trúc CNN hiện đại nào đã chiến thắng Cuộc thi ILSVRC 2014 nhờ cấu trúc có hình ảnh đi vào được chia làm 'Nhiều nhánh song song' và sau đó ghép lại với nhau?",
+        "options": [
+            {
+                "id": "a",
+                "text": "ResNet"
+            },
+            {
+                "id": "b",
+                "text": "GoogLeNet (Inception)"
+            },
+            {
+                "id": "c",
+                "text": "AlexNet"
+            },
+            {
+                "id": "d",
+                "text": "VGG16"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "GoogLeNet tạo ra Inception Module. Dữ liệu đi vào Module này sẽ chẻ làm 4 đường: Đường qua Filter 1x1, đường qua 3x3, đường qua 5x5, và đường qua MaxPooling. Cuối cùng nối 4 đường lại. Mạng sẽ tự đánh giá xem đường nào là tốt nhất."
     },
     {
         "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Quy trình làm việc của Học K-Means từ Scikit-Learn:",
-        "instruction": "(Sắp xếp các dòng mã để chạy K-Means đúng chuẩn)",
+        "difficulty": "Khó",
+        "question": "Tính toán Kích thước Đầu ra Không gian (Spatial Size) của lớp Conv2D (Không xét Batch và Depth):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "from sklearn.cluster import KMeans"
+                "text": "Ảnh đầu vào Rộng 13 pixel (W=13). Bộ lọc kích thước 3 (F=3). Bước nhảy là 2 (S=2)."
             },
             {
                 "id": "2",
-                "text": "k = 5"
+                "text": "Bạn chọn padding='valid' (Tức là không bọc thêm viền số 0, P=0)."
             },
             {
                 "id": "3",
-                "text": "kmeans = KMeans(n_clusters=k, random_state=42)"
+                "text": "Áp dụng công thức kinh điển: Kích thước đầu ra = ((W - F + 2P) / S) + 1"
             },
             {
                 "id": "4",
-                "text": "y_pred = kmeans.fit_predict(X)"
+                "text": "Thế số: ((13 - 3 + 0) / 2) + 1 = (10 / 2) + 1 = 5 + 1 = 6. Bức ảnh mới sẽ có chiều rộng 6 pixels."
             }
         ],
         "correctOrder": [
@@ -1121,172 +1077,262 @@
             "3",
             "4"
         ],
-        "explanation": "Import -> Khai báo K -> Khởi tạo đối tượng -> Fit_predict (do là Unsupervised nên chỉ truyền X, không truyền y)."
+        "explanation": "Việc nhẩm được kích thước ma trận trong não là kỹ năng 'Cứng' bắt buộc của Kỹ sư AI. Nếu bạn thiết kế lớp Conv sai, ma trận bị hụt số âm, chương trình sẽ Crash ngay lập tức."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tại sao lớp VGGNet (VGG16/VGG19) của Đại học Oxford (2014) lại có ý nghĩa rất quan trọng dù chúng cực kỳ nặng nề và chậm chạp?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì nó là thuật toán đầu tiên."
+            },
+            {
+                "id": "b",
+                "text": "Vì triết lý thiết kế của nó quá ĐƠN GIẢN và ĐẸP Nó cấm dùng các lớp Conv phức tạp"
+            },
+            {
+                "id": "c",
+                "text": "Vì nó được viết bằng ngôn ngữ C++."
+            },
+            {
+                "id": "d",
+                "text": "Nó huấn luyện được trên CPU."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(như 5x5 hay 11x11). Nó CHỈ sử dụng độc nhất các lớp Conv siêu nhỏ 3x3 xếp chồng liên tiếp lên nhau. Hai lớp 3x3 chồng nhau có Trường Cảm Thụ tương đương một lớp 5x5 nhưng tham số ít hơn và có nhiều ReLU (phi tuyến) hơn. VGG chứng minh một chân lý vĩnh cửu của Deep Learning: 'Mạng càng sâu thì càng xịn, cứ dùng các khối lego nhỏ nhất (3x3) xếp lên nhau là đủ'. Nó rất dễ hiểu và hay được dùng làm Backbone rút trích đặc trưng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Kiến trúc mạng SENet (Squeeze-and-Excitation Networks) bổ sung một 'phép màu' gì giúp nó hủy diệt mọi cuộc thi năm 2017?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Thêm 1.000.000 nơ ron."
+            },
+            {
+                "id": "b",
+                "text": "Nó thêm một khối SENet nhỏ xíu vào cuối mỗi module Inception/ResNet."
+            },
+            {
+                "id": "c",
+                "text": "Thêm một thuật toán tìm kiếm web."
+            },
+            {
+                "id": "d",
+                "text": "Xóa luôn lớp Conv2D."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khối này sẽ tính toán xem 'Trong 256 Kênh đặc trưng vừa tạo ra, kênh nào ĐANG QUAN TRỌNG NHẤT'. Sau đó nó NHÂN LÊN (Scale up) tín hiệu của kênh quan trọng và DẬP TẮT (Scale down) kênh vô ích. Máy học tự động chú ý (Attention) vào đặc trưng. SENet là nền móng sơ khai của Kỹ thuật Chú ý (Attention Mechanism) trong Computer Vision. Một khối SENet bé tí hon chỉ tốn thêm vài % RAM nhưng đẩy độ chính xác lên cực đỉnh."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "One-Class SVM cho Phát hiện Cái mới (Novelty Detection):",
+        "question": "Mô hình kiến trúc Xception:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Khác với SVM phân loại nhị phân truyền thống cố tách 2 lớp bằng siêu phẳng. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cố gắng tách các điểm dữ liệu (tất cả chỉ có 1 lớp bình thường) ra khỏi <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trong không gian chiều cao. Kết quả là nó tạo ra một cái 'bong bóng' phi tuyến khổng lồ bao bọc lấy các điểm bình thường. Điểm nào rơi ra ngoài bong bóng bị coi là dị thường.",
+        "text": "Xception (Extreme Inception) do François Chollet (Tác giả Keras) sáng tạo ra. Nó dựa trên một phép Tích chập cực đoan gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Depthwise Separable Convolution). Thay vì bộ lọc quét xuyên ngang cả 3 Không gian và Chiều Sâu cùng 1 lúc (Cực tốn RAM). Xception tách nó ra làm 2 bước: Bước 1 (Depthwise) chỉ dùng bộ lọc 3x3 để quét <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> của hình ảnh (quét độc lập đỏ, xanh, lá). Bước 2 (Pointwise) dùng bộ lọc 1x1 để trộn các kênh lại với nhau. Giúp mô hình chạy nhẹ bẫng trên điện thoại di động.",
         "words": [
             {
                 "id": "w1",
-                "text": "One-Class SVM"
+                "text": "Tích chập Tách biệt Chiều sâu"
             },
             {
                 "id": "w2",
-                "text": "Gốc tọa độ (Origin)"
+                "text": "Từng kênh (Per-channel)"
             },
             {
                 "id": "w3",
-                "text": "Linear SVC"
+                "text": "Tích chập Chuyển vị"
             },
             {
                 "id": "w4",
-                "text": "K-Means"
+                "text": "Lớp Tối đa (Max)"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "One-Class SVM nhốt toàn bộ dữ liệu sạch vào 1 cái túi bong bóng bằng cách đẩy chúng ra khỏi gốc tọa độ. Cực kỳ mạnh khi dữ liệu train sạch 100% nhưng gặp khó nếu dữ liệu có sẵn nhiễu."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Phân cụm Bằng Tích cực (Active Learning) sử dụng K-Means để làm gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thuê người dùng internet nhấp vào quảng cáo."
-            },
-            {
-                "id": "b",
-                "text": "Để tự động xóa dữ liệu."
-            },
-            {
-                "id": "c",
-                "text": "Tìm ra các điểm (Ví dụ: tâm của K-Means) có ý nghĩa và KHÓ phân loại nhất trình bày cho CHUYÊN GIA CON NGƯỜI (Human expert)"
-            },
-            {
-                "id": "d",
-                "text": "Tự động gán nhãn dựa trên dự đoán ngẫu nhiên."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Để họ gán nhãn thủ công. Việc này tiết kiệm tiền thuê người gán nhãn hàng triệu tấm ảnh mà chỉ cần gán vài ngàn tấm cốt lõi. Active Learning kết hợp máy + người. Máy phân cụm, móc ra những điểm trung tâm hoặc những điểm nằm ở biên giới lấp lửng khó quyết, đưa cho người thật xem. Sau đó máy học tiếp. Quy trình lặp lại."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Tính chất của DBSCAN trong việc sử dụng siêu tham số?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Siêu tham số eps có ý nghĩa là Số lượng vòng lặp tối đa."
-            },
-            {
-                "id": "b",
-                "text": "Bạn phải chỉnh siêu tham số eps"
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN không có siêu tham số nào."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN tự học eps bằng Gradient Descent."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(bán kính) và min_samples cực kỳ cẩn thận. Nếu eps quá nhỏ, mọi điểm đều trở thành Nhiễu. Nếu eps quá lớn, mọi điểm nhập chung vào 1 cụm khổng lồ. Khác với K-Means phải đoán K, thì ở DBSCAN bạn phải đoán bán kính lân cận eps. May thay, eps có ý nghĩa hình học (khoảng cách vật lý thực) nên đôi khi dễ set up hơn."
+        "explanation": "Lớp SeparableConv2D (trong Keras) là một sự lựa chọn khôn ngoan thay thế Conv2D truyền thống. Nó tính toán ít hơn tới 8 lần mà độ chính xác giữ nguyên. Nó là trái tim của mạng MobileNet."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép nối vai trò của hàm mục tiêu (Mục đích tối ưu hóa) của các thuật toán:",
+        "difficulty": "Khó",
+        "question": "Các kiến trúc Object Detection nổi tiếng:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "Faster R-CNN"
             },
             {
                 "id": "l2",
-                "text": "PCA (Phân tích Thành phần Chính)"
+                "text": "YOLO (V1 đến V8)"
+            },
+            {
+                "id": "l3",
+                "text": "SSD (Single Shot Detector)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Tối thiểu hóa 'Quán tính' (Inertia - Tổng khoảng cách từ điểm đến tâm)."
+                "text": "Hệ thống Hai giai đoạn (Two-stage). Stage 1: Dùng Mạng đề xuất vùng (RPN) vẽ hộp. Stage 2: Nhét hộp vào mô hình đoán. CHẬM nhưng RẤT CHÍNH XÁC."
             },
             {
                 "id": "r2",
-                "text": "Tối thiểu hóa 'Lỗi tái tạo' (Reconstruction error) hoặc Tối đa hóa 'Phương sai giải thích'."
+                "text": "Hệ thống Một giai đoạn (One-stage). Cực kỳ siêu tốc. Chạy 45-155 FPS trên GPU, được xài phổ biến nhất trên camera giao thông."
+            },
+            {
+                "id": "r3",
+                "text": "Hệ thống Một giai đoạn giống YOLO, nhưng nó dùng kết quả từ NHIỀU LỚP CNN KHÁC NHAU (Lớp cạn đoán vật nhỏ, Lớp sâu đoán vật to). Hiệu năng rất tốt."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Mỗi thuật toán Unsupervised đều ngầm tối ưu hóa một hàm toán học."
+        "explanation": "Đừng ngạc nhiên khi thấy mọi người nhắc R-CNN để thi lấy độ chính xác cao, nhưng khi đem cắm vào Camera công nghiệp họ luôn chọn YOLO."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Data Augmentation (Tăng cường dữ liệu Hình ảnh) trong thực tế KHÔNG BAO GỒM thao tác nào dưới đây?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Lật ngang ảnh, lật dọc ảnh."
+            },
+            {
+                "id": "b",
+                "text": "Xoay ảnh 15 độ, Zoom ảnh vào một chút."
+            },
+            {
+                "id": "c",
+                "text": "Thay nhãn dán chó thành nhãn dán mèo."
+            },
+            {
+                "id": "d",
+                "text": "Chỉnh độ sáng, độ tương phản của ảnh ngẫu nhiên."
+            }
+        ],
+        "correctAnswer": "c",
+        "explanation": "Data Augmentation làm thay đổi 'ngoại hình' của bức ảnh nhưng KHÔNG ĐƯỢC PHÉP thay đổi bản chất Nhãn (Label) của bức ảnh. Nếu lật cái ảnh Số 6, nó sẽ thành Số 9, khi đó nhãn cũ (6) sẽ sai bét, phải rất cẩn thận."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tính năng `preprocess_input` của các mô hình Keras Pre-trained (như tf.keras.applications.resnet50.preprocess_input) có ý nghĩa gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Tự động gửi ảnh lên đám mây Google."
+            },
+            {
+                "id": "b",
+                "text": "Mỗi kiến trúc (VGG, ResNet, Inception) có một CÁCH CHUẨN HÓA MÀU SẮC RIÊNG BIỆT lúc nó được train bởi tác giả."
+            },
+            {
+                "id": "c",
+                "text": "Tự động đổi kích thước ảnh thành 224x224."
+            },
+            {
+                "id": "d",
+                "text": "Làm cho GPU tản nhiệt."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Có mô hình thích scale ảnh [0, 1], có cái thích [-1, 1], có cái thích trừ giá trị trung bình màu RGB. Hàm này giúp BẠN tự động chuẩn hóa hình ảnh của mình Y HỆT như cách tác giả đã làm, nếu không độ chính xác sẽ rất thảm hại. Lỗi ngớ ngẩn nhất của sinh viên là load mô hình ResNet50 về, đút tấm ảnh pixel từ 0-255 vào và than phiền mô hình dự đoán sai. Phải gọi hàm `preprocess_input(img)` để biến pixel về hệ số âm dương đúng chuẩn của nó."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Cách thức xử lý ma trận 3D của Convolution2D và MaxPooling2D:",
+        "instruction": "(Sắp xếp ý tưởng của phép Tích chập 2D chuẩn Keras/TensorFlow)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Cấp cho Lớp Conv2D một Đầu vào 3D (Chiều cao x Chiều rộng x Kênh)."
+            },
+            {
+                "id": "2",
+                "text": "Conv2D quét một Bộ lọc MẶT PHẲNG (2D) trượt theo 2 hướng Không gian (Trái-Phải, Trên-Dưới). NHƯNG nó TÍCH CHẬP TOÀN BỘ CHIỀU SÂU cùng lúc."
+            },
+            {
+                "id": "3",
+                "text": "Đầu ra Không gian (Cao x Rộng) nhỏ đi một chút, nhưng số Kênh lúc này sẽ bằng đúng Số lượng Bộ lọc (Filters)."
+            },
+            {
+                "id": "4",
+                "text": "Lớp MaxPooling2D quét qua Không gian, NHƯNG nó CÔ LẬP từng Kênh riêng biệt (Không trộn các kênh lại)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Phải hiểu rõ: Conv2D luôn luôn trộn các kênh (Color mixing). Trong khi Pooling lại mù màu, Pooling chỉ xử lý không gian độc lập của từng kênh một."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán Local Outlier Factor (LOF) hoạt động trong bài toán Phát hiện Bất thường như thế nào?",
+        "question": "Đâu là kiến trúc CNN 'Nhẹ nhất' và chuyên dùng để nhúng thẳng vào các ứng dụng Mobile, IOT App?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó so sánh MẬT ĐỘ của một điểm dữ liệu với mật độ của K LÁNG GIỀNG GẦN NHẤT của nó."
+                "text": "VGG19"
             },
             {
                 "id": "b",
-                "text": "Nó dùng mạng Neural để học hàm phi tuyến."
+                "text": "MobileNet (MobileNetV2, V3)."
             },
             {
                 "id": "c",
-                "text": "Nó đo khoảng cách của điểm đó đến gốc tọa độ (0,0)."
+                "text": "DenseNet"
             },
             {
                 "id": "d",
-                "text": "Nó sử dụng Decision Tree."
+                "text": "AlexNet"
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Nếu điểm đó có mật độ THẤP HƠN NHIỀU so với những người hàng xóm, điểm đó là dị thường. Rất giống với tư tưởng của DBSCAN nhưng tinh tế hơn. DBSCAN xài một bán kính eps cứng nhắc. LOF đo độ 'cô đơn' tương đối (nếu ai xung quanh cũng ở nhà san sát nhau, tự nhiên nhà bạn cách xa mọi người 1km thì bạn là dị thường)."
+        "correctAnswer": "b",
+        "explanation": "Nhờ sử dụng công nghệ Depthwise Separable Convolution, mô hình bị ép xuống siêu nhỏ (chỉ vài Megabytes) nhưng độ chính xác không thua kém ResNet quá nhiều. MobileNet của Google là sát thủ trên Mobile. Thay vì tính phép toán tốn kém 9 lần, nó chia đôi bước làm giảm 9 lần phép tính."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Làm cách nào để chuyển một bức ảnh thành dữ liệu cho Phân cụm Màu sắc (Color Quantization)?",
+        "question": "Lớp Dense (Fully Connected) và Fully Convolutional Network (FCN):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để giảm số lượng màu của bức ảnh từ 16 triệu màu xuống còn 10 màu. Bức ảnh là một ma trận 3D (Width x Height x 3 kênh RGB). Để dùng K-Means, bạn phải Reshape (Định hình lại) nó thành dạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tức là danh sách các pixel dài, mỗi pixel có 3 chiều RGB). Sau khi train K-Means(k=10), bạn thay thế màu gốc của từng pixel bằng màu của <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mà nó thuộc về.",
+        "text": "Lớp Dense có một nhược điểm chí tử là nó Yêu Cầu Đầu Vào Phải Có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nếu bạn train mạng với ảnh 224x224 và cuối mạng là Dense, bạn KHÔNG THỂ đút ảnh 500x500 vào mạng để đoán (Sẽ báo lỗi kích thước Tensor). Nếu bạn thay Lớp Dense bằng Lớp <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> có kích thước Bộ lọc bằng đúng kích thước bản đồ hiện tại, mạng sẽ hoạt động y hệt, nhưng lúc này bạn đút ảnh 500x500 vào mạng vẫn chạy mượt mà.",
         "words": [
             {
                 "id": "w1",
-                "text": "2D"
+                "text": "Kích thước cố định (Fixed Size)"
             },
             {
                 "id": "w2",
-                "text": "Tâm cụm (Centroid)"
+                "text": "Conv2D (Tích chập)"
             },
             {
                 "id": "w3",
-                "text": "1D"
+                "text": "Độ sâu (Depth)"
             },
             {
                 "id": "w4",
-                "text": "Biên (Border)"
+                "text": "GlobalAverage"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "Sklearn bắt buộc đầu vào là mảng 2D (mẫu x đặc trưng). Bạn duỗi ảnh thành danh sách dài các pixel. Tâm cụm của K-Means(k=10) chính là 10 mã màu đại diện tốt nhất cho bức ảnh."
+        "explanation": "Đây là tư duy tuyệt đỉnh của mô hình FCN (Fully Convolutional). Loại bỏ sự lệ thuộc vào Lớp Dense, làm cho mạng linh hoạt với mọi khung hình."
     }
 ];
 

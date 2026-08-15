@@ -500,7 +500,7 @@
             },
             {
                 "id": "b",
-                "text": "Phân loại một hình ảnh thành 2 nhóm: 'là số 5' và 'không phải là số 5'."
+                "text": "Phân loại một hình ảnh thành 2 nhóm 'là số 5' và 'không phải là số 5'."
             },
             {
                 "id": "c",
@@ -700,7 +700,7 @@
             },
             {
                 "id": "b",
-                "text": "Trung bình điều hòa (Harmonic mean) của Precision và Recall, ưu tiên các giá trị thấp."
+                "text": "Trung bình điều hòa (Harmonic mean) của Precision và Recall ưu tiên các giá trị thấp."
             },
             {
                 "id": "c",
@@ -844,7 +844,7 @@
             },
             {
                 "id": "c",
-                "text": "Khi lớp Dương tính (Positive class) rất hiếm, hoặc khi bạn quan tâm đến False Positives nhiều hơn False Negatives."
+                "text": "Khi lớp Dương tính (Positive class) rất hiếm hoặc khi bạn quan tâm đến False Positives nhiều hơn False Negatives."
             },
             {
                 "id": "d",
@@ -887,7 +887,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Huấn luyện 10 bộ phân loại nhị phân, mỗi bộ phân biệt một chữ số với TẤT CẢ các chữ số còn lại."
+                "text": "Huấn luyện 10 bộ phân loại nhị phân mỗi bộ phân biệt một chữ số với TẤT CẢ các chữ số còn lại."
             },
             {
                 "id": "b",
@@ -945,7 +945,7 @@
             },
             {
                 "id": "c",
-                "text": "Tự động phát hiện và áp dụng chiến lược OvR (hoặc OvO tùy thuộc vào thuật toán)."
+                "text": "Tự động phát hiện và áp dụng chiến lược OvR"
             },
             {
                 "id": "d",
@@ -953,7 +953,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Scikit-Learn rất thông minh, nó sẽ phát hiện bạn đang truyền nhiều hơn 2 lớp vào mô hình nhị phân và ngầm tự động chạy OvR hoặc OvO (đối với SVM)."
+        "explanation": "(hoặc OvO tùy thuộc vào thuật toán). Scikit-Learn rất thông minh, nó sẽ phát hiện bạn đang truyền nhiều hơn 2 lớp vào mô hình nhị phân và ngầm tự động chạy OvR hoặc OvO (đối với SVM)."
     },
     {
         "type": "ordering",
@@ -997,7 +997,7 @@
             },
             {
                 "id": "b",
-                "text": "Cho thấy khu vực mô hình đang mắc nhiều lỗi sai (nhầm lẫn giữa lớp thực tế và lớp dự đoán)."
+                "text": "Cho thấy khu vực mô hình đang mắc nhiều lỗi sai"
             },
             {
                 "id": "c",
@@ -1009,7 +1009,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Trong error heatmap, vùng tối có nghĩa là ít lỗi, vùng sáng/màu nổi (như trắng hoặc vàng) chỉ ra số lượng lỗi lớn tại ô (Thực tế, Dự đoán) đó."
+        "explanation": "(nhầm lẫn giữa lớp thực tế và lớp dự đoán). Trong error heatmap, vùng tối có nghĩa là ít lỗi, vùng sáng/màu nổi (như trắng hoặc vàng) chỉ ra số lượng lỗi lớn tại ô (Thực tế, Dự đoán) đó."
     },
     {
         "type": "fill_in_blanks",
@@ -1052,7 +1052,7 @@
             },
             {
                 "id": "b",
-                "text": "Sự tổng quát hóa của phân loại đa nhãn (multilabel), trong đó MỖI nhãn (label) lại có thể có đa lớp (multiclass) thay vì chỉ là nhị phân (0 hoặc 1)."
+                "text": "Sự tổng quát hóa của phân loại đa nhãn (multilabel)"
             },
             {
                 "id": "c",
@@ -1064,7 +1064,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Multioutput là sự kết hợp: Có nhiều nhãn cần dự đoán, VÀ mỗi nhãn lại có thể nhận nhiều giá trị khác nhau."
+        "explanation": "Trong đó MỖI nhãn (label) lại có thể có đa lớp (multiclass) thay vì chỉ là nhị phân (0 hoặc 1). Multioutput là sự kết hợp: Có nhiều nhãn cần dự đoán, VÀ mỗi nhãn lại có thể nhận nhiều giá trị khác nhau."
     },
     {
         "type": "multiple_choice",
@@ -1077,7 +1077,7 @@
             },
             {
                 "id": "b",
-                "text": "Hệ thống loại bỏ nhiễu (khử nhiễu - denoising) cho hình ảnh, dự đoán cường độ điểm ảnh sạch cho TỪNG pixel."
+                "text": "Hệ thống loại bỏ nhiễu (khử nhiễu - denoising) cho hình ảnh dự đoán cường độ điểm ảnh sạch cho TỪNG pixel."
             },
             {
                 "id": "c",
@@ -1137,7 +1137,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "cross_val_score trả về điểm số hiệu suất (accuracy, f1...), còn cross_val_predict trả về các DỰ ĐOÁN cụ thể (y_pred) cho mỗi mẫu trong tập dữ liệu."
+                "text": "cross_val_score trả về điểm số hiệu suất (accuracy f1...),"
             },
             {
                 "id": "b",
@@ -1153,7 +1153,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "cross_val_predict thực hiện k-fold CV nhưng thay vì trả về điểm, nó trả về các nhãn dự đoán được thực hiện bởi mô hình khi dữ liệu đó ở fold Test."
+        "explanation": "Còn cross_val_predict trả về các DỰ ĐOÁN cụ thể (y_pred) cho mỗi mẫu trong tập dữ liệu. cross_val_predict thực hiện k-fold CV nhưng thay vì trả về điểm, nó trả về các nhãn dự đoán được thực hiện bởi mô hình khi dữ liệu đó ở fold Test."
     },
     {
         "type": "ordering",
@@ -1197,7 +1197,7 @@
             },
             {
                 "id": "b",
-                "text": "Không, Random Forest không có decision_function(). Thay vào đó nó có phương thức `predict_proba()` trả về mảng xác suất một mẫu thuộc về một lớp."
+                "text": "Không, Random Forest không có decision_function()."
             },
             {
                 "id": "c",
@@ -1209,7 +1209,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Do bản chất của các thuật toán, thuật toán dựa trên khoảng cách/siêu phẳng (SVM, SGD) dùng decision_function. Thuật toán tập hợp (Random Forest) dùng xác suất (predict_proba)."
+        "explanation": "Thay vào đó nó có phương thức `predict_proba()` trả về mảng xác suất một mẫu thuộc về một lớp. Do bản chất của các thuật toán, thuật toán dựa trên khoảng cách/siêu phẳng (SVM, SGD) dùng decision_function. Thuật toán tập hợp (Random Forest) dùng xác suất (predict_proba)."
     },
     {
         "type": "fill_in_blanks",
@@ -1248,7 +1248,7 @@
             },
             {
                 "id": "b",
-                "text": "Hỏi họ xem tập dữ liệu có bị lệch (skewed) không, và yêu cầu xem ma trận nhầm lẫn (Confusion Matrix)."
+                "text": "Hỏi họ xem tập dữ liệu có bị lệch"
             },
             {
                 "id": "c",
@@ -1260,7 +1260,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Độ chính xác (Accuracy) 99% là vô nghĩa nếu dữ liệu quá lệch (VD: bệnh hiểm nghèo chỉ chiếm 1%). Phải xem Confusion Matrix và Precision/Recall để biết chắc chắn."
+        "explanation": "(skewed) không và yêu cầu xem ma trận nhầm lẫn (Confusion Matrix). Độ chính xác (Accuracy) 99% là vô nghĩa nếu dữ liệu quá lệch (VD: bệnh hiểm nghèo chỉ chiếm 1%). Phải xem Confusion Matrix và Precision/Recall để biết chắc chắn."
     },
     {
         "type": "multiple_choice",
@@ -1277,7 +1277,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó tạo ra một bộ phân loại rất đơn giản (ví dụ: luôn luôn đoán lớp đa số). Nó được dùng làm baseline (mốc cơ sở) để so sánh các mô hình thực sự."
+                "text": "Nó tạo ra một bộ phân loại rất đơn giản (ví dụ luôn luôn đoán lớp đa số)."
             },
             {
                 "id": "d",
@@ -1285,7 +1285,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "DummyClassifier là mô hình cơ sở ngốc nghếch (luôn đoán most_frequent hoặc ngẫu nhiên). Bất kỳ mô hình học máy thực sự nào cũng phải đánh bại được mốc cơ sở này."
+        "explanation": "Nó được dùng làm baseline (mốc cơ sở) để so sánh các mô hình thực sự. DummyClassifier là mô hình cơ sở ngốc nghếch (luôn đoán most_frequent hoặc ngẫu nhiên). Bất kỳ mô hình học máy thực sự nào cũng phải đánh bại được mốc cơ sở này."
     }
 ];
 

@@ -551,7 +551,7 @@
             },
             {
                 "id": "b",
-                "text": "Để tránh hiện tượng rò rỉ dữ liệu (data snooping bias), đảm bảo đánh giá mô hình khách quan."
+                "text": "Để tránh hiện tượng rò rỉ dữ liệu"
             },
             {
                 "id": "c",
@@ -563,7 +563,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Nhìn vào dữ liệu kiểm thử trước có thể khiến bạn ưu ái một thuật toán nhất định (data snooping bias). Việc tách tập kiểm thử sớm giúp đánh giá khả năng tổng quát hóa một cách công bằng."
+        "explanation": "(data snooping bias) đảm bảo đánh giá mô hình khách quan. Nhìn vào dữ liệu kiểm thử trước có thể khiến bạn ưu ái một thuật toán nhất định (data snooping bias). Việc tách tập kiểm thử sớm giúp đánh giá khả năng tổng quát hóa một cách công bằng."
     },
     {
         "type": "matching",
@@ -726,7 +726,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì thuật toán ML có xu hướng cho rằng hai giá trị Ordinal gần nhau thì tương đồng hơn hai giá trị xa nhau, điều này sai với dữ liệu không có thứ tự."
+                "text": "Vì thuật toán ML có xu hướng cho rằng hai giá trị Ordinal gần nhau thì tương đồng hơn hai giá trị xa nhau điều này sai với dữ liệu không có thứ tự."
             },
             {
                 "id": "c",
@@ -790,7 +790,7 @@
             },
             {
                 "id": "b",
-                "text": "Để tránh hiện tượng rò rỉ thông tin từ tập kiểm thử vào mô hình (data leakage)."
+                "text": "Để tránh hiện tượng rò rỉ thông tin từ tập kiểm thử vào mô hình"
             },
             {
                 "id": "c",
@@ -802,7 +802,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bạn chỉ được fit() (tính mean, std) trên tập huấn luyện, sau đó dùng các thông số này để transform() tập test. Nếu fit() trên toàn bộ dữ liệu, thông tin của test set sẽ rò rỉ."
+        "explanation": "(data leakage). Bạn chỉ được fit() (tính mean, std) trên tập huấn luyện, sau đó dùng các thông số này để transform() tập test. Nếu fit() trên toàn bộ dữ liệu, thông tin của test set sẽ rò rỉ."
     },
     {
         "type": "ordering",
@@ -897,7 +897,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó chia tập huấn luyện thành K phần (folds), sau đó huấn luyện và đánh giá mô hình K lần; mỗi lần chọn 1 fold khác nhau để đánh giá và K-1 folds còn lại để huấn luyện."
+                "text": "Nó chia tập huấn luyện thành K phần (folds) sau đó huấn luyện và đánh giá mô hình K lần;"
             },
             {
                 "id": "c",
@@ -909,7 +909,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Cross-Validation chia tập train thành K fold. Lặp lại K lần, mỗi lần lấy 1 fold làm tập xác thực (validation) và các phần còn lại để train."
+        "explanation": "Mỗi lần chọn 1 fold khác nhau để đánh giá và K-1 folds còn lại để huấn luyện. Cross-Validation chia tập train thành K fold. Lặp lại K lần, mỗi lần lấy 1 fold làm tập xác thực (validation) và các phần còn lại để train."
     },
     {
         "type": "matching",
@@ -965,7 +965,7 @@
             },
             {
                 "id": "c",
-                "text": "Để tự động thử nghiệm nhiều tổ hợp Siêu tham số (Hyperparameters) nhằm tìm ra cấu hình mô hình tốt nhất."
+                "text": "Để tự động thử nghiệm nhiều tổ hợp Siêu tham số"
             },
             {
                 "id": "d",
@@ -973,7 +973,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "GridSearchCV thử nghiệm mọi kết hợp có thể của các siêu tham số do bạn chỉ định để tìm ra mô hình tối ưu nhất bằng Cross-Validation."
+        "explanation": "(Hyperparameters) nhằm tìm ra cấu hình mô hình tốt nhất. GridSearchCV thử nghiệm mọi kết hợp có thể của các siêu tham số do bạn chỉ định để tìm ra mô hình tối ưu nhất bằng Cross-Validation."
     },
     {
         "type": "ordering",
@@ -1021,7 +1021,7 @@
             },
             {
                 "id": "c",
-                "text": "Chỉ thực hiện một lần duy nhất vào cuối dự án, sau khi đã tinh chỉnh mô hình hoàn chỉnh."
+                "text": "Chỉ thực hiện một lần duy nhất vào cuối dự án sau khi đã tinh chỉnh mô hình hoàn chỉnh."
             },
             {
                 "id": "d",
@@ -1072,7 +1072,7 @@
             },
             {
                 "id": "c",
-                "text": "Vừa tính toán tham số từ dữ liệu, vừa trực tiếp biến đổi tập dữ liệu đó, thường được tối ưu hóa chạy nhanh hơn gọi fit() rồi transform()."
+                "text": "Vừa tính toán tham số từ dữ liệu vừa trực tiếp biến đổi tập dữ liệu đó,"
             },
             {
                 "id": "d",
@@ -1080,7 +1080,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "fit_transform() kết hợp 2 bước: học thông số từ dữ liệu (fit) và biến đổi dữ liệu đó (transform), hoạt động hiệu quả hơn so với gọi riêng biệt."
+        "explanation": "Thường được tối ưu hóa chạy nhanh hơn gọi fit() rồi transform(). fit_transform() kết hợp 2 bước: học thông số từ dữ liệu (fit) và biến đổi dữ liệu đó (transform), hoạt động hiệu quả hơn so với gọi riêng biệt."
     },
     {
         "type": "matching",
@@ -1157,7 +1157,7 @@
             },
             {
                 "id": "b",
-                "text": "Sử dụng phép biến đổi logarit (tính log) các giá trị đó để phân phối có dạng hình chuông hơn."
+                "text": "Sử dụng phép biến đổi logarit"
             },
             {
                 "id": "c",
@@ -1169,7 +1169,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Các thuật toán ML thường hoạt động tốt hơn với phân phối giống hình chuông (Gaussian). Phép biến đổi Logarit thường được dùng để 'kéo' đuôi nặng về lại phân phối chuẩn."
+        "explanation": "(tính log) các giá trị đó để phân phối có dạng hình chuông hơn. Các thuật toán ML thường hoạt động tốt hơn với phân phối giống hình chuông (Gaussian). Phép biến đổi Logarit thường được dùng để 'kéo' đuôi nặng về lại phân phối chuẩn."
     },
     {
         "type": "ordering",
@@ -1263,7 +1263,7 @@
             },
             {
                 "id": "b",
-                "text": "Không, vì làm như vậy sẽ dẫn đến việc mô hình của bạn bị Overfit với tập kiểm thử (data snooping) và sẽ không tổng quát hóa tốt trong thực tế."
+                "text": "Không, vì làm như vậy sẽ dẫn đến việc mô hình của bạn bị Overfit với tập kiểm thử"
             },
             {
                 "id": "c",
@@ -1275,7 +1275,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi bạn tinh chỉnh siêu tham số nhắm vào tập kiểm thử, bạn sẽ vô tình làm cho mô hình Overfit với chính tập kiểm thử đó. Điểm test set hơi thấp hơn cross-val là chuyện bình thường."
+        "explanation": "(data snooping) và sẽ không tổng quát hóa tốt trong thực tế. Khi bạn tinh chỉnh siêu tham số nhắm vào tập kiểm thử, bạn sẽ vô tình làm cho mô hình Overfit với chính tập kiểm thử đó. Điểm test set hơi thấp hơn cross-val là chuyện bình thường."
     },
     {
         "type": "multiple_choice",
@@ -1288,7 +1288,7 @@
             },
             {
                 "id": "b",
-                "text": "Để có thể tích hợp mượt mà các bước biến đổi dữ liệu tự viết vào bên trong các Pipeline (ống dẫn) chuẩn của Scikit-Learn."
+                "text": "Để có thể tích hợp mượt mà các bước biến đổi dữ liệu tự viết vào bên trong các Pipeline"
             },
             {
                 "id": "c",
@@ -1300,7 +1300,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Việc tuân thủ giao diện chuẩn (fit(), transform()) giúp các class do bạn tự viết có thể dễ dàng ghép nối (chain) vào bên trong Pipeline hoặc ColumnTransformer của Scikit-Learn."
+        "explanation": "(ống dẫn) chuẩn của Scikit-Learn. Việc tuân thủ giao diện chuẩn (fit(), transform()) giúp các class do bạn tự viết có thể dễ dàng ghép nối (chain) vào bên trong Pipeline hoặc ColumnTransformer của Scikit-Learn."
     }
 ];
 

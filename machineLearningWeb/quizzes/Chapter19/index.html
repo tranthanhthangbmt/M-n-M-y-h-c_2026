@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Trắc Nghiệm Chương 9</title>
+    <title>Bài Tập Trắc Nghiệm Chương 19</title>
     <style>
         :root {
             --primary: #1a73e8;
@@ -467,826 +467,889 @@
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Sự khác biệt cốt lõi giữa Phân loại (Classification) và Phân cụm (Clustering) là gì?",
+        "question": "Vòng đời của một dự án Học Máy (Machine Learning Lifecycle) KHÔNG kết thúc ở bước Huấn luyện (Train). Bước quan trọng nhất để đưa mô hình đến tay người dùng là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Phân loại dùng cho dữ liệu văn bản, còn Phân cụm dùng cho dữ liệu hình ảnh."
+                "text": "Triển khai (Deployment) và Phục vụ (Serving)."
             },
             {
                 "id": "b",
-                "text": "Phân loại là học CÓ GIÁM SÁT (dữ liệu đã có sẵn nhãn)."
+                "text": "Tăng số lượng Epochs lên 1000."
             },
             {
                 "id": "c",
-                "text": "Phân loại chậm hơn Phân cụm."
+                "text": "Vẽ biểu đồ Loss Function."
             },
             {
                 "id": "d",
-                "text": "Phân cụm yêu cầu người dùng phải gán nhãn thủ công trước."
+                "text": "Xóa bớt dữ liệu huấn luyện."
             }
         ],
-        "correctAnswer": "b",
-        "explanation": "Phân cụm là học KHÔNG GIÁM SÁT (dữ liệu hoàn toàn không có nhãn, thuật toán tự tìm ra các nhóm tương đồng). Trong Phân loại, ta biết trước ví dụ con chó, con mèo. Trong Phân cụm, ta chỉ đưa cho máy một đống ảnh động vật không có tên, và máy tự gộp những con có hình dáng giống nhau vào thành từng nhóm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Thuật toán K-Means hoạt động bằng cách nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tính khoảng cách tuyến tính giữa mọi cặp điểm dữ liệu."
-            },
-            {
-                "id": "b",
-                "text": "Nó thử tất cả các nhãn ngẫu nhiên cho đến khi tìm được nhãn đúng."
-            },
-            {
-                "id": "c",
-                "text": "Khởi tạo K tâm cụm (centroids) ngẫu nhiên gán mỗi điểm dữ liệu vào tâm gần nhất,"
-            },
-            {
-                "id": "d",
-                "text": "Nó xây dựng một cây phân quyết định."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Sau đó cập nhật lại vị trí tâm bằng trung bình của các điểm trong cụm, lặp lại cho đến khi tâm không đổi. K-Means cực kỳ đơn giản: Bốc bừa K điểm làm tâm -> Gom điểm gần tâm -> Tính lại tâm mới nằm giữa đám điểm vừa gom -> Lặp lại. Nó hội tụ rất nhanh."
+        "correctAnswer": "a",
+        "explanation": "Đây là lúc mô hình được đưa lên Máy chủ (Server), Điện thoại hoặc Trình duyệt để nhận dữ liệu thật từ người dùng và trả về kết quả dự đoán (Inference). Train mô hình xịn trên Jupyter Notebook chỉ là đồ chơi. Đem mô hình đó phục vụ cho hàng triệu User cùng lúc mà không bị sập Server mới là kỹ năng của Kỹ sư ML (ML Engineer)."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Nhược điểm lớn nhất của K-Means:",
+        "question": "SavedModel - Định dạng chuẩn của TensorFlow:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Mặc dù K-Means rất nhanh, nhưng nhược điểm chết người của nó là bắt buộc bạn phải cung cấp số lượng cụm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> từ trước. Hơn nữa, nó rất nhạy cảm với việc khởi tạo tâm cụm ban đầu, nếu khởi tạo xui xẻo, K-Means có thể hội tụ về một nghiệm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (không phải nghiệm tối ưu toàn cục).",
+        "text": "Khi dùng lệnh `model.save('my_model')`, TensorFlow sẽ lưu mô hình dưới định dạng SavedModel. Thư mục này chứa một tệp <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> lưu giữ Đồ thị Tính toán (Computation Graph) và thư mục `variables` chứa <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> của mô hình. Điều tuyệt vời là định dạng này hoàn toàn độc lập với ngôn ngữ Python. Bạn có thể Load nó bằng C++, Java, Go để chạy trên các hệ thống hiệu năng cao.",
         "words": [
             {
                 "id": "w1",
-                "text": "Tối ưu cục bộ (Local optimum)"
+                "text": "saved_model.pb (Protobuf)"
             },
             {
                 "id": "w2",
-                "text": "K (số lượng cluster)"
+                "text": "Trọng số (Weights)"
             },
             {
                 "id": "w3",
-                "text": "Max_iter (số vòng lặp)"
+                "text": "model.json"
             },
             {
                 "id": "w4",
-                "text": "Tối ưu toàn cục (Global optimum)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w2",
-            "2": "w1"
-        },
-        "explanation": "Máy không tự biết trong dữ liệu có bao nhiêu cụm, bạn phải đoán số K. K-Means cũng hay bị mắc kẹt ở local optimum, do đó Scikit-Learn thường chạy thuật toán 10 lần với các khởi tạo ngẫu nhiên khác nhau (n_init=10) rồi lấy kết quả tốt nhất."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán K-Means++ (được Scikit-Learn dùng làm mặc định thay vì K-Means thường) giải quyết vấn đề gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tự động tìm ra số lượng cụm K."
-            },
-            {
-                "id": "b",
-                "text": "Nó thay đổi cách ĐÁNH GIÁ khoảng cách (dùng Manhattan thay vì Euclidean)."
-            },
-            {
-                "id": "c",
-                "text": "Nó giải quyết vấn đề KHỞI TẠO TÂM."
-            },
-            {
-                "id": "d",
-                "text": "Nó hỗ trợ chạy trên GPU."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Bằng cách chọn các tâm ban đầu nằm XA NHAU NHẤT CÓ THỂ, nó làm giảm đáng kể khả năng thuật toán hội tụ vào nghiệm tối ưu cục bộ tồi tệ. K-Means thường chọn K điểm ngẫu nhiên hoàn toàn. Nếu rủi ro chọn 2 điểm khởi tạo nằm cùng một chỗ, K-Means sẽ chia sai bét. K-Means++ đảm bảo các tâm khởi tạo trải đều ra toàn không gian."
-    },
-    {
-        "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Thuật toán Mini-batch K-Means được sử dụng khi nào?",
-        "instruction": "(Sắp xếp ưu điểm của Mini-batch K-Means so với K-Means truyền thống)",
-        "items": [
-            {
-                "id": "1",
-                "text": "Khi tập dữ liệu quá khổng lồ, không thể nạp tất cả vào RAM (Out-of-core)."
-            },
-            {
-                "id": "2",
-                "text": "Thay vì dùng toàn bộ dữ liệu ở mỗi lần lặp, nó chỉ dùng một lượng nhỏ (mini-batch) để di chuyển tâm cụm một chút."
-            },
-            {
-                "id": "3",
-                "text": "Kết quả: Tốc độ huấn luyện nhanh hơn gấp 3 đến 4 lần."
-            },
-            {
-                "id": "4",
-                "text": "Đánh đổi: Mô hình phân cụm cuối cùng thường kém chính xác (tệ hơn một chút) so với K-Means chạy full dữ liệu."
-            }
-        ],
-        "correctOrder": [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        "explanation": "Giống hệt Incremental PCA, Mini-batch K-Means hy sinh một phần nhỏ sự hoàn hảo để đổi lấy việc xử lý được Big Data và giảm sốc cho RAM."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Quán tính (Inertia) trong K-Means đo lường điều gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thời gian thuật toán chạy."
-            },
-            {
-                "id": "b",
-                "text": "Khoảng cách bình phương trung bình giữa mỗi điểm dữ liệu đến TÂM CỤM GẦN NHẤT CỦA NÓ."
-            },
-            {
-                "id": "c",
-                "text": "Khoảng cách giữa tâm cụm này với tâm cụm khác."
-            },
-            {
-                "id": "d",
-                "text": "Số lượng cụm K."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Inertia càng nhỏ thì các điểm trong cụm càng nén chặt (tốt). Inertia (Quán tính) là hàm mục tiêu mà K-Means cố gắng tối thiểu hóa. Tuy nhiên, ta không thể dùng Inertia để so sánh mô hình có K=3 với K=5, vì hiển nhiên khi K càng tăng (chia càng nhỏ), Inertia sẽ tự động giảm."
-    },
-    {
-        "type": "matching",
-        "difficulty": "Trung bình",
-        "question": "Ghép nối các phương pháp tìm số K (số lượng cụm) tối ưu:",
-        "left": [
-            {
-                "id": "l1",
-                "text": "Quy tắc Khửu tay (Elbow Rule)"
-            },
-            {
-                "id": "l2",
-                "text": "Điểm Silhouette (Silhouette Score)"
-            }
-        ],
-        "right": [
-            {
-                "id": "r1",
-                "text": "Vẽ biểu đồ Inertia theo số K. Chọn điểm mà đường cong bắt đầu bẻ gập nhanh (chững lại). Rất trực quan nhưng kém chính xác."
-            },
-            {
-                "id": "r2",
-                "text": "Đo lường mức độ một điểm dữ liệu nằm GẦN các điểm cùng cụm (Cohesion) so với mức độ nó nằm XA các điểm ở cụm lân cận gần nhất (Separation). Trị số từ -1 đến +1, càng gần +1 càng tốt."
-            }
-        ],
-        "correctPairs": {
-            "l1": "r1",
-            "l2": "r2"
-        },
-        "explanation": "Elbow dùng Inertia nên chỉ mang tính tương đối (vì Inertia luôn giảm khi K tăng). Silhouette Score đánh giá toàn diện hơn, +1 là gom cụm hoàn hảo, 0 là nằm sát biên, -1 là điểm bị gom nhầm cụm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Điểm yếu CHÍNH của thuật toán K-Means khi phân cụm là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó không thể xử lý dữ liệu lớn."
-            },
-            {
-                "id": "b",
-                "text": "Nó giả định rằng các cụm có HÌNH CẦU"
-            },
-            {
-                "id": "c",
-                "text": "Nó quá phức tạp để cài đặt lập trình."
-            },
-            {
-                "id": "d",
-                "text": "Nó luôn luôn yêu cầu phải chuẩn hóa dữ liệu."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(hoặc lồi) và KÍCH THƯỚC TƯƠNG ĐƯƠNG nhau. Nó sẽ thất bại thảm hại nếu các cụm có hình thuôn dài, kích thước khác nhau, hoặc lồng vào nhau (như hai vòng cung). Vì K-Means chỉ đo khoảng cách Euclidean tính từ tâm tròn, nó sẽ kéo mọi thứ thành hình cầu tròn. Nó không thể phân cụm dữ liệu hình mặt trăng khuyết, hình điếu xì gà, hoặc dữ liệu có độ lệch quá mạnh."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Dễ",
-        "question": "Ứng dụng K-Means cho Giảm chiều và Phân loại:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để Giảm chiều dữ liệu. Ví dụ dữ liệu có 1000 đặc trưng, bạn chạy K-Means với k=50. Sau đó dùng khoảng cách từ điểm dữ liệu đến 50 tâm cụm làm đặc trưng mới (giảm từ 1000 chiều xuống 50 chiều). Nếu bạn dùng tập 50 chiều này để huấn luyện một bộ Phân loại Logistic Regression, độ chính xác thường sẽ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do K-Means đã gom các điểm nhiễu thành các nhóm gọn gàng. Kỹ thuật này đôi khi được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Tăng lên / Cải thiện"
-            },
-            {
-                "id": "w2",
-                "text": "Giảm đi"
-            },
-            {
-                "id": "w3",
-                "text": "Biến đổi không gian cụm (Cluster-based Transform)"
-            },
-            {
-                "id": "w4",
-                "text": "Tăng số chiều"
+                "text": "Code Python gốc"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Giống như biến 1 điểm tọa độ phức tạp thành 50 con số báo cáo 'Tôi cách quận A bao xa, cách quận B bao xa'. Việc này giúp Logistic Regression dễ thở hơn rất nhiều."
+        "explanation": "Định dạng `.pb` (Protocol Buffers) giúp đóng gói toàn bộ kiến trúc mạng Nơ-ron thành một file nhị phân duy nhất, không cần bạn phải mang theo file code định nghĩa mô hình nữa."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Kỹ thuật 'Truyền nhãn' (Label Propagation) trong Học Bán Giám Sát (Semi-supervised Learning) sử dụng K-Means như thế nào?",
+        "question": "TensorFlow Serving (TF Serving) là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó dùng K-Means để xóa các nhãn."
+                "text": "Là một thư viện Python để vẽ biểu đồ."
             },
             {
                 "id": "b",
-                "text": "Khi bạn có 10.000 dữ liệu nhưng chỉ có tiền thuê người gán nhãn 50 dữ liệu."
+                "text": "Là một Máy chủ (Server) do Google viết bằng ngôn ngữ C++ siêu tốc độ."
             },
             {
                 "id": "c",
-                "text": "Nó biến đổi K-Means thành mạng Neural network."
+                "text": "Là dịch vụ lưu trữ dữ liệu của TensorFlow."
             },
             {
                 "id": "d",
-                "text": "Nó sinh ra ngẫu nhiên nhãn cho toàn bộ dữ liệu."
+                "text": "Là công cụ để Train mô hình trên Cloud."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bạn dùng K=50. Lấy điểm nằm gần tâm nhất của 50 cụm (Representative instances) để gán nhãn thủ công. Sau đó TRUYỀN NHÃN đó cho toàn bộ các điểm còn lại trong cùng cụm. Học bán giám sát rất mạnh. Thay vì gán nhãn ngẫu nhiên 50 điểm (hiệu quả thấp), bạn gán nhãn cho 50 điểm ĐIỂN HÌNH NHẤT (Representative) của 50 cụm, rồi lây lan nhãn đó cho đồng bọn. Độ chính xác sẽ nhảy vọt."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "DBSCAN khác biệt lớn nhất so với K-Means ở điểm nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "DBSCAN bắt buộc phải cung cấp số lượng K."
-            },
-            {
-                "id": "b",
-                "text": "DBSCAN là thuật toán dựa trên MẬT ĐỘ (Density-based)."
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN chỉ chạy được trên 2 chiều."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN chạy nhanh hơn K-Means 100 lần."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Nó xác định các vùng có mật độ điểm cao (được ngăn cách bởi các vùng mật độ thấp). Nó không giới hạn hình dạng cụm và KHÔNG CẦN CHO TRƯỚC SỐ CỤM. DBSCAN hoạt động như giọt nước loang ra. Chỉ cần khoảng cách giữa các điểm còn đủ gần (mật độ dày), nó sẽ coi tất cả là 1 cụm dù nó ngoằn ngoèo hình mặt trăng khuyết hay chữ S."
+        "explanation": "Nhiệm vụ duy nhất của nó là Tải mô hình SavedModel lên RAM, mở cổng mạng (REST API và gRPC) để nhận yêu cầu từ hàng ngàn Client và trả về Dự đoán. Nó hỗ trợ Load Balancing, Batching và Versioning (Cập nhật mô hình không cần tắt Server). Đừng bao giờ dùng Flask hay Django thuần túy để làm API chạy Model AI nếu hệ thống của bạn có hàng triệu User. Hãy dùng TF Serving, nó xử lý luồng cực kỳ khủng."
     },
     {
         "type": "ordering",
-        "difficulty": "Khó",
-        "question": "Cách DBSCAN hoạt động qua tham số epsilon (eps) và min_samples:",
+        "difficulty": "Dễ",
+        "question": "Quy trình Triển khai Mô hình bằng TensorFlow Serving qua Docker:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "DBSCAN xét một điểm bất kỳ. Nó đếm xem có bao nhiêu điểm lân cận nằm trong vòng tròn bán kính 'eps' (epsilon)."
+                "text": "Huấn luyện xong Mô hình Keras."
             },
             {
                 "id": "2",
-                "text": "Nếu số điểm lân cận này LỚN HƠN hoặc BẰNG tham số 'min_samples', điểm đó được phong danh hiệu 'Điểm Lõi' (Core Instance)."
+                "text": "Lưu mô hình bằng lệnh `model.save('model_dir/1')` (Số 1 là Phiên bản Version)."
             },
             {
                 "id": "3",
-                "text": "Tất cả các điểm nằm trong vùng lân cận eps của Điểm Lõi sẽ được gom chung vào cùng 1 cụm."
+                "text": "Mở Terminal, chạy lệnh `docker pull tensorflow/serving` để kéo Image của Google về."
             },
             {
                 "id": "4",
-                "text": "Quá trình này lan truyền (chuỗi) sang các láng giềng. Bất kỳ điểm nào KHÔNG PHẢI là điểm lõi, và cũng KHÔNG NẰM trong vùng lân cận của bất kỳ điểm lõi nào, sẽ bị coi là Nhiễu (Anomaly/Noise)."
+                "text": "Chạy Container Docker, Gắn Volume (`-v`) trỏ vào thư mục `model_dir` và mở Port 8501."
+            },
+            {
+                "id": "5",
+                "text": "Từ Client (Trang web/App), gửi một POST request chứa dữ liệu JSON đến Port 8501 để nhận kết quả Dự đoán."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "DBSCAN có 2 siêu tham số cực kỳ quan trọng: eps (bán kính) và min_samples (số điểm tối thiểu để lập phường hội). Điểm bơ vơ sẽ bị vứt ra thành Nhiễu."
+        "explanation": "Dùng Docker là cách chuẩn chỉ nhất để chạy TF Serving mà không cần phải cài đặt cấu hình C++ phức tạp trên Server Linux."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Điều gì xảy ra nếu điểm dữ liệu bị đánh dấu là Nhiễu (Noise) trong thuật toán DBSCAN (Scikit-Learn)?",
+        "difficulty": "Khó",
+        "question": "Tính năng Batching (Gộp mẻ) cực kỳ vi diệu của TensorFlow Serving hoạt động như thế nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuật toán sẽ tự động dừng lại."
+                "text": "Nó chia nhỏ 1 bức ảnh thành nhiều mảnh để chạy cho lẹ."
             },
             {
                 "id": "b",
-                "text": "Dữ liệu đó sẽ bị xóa khỏi bộ nhớ gốc."
+                "text": "Khi có 100 User gửi 100 bức ảnh LẺ TẺ đến Server Cùng một lúc."
             },
             {
                 "id": "c",
-                "text": "Điểm đó sẽ được gán nhãn cụm"
+                "text": "Nó nhân bản Model ra thành 100 bản sao trên RAM."
             },
             {
                 "id": "d",
-                "text": "Dữ liệu được chuyển về tâm tọa độ (0,0)."
+                "text": "Nó xóa bớt các yêu cầu đến sau nếu Server quá tải."
             }
         ],
-        "correctAnswer": "c",
-        "explanation": "(cluster label) là `-1` trong thuộc tính `labels_`. Scikit-Learn dùng quy ước nhãn `-1` để ám chỉ Outliers/Noise/Anomalies. K-Means không bao giờ từ chối điểm nào (điểm xa cỡ nào cũng bị ép vô 1 cụm). DBSCAN có khả năng chỉ ra thẳng điểm nào là ngoại lai."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Điểm yếu của DBSCAN:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "DBSCAN là một thuật toán rất tuyệt, nhưng nó sẽ gặp khó khăn lớn nếu các cụm trong tập dữ liệu có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thay đổi quá lớn (nơi rất dày đặc, nơi lại rất thưa thớt). Thuật toán này không cho phép dùng một siêu tham số `eps` (bán kính) chung cho tất cả. Ngoài ra, DBSCAN <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hàm `predict()` để dự đoán nhãn cho các điểm dữ liệu mới đến.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Mật độ (Density)"
-            },
-            {
-                "id": "w2",
-                "text": "Màu sắc (Color)"
-            },
-            {
-                "id": "w3",
-                "text": "KHÔNG CÓ (Does not have)"
-            },
-            {
-                "id": "w4",
-                "text": "CÓ (Has)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w3"
-        },
-        "explanation": "Nếu khu phố A nhà nằm sát nhau, khu phố B nhà cách nhau 10km. Bạn set eps=1km thì DBSCAN nhận diện được khu A nhưng đánh giá khu B là Rừng Hoang (Noise). Bạn set eps=15km thì nó nhận được khu B nhưng lại gộp luôn khu A vào chung với khu B. (DBSCAN không có predict, bạn phải dùng thuật toán KNN để gán điểm mới)."
+        "correctAnswer": "b",
+        "explanation": "Thay vì để GPU phải chạy Inference 100 lần (Rất tốn kém thời gian khởi động). TF Serving sẽ GIỮ BẮT User đầu tiên chờ khoảng 5 mili-giây, Gom 100 bức ảnh lẻ đó thành MỘT TENSOR LỚN (Batch_size = 100). Sau đó ném 1 cục Batch đó vào GPU xử lý đúng MỘT LẦN duy nhất, rồi bóc tách kết quả trả về cho từng User. Tốc độ tăng gấp chục lần. GPU/TPU được sinh ra để tính toán Ma trận Lớn, chứ không phải Ma trận nhỏ xíu. Batching của TF Serving là vũ khí tối thượng giúp tận dụng 100% sức mạnh phần cứng."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép thuật toán Phân cụm với tính chất phù hợp:",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các Giao thức Mạng (Network Protocols) mà TensorFlow Serving hỗ trợ:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "REST API (HTTP/JSON)"
             },
             {
                 "id": "l2",
-                "text": "DBSCAN"
+                "text": "gRPC (Google Remote Procedure Call)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc cho trước số K. Thích cụm hình cầu. Nhạy cảm với nhiễu ngoại lai."
+                "text": "Dễ dùng, dễ code, thân thiện với lập trình viên Web (JavaScript). Gửi dữ liệu dưới dạng Text JSON. Thường chạy ở Cổng (Port) 8501. Nhược điểm là chậm do tốn thời gian mã hóa/giải mã Text."
             },
             {
                 "id": "r2",
-                "text": "Tự động tìm số cụm. Xử lý tốt mọi hình dạng phức tạp. Chống nhiễu ngoại lai (tách riêng noise ra). Không thích hợp nếu mật độ các cụm khác nhau nhiều."
+                "text": "Cực kỳ Nhanh và Hiệu quả. Gửi dữ liệu dưới dạng Nhị phân nén (Binary Protobuf). Thường chạy ở Cổng (Port) 8500. Rất khó code (Phải build file stub), nhưng là lựa chọn số 1 cho giao tiếp giữa các Server (Microservices)."
             }
         ],
         "correctPairs": {
             "l1": "r1",
             "l2": "r2"
         },
-        "explanation": "Đây là so sánh kinh điển giữa K-Means (Distance-based) và DBSCAN (Density-based)."
+        "explanation": "Trong môi trường Production, người ta thường dựng một Web Server API (như FastAPI/NodeJS) giao tiếp với Client bằng REST, rồi từ Web Server đó gọi vào TF Serving bằng gRPC."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Mô hình Hỗn hợp Gauss (Gaussian Mixture Models - GMM) là gì?",
+        "difficulty": "Dễ",
+        "question": "TensorFlow Lite (TFLite) là phiên bản TensorFlow sinh ra với mục đích gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Là một biến thể của DBSCAN dùng phân phối Bernoulli."
+                "text": "Chạy mô hình trên các Siêu Máy Tính (Supercomputers)."
             },
             {
                 "id": "b",
-                "text": "Là một mô hình XÁC SUẤT giả định rằng toàn bộ các điểm dữ liệu được sinh ra từ việc trộn lẫn"
+                "text": "Chạy mô hình ngay trên các Thiết bị Nhỏ gọn Ít năng lượng (Edge Devices) như:"
             },
             {
                 "id": "c",
-                "text": "Là thuật toán học có giám sát dùng để phân loại văn bản."
+                "text": "Để tăng độ chính xác của mô hình lên 100%."
             },
             {
                 "id": "d",
-                "text": "Là một thuật toán không thể giải quyết được cụm hình elip."
+                "text": "Chỉ dùng để huấn luyện mô hình."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(mixture) một số lượng hữu hạn các phân phối Gaussian (hình quả chuông). Khác với K-Means gán 'Cứng' (Hard clustering - bạn chỉ có thể thuộc Cụm 1 hoặc Cụm 2). GMM dùng xác suất 'Mềm' (Soft clustering - bạn thuộc 80% Cụm 1, 20% Cụm 2). GMM giả định các cụm có hình Elip (bầu dục) ở các hướng và kích thước khác nhau."
+        "explanation": "Điện thoại di động (Android/iOS), Raspberry Pi, Smartwatch, và Vi điều khiển (Microcontrollers). TFLite không dùng để Train model. Nó lấy model Keras (nặng nề) và Ép/Biến đổi nó thành định dạng `.tflite` siêu nhẹ, có thể nhét vừa vào app Android."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Ưu điểm của việc chạy Model trực tiếp trên Điện thoại (Edge AI / On-Device AI) so với gọi API lên Server:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "1. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>: Dữ liệu nhạy cảm (Ảnh khuôn mặt, Vân tay, Tin nhắn) không bao giờ bị gửi lên mạng Internet, giúp bảo mật tuyệt đối. \n2. <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>: App vẫn chạy AI ầm ầm ngay cả khi bạn mang điện thoại vào rừng không có WiFi/4G. \n3. Độ trễ cực thấp: Không có thời gian chờ (Ping) mạng, AI phản hồi ngay lập tức như FaceID.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Quyền riêng tư (Privacy)"
+            },
+            {
+                "id": "w2",
+                "text": "Hoạt động Ngoại tuyến (Offline)"
+            },
+            {
+                "id": "w3",
+                "text": "Tốn nhiều Pin hơn"
+            },
+            {
+                "id": "w4",
+                "text": "Kích thước App nhỏ hơn"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Đây là lý do Apple và Google tích hợp NPU (Neural Processing Unit) thẳng vào con chip điện thoại. AI đang chuyển dịch từ Cloud (Đám mây) xuống Edge (Thiết bị biên)."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán nào đứng đằng sau quá trình hội tụ của Gaussian Mixture Model?",
+        "question": "Lượng tử hóa (Quantization) là kỹ thuật quan trọng nhất trong TFLite để nén mô hình. Nó làm gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Gradient Descent (Hạ gradient)."
+                "text": "Cắt bỏ bớt một nửa số lớp của Mạng Nơ-ron."
             },
             {
                 "id": "b",
-                "text": "Thuật toán EM (Expectation-Maximization - Cực đại hóa Kỳ vọng)."
+                "text": "Biến các Trọng số (Weights) từ định dạng số thực 32-bit"
             },
             {
                 "id": "c",
-                "text": "Phương trình chuẩn (Normal Equation)."
+                "text": "Chuyển mô hình sang ngôn ngữ C++."
             },
             {
                 "id": "d",
-                "text": "Backpropagation (Lan truyền ngược)."
+                "text": "Nén file bằng định dạng ZIP."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "EM giống hệt cách K-Means hoạt động nhưng dành cho hình Elip. Bước E (Kỳ vọng): Ước tính xác suất mỗi điểm thuộc về cụm nào. Bước M (Cực đại hóa): Cập nhật lại hình dáng, vị trí, kích thước của Elip dựa trên các điểm vừa gom."
+        "explanation": "(Float32) Cực To tốn RAM thành định dạng số nguyên 8-bit (Int8) Nhỏ Gọn. Việc này giảm 75% dung lượng Mô hình và tăng tốc độ chạy lên nhiều lần trên CPU điện thoại, trong khi Độ chính xác (Accuracy) chỉ sụt giảm đôi chút (Vài phần trăm). Mạng Nơ-ron rất giỏi chịu lỗi. Trọng số là 0.72591 hay làm tròn thành 0.7 thì kết quả nhận diện Con mèo vẫn đúng."
     },
     {
         "type": "ordering",
         "difficulty": "Trung bình",
-        "question": "Cách GMM phân biệt và tạo thành cụm thông qua siêu tham số 'covariance_type':",
+        "question": "Quy trình Lượng tử hóa sau huấn luyện (Post-Training Quantization) sang file TFLite:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "'spherical' (Hình cầu): Rất giống K-Means, các cụm bị ép phải tròn xoe, nhưng mỗi cụm có thể có bán kính khác nhau."
+                "text": "Train mô hình Keras (Float32) đạt độ chính xác tốt nhất."
             },
             {
                 "id": "2",
-                "text": "'diag' (Đường chéo): Các cụm có thể có hình elip (kéo dài trục X, Y khác nhau), nhưng các trục của elip phải SONG SONG với các trục tọa độ của đặc trưng."
+                "text": "Khởi tạo `tf.lite.TFLiteConverter.from_keras_model(model)`."
             },
             {
                 "id": "3",
-                "text": "'tied' (Bị trói): Các cụm có thể có hình elip bất kỳ và nằm nghiêng, NHƯNG tất cả các cụm BẮT BUỘC phải chia sẻ CHUNG MỘT hình dạng, kích thước và góc nghiêng."
+                "text": "Bật cờ tối ưu hóa: `converter.optimizations = [tf.lite.Optimize.DEFAULT]` (Yêu cầu ép xuống Int8)."
             },
             {
                 "id": "4",
-                "text": "'full' (Đầy đủ - Mặc định): Cho phép mỗi cụm thỏa sức có hình elip riêng biệt, kích thước riêng, độ nghiêng riêng biệt. (Nhưng tính toán tốn kém nhất)."
+                "text": "Gọi `tflite_model = converter.convert()` để tiến hành nén mạng."
+            },
+            {
+                "id": "5",
+                "text": "Lưu kết quả thành file vật lý: `with open('model.tflite', 'wb') as f: f.write(tflite_model)`."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "Tính linh hoạt của GMM nằm ở covariance_type (Ma trận hiệp phương sai). Bạn có thể giới hạn hình dáng của cụm để thuật toán chạy nhanh hơn."
+        "explanation": "File `.tflite` sau đó sẽ được copy vào thư mục `assets` của dự án Android Studio hoặc XCode để chạy."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Cách sử dụng GMM (Gaussian Mixture) phổ biến để 'Phát hiện Sự bất thường' (Anomaly Detection) là gì?",
+        "difficulty": "Trung bình",
+        "question": "Quantization-Aware Training (QAT) khác gì so với Post-Training Quantization (PTQ)?",
         "options": [
             {
                 "id": "a",
-                "text": "Các điểm dữ liệu nằm ở vùng có 'Xác suất Mật độ'"
+                "text": "Nó nén file ZIP tốt hơn."
             },
             {
                 "id": "b",
-                "text": "Các điểm dữ liệu nằm ngay tại trung tâm hình elip."
+                "text": "PTQ là Cố ép một mô hình (đã học xong) vào khuôn khổ dễ dẫn đến shock và tụt giảm Accuracy mạnh."
             },
             {
                 "id": "c",
-                "text": "Nó tự động gửi email báo cáo."
+                "text": "Nó Train trực tiếp trên điện thoại."
             },
             {
                 "id": "d",
-                "text": "Xóa hết toàn bộ dữ liệu."
+                "text": "Nó chỉ ép xuống Float16 chứ không ép xuống Int8."
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "(PDF - Probability Density Function) RẤT THẤP (tức là nằm rìa nằm xa các hình elip của cụm) sẽ bị gắn cờ là Bất thường. Vì GMM là mô hình phân phối xác suất, nó biết rõ chỗ nào đông đúc, chỗ nào hoang vắng. Bạn chỉ cần đặt một ngưỡng tỷ lệ (ví dụ 4% điểm có xác suất thấp nhất) và quy chúng thành Nhiễu (Anomalies)."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Xác định số lượng cụm (K) cho GMM:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn KHÔNG THỂ dùng Quán tính (Inertia) hay Silhouette Score cho GMM vì chúng không đo được hình dạng elip. Để tìm K tối ưu cho GMM, người ta sử dụng các tiêu chí thông tin lý thuyết như <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Bayesian Information Criterion) hoặc <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Akaike Information Criterion). Cả hai tiêu chí này sẽ HÌNH PHẠT các mô hình có quá nhiều thông số (quá nhiều cụm K). Mô hình có AIC/BIC THẤP NHẤT là mô hình tốt nhất.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "BIC"
-            },
-            {
-                "id": "w2",
-                "text": "AIC"
-            },
-            {
-                "id": "w3",
-                "text": "MSE"
-            },
-            {
-                "id": "w4",
-                "text": "Accuracy"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w2"
-        },
-        "explanation": "AIC và BIC phạt sự phức tạp của mô hình. Nếu bạn chia thành quá nhiều cụm (K lớn), mô hình khớp dữ liệu rất tốt (hàm log-likelihood tăng) nhưng AIC/BIC sẽ bị phạt cao lên. Điểm AIC/BIC thấp nhất chính là 'Điểm cân bằng' (Elbow) tối ưu."
+        "correctAnswer": "b",
+        "explanation": "QAT là Báo trước cho Mô hình biết ngay TRONG LÚC ĐANG TRAIN rằng: 'Mày sắp bị ép xuống 8-bit đấy, hãy tự điều chỉnh Trọng số đi'. AI sẽ tự học cách bù đắp cho sự mất mát thông tin do làm tròn số, giúp mô hình TFLite giữ được Accuracy cực cao. QAT được Google khuyên dùng nếu mô hình của bạn bị rớt độ chính xác quá thê thảm khi dùng PTQ."
     },
     {
         "type": "matching",
         "difficulty": "Trung bình",
-        "question": "Ghép nối 'Bayesian Gaussian Mixture' (Mô hình Hỗn hợp Gauss Bayes) so với GMM truyền thống:",
+        "question": "Ghép nối các kỹ thuật Tối ưu hóa Mô hình (Model Optimization) khác ngoài Lượng tử hóa:",
         "left": [
             {
                 "id": "l1",
-                "text": "GMM (GaussianMixture)"
+                "text": "Cắt tỉa (Pruning)"
             },
             {
                 "id": "l2",
-                "text": "BGM (BayesianGaussianMixture)"
+                "text": "Trưng cất Tri thức (Knowledge Distillation)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc bạn phải chọn đúng số cụm (n_components) K. Nếu bạn nhập K dư thừa, nó vẫn sẽ cố chia ra K cụm."
+                "text": "Phân tích xem trong hàng triệu Trọng số (Weights), cái nào gần bằng 0 (Vô dụng, không đóng góp gì cho dự đoán). Ép các trọng số đó VỀ BẰNG 0 (Tạo ra Ma trận thưa). Việc này giúp nén mô hình khi ZIP rất hiệu quả."
             },
             {
                 "id": "r2",
-                "text": "Mô hình thông minh: Thay vì phải chọn đúng K, bạn cứ ném cho nó một số K RẤT LỚN (ví dụ 10). Thuật toán sẽ tự động ĐẨY TRỌNG SỐ của các cụm dư thừa về 0 (tự hủy các cụm không cần thiết), và trả lại cho bạn số lượng cụm thực sự (ví dụ 3)."
+                "text": "Lấy một Mô hình siêu to khổng lồ (Teacher Model) đi dạy lại cho một Mô hình nhỏ xíu (Student Model). Mô hình nhỏ không học từ Nhãn thật (Hard Labels) mà học từ Xác suất của Giáo viên (Soft Labels), nhờ đó Mạng nhỏ thông minh xuất chúng vượt ngoài kích thước của nó."
             }
         ],
         "correctPairs": {
             "l1": "r1",
             "l2": "r2"
         },
-        "explanation": "Bayesian Gaussian Mixture tự động loại bỏ bớt các cụm không cần thiết bằng cơ chế tiên nghiệm (prior). Đây là tính năng 'tự động tìm số K' cực kỳ thần thánh của nó."
+        "explanation": "Đây là những bí thuật của ngành Machine Learning để nhét AI vào các thiết bị Vi điều khiển (Microcontrollers) chỉ có 256KB RAM (Lĩnh vực TinyML)."
     },
     {
-        "type": "multiple_choice",
+        "type": "fill_in_blanks",
         "difficulty": "Dễ",
-        "question": "Một thuật toán khác cũng rất nổi tiếng dùng để Phát hiện Bất thường (Anomaly Detection) dựa trên khái niệm 'Rừng' (Trees) là gì?",
-        "options": [
+        "question": "TensorFlow.js (TF.js) đưa AI vào trình duyệt Web:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "TensorFlow.js là một thư viện viết bằng JavaScript. Nó cho phép bạn <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> và thậm chí là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mô hình Machine Learning TRỰC TIẾP bên trong trình duyệt Web (Chrome, Safari) của người dùng mà KHÔNG CẦN CÀI ĐẶT bất kỳ phần mềm Python hay Server backend nào. Nó khai thác sức mạnh phần cứng của máy tính người dùng thông qua chuẩn WebGL (Card đồ họa).",
+        "words": [
             {
-                "id": "a",
-                "text": "Isolation Forest (Rừng cách ly)."
+                "id": "w1",
+                "text": "Chạy Dự đoán (Inference)"
             },
             {
-                "id": "b",
-                "text": "Random Forest."
+                "id": "w2",
+                "text": "Huấn luyện lại (Train)"
             },
             {
-                "id": "c",
-                "text": "Gradient Boosting."
+                "id": "w3",
+                "text": "Phát video YouTube"
             },
             {
-                "id": "d",
-                "text": "K-Nearest Neighbors."
+                "id": "w4",
+                "text": "Tắt trình duyệt"
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Isolation Forest hoạt động bằng cách chẻ (split) dữ liệu ngẫu nhiên. Các điểm bất thường (anomalies) thường đứng một mình xa đàn, nên chỉ cần CHẺ VÀI NHÁT là nó đã bị cô lập khỏi cụm dữ liệu gốc. Điểm nào bị cô lập ở các nhánh cây nông nhất (đường dẫn ngắn) chính là điểm bất thường."
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Trang web Pac-Man Webcam của Google (Dùng Camera tay để điều khiển Game) là một minh chứng đỉnh cao của TF.js."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Phát hiện sự bất thường (Anomaly Detection) khác với Phát hiện cái mới (Novelty Detection) ở điểm nào?",
+        "question": "Để chuyển một mô hình Keras (Python) sang dùng trên Trang Web (HTML/JS) với TensorFlow.js, bạn phải làm gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Hai khái niệm này hoàn toàn giống hệt nhau."
+                "text": "Đổi tên file thành `.js`."
             },
             {
                 "id": "b",
-                "text": "Anomaly Detection cho phép tập dữ liệu huấn luyện ĐÃ CHỨA SẴN các ngoại lệ/nhiễu"
+                "text": "Dùng công cụ `tensorflowjs_converter` trong Terminal"
             },
             {
                 "id": "c",
-                "text": "Novelty detection yêu cầu có nhãn."
+                "text": "Tải Python lên trình duyệt."
             },
             {
                 "id": "d",
-                "text": "Anomaly detection chậm hơn."
+                "text": "Không thể làm được, phải Train lại từ đầu bằng JavaScript."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(nó cố gắng tìm ra chúng). Novelty Detection yêu cầu tập huấn luyện phải 'SẠCH' 100% (chỉ chứa các ví dụ bình thường), và nó chỉ bắt lỗi ở các dữ liệu mới trong tương lai. Novelty: Bạn train mô hình trên hình ảnh 10.000 con chó (sạch bong). Ngày mai bạn đưa hình con mèo vào, nó kêu 'Đây là cái mới' (Novelty). Anomaly: Tập 10.000 ảnh gốc đã có lộn 10 con mèo trong đó, bạn yêu cầu mô hình lọc 10 con mèo đó ra (Anomaly)."
+        "explanation": "Để chuyển đổi file SavedModel (Python) thành định dạng TF.js (Bao gồm 1 file `model.json` chứa kiến trúc mạng và nhiều file `.bin` chứa các mảnh Trọng số). Sau đó Load nó bằng code Javascript: `tf.loadLayersModel('model.json')`. Hệ sinh thái TensorFlow rất khép kín. Bạn code bằng Python, chuyển sang `.tflite` cho App, chuyển sang `.json` cho Web. Code 1 lần, chạy mọi nơi."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Trong bối cảnh Huấn luyện Phân tán (Distributed Training) cho Dữ liệu lớn, Data Parallelism (Song song Dữ liệu) hoạt động như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Cắt Mạng Nơ-ron ra làm 2 nửa, nửa Đầu để ở GPU 1, nửa Cuối để ở GPU 2."
+            },
+            {
+                "id": "b",
+                "text": "Copy (Nhân bản) NGUYÊN VẸN Mạng Nơ-ron vào TẤT CẢ các GPU."
+            },
+            {
+                "id": "c",
+                "text": "Chỉ train bằng CPU cho đều."
+            },
+            {
+                "id": "d",
+                "text": "Cắt dữ liệu ra và lưu vào ổ cứng."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Sau đó chia nhỏ Dữ liệu (Ví dụ mẻ 1000 ảnh chia cho 4 GPU, mỗi GPU chạy 250 ảnh). Khi tính xong Đạo hàm (Gradients), các GPU sẽ ĐỒNG BỘ HÓA (Cộng lại chia trung bình) đạo hàm với nhau rồi mới Cập nhật Trọng số. Data Parallelism là cách phổ biến nhất (99%) để huấn luyện đa GPU. Chỉ khi nào Mạng Nơ-ron quá bự (Như GPT-3) không đút vừa nổi vào 1 GPU, người ta mới dùng đến Model Parallelism (Cắt mạng làm nhiều mảnh)."
     },
     {
         "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Quy trình làm việc của Học K-Means từ Scikit-Learn:",
-        "instruction": "(Sắp xếp các dòng mã để chạy K-Means đúng chuẩn)",
+        "difficulty": "Khó",
+        "question": "Chu trình Đồng bộ hóa Đạo hàm All-Reduce (Cốt lõi của Data Parallelism):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "from sklearn.cluster import KMeans"
+                "text": "Bắt đầu Bước t: Cả 4 GPU đều có bộ Trọng số W y hệt nhau."
             },
             {
                 "id": "2",
-                "text": "k = 5"
+                "text": "Phát dữ liệu (Scatter): Truyền Batch dữ liệu khác nhau cho 4 GPU."
             },
             {
                 "id": "3",
-                "text": "kmeans = KMeans(n_clusters=k, random_state=42)"
+                "text": "Tính Đạo hàm (Forward/Backward Pass): Mỗi GPU tự chạy thuật toán Backprop trên data của mình và tự tính ra Đạo hàm G riêng lẻ."
             },
             {
                 "id": "4",
-                "text": "y_pred = kmeans.fit_predict(X)"
+                "text": "All-Reduce: Các GPU gửi G cho nhau qua cáp mạng (NVLink) siêu tốc. Chúng tính (Trung bình cộng) của cả 4 cái G để tạo ra Đạo hàm chung G_mean."
+            },
+            {
+                "id": "5",
+                "text": "Cập nhật (Update): Cả 4 GPU dùng cái G_mean đó cập nhật lại bộ Trọng số W. Mọi GPU lại có bộ W y hệt nhau để sẵn sàng cho Bước t+1."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "Import -> Khai báo K -> Khởi tạo đối tượng -> Fit_predict (do là Unsupervised nên chỉ truyền X, không truyền y)."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "One-Class SVM cho Phát hiện Cái mới (Novelty Detection):",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Khác với SVM phân loại nhị phân truyền thống cố tách 2 lớp bằng siêu phẳng. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cố gắng tách các điểm dữ liệu (tất cả chỉ có 1 lớp bình thường) ra khỏi <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trong không gian chiều cao. Kết quả là nó tạo ra một cái 'bong bóng' phi tuyến khổng lồ bao bọc lấy các điểm bình thường. Điểm nào rơi ra ngoài bong bóng bị coi là dị thường.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "One-Class SVM"
-            },
-            {
-                "id": "w2",
-                "text": "Gốc tọa độ (Origin)"
-            },
-            {
-                "id": "w3",
-                "text": "Linear SVC"
-            },
-            {
-                "id": "w4",
-                "text": "K-Means"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w2"
-        },
-        "explanation": "One-Class SVM nhốt toàn bộ dữ liệu sạch vào 1 cái túi bong bóng bằng cách đẩy chúng ra khỏi gốc tọa độ. Cực kỳ mạnh khi dữ liệu train sạch 100% nhưng gặp khó nếu dữ liệu có sẵn nhiễu."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Phân cụm Bằng Tích cực (Active Learning) sử dụng K-Means để làm gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thuê người dùng internet nhấp vào quảng cáo."
-            },
-            {
-                "id": "b",
-                "text": "Để tự động xóa dữ liệu."
-            },
-            {
-                "id": "c",
-                "text": "Tìm ra các điểm (Ví dụ: tâm của K-Means) có ý nghĩa và KHÓ phân loại nhất trình bày cho CHUYÊN GIA CON NGƯỜI (Human expert)"
-            },
-            {
-                "id": "d",
-                "text": "Tự động gán nhãn dựa trên dự đoán ngẫu nhiên."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Để họ gán nhãn thủ công. Việc này tiết kiệm tiền thuê người gán nhãn hàng triệu tấm ảnh mà chỉ cần gán vài ngàn tấm cốt lõi. Active Learning kết hợp máy + người. Máy phân cụm, móc ra những điểm trung tâm hoặc những điểm nằm ở biên giới lấp lửng khó quyết, đưa cho người thật xem. Sau đó máy học tiếp. Quy trình lặp lại."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Tính chất của DBSCAN trong việc sử dụng siêu tham số?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Siêu tham số eps có ý nghĩa là Số lượng vòng lặp tối đa."
-            },
-            {
-                "id": "b",
-                "text": "Bạn phải chỉnh siêu tham số eps"
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN không có siêu tham số nào."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN tự học eps bằng Gradient Descent."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(bán kính) và min_samples cực kỳ cẩn thận. Nếu eps quá nhỏ, mọi điểm đều trở thành Nhiễu. Nếu eps quá lớn, mọi điểm nhập chung vào 1 cụm khổng lồ. Khác với K-Means phải đoán K, thì ở DBSCAN bạn phải đoán bán kính lân cận eps. May thay, eps có ý nghĩa hình học (khoảng cách vật lý thực) nên đôi khi dễ set up hơn."
+        "explanation": "Nhờ cơ chế All-Reduce, bạn cắm 8 cái Card GPU lại với nhau thì tốc độ Train sẽ tăng lên ĐÚNG 8 LẦN, vô cùng kỳ diệu."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép nối vai trò của hàm mục tiêu (Mục đích tối ưu hóa) của các thuật toán:",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các API Chiến lược Phân tán (Distribution Strategies) của TensorFlow:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "MirroredStrategy"
             },
             {
                 "id": "l2",
-                "text": "PCA (Phân tích Thành phần Chính)"
+                "text": "MultiWorkerMirroredStrategy"
+            },
+            {
+                "id": "l3",
+                "text": "TPUStrategy"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Tối thiểu hóa 'Quán tính' (Inertia - Tổng khoảng cách từ điểm đến tâm)."
+                "text": "Dành cho trường hợp bạn có NHIỀU GPU cắm TRÊN CÙNG MỘT MÁY TÍNH (1 Node). Nó tự động sao chép model và phân phối Batch qua cổng PCIe."
             },
             {
                 "id": "r2",
-                "text": "Tối thiểu hóa 'Lỗi tái tạo' (Reconstruction error) hoặc Tối đa hóa 'Phương sai giải thích'."
+                "text": "Dành cho trường hợp bạn thuê NHIỀU MÁY TÍNH KHÁC NHAU trên Cloud (Nhiều Node), mỗi máy cắm 8 GPU. Nó xử lý giao tiếp truyền mạng qua cáp quang giữa các Server."
+            },
+            {
+                "id": "r3",
+                "text": "Được thiết kế riêng biệt để tận dụng sức mạnh vô song của chip Tensor Processing Unit (TPU) - Khối nhôm bạc của Google."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Mỗi thuật toán Unsupervised đều ngầm tối ưu hóa một hàm toán học."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán Local Outlier Factor (LOF) hoạt động trong bài toán Phát hiện Bất thường như thế nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó so sánh MẬT ĐỘ của một điểm dữ liệu với mật độ của K LÁNG GIỀNG GẦN NHẤT của nó."
-            },
-            {
-                "id": "b",
-                "text": "Nó dùng mạng Neural để học hàm phi tuyến."
-            },
-            {
-                "id": "c",
-                "text": "Nó đo khoảng cách của điểm đó đến gốc tọa độ (0,0)."
-            },
-            {
-                "id": "d",
-                "text": "Nó sử dụng Decision Tree."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "Nếu điểm đó có mật độ THẤP HƠN NHIỀU so với những người hàng xóm, điểm đó là dị thường. Rất giống với tư tưởng của DBSCAN nhưng tinh tế hơn. DBSCAN xài một bán kính eps cứng nhắc. LOF đo độ 'cô đơn' tương đối (nếu ai xung quanh cũng ở nhà san sát nhau, tự nhiên nhà bạn cách xa mọi người 1km thì bạn là dị thường)."
+        "explanation": "Nhờ các API Strategy này, Kỹ sư không cần phải viết code mạng LAN rườm rà. Keras tự lo mọi thứ."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Trung bình",
-        "question": "Làm cách nào để chuyển một bức ảnh thành dữ liệu cho Phân cụm Màu sắc (Color Quantization)?",
+        "difficulty": "Khó",
+        "question": "Sử dụng TF Distribution Strategy trong Code Keras:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để giảm số lượng màu của bức ảnh từ 16 triệu màu xuống còn 10 màu. Bức ảnh là một ma trận 3D (Width x Height x 3 kênh RGB). Để dùng K-Means, bạn phải Reshape (Định hình lại) nó thành dạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tức là danh sách các pixel dài, mỗi pixel có 3 chiều RGB). Sau khi train K-Means(k=10), bạn thay thế màu gốc của từng pixel bằng màu của <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mà nó thuộc về.",
+        "text": "Để Train mô hình bằng đa GPU, bạn KHÔNG CẦN sửa đổi kiến trúc mô hình. Bạn chỉ cần: \n1. Khai báo: `strategy = tf.distribute.MirroredStrategy()`\n2. Mở một Vùng ngữ cảnh (Context scope) bằng lệnh: `with strategy.<span class=\"blank-slot\" data-id=\"1\">___(1)___</span>():`\n3. Di chuyển việc Khởi tạo Mô hình (`model = ...`) và Biên dịch Mô hình (`model.<span class=\"blank-slot\" data-id=\"2\">___(2)___</span>(...)`) VÀO BÊN TRONG cái Scope đó.\n4. Gọi `model.fit()` bình thường ở bên ngoài.",
         "words": [
             {
                 "id": "w1",
-                "text": "2D"
+                "text": "scope"
             },
             {
                 "id": "w2",
-                "text": "Tâm cụm (Centroid)"
+                "text": "compile"
             },
             {
                 "id": "w3",
-                "text": "1D"
+                "text": "fit"
             },
             {
                 "id": "w4",
-                "text": "Biên (Border)"
+                "text": "evaluate"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "Sklearn bắt buộc đầu vào là mảng 2D (mẫu x đặc trưng). Bạn duỗi ảnh thành danh sách dài các pixel. Tâm cụm của K-Means(k=10) chính là 10 mã màu đại diện tốt nhất cho bức ảnh."
+        "explanation": "Scope này nói cho Keras biết: 'Khoan hãy cấp phát biến số (Variables) lên GPU 0, hãy tạo ra các bản sao trên mọi GPU mà tao có'."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Khi bạn dùng 4 GPU (Thay vì 1 GPU) để Train, theo lý thuyết Mẻ dữ liệu (Batch Size) Toàn Cục (Global Batch Size) sẽ thay đổi như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Không đổi."
+            },
+            {
+                "id": "b",
+                "text": "Global Batch Size sẽ GẤP 4 LẦN Batch Size của 1 GPU."
+            },
+            {
+                "id": "c",
+                "text": "Nó bị chia 4."
+            },
+            {
+                "id": "d",
+                "text": "Tất cả gom chung thành 32."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Ví dụ: Nếu VRAM của 1 GPU chỉ nhét vừa 32 bức ảnh. Thì khi cắm 4 GPU, mỗi GPU vẫn nhét 32 ảnh, nhưng Tổng số ảnh (Global Batch Size) mà mạng học được sau mỗi bước Cập nhật đạo hàm là 32 x 4 = 128 bức ảnh. Bí quyết Train siêu tốc: Batch Size Cực To (Do nhiều GPU gánh). Batch to giúp Gradient cực kì ổn định, không bị răng cưa. Do đó bạn có thể nhân Learning Rate lên 4 lần để chạy băng băng về đích."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Google TPU (Tensor Processing Unit) là phần cứng chuyên dụng. Khối lõi của TPU được thiết kế khác biệt gì so với CPU và GPU?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó có quạt tản nhiệt to hơn."
+            },
+            {
+                "id": "b",
+                "text": "Nó chứa Ma Trận Nhân Thêm"
+            },
+            {
+                "id": "c",
+                "text": "Nó chạy được Hệ điều hành Windows."
+            },
+            {
+                "id": "d",
+                "text": "Nó chỉ dùng kết nối Wifi."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Matrix Multiply Unit / Systolic Array). Thay vì phải load và save kết quả trung gian ra VRAM hàng vạn lần, TPU ĐẨY dữ liệu trôi qua một Ma trận các phần tử tính toán giống như Nước chảy trong ống. Việc này thực hiện Phép Nhân Ma Trận (Nhân chập CNN / Tính Dense) nhanh Vô Cực và cực kỳ tiết kiệm điện. TPU chỉ biết làm 1 việc duy nhất: Nhân Cộng Ma Trận. Nhưng nó làm việc đó giỏi nhất thế giới. Đó là lý do Google đẻ ra AlphaGo và các đại mô hình Gemini vượt trội."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Đường ống Dữ liệu Tốc độ cao `tf.data` cho TPU/Nhiều GPU:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Nén dữ liệu Ảnh và Nhãn thành định dạng Nhị phân khổng lồ `TFRecord` (Mỗi file khoảng 100MB) và up lên Google Cloud Storage (GCS). (TPU không thể đọc lẻ tẻ từng file .jpg)."
+            },
+            {
+                "id": "2",
+                "text": "Load song song: `dataset = tf.data.TFRecordDataset(files, num_parallel_reads=AUTOTUNE)`."
+            },
+            {
+                "id": "3",
+                "text": "Giải nén (Parse) file TFRecord để lấy lại Bức ảnh và Nhãn."
+            },
+            {
+                "id": "4",
+                "text": "Nhóm Batch (Theo Global Batch Size)."
+            },
+            {
+                "id": "5",
+                "text": "Mở Prefetch: `dataset.prefetch(AUTOTUNE)`. (CPU sẽ nai lưng chuẩn bị mẻ ảnh tiếp theo TRONG LÚC TPU đang xử lý mẻ ảnh hiện tại. Không bao giờ để TPU đói dữ liệu)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Khi bạn dùng TPU, Nút thắt cổ chai lớn nhất KHÔNG PHẢI LÀ TPU, mà là CPU không load kịp dữ liệu từ Ổ Cứng lên nạp cho TPU. `TFRecord` và `Prefetch` là cứu cánh."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Vertex AI (Của Google Cloud Platform) là nền tảng gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Phần mềm đồ họa 3D."
+            },
+            {
+                "id": "b",
+                "text": "Nền tảng MLOps Toàn diện (End-to-End)."
+            },
+            {
+                "id": "c",
+                "text": "Ngôn ngữ lập trình mới."
+            },
+            {
+                "id": "d",
+                "text": "Hệ điều hành Android mới."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nó bao gồm mọi thứ: Từ tạo Notebook code (Vertex Workbench), Gắn Nhãn dữ liệu, Train mô hình bằng Server khổng lồ (Vertex Training), cho đến Bấm 1 nút Triển khai thành API (Vertex Endpoints) cho người dùng gọi vào. Vertex AI (Giống như AWS SageMaker) giúp các Kỹ sư không phải đau đầu cài đặt hạ tầng mạng, Docker, C++. Cứ đập tiền lên Cloud, Google lo hết."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Khái niệm Data Drift (Độ lệch dữ liệu) trong môi trường Production:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn huấn luyện một Mô hình phát hiện Đeo Khẩu Trang bằng dữ liệu của năm 2020. Mô hình đạt độ chính xác 99%. Đưa lên Production chạy ngon lành. \nĐến năm 2023, tỷ lệ nhận diện sai đột ngột tăng vọt lên 40%. Lý do là thời trang thay đổi, mọi người đổi sang đeo Khẩu trang trong suốt hoặc Khẩu trang vải hoa văn. Mô hình chưa từng nhìn thấy loại này trong lúc Train. \nHiện tượng này gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Để giải quyết, hệ thống MLOps phải có một <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để tự động cảnh báo khi phân bố dữ liệu Input thay đổi, từ đó kích hoạt Pipeline Huấn luyện lại (Retrain) mô hình với Dữ liệu mới.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Data Drift"
+            },
+            {
+                "id": "w2",
+                "text": "Monitor (Hệ thống Giám sát)"
+            },
+            {
+                "id": "w3",
+                "text": "Hết RAM"
+            },
+            {
+                "id": "w4",
+                "text": "Lỗi phần cứng"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Mô hình AI là Thực thể Sống. Nó sẽ 'thối rữa' theo thời gian nếu Thế giới thay đổi mà nó không được học lại. MLOps (Machine Learning Operations) sinh ra để chăm sóc vòng đời đó."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các Thư viện mở rộng TFX (TensorFlow Extended) dùng để xây dựng Pipeline:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "TensorFlow Data Validation (TFDV)"
+            },
+            {
+                "id": "l2",
+                "text": "TensorFlow Transform (TFT)"
+            },
+            {
+                "id": "l3",
+                "text": "TensorFlow Model Analysis (TFMA)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Khám sức khỏe Dữ liệu. Tự động soi bộ Dữ liệu đầu vào, phát hiện Data Drift, phát hiện xem có cột nào toàn NULL hay có giá trị lạ (Ví dụ: Tuổi = -5) không trước khi đưa vào Train."
+            },
+            {
+                "id": "r2",
+                "text": "Thực hiện Tiền Xử Lý (Chuẩn hóa MinMax, Scale) trên dữ liệu Lớn. Và QUAN TRỌNG NHẤT: Đóng gói luôn các bước Toán học tiền xử lý đó VÀO CHUNG với File Model. Giúp Tránh lỗi Skew giữa Train và Serve."
+            },
+            {
+                "id": "r3",
+                "text": "Đánh giá Mô hình đa chiều. Không chỉ chấm điểm Accuracy chung chung, nó cắt mô hình ra xem xét: 'Mô hình này nhận diện Mèo đen tốt, nhưng Mèo trắng lại rất dở'."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "TFX là quy chuẩn Công nghiệp khắt khe do chính các kỹ sư Google xây dựng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm A/B Testing trong Triển khai Mô hình AI là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xóa mô hình cũ A và chạy mô hình mới B."
+            },
+            {
+                "id": "b",
+                "text": "Bạn vừa Train xong Model B mới (Tốt hơn Model A cũ)."
+            },
+            {
+                "id": "c",
+                "text": "Chạy Model A vào ban ngày, B vào ban đêm."
+            },
+            {
+                "id": "d",
+                "text": "Train mô hình bằng chữ A và B."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Bạn khoan thay thế hoàn toàn. Bạn Triển khai song song cả 2. Chia 90% lượng User cho dùng Model A cũ. Lấy 10% User (Chuột bạch) đẩy cho Model B mới phục vụ. Theo dõi chặt chẽ xem 10% User đó có hài lòng (Click nhiều hơn) không. Nếu tốt, mới tăng dần tỷ lệ B lên 100%. Đó gọi là Canary Deployment. Không bao giờ được phép tắt ngay hệ thống cũ để thay hệ thống mới vì AI trong Lab có thể xịn, nhưng ra đường lại hỏng."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Quy trình CI/CD/CT (Tích hợp liên tục/Giao hàng/Huấn luyện liên tục) của Hệ thống MLOps trưởng thành:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Khách hàng sử dụng App, sinh ra dữ liệu mới liên tục."
+            },
+            {
+                "id": "2",
+                "text": "Hệ thống Monitor phát hiện Mô hình hiện tại bị sụt giảm độ chính xác."
+            },
+            {
+                "id": "3",
+                "text": "Hệ thống tự động kích hoạt Pipeline TFX: Gom dữ liệu mới, chạy Train lại mô hình ngay trong đêm mà không cần con người."
+            },
+            {
+                "id": "4",
+                "text": "Train xong, Hệ thống tự động Test (TFMA) xem Mô hình mới có xuất sắc hơn Mô hình cũ không."
+            },
+            {
+                "id": "5",
+                "text": "Nếu tốt hơn, tự động Đẩy (Push) mô hình vào TensorFlow Serving. Phiên bản mới ngay lập tức phục vụ người dùng."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Level 2 (Cao nhất) của MLOps: Máy móc tự vận hành vòng đời của chính nó. Kỹ sư chỉ việc ngồi uống cà phê và xem Dashboard (Bảng điều khiển)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Nút thắt cổ chai Tiền xử lý (Preprocessing Skew):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trong Jupyter Notebook, bạn lấy ảnh / 255.0 rồi Train. Nhưng Kỹ sư Backend viết code Web bằng NodeJS lại QUÊN / 255.0 mà đút thẳng ảnh Gốc vào TF Serving. Kết quả: Model dự đoán sai bét. Lỗi kinh điển này gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Cách khắc phục tốt nhất là dùng các lớp <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> của Keras (Ví dụ `tf.keras.layers.Rescaling(1./255)`) để GẮN CHẶT quá trình Tiền Xử Lý VÀO TRONG Kiến trúc của Mô hình lúc Save.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Training-Serving Skew"
+            },
+            {
+                "id": "w2",
+                "text": "Preprocessing Layers"
+            },
+            {
+                "id": "w3",
+                "text": "Layer Dense"
+            },
+            {
+                "id": "w4",
+                "text": "Overfitting"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Hãy để Model tự lo việc Tiền Xử Lý Input. Nếu bạn bắt các ngôn ngữ khác (C++, Java, JS) tái hiện lại các phép tính Toán học Tiền xử lý phức tạp của Python thì Lỗi 100% sẽ xảy ra."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Tính năng TensorBoard Profiler dùng để làm gì trong quá trình tối ưu Mô hình?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chụp hình mô hình đẹp hơn."
+            },
+            {
+                "id": "b",
+                "text": "Để soi 'Bệnh' hệ thống."
+            },
+            {
+                "id": "c",
+                "text": "Gửi email báo cáo."
+            },
+            {
+                "id": "d",
+                "text": "Cài đặt hình nền."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nó đo lường CHÍNH XÁC đến từng Micro-giây xem: CPU tốn bao nhiêu thời gian load data, GPU phải nằm chờ CPU bao lâu, Hàm Toán Học (Ví dụ Conv2D hay ReLU) nào đang ngốn phần cứng nhất. Giúp Kỹ sư bắt mạch và tối ưu đúng chỗ. Khắc phục nút thắt cổ chai (Bottleneck). Nếu Profiler báo GPU chạy có 20% công suất, thì mua thêm GPU là Vô Dụng, phải sửa code phần Load Data."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép phần cứng với ứng dụng phù hợp nhất:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "NVIDIA T4 / L4 (Dòng rẻ tiền, 16GB VRAM)"
+            },
+            {
+                "id": "l2",
+                "text": "NVIDIA A100 / H100 (Dòng cao cấp, 80GB VRAM)"
+            },
+            {
+                "id": "l3",
+                "text": "CPU Đa lõi"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Phù hợp nhất để CHẠY PHỤC VỤ (Inference). Rẻ, tiết kiệm điện, mạnh vừa đủ để gom Batch phục vụ hàng vạn user mỗi giây."
+            },
+            {
+                "id": "r2",
+                "text": "Phù hợp nhất để HUẤN LUYỆN (Training) các Đại Mô Hình (LLMs). Cực kỳ đắt (Vài trăm triệu/Card), Tốc độ kết nối NVLink băng thông khổng lồ."
+            },
+            {
+                "id": "r3",
+                "text": "Phù hợp để làm Tiền Xử Lý Dữ Liệu (Resize ảnh, Load File) hoặc chạy Inference cho các mô hình cực nhỏ (Decision Trees, Random Forest)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Chiến lược thuê Cloud rẻ: Lúc Train thì thuê A100 trong 1 tuần. Train xong, Lưu Model lại. Sau đó thuê một con T4 rẻ bèo chạy 24/7/365 để phục vụ Web."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Lời khuyên cuối cùng: Khi Triển khai (Deploy) Mô hình bằng REST API, nếu Mô hình cần load một từ điển Khổng Lồ dài 1GB lên RAM, bạn nên đặt lệnh load đó ở đâu trong Code Web Server (VD: FastAPI/Flask)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Đặt lệnh Load vào BÊN TRONG hàm xử lý Endpoint (def predict(data): ...). Mỗi khi User gửi Request tới, File sẽ được mở và Load lại."
+            },
+            {
+                "id": "b",
+                "text": "BẮT BUỘC đặt lệnh Load vào BÊN NGOÀI hàm"
+            },
+            {
+                "id": "c",
+                "text": "Tách 1GB đó thành nhiều file 1MB."
+            },
+            {
+                "id": "d",
+                "text": "Không load lên RAM mà đọc từng dòng ổ cứng cho nhẹ."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Global scope) hoặc trong sự kiện Startup của Server. File 1GB và Model AI nặng nề đó chỉ được Load 1 LẦN DUY NHẤT khi cắm điện bật Server. Khi User gọi API, Model chỉ việc chạy hàm Dự đoán, không được khởi tạo lại. Lỗi kinh điển của sinh viên mới ra trường: Load mô hình AI bên trong hàm API `predict`. 10 User vào cùng lúc, web sập vì hết 10GB RAM."
     }
 ];
 

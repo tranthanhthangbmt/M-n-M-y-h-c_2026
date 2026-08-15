@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Từ mạng nơ-ron sinh học trong bộ não con người, nơi các tế bào thần kinh (neuron) kết nối và truyền tín hiệu cho nhau."
+                "text": "Từ mạng nơ-ron sinh học trong bộ não con người nơi các tế bào thần kinh"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "ANN (Artificial Neural Networks) ban đầu được thiết kế để mô phỏng cách bộ não con người học hỏi và xử lý thông tin thông qua hàng tỷ nơ-ron sinh học kết nối với nhau."
+        "explanation": "(neuron) kết nối và truyền tín hiệu cho nhau. ANN (Artificial Neural Networks) ban đầu được thiết kế để mô phỏng cách bộ não con người học hỏi và xử lý thông tin thông qua hàng tỷ nơ-ron sinh học kết nối với nhau."
     },
     {
         "type": "multiple_choice",
@@ -500,7 +500,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó tính tổng CÓ TRỌNG SỐ của các đầu vào, cộng thêm độ lệch (bias). Sau đó đưa kết quả qua một HÀM KÍCH HOẠT (Activation function - như hàm bậc thang) để đưa ra dự đoán."
+                "text": "Nó tính tổng CÓ TRỌNG SỐ của các đầu vào cộng thêm độ lệch (bias)."
             },
             {
                 "id": "c",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Perceptron (của Frank Rosenblatt) tính tổng: z = w1*x1 + w2*x2 + ... + b. Sau đó nó dùng một hàm bước nhảy (step function). Nếu z > 0 thì trả về 1, ngược lại trả về 0."
+        "explanation": "Sau đó đưa kết quả qua một HÀM KÍCH HOẠT (Activation function - như hàm bậc thang) để đưa ra dự đoán. Perceptron (của Frank Rosenblatt) tính tổng: z = w1*x1 + w2*x2 + ... + b. Sau đó nó dùng một hàm bước nhảy (step function). Nếu z > 0 thì trả về 1, ngược lại trả về 0."
     },
     {
         "type": "fill_in_blanks",
@@ -559,7 +559,7 @@
             },
             {
                 "id": "c",
-                "text": "Một Lớp Đầu vào (Input layer), một hoặc nhiều Lớp Ẩn (Hidden layers), và một Lớp Đầu ra (Output layer)."
+                "text": "Một Lớp Đầu vào (Input layer), một hoặc nhiều Lớp Ẩn"
             },
             {
                 "id": "d",
@@ -567,7 +567,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "MLP (Multi-Layer Perceptron) là mạng nơ-ron truyền thẳng (Feedforward) truyền thống, gồm dữ liệu đi vào (Input), qua các bước xử lý (Hidden), và ra kết quả (Output)."
+        "explanation": "(Hidden layers) và một Lớp Đầu ra (Output layer). MLP (Multi-Layer Perceptron) là mạng nơ-ron truyền thẳng (Feedforward) truyền thống, gồm dữ liệu đi vào (Input), qua các bước xử lý (Hidden), và ra kết quả (Output)."
     },
     {
         "type": "multiple_choice",
@@ -588,11 +588,11 @@
             },
             {
                 "id": "d",
-                "text": "Backpropagation (Lan truyền ngược) kết hợp với Gradient Descent"
+                "text": "Backpropagation (Lan truyền ngược) kết hợp với Gradient Descent Backpropagation"
             }
         ],
         "correctAnswer": "d",
-        "explanation": "Backpropagation (do Rumelhart, Hinton, Williams công bố) giúp máy tính tính toán siêu nhanh đạo hàm của hàm mất mát cho hàng triệu tham số (weights) của mạng thông qua Quy tắc Dây chuyền (Chain Rule)."
+        "explanation": "(do Rumelhart, Hinton, Williams công bố) giúp máy tính tính toán siêu nhanh đạo hàm của hàm mất mát cho hàng triệu tham số (weights) của mạng thông qua Quy tắc Dây chuyền (Chain Rule)."
     },
     {
         "type": "ordering",
@@ -671,7 +671,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Dùng 1 nơ-ron và không dùng hàm kích hoạt nào (hoặc dùng hàm Linear)."
+                "text": "Dùng 1 nơ-ron và không dùng hàm kích hoạt nào"
             },
             {
                 "id": "b",
@@ -687,7 +687,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Khi dự đoán giá nhà (từ âm vô cùng tới dương vô cùng), ta không muốn giới hạn đầu ra. Do đó, 1 nơ-ron đơn giản, không áp dụng hàm kích hoạt nào (tuyến tính) là đủ."
+        "explanation": "(hoặc dùng hàm Linear). Khi dự đoán giá nhà (từ âm vô cùng tới dương vô cùng), ta không muốn giới hạn đầu ra. Do đó, 1 nơ-ron đơn giản, không áp dụng hàm kích hoạt nào (tuyến tính) là đủ."
     },
     {
         "type": "multiple_choice",
@@ -700,7 +700,7 @@
             },
             {
                 "id": "b",
-                "text": "Là một API Học sâu (Deep Learning API) cấp cao được viết bằng Python, dùng để xây dựng, thiết kế và huấn luyện các Mạng nơ-ron một cách cực kỳ đơn giản. Nó thường chạy trên nền tảng của TensorFlow."
+                "text": "Là một API Học sâu (Deep Learning API) cấp cao được viết bằng Python dùng"
             },
             {
                 "id": "c",
@@ -712,7 +712,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Keras giống như bảng điều khiển thân thiện. TensorFlow là cỗ máy lõi bên dưới (backend). Bạn gọi lệnh Keras, TensorFlow sẽ thực thi tính toán C++ và GPU siêu tốc ở phía sau."
+        "explanation": "Để xây dựng, thiết kế và huấn luyện các Mạng nơ-ron một cách cực kỳ đơn giản. Nó thường chạy trên nền tảng của TensorFlow. Keras giống như bảng điều khiển thân thiện. TensorFlow là cỗ máy lõi bên dưới (backend). Bạn gọi lệnh Keras, TensorFlow sẽ thực thi tính toán C++ và GPU siêu tốc ở phía sau."
     },
     {
         "type": "fill_in_blanks",
@@ -794,7 +794,7 @@
             },
             {
                 "id": "b",
-                "text": "Gọi hàm `model.compile()`. Tại đây bạn phải chỉ định Hàm mất mát (loss function), Trình tối ưu hóa (optimizer), và các thước đo (metrics) để đánh giá."
+                "text": "Gọi hàm `model.compile()`."
             },
             {
                 "id": "c",
@@ -806,7 +806,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Compile (biên dịch) là lúc Keras gắn các thuật toán huấn luyện (ví dụ optimizer='sgd' hoặc 'adam', loss='mse') vào mô hình kiến trúc tĩnh của bạn."
+        "explanation": "Tại đây bạn phải chỉ định Hàm mất mát (loss function), Trình tối ưu hóa (optimizer), và các thước đo (metrics) để đánh giá. Compile (biên dịch) là lúc Keras gắn các thuật toán huấn luyện (ví dụ optimizer='sgd' hoặc 'adam', loss='mse') vào mô hình kiến trúc tĩnh của bạn."
     },
     {
         "type": "ordering",
@@ -880,7 +880,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì nó cho phép xây dựng các mô hình có cấu trúc phức tạp (đồ thị vô hướng). Ví dụ: Mô hình có nhiều đầu vào (Multi-input), nhiều đầu ra (Multi-output), hoặc có các kết nối bỏ qua (Skip connections) đan chéo nhau như ResNet."
+                "text": "Vì nó cho phép xây dựng các mô hình có cấu trúc phức tạp"
             },
             {
                 "id": "c",
@@ -892,7 +892,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Sequential ép bạn xếp lớp như 1 đường thẳng tắp. Functional API cho phép bạn rẽ nhánh, chắp vá dữ liệu cũ với dữ liệu mới (Wide & Deep), ghép nối nơ-ron như xếp hình tự do."
+        "explanation": "(đồ thị vô hướng). Ví dụ: Mô hình có nhiều đầu vào (Multi-input), nhiều đầu ra (Multi-output), hoặc có các kết nối bỏ qua (Skip connections) đan chéo nhau như ResNet. Sequential ép bạn xếp lớp như 1 đường thẳng tắp. Functional API cho phép bạn rẽ nhánh, chắp vá dữ liệu cũ với dữ liệu mới (Wide & Deep), ghép nối nơ-ron như xếp hình tự do."
     },
     {
         "type": "multiple_choice",
@@ -905,7 +905,7 @@
             },
             {
                 "id": "b",
-                "text": "hidden1 = Dense(30)(input_layer)  # Lớp Dense đóng vai trò như một hàm toán học nhận input_layer làm tham số đầu vào"
+                "text": "hidden1 = Dense(30)(input_layer)  # Lớp Dense đóng vai trò như một hàm toán học nhận input_layer làm tham số đầu vào Cú pháp này gọi là Call API."
             },
             {
                 "id": "c",
@@ -917,7 +917,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Cú pháp này gọi là Call API. Lớp (Layer) hoạt động y hệt một hàm (Function). Bạn truyền tensor biến (input_layer) vào, nó nhả ra tensor biến mới (hidden1)."
+        "explanation": "Lớp (Layer) hoạt động y hệt một hàm (Function). Bạn truyền tensor biến (input_layer) vào, nó nhả ra tensor biến mới (hidden1)."
     },
     {
         "type": "multiple_choice",
@@ -930,7 +930,7 @@
             },
             {
                 "id": "b",
-                "text": "Để tự động lưu (save) trọng số của mô hình xuống ổ cứng ở các khoảng thời gian đều đặn (ví dụ sau mỗi epoch). Điều này giúp phòng trường hợp máy tính sập nguồn khi đang train mô hình dài ngày."
+                "text": "Để tự động lưu (save) trọng số của mô hình xuống ổ cứng ở các khoảng thời gian đều đặn"
             },
             {
                 "id": "c",
@@ -942,7 +942,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Nếu bạn train mô hình hết 3 ngày và bỗng nhiên cúp điện ở ngày thứ 2, bạn sẽ khóc ròng. ModelCheckpoint (save_best_only=True) sẽ tự lưu lại phiên bản mô hình có điểm Validation cao nhất dọc quá trình train."
+        "explanation": "(ví dụ sau mỗi epoch). Điều này giúp phòng trường hợp máy tính sập nguồn khi đang train mô hình dài ngày. Nếu bạn train mô hình hết 3 ngày và bỗng nhiên cúp điện ở ngày thứ 2, bạn sẽ khóc ròng. ModelCheckpoint (save_best_only=True) sẽ tự lưu lại phiên bản mô hình có điểm Validation cao nhất dọc quá trình train."
     },
     {
         "type": "matching",
@@ -1024,7 +1024,7 @@
             },
             {
                 "id": "b",
-                "text": "Gradient Descent sẽ vượt qua (nhảy qua) thung lũng cực tiểu tối ưu. Trọng số sẽ liên tục dao động dữ dội hoặc nhảy ra vô cực (phân kỳ), khiến mô hình bị lỗi, Loss tăng đột biến."
+                "text": "Gradient Descent sẽ vượt qua"
             },
             {
                 "id": "c",
@@ -1036,7 +1036,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Learning rate (LR) là bước chân của thuật toán dò đỉnh dốc. Chân bước quá dài sẽ đạp trượt thung lũng, văng ra khỏi giới hạn. LR là siêu tham số QUAN TRỌNG NHẤT của mạng Nơ-ron."
+        "explanation": "(nhảy qua) thung lũng cực tiểu tối ưu. Trọng số sẽ liên tục dao động dữ dội hoặc nhảy ra vô cực (phân kỳ), khiến mô hình bị lỗi, Loss tăng đột biến. Learning rate (LR) là bước chân của thuật toán dò đỉnh dốc. Chân bước quá dài sẽ đạp trượt thung lũng, văng ra khỏi giới hạn. LR là siêu tham số QUAN TRỌNG NHẤT của mạng Nơ-ron."
     },
     {
         "type": "multiple_choice",
@@ -1049,7 +1049,7 @@
             },
             {
                 "id": "b",
-                "text": "Giảm số lượng kỷ nguyên (Epochs) bằng cách dùng Early Stopping (Dừng sớm)."
+                "text": "Giảm số lượng kỷ nguyên"
             },
             {
                 "id": "c",
@@ -1061,7 +1061,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Overfitting trong Neural Network thường do mạng được huấn luyện QUÁ LÂU, bắt đầu học thuộc lòng nhiễu của dữ liệu. Early Stopping sẽ cắt đứt quá trình này ở thời điểm tối ưu nhất."
+        "explanation": "(Epochs) bằng cách dùng Early Stopping (Dừng sớm). Overfitting trong Neural Network thường do mạng được huấn luyện QUÁ LÂU, bắt đầu học thuộc lòng nhiễu của dữ liệu. Early Stopping sẽ cắt đứt quá trình này ở thời điểm tối ưu nhất."
     },
     {
         "type": "ordering",
@@ -1101,7 +1101,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Step đại diện cho 1 lần tính đạo hàm. Nếu có 3200 ảnh huấn luyện, với batch_size=32, thì cần đúng 100 steps (lần bốc dữ liệu) để đi hết 1 Epoch."
+                "text": "Step đại diện cho 1 lần tính đạo hàm."
             },
             {
                 "id": "b",
@@ -1117,7 +1117,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Công thức: Total Steps per Epoch = (Total Train Samples) / Batch Size. Máy không học một phát 3200 ảnh. Nó học từng đợt 32 ảnh một, do đó nó cập nhật trọng số (step) 100 lần trong 1 vòng Epoch."
+        "explanation": "Nếu có 3200 ảnh huấn luyện, với batch_size=32, thì cần đúng 100 steps (lần bốc dữ liệu) để đi hết 1 Epoch. Công thức: Total Steps per Epoch = (Total Train Samples) / Batch Size. Máy không học một phát 3200 ảnh. Nó học từng đợt 32 ảnh một, do đó nó cập nhật trọng số (step) 100 lần trong 1 vòng Epoch."
     },
     {
         "type": "fill_in_blanks",
@@ -1203,7 +1203,7 @@
             },
             {
                 "id": "c",
-                "text": "Lưu TOÀN BỘ: Cấu trúc (architecture), Giá trị trọng số (weights), Cấu hình Optimizer, và cả trạng thái tối ưu hóa hiện tại (giúp bạn có thể tạm dừng hôm nay và ngày mai tải lên train tiếp đúng ở điểm dừng)."
+                "text": "Lưu TOÀN BỘ: Cấu trúc (architecture) Giá trị trọng số (weights),"
             },
             {
                 "id": "d",
@@ -1211,7 +1211,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Mô hình .h5 hoặc định dạng SavedModel mới lưu lại toàn bộ 'linh hồn' của quá trình học. Đặc biệt là state của Optimizer rất quan trọng để tiếp tục train không bị hẫng nhịp."
+        "explanation": "Cấu hình Optimizer, và cả trạng thái tối ưu hóa hiện tại (giúp bạn có thể tạm dừng hôm nay và ngày mai tải lên train tiếp đúng ở điểm dừng). Mô hình .h5 hoặc định dạng SavedModel mới lưu lại toàn bộ 'linh hồn' của quá trình học. Đặc biệt là state của Optimizer rất quan trọng để tiếp tục train không bị hẫng nhịp."
     },
     {
         "type": "multiple_choice",
@@ -1228,7 +1228,7 @@
             },
             {
                 "id": "c",
-                "text": "Vì mặc dù ta đưa dữ liệu vào và lấy ra kết quả rất chuẩn xác, nhưng con người KHÔNG THỂ HÌNH DUNG hay diễn giải được hàng triệu trọng số nhằng nhịt bên trong mạng đang đại diện cho tính logic gì."
+                "text": "Vì mặc dù ta đưa dữ liệu vào và lấy ra kết quả rất chuẩn xác"
             },
             {
                 "id": "d",
@@ -1236,7 +1236,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Trái ngược với Decision Tree (có luật IF-THEN rõ ràng). Mô hình MLP sau khi train tạo ra 1 ma trận số khổng lồ (ma trận trọng số). Không một bộ não người nào đọc nổi số 0.3541 ở Layer 7 mang ý nghĩa gì."
+        "explanation": "Nhưng con người KHÔNG THỂ HÌNH DUNG hay diễn giải được hàng triệu trọng số nhằng nhịt bên trong mạng đang đại diện cho tính logic gì. Trái ngược với Decision Tree (có luật IF-THEN rõ ràng). Mô hình MLP sau khi train tạo ra 1 ma trận số khổng lồ (ma trận trọng số). Không một bộ não người nào đọc nổi số 0.3541 ở Layer 7 mang ý nghĩa gì."
     },
     {
         "type": "multiple_choice",
@@ -1253,7 +1253,7 @@
             },
             {
                 "id": "c",
-                "text": "Duỗi ma trận hình ảnh 2D (ví dụ 28x28) thành một danh sách 1D liền mạch (784 pixel) để có thể cắm vừa vào các cổng đầu vào của lớp Dense 1D bên dưới nó."
+                "text": "Duỗi ma trận hình ảnh 2D"
             },
             {
                 "id": "d",
@@ -1261,7 +1261,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Mạng truyền thẳng (Dense) chỉ nhận đầu vào là các hàng một chiều. Nếu input là ảnh (2 chiều), ta phải đập bẹp/duỗi nó (Flatten) trước khi đút vào."
+        "explanation": "(ví dụ 28x28) thành một danh sách 1D liền mạch (784 pixel) để có thể cắm vừa vào các cổng đầu vào của lớp Dense 1D bên dưới nó. Mạng truyền thẳng (Dense) chỉ nhận đầu vào là các hàng một chiều. Nếu input là ảnh (2 chiều), ta phải đập bẹp/duỗi nó (Flatten) trước khi đút vào."
     },
     {
         "type": "fill_in_blanks",

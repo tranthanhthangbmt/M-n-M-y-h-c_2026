@@ -3288,7 +3288,8 @@ Generalist Agent”, arXiv preprint arxiv:2205.06175 (2022).
 
 
 #### ** 📝 Trắc nghiệm **
-*Đang cập nhật...*
+
+<iframe src="quizzes/Chapter16/index.html" style="width: 100%; min-height: 700px; border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></iframe>
 
 #### ** 💻 Thực hành **
 

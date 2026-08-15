@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Tập hợp các dự đoán của một nhóm mô hình dự đoán (gọi là một tổ hợp) để đạt được dự đoán tốt hơn so với mô hình dự đoán riêng lẻ tốt nhất."
+                "text": "Tập hợp các dự đoán của một nhóm mô hình dự đoán"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Giống như câu nói 'Một cây làm chẳng nên non, ba cây chụm lại nên hòn núi cao'. Sự kết hợp trí tuệ của đám đông (các mô hình yếu) thường tạo ra kết quả xuất sắc hơn một cá nhân kiệt xuất."
+        "explanation": "(gọi là một tổ hợp) để đạt được dự đoán tốt hơn so với mô hình dự đoán riêng lẻ tốt nhất. Giống như câu nói 'Một cây làm chẳng nên non, ba cây chụm lại nên hòn núi cao'. Sự kết hợp trí tuệ của đám đông (các mô hình yếu) thường tạo ra kết quả xuất sắc hơn một cá nhân kiệt xuất."
     },
     {
         "type": "multiple_choice",
@@ -504,7 +504,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó thu thập dự đoán nhãn từ tất cả các bộ phân loại độc lập, và quyết định lớp cuối cùng bằng cách chọn lớp chiếm đa số phiếu bầu (majority vote)."
+                "text": "Nó thu thập dự đoán nhãn từ tất cả các bộ phân loại độc lập và quyết định lớp cuối cùng bằng cách chọn lớp chiếm đa số phiếu bầu"
             },
             {
                 "id": "d",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Hard Voting đơn giản là đếm số phiếu (số lượng mô hình dự đoán nhãn A so với nhãn B). Nhãn nào nhiều phiếu hơn sẽ chiến thắng."
+        "explanation": "(majority vote). Hard Voting đơn giản là đếm số phiếu (số lượng mô hình dự đoán nhãn A so với nhãn B). Nhãn nào nhiều phiếu hơn sẽ chiến thắng."
     },
     {
         "type": "fill_in_blanks",
@@ -555,7 +555,7 @@
             },
             {
                 "id": "b",
-                "text": "Các bộ phân loại phải độc lập với nhau nhất có thể, tạo ra các lỗi không tương quan (uncorrelated errors). (Ví dụ: dùng các thuật toán khác nhau hoàn toàn)."
+                "text": "Các bộ phân loại phải độc lập với nhau nhất có thể tạo ra các lỗi không tương quan"
             },
             {
                 "id": "c",
@@ -567,7 +567,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Nếu tất cả mô hình đều sử dụng cùng thuật toán và mắc cùng một sai lầm, thì khi gộp lại chúng vẫn sẽ sai. Sức mạnh của Ensemble nằm ở sự đa dạng (diversity) - lỗi của mô hình này sẽ được bù đắp bởi mô hình kia."
+        "explanation": "(uncorrelated errors). (Ví dụ: dùng các thuật toán khác nhau hoàn toàn). Nếu tất cả mô hình đều sử dụng cùng thuật toán và mắc cùng một sai lầm, thì khi gộp lại chúng vẫn sẽ sai. Sức mạnh của Ensemble nằm ở sự đa dạng (diversity) - lỗi của mô hình này sẽ được bù đắp bởi mô hình kia."
     },
     {
         "type": "multiple_choice",
@@ -584,7 +584,7 @@
             },
             {
                 "id": "c",
-                "text": "Ta huấn luyện chúng trên các tập con dữ liệu ngẫu nhiên (random subsets) được trích xuất từ tập huấn luyện gốc."
+                "text": "Ta huấn luyện chúng trên các tập con dữ liệu ngẫu nhiên"
             },
             {
                 "id": "d",
@@ -592,7 +592,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Bagging và Pasting tạo ra sự đa dạng bằng cách cung cấp cho mỗi mô hình một 'góc nhìn' (tập dữ liệu con) hơi khác nhau về tập dữ liệu tổng thể."
+        "explanation": "(random subsets) được trích xuất từ tập huấn luyện gốc. Bagging và Pasting tạo ra sự đa dạng bằng cách cung cấp cho mỗi mô hình một 'góc nhìn' (tập dữ liệu con) hơi khác nhau về tập dữ liệu tổng thể."
     },
     {
         "type": "matching",
@@ -631,7 +631,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Mô hình Bagging thường có phương sai (variance) nhỏ hơn đáng kể, trong khi độ chệch (bias) gần tương đương."
+                "text": "Mô hình Bagging thường có phương sai"
             },
             {
                 "id": "b",
@@ -647,7 +647,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Bagging (ví dụ: Random Forest) làm mịn ranh giới quyết định bằng cách lấy trung bình, do đó triệt tiêu được sự mất ổn định (phương sai cao) của một cây quyết định đơn lẻ, giúp mô hình bớt quá khớp (overfit)."
+        "explanation": "(variance) nhỏ hơn đáng kể trong khi độ chệch (bias) gần tương đương. Bagging (ví dụ: Random Forest) làm mịn ranh giới quyết định bằng cách lấy trung bình, do đó triệt tiêu được sự mất ổn định (phương sai cao) của một cây quyết định đơn lẻ, giúp mô hình bớt quá khớp (overfit)."
     },
     {
         "type": "multiple_choice",
@@ -719,7 +719,7 @@
             },
             {
                 "id": "c",
-                "text": "Là một tập hợp (Ensemble) của các Cây quyết định (Decision Trees), thường được huấn luyện thông qua phương pháp Bagging."
+                "text": "Là một tập hợp (Ensemble) của các Cây quyết định"
             },
             {
                 "id": "d",
@@ -727,7 +727,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Random Forest = Bagging + Decision Trees. Tuy nhiên, Scikit-learn có lớp `RandomForestClassifier` tối ưu hóa riêng cho cây quyết định để chạy tiện lợi hơn dùng lớp Bagging chung."
+        "explanation": "(Decision Trees) thường được huấn luyện thông qua phương pháp Bagging. Random Forest = Bagging + Decision Trees. Tuy nhiên, Scikit-learn có lớp `RandomForestClassifier` tối ưu hóa riêng cho cây quyết định để chạy tiện lợi hơn dùng lớp Bagging chung."
     },
     {
         "type": "ordering",
@@ -771,7 +771,7 @@
             },
             {
                 "id": "b",
-                "text": "Thay vì mất thời gian tìm ngưỡng tối ưu cho các đặc trưng ngẫu nhiên, Extra-Trees chọn NGẪU NHIÊN LUÔN CÁC NGƯỠNG (thresholds) cho từng đặc trưng, và chọn ngưỡng tốt nhất trong số các ngưỡng ngẫu nhiên đó."
+                "text": "Thay vì mất thời gian tìm ngưỡng tối ưu cho các đặc trưng ngẫu nhiên Extra-Trees chọn NGẪU NHIÊN LUÔN CÁC NGƯỠNG (thresholds) cho từng đặc trưng,"
             },
             {
                 "id": "c",
@@ -783,7 +783,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Tìm ngưỡng (threshold) tốt nhất là thao tác tốn thời gian nhất của cây quyết định. Bằng cách Randomize luôn cả ngưỡng, Extra-Trees huấn luyện cực kỳ nhanh và thường có phương sai thấp hơn cả Random Forest."
+        "explanation": "Và chọn ngưỡng tốt nhất trong số các ngưỡng ngẫu nhiên đó. Tìm ngưỡng (threshold) tốt nhất là thao tác tốn thời gian nhất của cây quyết định. Bằng cách Randomize luôn cả ngưỡng, Extra-Trees huấn luyện cực kỳ nhanh và thường có phương sai thấp hơn cả Random Forest."
     },
     {
         "type": "multiple_choice",
@@ -796,7 +796,7 @@
             },
             {
                 "id": "b",
-                "text": "Đo lường Mức độ quan trọng của đặc trưng (Feature Importance). Nó cho ta biết đặc trưng nào (ví dụ: Pixel ở giữa khuôn mặt) ảnh hưởng lớn nhất đến việc phân loại."
+                "text": "Đo lường Mức độ quan trọng của đặc trưng"
             },
             {
                 "id": "c",
@@ -808,7 +808,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Scikit-Learn tính toán xem một đặc trưng xuất hiện bao nhiêu lần, và làm giảm mức độ bất tinh khiết (Gini/Entropy) trung bình trên toàn bộ Rừng ngẫu nhiên bao nhiêu để đánh giá mức độ quan trọng."
+        "explanation": "(Feature Importance). Nó cho ta biết đặc trưng nào (ví dụ: Pixel ở giữa khuôn mặt) ảnh hưởng lớn nhất đến việc phân loại. Scikit-Learn tính toán xem một đặc trưng xuất hiện bao nhiêu lần, và làm giảm mức độ bất tinh khiết (Gini/Entropy) trung bình trên toàn bộ Rừng ngẫu nhiên bao nhiêu để đánh giá mức độ quan trọng."
     },
     {
         "type": "matching",
@@ -855,7 +855,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó TĂNG TRỌNG SỐ tương đối của các mẫu huấn luyện bị mô hình trước ĐOÁN SAI. Do đó, mô hình tiếp theo sẽ tập trung hơn vào các trường hợp khó này."
+                "text": "Nó TĂNG TRỌNG SỐ tương đối của các mẫu huấn luyện bị mô hình trước ĐOÁN SAI."
             },
             {
                 "id": "d",
@@ -863,7 +863,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "AdaBoost phạt các dự đoán sai bằng cách làm cho mẫu dữ liệu đó 'nặng' hơn. Mô hình thứ 2 buộc phải chú ý nhiều hơn đến các mẫu bị sai ở vòng 1."
+        "explanation": "Do đó, mô hình tiếp theo sẽ tập trung hơn vào các trường hợp khó này. AdaBoost phạt các dự đoán sai bằng cách làm cho mẫu dữ liệu đó 'nặng' hơn. Mô hình thứ 2 buộc phải chú ý nhiều hơn đến các mẫu bị sai ở vòng 1."
     },
     {
         "type": "fill_in_blanks",
@@ -906,7 +906,7 @@
             },
             {
                 "id": "b",
-                "text": "Do tính chất TUẦN TỰ (cái sau phụ thuộc vào cái trước), nó KHÔNG THỂ phân tán quá trình huấn luyện để chạy song song trên nhiều lõi CPU/GPU như Bagging/Random Forest."
+                "text": "Do tính chất TUẦN TỰ (cái sau phụ thuộc vào cái trước) nó KHÔNG THỂ phân tán quá trình huấn luyện"
             },
             {
                 "id": "c",
@@ -918,7 +918,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Random Forest có thể train 100 cái cây cùng lúc trên 100 lõi CPU. Boosting phải train xong cây 1, tính lỗi, rồi mới train được cây 2. Do đó Boosting khó scale up (song song hóa) hơn nhiều."
+        "explanation": "Để chạy song song trên nhiều lõi CPU/GPU như Bagging/Random Forest. Random Forest có thể train 100 cái cây cùng lúc trên 100 lõi CPU. Boosting phải train xong cây 1, tính lỗi, rồi mới train được cây 2. Do đó Boosting khó scale up (song song hóa) hơn nhiều."
     },
     {
         "type": "multiple_choice",
@@ -931,7 +931,7 @@
             },
             {
                 "id": "b",
-                "text": "Gradient Boosting huấn luyện mô hình tiếp theo DỰA TRÊN CÁC SAI SỐ THẶNG DƯ (Residual Errors) của mô hình trước đó, thay vì thay đổi trọng số dữ liệu."
+                "text": "Gradient Boosting huấn luyện mô hình tiếp theo DỰA TRÊN CÁC SAI SỐ THẶNG DƯ (Residual Errors) của mô hình trước đó"
             },
             {
                 "id": "c",
@@ -943,7 +943,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Nếu mô hình 1 dự đoán bạn nặng 60kg, thực tế bạn 65kg (Sai số dư: +5kg). Mô hình 2 sẽ không học trên nhãn '65kg' gốc nữa, mà học trên nhãn dư '+5kg' này để bù đắp sai số."
+        "explanation": "Thay vì thay đổi trọng số dữ liệu. Nếu mô hình 1 dự đoán bạn nặng 60kg, thực tế bạn 65kg (Sai số dư: +5kg). Mô hình 2 sẽ không học trên nhãn '65kg' gốc nữa, mà học trên nhãn dư '+5kg' này để bù đắp sai số."
     },
     {
         "type": "ordering",
@@ -992,7 +992,7 @@
             },
             {
                 "id": "b",
-                "text": "Mô hình sẽ bị Quá khớp (Overfitting). Các cây phía sau sẽ bắt đầu học các nhiễu (noise) trong tập dữ liệu."
+                "text": "Mô hình sẽ bị Quá khớp (Overfitting)."
             },
             {
                 "id": "c",
@@ -1004,7 +1004,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khác với Random Forest (càng nhiều cây càng chống overfit), Gradient Boosting học liên tục từ sai số. Nếu cho nó học quá nhiều, nó sẽ cố gắng sửa từng hạt sạn (nhiễu) nhỏ nhất trong dữ liệu huấn luyện, dẫn đến Overfitting."
+        "explanation": "Các cây phía sau sẽ bắt đầu học các nhiễu (noise) trong tập dữ liệu. Khác với Random Forest (càng nhiều cây càng chống overfit), Gradient Boosting học liên tục từ sai số. Nếu cho nó học quá nhiều, nó sẽ cố gắng sửa từng hạt sạn (nhiễu) nhỏ nhất trong dữ liệu huấn luyện, dẫn đến Overfitting."
     },
     {
         "type": "matching",
@@ -1056,7 +1056,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó được tối ưu hóa cực kỳ tốt về tốc độ, hiệu năng bộ nhớ và khả năng mở rộng. Nó cung cấp các công cụ xử lý Gradient Boosting mạnh mẽ, nhanh hơn và chính xác hơn bản gốc sklearn."
+                "text": "Nó được tối ưu hóa cực kỳ tốt về tốc độ hiệu năng bộ nhớ và khả năng mở rộng."
             },
             {
                 "id": "c",
@@ -1068,7 +1068,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "XGBoost là thư viện độc lập (bên ngoài sklearn), là vua của các bài toán dữ liệu dạng bảng (Tabular Data). LightGBM và CatBoost cũng là các biến thể hiện đại rất mạnh."
+        "explanation": "Nó cung cấp các công cụ xử lý Gradient Boosting mạnh mẽ, nhanh hơn và chính xác hơn bản gốc sklearn. XGBoost là thư viện độc lập (bên ngoài sklearn), là vua của các bài toán dữ liệu dạng bảng (Tabular Data). LightGBM và CatBoost cũng là các biến thể hiện đại rất mạnh."
     },
     {
         "type": "fill_in_blanks",
@@ -1163,7 +1163,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Đúng. 100 cái Cây kết hợp lại thành 1 Rừng thì con người không thể nào phân tích trực quan mạng lưới quyết định được nữa. Nó trở thành Hộp đen."
+                "text": "Đúng."
             },
             {
                 "id": "b",
@@ -1171,7 +1171,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Đánh đổi lớn nhất khi Ensemble: Bạn đổi lấy tính chính xác cao để mất đi tính dễ diễn giải (interpretability). Random Forest là một Black-box model."
+        "explanation": "100 cái Cây kết hợp lại thành 1 Rừng thì con người không thể nào phân tích trực quan mạng lưới quyết định được nữa. Nó trở thành Hộp đen. Đánh đổi lớn nhất khi Ensemble: Bạn đổi lấy tính chính xác cao để mất đi tính dễ diễn giải (interpretability). Random Forest là một Black-box model."
     },
     {
         "type": "multiple_choice",
@@ -1184,7 +1184,7 @@
             },
             {
                 "id": "b",
-                "text": "Sử dụng tham số `n_iter_no_change` (ví dụ = 10). Nếu sai số validation không cải thiện sau 10 lần thêm cây liên tiếp, quá trình train tự ngắt."
+                "text": "Sử dụng tham số `n_iter_no_change` (ví dụ = 10)."
             },
             {
                 "id": "c",
@@ -1196,7 +1196,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Thay vì set n_estimators quá lớn và cầu nguyện, ta thêm n_iter_no_change. Thuật toán sẽ train đến khi thấy không còn tiến triển thì tự động dừng lại, giữ lại mô hình tối ưu nhất."
+        "explanation": "Nếu sai số validation không cải thiện sau 10 lần thêm cây liên tiếp, quá trình train tự ngắt. Thay vì set n_estimators quá lớn và cầu nguyện, ta thêm n_iter_no_change. Thuật toán sẽ train đến khi thấy không còn tiến triển thì tự động dừng lại, giữ lại mô hình tối ưu nhất."
     },
     {
         "type": "fill_in_blanks",
@@ -1243,7 +1243,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó hỗ trợ XỬ LÝ TRỰC TIẾP dữ liệu khuyết thiếu MÀ KHÔNG CẦN TIỀN XỬ LÝ (Imputation). Khi cắt cây, nó sẽ tìm ra nhánh tốt nhất để đưa các dữ liệu khuyết thiếu vào đó."
+                "text": "Nó hỗ trợ XỬ LÝ TRỰC TIẾP dữ liệu khuyết thiếu MÀ KHÔNG CẦN TIỀN XỬ LÝ"
             },
             {
                 "id": "d",
@@ -1251,7 +1251,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Một trong những tiện ích lớn nhất của LightGBM/XGBoost/HistGradientBoosting là nó có sẵn cơ chế đưa (route) missing values sang nhánh tối ưu (trái hoặc phải) mà không cần ta phải điền trung bình/trung vị trước đó."
+        "explanation": "(Imputation). Khi cắt cây, nó sẽ tìm ra nhánh tốt nhất để đưa các dữ liệu khuyết thiếu vào đó. Một trong những tiện ích lớn nhất của LightGBM/XGBoost/HistGradientBoosting là nó có sẵn cơ chế đưa (route) missing values sang nhánh tối ưu (trái hoặc phải) mà không cần ta phải điền trung bình/trung vị trước đó."
     },
     {
         "type": "multiple_choice",
@@ -1260,7 +1260,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Nó tiêu tốn nhiều bộ nhớ RAM hơn và chậm hơn đáng kể trong việc đưa ra dự đoán thực tế (vì phải chạy dữ liệu qua hàng trăm cây thay vì 1 cây)."
+                "text": "Nó tiêu tốn nhiều bộ nhớ RAM hơn và chậm hơn đáng kể trong việc đưa ra dự đoán thực tế"
             },
             {
                 "id": "b",
@@ -1276,7 +1276,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Random Forest nặng nề hơn rất nhiều. Nếu cần suy luận (inference) tính bằng mili-giây trên điện thoại di động, 1 cái Decision Tree có thể được ưu tiên hơn một Forest gồm 500 cây."
+        "explanation": "(vì phải chạy dữ liệu qua hàng trăm cây thay vì 1 cây). Random Forest nặng nề hơn rất nhiều. Nếu cần suy luận (inference) tính bằng mili-giây trên điện thoại di động, 1 cái Decision Tree có thể được ưu tiên hơn một Forest gồm 500 cây."
     }
 ];
 

@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Là một thư viện mã nguồn mở khổng lồ do Google phát triển, dùng để tính toán số học hiệu năng cao (sử dụng Tensor) và chuyên dùng để triển khai Machine Learning / Deep Learning trên mọi nền tảng (CPU, GPU, TPU, Mobile, Web)."
+                "text": "Là một thư viện mã nguồn mở khổng lồ do Google phát triển dùng"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "TensorFlow (TF) không chỉ là thư viện Học sâu, nó là cả một 'Hệ sinh thái'. Nó có TensorFlow.js cho trình duyệt web, TensorFlow Lite cho điện thoại di động và IoT, và TF Extended (TFX) cho triển khai quy mô công nghiệp."
+        "explanation": "Để tính toán số học hiệu năng cao (sử dụng Tensor) và chuyên dùng để triển khai Machine Learning / Deep Learning trên mọi nền tảng (CPU, GPU, TPU, Mobile, Web). TensorFlow (TF) không chỉ là thư viện Học sâu, nó là cả một 'Hệ sinh thái'. Nó có TensorFlow.js cho trình duyệt web, TensorFlow Lite cho điện thoại di động và IoT, và TF Extended (TFX) cho triển khai quy mô công nghiệp."
     },
     {
         "type": "multiple_choice",
@@ -500,7 +500,7 @@
             },
             {
                 "id": "b",
-                "text": "NumPy chạy trên CPU. Còn Tensor được thiết kế tối ưu hóa để TÍNH TOÁN SONG SONG TRÊN GPU/TPU siêu tốc. Tensor cũng hỗ trợ tính năng tự động vi phân (Auto-Differentiation) để tính đạo hàm ngược (Backpropagation)."
+                "text": "NumPy chạy trên CPU."
             },
             {
                 "id": "c",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Về mặt cú pháp, Tensor gần như giống hệt NumPy. Nhưng sức mạnh ngầm của Tensor là khả năng 'giao tiếp' với phần cứng GPU để tăng tốc độ tính toán ma trận lên hàng trăm lần so với CPU."
+        "explanation": "Còn Tensor được thiết kế tối ưu hóa để TÍNH TOÁN SONG SONG TRÊN GPU/TPU siêu tốc. Tensor cũng hỗ trợ tính năng tự động vi phân (Auto-Differentiation) để tính đạo hàm ngược (Backpropagation). Về mặt cú pháp, Tensor gần như giống hệt NumPy. Nhưng sức mạnh ngầm của Tensor là khả năng 'giao tiếp' với phần cứng GPU để tăng tốc độ tính toán ma trận lên hàng trăm lần so với CPU."
     },
     {
         "type": "fill_in_blanks",
@@ -555,7 +555,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó tính bình phương TỪNG PHẦN TỬ MỘT (Element-wise) bên trong tensor."
+                "text": "Nó tính bình phương TỪNG PHẦN TỬ MỘT"
             },
             {
                 "id": "c",
@@ -567,7 +567,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Giống y hệt NumPy, các phép toán số học (+, -, *, /, **, tf.math.log) trong TensorFlow đều là Element-wise. Nếu muốn nhân ma trận thực sự, bạn phải dùng lệnh tf.matmul() hoặc toán tử @."
+        "explanation": "(Element-wise) bên trong tensor. Giống y hệt NumPy, các phép toán số học (+, -, *, /, **, tf.math.log) trong TensorFlow đều là Element-wise. Nếu muốn nhân ma trận thực sự, bạn phải dùng lệnh tf.matmul() hoặc toán tử @."
     },
     {
         "type": "matching",
@@ -623,7 +623,7 @@
             },
             {
                 "id": "c",
-                "text": "Để giải quyết các BÀI TOÁN KỲ LẠ mà các thư viện chuẩn chưa hỗ trợ. Ví dụ: Bài toán có hàm Loss độc quyền của doanh nghiệp (phạt nặng lỗi bỏ sót hơn lỗi sai ngẫu nhiên), hoặc các kiến trúc mạng mới được phát minh ngày hôm qua (chưa có sẵn trong Keras)."
+                "text": "Để giải quyết các BÀI TOÁN KỲ LẠ mà các thư viện chuẩn chưa hỗ trợ."
             },
             {
                 "id": "d",
@@ -631,7 +631,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Khả năng Custom (tùy biến) là thứ phân biệt một người xài tool cơ bản và một Kỹ sư / Nhà nghiên cứu AI thực thụ. Khi Keras không có sẵn cục gạch Lego bạn cần, bạn phải tự đúc cục gạch đó bằng TensorFlow."
+        "explanation": "Ví dụ: Bài toán có hàm Loss độc quyền của doanh nghiệp (phạt nặng lỗi bỏ sót hơn lỗi sai ngẫu nhiên), hoặc các kiến trúc mạng mới được phát minh ngày hôm qua (chưa có sẵn trong Keras). Khả năng Custom (tùy biến) là thứ phân biệt một người xài tool cơ bản và một Kỹ sư / Nhà nghiên cứu AI thực thụ. Khi Keras không có sẵn cục gạch Lego bạn cần, bạn phải tự đúc cục gạch đó bằng TensorFlow."
     },
     {
         "type": "ordering",
@@ -675,7 +675,7 @@
             },
             {
                 "id": "b",
-                "text": "Viết bằng Hàm thì dễ. Nhưng nếu hàm của bạn có SIÊU THAM SỐ (ví dụ threshold=1.0) và bạn muốn LƯU MÔ HÌNH (model.save) một cách trơn tru để sau này load lên không bị lỗi, bạn nên dùng cấu trúc CLASS (và triển khai phương thức get_config())."
+                "text": "Viết bằng Hàm thì dễ."
             },
             {
                 "id": "c",
@@ -687,7 +687,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi load một file .h5, Keras không biết cái hàm 'huber_fn' của bạn là gì (nó báo lỗi Unknown Loss). Nếu dùng Class và định nghĩa get_config(), mô hình sẽ lưu lại tham số threshold vào JSON và tự khởi tạo lại đúng lúc Load."
+        "explanation": "Nhưng nếu hàm của bạn có SIÊU THAM SỐ (ví dụ threshold=1.0) và bạn muốn LƯU MÔ HÌNH (model.save) một cách trơn tru để sau này load lên không bị lỗi, bạn nên dùng cấu trúc CLASS (và triển khai phương thức get_config()). Khi load một file .h5, Keras không biết cái hàm 'huber_fn' của bạn là gì (nó báo lỗi Unknown Loss). Nếu dùng Class và định nghĩa get_config(), mô hình sẽ lưu lại tham số threshold vào JSON và tự khởi tạo lại đúng lúc Load."
     },
     {
         "type": "fill_in_blanks",
@@ -734,7 +734,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó TÍCH LŨY (lưu trữ trạng thái) kết quả dự đoán qua nhiều mẻ (batches) để tính ra một điểm số TỔNG HỢP chính xác cho toàn bộ vòng lặp (Epoch), thay vì chỉ lấy trung bình cộng đơn giản của các mẻ (đôi khi bị sai lệch do số lượng dữ liệu ở mẻ cuối bị thiếu)."
+                "text": "Nó TÍCH LŨY (lưu trữ trạng thái) kết quả dự đoán qua nhiều mẻ (batches)"
             },
             {
                 "id": "d",
@@ -742,7 +742,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Ví dụ hàm tf.keras.metrics.Precision. Precision không thể tính trung bình đơn giản giữa các batch. Nó phải tích lũy Tổng số True Positives và Tổng số False Positives xuyên suốt Epoch rồi mới thực hiện phép chia 1 lần ở cuối Epoch."
+        "explanation": "Để tính ra một điểm số TỔNG HỢP chính xác cho toàn bộ vòng lặp (Epoch) thay vì chỉ lấy trung bình cộng đơn giản của các mẻ (đôi khi bị sai lệch do số lượng dữ liệu ở mẻ cuối bị thiếu). Ví dụ hàm tf.keras.metrics.Precision. Precision không thể tính trung bình đơn giản giữa các batch. Nó phải tích lũy Tổng số True Positives và Tổng số False Positives xuyên suốt Epoch rồi mới thực hiện phép chia 1 lần ở cuối Epoch."
     },
     {
         "type": "ordering",
@@ -781,7 +781,7 @@
             },
             {
                 "id": "b",
-                "text": "Để ghi lại MỌI PHÉP TOÁN BẠN ĐÃ THỰC HIỆN bên trong băng từ (tape). Khi bạn gọi lệnh tape.gradient(), nó sẽ tự động phát lại băng từ đó ĐẢO NGƯỢC để tính ĐẠO HÀM của một biến theo một biến khác bằng quy tắc dây chuyền. Khỏi cần bạn tự giải tích toán học bằng tay."
+                "text": "Để ghi lại MỌI PHÉP TOÁN BẠN ĐÃ THỰC HIỆN bên trong băng từ"
             },
             {
                 "id": "c",
@@ -793,7 +793,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "GradientTape giống như một chiếc máy ghi âm bí mật. Nó lén ghi lại mọi bước tính toán (x^2, +y, *z). Khi bạn đòi đạo hàm, nó chiếu ngược cuộn băng để tính Chain Rule thần tốc. Đây là trái tim của việc tự viết Custom Training Loop."
+        "explanation": "(tape). Khi bạn gọi lệnh tape.gradient(), nó sẽ tự động phát lại băng từ đó ĐẢO NGƯỢC để tính ĐẠO HÀM của một biến theo một biến khác bằng quy tắc dây chuyền. Khỏi cần bạn tự giải tích toán học bằng tay. GradientTape giống như một chiếc máy ghi âm bí mật. Nó lén ghi lại mọi bước tính toán (x^2, +y, *z). Khi bạn đòi đạo hàm, nó chiếu ngược cuộn băng để tính Chain Rule thần tốc. Đây là trái tim của việc tự viết Custom Training Loop."
     },
     {
         "type": "multiple_choice",
@@ -806,7 +806,7 @@
             },
             {
                 "id": "b",
-                "text": "Không. Mặc định băng từ sẽ bị 'xóa' (xả bộ nhớ) ngay lập tức sau khi gọi tape.gradient() lần đầu để tiết kiệm RAM. Nếu muốn tính đạo hàm nhiều lần, bạn phải khai báo `tf.GradientTape(persistent=True)`."
+                "text": "Không."
             },
             {
                 "id": "c",
@@ -818,7 +818,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Để tránh tràn RAM (vì việc ghi lại các phép tính ma trận ngốn RAM rất khủng khiếp), TF giải phóng rác ngay lập tức khi dùng xong. Dùng `persistent=True` nếu bạn cần tính đạo hàm riêng cho nhiều biến ở các thời điểm khác nhau."
+        "explanation": "Mặc định băng từ sẽ bị 'xóa' (xả bộ nhớ) ngay lập tức sau khi gọi tape.gradient() lần đầu để tiết kiệm RAM. Nếu muốn tính đạo hàm nhiều lần, bạn phải khai báo `tf.GradientTape(persistent=True)`. Để tránh tràn RAM (vì việc ghi lại các phép tính ma trận ngốn RAM rất khủng khiếp), TF giải phóng rác ngay lập tức khi dùng xong. Dùng `persistent=True` nếu bạn cần tính đạo hàm riêng cho nhiều biến ở các thời điểm khác nhau."
     },
     {
         "type": "ordering",
@@ -888,7 +888,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Ghi đè (Override) phương thức `train_step(self, data)`. Đây là hàm lõi xử lý 1 mẻ dữ liệu mà model.fit() luôn gọi tới."
+                "text": "Ghi đè (Override) phương thức `train_step(self, data)`."
             },
             {
                 "id": "b",
@@ -904,7 +904,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Bắt đầu từ Keras 2.2, thay vì tự viết vòng for thủ công 100%, bạn chỉ cần Ghi đè phương thức `train_step()`. Sau đó bạn GỌI `model.fit()` BÌNH THƯỜNG. Keras sẽ vẫn quản lý Progress bar, Callbacks cho bạn, nhưng lại dùng logic huấn luyện do bạn tự chế."
+        "explanation": "Đây là hàm lõi xử lý 1 mẻ dữ liệu mà model.fit() luôn gọi tới. Bắt đầu từ Keras 2.2, thay vì tự viết vòng for thủ công 100%, bạn chỉ cần Ghi đè phương thức `train_step()`. Sau đó bạn GỌI `model.fit()` BÌNH THƯỜNG. Keras sẽ vẫn quản lý Progress bar, Callbacks cho bạn, nhưng lại dùng logic huấn luyện do bạn tự chế."
     },
     {
         "type": "matching",
@@ -956,7 +956,7 @@
             },
             {
                 "id": "b",
-                "text": "Khi bạn gọi hàm lần đầu với Tensor kích thước [10, 10], nó biên dịch 1 Graph cho kích thước này. Nếu bạn gọi lại hàm đó với Tensor [20, 20], nó sẽ BIÊN DỊCH LẠI MỘT GRAPH MỚI cho đúng kích thước đó. Nếu bạn liên tục thay đổi kích thước, TF sẽ sinh ra hàng ngàn đồ thị, làm treo bộ nhớ (Memory leak)."
+                "text": "Khi bạn gọi hàm lần đầu với Tensor kích thước [10 10],"
             },
             {
                 "id": "c",
@@ -968,7 +968,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Đây là CẠM BẪY lớn nhất của tf.function. TF Graph rất cứng nhắc về shape và dtype (kích thước và kiểu dữ liệu). Đừng bao giờ đút các số nguyên (1, 2, 3...) thay đổi liên tục vào hàm, vì TensorFlow sẽ xem mỗi con số là một cấu hình đồ thị mới. Luôn cố gắng dùng Tensor cho đầu vào."
+        "explanation": "Nó biên dịch 1 Graph cho kích thước này. Nếu bạn gọi lại hàm đó với Tensor [20, 20], nó sẽ BIÊN DỊCH LẠI MỘT GRAPH MỚI cho đúng kích thước đó. Nếu bạn liên tục thay đổi kích thước, TF sẽ sinh ra hàng ngàn đồ thị, làm treo bộ nhớ (Memory leak). Đây là CẠM BẪY lớn nhất của tf.function. TF Graph rất cứng nhắc về shape và dtype (kích thước và kiểu dữ liệu). Đừng bao giờ đút các số nguyên (1, 2, 3...) thay đổi liên tục vào hàm, vì TensorFlow sẽ xem mỗi con số là một cấu hình đồ thị mới. Luôn cố gắng dùng Tensor cho đầu vào."
     },
     {
         "type": "fill_in_blanks",
@@ -1011,7 +1011,7 @@
             },
             {
                 "id": "b",
-                "text": "Là API luồng dữ liệu (Data Pipeline) cực mạnh. Nó giúp ĐỌC DỮ LIỆU TỪ Ổ CỨNG (Hàng triệu ảnh) một cách trơn tru, chia thành từng mẻ (batch), trộn ngẫu nhiên (shuffle), và tải dữ liệu chạy ngầm liên tục để đút vào RAM mà không làm nghẽn GPU."
+                "text": "Là API luồng dữ liệu (Data Pipeline) cực mạnh."
             },
             {
                 "id": "c",
@@ -1023,7 +1023,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi học sâu, dữ liệu lớn hàng TB không thể nạp hết vào RAM. tf.data.Dataset cho phép bạn 'streaming' (bơm liên tục) từng dòng dữ liệu vào máy, giống như xem phim trên YouTube."
+        "explanation": "Nó giúp ĐỌC DỮ LIỆU TỪ Ổ CỨNG (Hàng triệu ảnh) một cách trơn tru, chia thành từng mẻ (batch), trộn ngẫu nhiên (shuffle), và tải dữ liệu chạy ngầm liên tục để đút vào RAM mà không làm nghẽn GPU. Khi học sâu, dữ liệu lớn hàng TB không thể nạp hết vào RAM. tf.data.Dataset cho phép bạn 'streaming' (bơm liên tục) từng dòng dữ liệu vào máy, giống như xem phim trên YouTube."
     },
     {
         "type": "ordering",
@@ -1067,7 +1067,7 @@
             },
             {
                 "id": "b",
-                "text": "Mặc định, nó CHỈ theo dõi sự thay đổi của các biến có loại `tf.Variable` (được đánh dấu trainable=True, tức là Trọng số). Nó bỏ qua các hằng số `tf.constant`. Nếu bạn cố tình muốn tính đạo hàm theo một hằng số, bạn phải dùng lệnh `tape.watch(hằng_số)`."
+                "text": "Mặc định, nó CHỈ theo dõi sự thay đổi của các biến có loại `tf.Variable`"
             },
             {
                 "id": "c",
@@ -1079,7 +1079,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "GradientTape tối ưu RAM bằng cách chỉ dán băng ghi âm lên các Trọng số (Variables). Nó biết những con số Data Input (x) không cần tính đạo hàm nên bỏ qua. Dùng `watch` để ép nó ghi âm một biến bất kỳ."
+        "explanation": "(được đánh dấu trainable=True tức là Trọng số). Nó bỏ qua các hằng số `tf.constant`. Nếu bạn cố tình muốn tính đạo hàm theo một hằng số, bạn phải dùng lệnh `tape.watch(hằng_số)`. GradientTape tối ưu RAM bằng cách chỉ dán băng ghi âm lên các Trọng số (Variables). Nó biết những con số Data Input (x) không cần tính đạo hàm nên bỏ qua. Dùng `watch` để ép nó ghi âm một biến bất kỳ."
     },
     {
         "type": "multiple_choice",
@@ -1092,7 +1092,7 @@
             },
             {
                 "id": "b",
-                "text": "Lệnh `print()` của Python CHỈ CHẠY 1 LẦN DUY NHẤT trong lúc TensorFlow 'Tracing' (Dò dấu) để vẽ đồ thị tĩnh. Trong khi đó, `tf.print()` trở thành 1 Node (một khối lệnh) BÊN TRONG đồ thị, và nó sẽ in ra liên tục mỗi khi đồ thị được chạy ở thời gian thực thi (Runtime)."
+                "text": "Lệnh `print()` của Python CHỈ CHẠY 1 LẦN DUY NHẤT trong lúc TensorFlow 'Tracing'"
             },
             {
                 "id": "c",
@@ -1104,7 +1104,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Đây là điểm bối rối nhất của tf.function. Code Python gốc (như print, if thường) chỉ được chạy đúng 1 lần lúc TensorFlow 'soi' code bạn để đúc thành Graph. Muốn Graph tự biết in ấn lúc đang chạy, bạn phải nhúng khối tf.print vào Graph."
+        "explanation": "(Dò dấu) để vẽ đồ thị tĩnh. Trong khi đó, `tf.print()` trở thành 1 Node (một khối lệnh) BÊN TRONG đồ thị, và nó sẽ in ra liên tục mỗi khi đồ thị được chạy ở thời gian thực thi (Runtime). Đây là điểm bối rối nhất của tf.function. Code Python gốc (như print, if thường) chỉ được chạy đúng 1 lần lúc TensorFlow 'soi' code bạn để đúc thành Graph. Muốn Graph tự biết in ấn lúc đang chạy, bạn phải nhúng khối tf.print vào Graph."
     },
     {
         "type": "fill_in_blanks",
@@ -1186,7 +1186,7 @@
             },
             {
                 "id": "b",
-                "text": "Functional API. Bằng cách nối các lớp (layers) như hàm toán học `out = Layer()(in)`, và chốt lại bằng lệnh `Model(inputs=[in1, in2], outputs=[out1, out2, out3])`."
+                "text": "Functional API."
             },
             {
                 "id": "c",
@@ -1198,7 +1198,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Functional API cực kỳ linh hoạt. Ví dụ mô hình Wide & Deep, một luồng ảnh đi vào Input 1, một luồng số liệu đi vào Input 2. Cuối cùng hợp nhất lại bằng hàm tf.keras.layers.concatenate()."
+        "explanation": "Bằng cách nối các lớp (layers) như hàm toán học `out = Layer()(in)`, và chốt lại bằng lệnh `Model(inputs=[in1, in2], outputs=[out1, out2, out3])`. Functional API cực kỳ linh hoạt. Ví dụ mô hình Wide & Deep, một luồng ảnh đi vào Input 1, một luồng số liệu đi vào Input 2. Cuối cùng hợp nhất lại bằng hàm tf.keras.layers.concatenate()."
     },
     {
         "type": "multiple_choice",
@@ -1211,7 +1211,7 @@
             },
             {
                 "id": "b",
-                "text": "Là một định dạng nhị phân cực kỳ nhỏ gọn để lưu trữ liên tiếp 1 dãy các dữ liệu (Ảnh, văn bản, mảng) dưới dạng byte nối tiếp. TensorFlow đọc định dạng nhị phân này NHANH HƠN RẤT NHIỀU so với đọc hàng ngàn file JPEG rời rạc từ ổ cứng."
+                "text": "Là một định dạng nhị phân cực kỳ nhỏ gọn"
             },
             {
                 "id": "c",
@@ -1223,7 +1223,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Ổ cứng đọc 10.000 file ảnh nhỏ thì cực kỳ ì ạch (do head seek). Đóng gói 10.000 ảnh đó thành 1 file TFRecord nhị phân liên tục, GPU sẽ uống dữ liệu như uống nước."
+        "explanation": "Để lưu trữ liên tiếp 1 dãy các dữ liệu (Ảnh văn bản, mảng) dưới dạng byte nối tiếp. TensorFlow đọc định dạng nhị phân này NHANH HƠN RẤT NHIỀU so với đọc hàng ngàn file JPEG rời rạc từ ổ cứng. Ổ cứng đọc 10.000 file ảnh nhỏ thì cực kỳ ì ạch (do head seek). Đóng gói 10.000 ảnh đó thành 1 file TFRecord nhị phân liên tục, GPU sẽ uống dữ liệu như uống nước."
     },
     {
         "type": "ordering",
@@ -1267,7 +1267,7 @@
             },
             {
                 "id": "b",
-                "text": "Trong các kiến trúc phức tạp (như AutoEncoders rời rạc, hoặc luồng suy luận phụ), ta muốn phần Đầu vào (Forward pass) vẫn được truyền tín hiệu tới. NHƯNG khi Lan truyền ngược (Backprop), ta không muốn nhánh đó cập nhật trọng số. `stop_gradient` hoạt động như cái VAN MỘT CHIỀU: Cho tính toán đi tới, nhưng chặn đứng đạo hàm đi lùi."
+                "text": "Trong các kiến trúc phức tạp (như AutoEncoders rời rạc hoặc luồng suy luận phụ),"
             },
             {
                 "id": "c",
@@ -1279,7 +1279,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Đây là phép thuật cấp cao. Ví dụ bạn nhúng 1 mô hình đã train sẵn (VGG16) nối vào giữa mô hình của bạn, và bạn muốn VGG16 chỉ làm nhiệm vụ tính toán chứ không được phép tự ý thay đổi bộ não của nó (chặn gradient lùi)."
+        "explanation": "Ta muốn phần Đầu vào (Forward pass) vẫn được truyền tín hiệu tới. NHƯNG khi Lan truyền ngược (Backprop), ta không muốn nhánh đó cập nhật trọng số. `stop_gradient` hoạt động như cái VAN MỘT CHIỀU: Cho tính toán đi tới, nhưng chặn đứng đạo hàm đi lùi. Đây là phép thuật cấp cao. Ví dụ bạn nhúng 1 mô hình đã train sẵn (VGG16) nối vào giữa mô hình của bạn, và bạn muốn VGG16 chỉ làm nhiệm vụ tính toán chứ không được phép tự ý thay đổi bộ não của nó (chặn gradient lùi)."
     },
     {
         "type": "fill_in_blanks",

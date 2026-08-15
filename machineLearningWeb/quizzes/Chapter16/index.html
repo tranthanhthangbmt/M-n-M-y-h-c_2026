@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Trắc Nghiệm Chương 9</title>
+    <title>Bài Tập Trắc Nghiệm Chương 16</title>
     <style>
         :root {
             --primary: #1a73e8;
@@ -467,486 +467,284 @@
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Sự khác biệt cốt lõi giữa Phân loại (Classification) và Phân cụm (Clustering) là gì?",
+        "question": "Mô hình Ngôn ngữ (Language Model) là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Phân loại dùng cho dữ liệu văn bản, còn Phân cụm dùng cho dữ liệu hình ảnh."
+                "text": "Là phần mềm gõ tiếng Việt có dấu."
             },
             {
                 "id": "b",
-                "text": "Phân loại là học CÓ GIÁM SÁT (dữ liệu đã có sẵn nhãn)."
+                "text": "Là một mô hình AI có khả năng DỰ ĐOÁN TỪ TIẾP THEO trong một câu."
             },
             {
                 "id": "c",
-                "text": "Phân loại chậm hơn Phân cụm."
+                "text": "Là phần mềm dịch tự động từ tiếng Anh sang tiếng Việt."
             },
             {
                 "id": "d",
-                "text": "Phân cụm yêu cầu người dùng phải gán nhãn thủ công trước."
+                "text": "Là bộ từ điển lưu trữ hàng triệu từ vựng."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Phân cụm là học KHÔNG GIÁM SÁT (dữ liệu hoàn toàn không có nhãn, thuật toán tự tìm ra các nhóm tương đồng). Trong Phân loại, ta biết trước ví dụ con chó, con mèo. Trong Phân cụm, ta chỉ đưa cho máy một đống ảnh động vật không có tên, và máy tự gộp những con có hình dáng giống nhau vào thành từng nhóm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Thuật toán K-Means hoạt động bằng cách nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tính khoảng cách tuyến tính giữa mọi cặp điểm dữ liệu."
-            },
-            {
-                "id": "b",
-                "text": "Nó thử tất cả các nhãn ngẫu nhiên cho đến khi tìm được nhãn đúng."
-            },
-            {
-                "id": "c",
-                "text": "Khởi tạo K tâm cụm (centroids) ngẫu nhiên gán mỗi điểm dữ liệu vào tâm gần nhất,"
-            },
-            {
-                "id": "d",
-                "text": "Nó xây dựng một cây phân quyết định."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Sau đó cập nhật lại vị trí tâm bằng trung bình của các điểm trong cụm, lặp lại cho đến khi tâm không đổi. K-Means cực kỳ đơn giản: Bốc bừa K điểm làm tâm -> Gom điểm gần tâm -> Tính lại tâm mới nằm giữa đám điểm vừa gom -> Lặp lại. Nó hội tụ rất nhanh."
+        "explanation": "(Ví dụ: Bạn gõ 'Con mèo đang', mô hình dự đoán từ tiếp theo là 'ngủ' hoặc 'ăn'). Đoán từ tiếp theo nghe có vẻ đơn giản nhưng đó là CỐT LÕI của toàn bộ ChatGPT. Để đoán đúng từ 'ngủ' thay vì 'sủa', mô hình buộc phải HỌC và HIỂU toàn bộ ngữ pháp, logic và kiến thức của thế giới loài người."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Nhược điểm lớn nhất của K-Means:",
+        "question": "Khái niệm Text Generation bằng Nhiệt độ (Temperature):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Mặc dù K-Means rất nhanh, nhưng nhược điểm chết người của nó là bắt buộc bạn phải cung cấp số lượng cụm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> từ trước. Hơn nữa, nó rất nhạy cảm với việc khởi tạo tâm cụm ban đầu, nếu khởi tạo xui xẻo, K-Means có thể hội tụ về một nghiệm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (không phải nghiệm tối ưu toàn cục).",
+        "text": "Khi mô hình RNN sinh ra chữ, nó xuất ra một Xác suất (Ví dụ: 'táo'=60%, 'chuối'=30%, 'đá'=10%). Nếu ta luôn luôn chọn từ có xác suất cao nhất (Tham lam - Greedy), câu văn sinh ra sẽ cực kỳ nhàm chán và lặp lại. Thay vào đó, ta sử dụng Lấy mẫu ngẫu nhiên (Random Sampling) có điều chỉnh bằng thông số <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nếu thông số này tiệm cận 0, mạng sẽ sinh văn bản an toàn và nhàm chán. Nếu tăng thông số này lên cao (VD: 1.0 hoặc cao hơn), mạng sẽ sinh ra những câu văn <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> và đôi khi trở nên điên rồ.",
         "words": [
             {
                 "id": "w1",
-                "text": "Tối ưu cục bộ (Local optimum)"
+                "text": "Temperature (Nhiệt độ)"
             },
             {
                 "id": "w2",
-                "text": "K (số lượng cluster)"
+                "text": "Sáng tạo, Bay bổng"
             },
             {
                 "id": "w3",
-                "text": "Max_iter (số vòng lặp)"
+                "text": "Learning Rate"
             },
             {
                 "id": "w4",
-                "text": "Tối ưu toàn cục (Global optimum)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w2",
-            "2": "w1"
-        },
-        "explanation": "Máy không tự biết trong dữ liệu có bao nhiêu cụm, bạn phải đoán số K. K-Means cũng hay bị mắc kẹt ở local optimum, do đó Scikit-Learn thường chạy thuật toán 10 lần với các khởi tạo ngẫu nhiên khác nhau (n_init=10) rồi lấy kết quả tốt nhất."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán K-Means++ (được Scikit-Learn dùng làm mặc định thay vì K-Means thường) giải quyết vấn đề gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tự động tìm ra số lượng cụm K."
-            },
-            {
-                "id": "b",
-                "text": "Nó thay đổi cách ĐÁNH GIÁ khoảng cách (dùng Manhattan thay vì Euclidean)."
-            },
-            {
-                "id": "c",
-                "text": "Nó giải quyết vấn đề KHỞI TẠO TÂM."
-            },
-            {
-                "id": "d",
-                "text": "Nó hỗ trợ chạy trên GPU."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Bằng cách chọn các tâm ban đầu nằm XA NHAU NHẤT CÓ THỂ, nó làm giảm đáng kể khả năng thuật toán hội tụ vào nghiệm tối ưu cục bộ tồi tệ. K-Means thường chọn K điểm ngẫu nhiên hoàn toàn. Nếu rủi ro chọn 2 điểm khởi tạo nằm cùng một chỗ, K-Means sẽ chia sai bét. K-Means++ đảm bảo các tâm khởi tạo trải đều ra toàn không gian."
-    },
-    {
-        "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Thuật toán Mini-batch K-Means được sử dụng khi nào?",
-        "instruction": "(Sắp xếp ưu điểm của Mini-batch K-Means so với K-Means truyền thống)",
-        "items": [
-            {
-                "id": "1",
-                "text": "Khi tập dữ liệu quá khổng lồ, không thể nạp tất cả vào RAM (Out-of-core)."
-            },
-            {
-                "id": "2",
-                "text": "Thay vì dùng toàn bộ dữ liệu ở mỗi lần lặp, nó chỉ dùng một lượng nhỏ (mini-batch) để di chuyển tâm cụm một chút."
-            },
-            {
-                "id": "3",
-                "text": "Kết quả: Tốc độ huấn luyện nhanh hơn gấp 3 đến 4 lần."
-            },
-            {
-                "id": "4",
-                "text": "Đánh đổi: Mô hình phân cụm cuối cùng thường kém chính xác (tệ hơn một chút) so với K-Means chạy full dữ liệu."
-            }
-        ],
-        "correctOrder": [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        "explanation": "Giống hệt Incremental PCA, Mini-batch K-Means hy sinh một phần nhỏ sự hoàn hảo để đổi lấy việc xử lý được Big Data và giảm sốc cho RAM."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Quán tính (Inertia) trong K-Means đo lường điều gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thời gian thuật toán chạy."
-            },
-            {
-                "id": "b",
-                "text": "Khoảng cách bình phương trung bình giữa mỗi điểm dữ liệu đến TÂM CỤM GẦN NHẤT CỦA NÓ."
-            },
-            {
-                "id": "c",
-                "text": "Khoảng cách giữa tâm cụm này với tâm cụm khác."
-            },
-            {
-                "id": "d",
-                "text": "Số lượng cụm K."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Inertia càng nhỏ thì các điểm trong cụm càng nén chặt (tốt). Inertia (Quán tính) là hàm mục tiêu mà K-Means cố gắng tối thiểu hóa. Tuy nhiên, ta không thể dùng Inertia để so sánh mô hình có K=3 với K=5, vì hiển nhiên khi K càng tăng (chia càng nhỏ), Inertia sẽ tự động giảm."
-    },
-    {
-        "type": "matching",
-        "difficulty": "Trung bình",
-        "question": "Ghép nối các phương pháp tìm số K (số lượng cụm) tối ưu:",
-        "left": [
-            {
-                "id": "l1",
-                "text": "Quy tắc Khửu tay (Elbow Rule)"
-            },
-            {
-                "id": "l2",
-                "text": "Điểm Silhouette (Silhouette Score)"
-            }
-        ],
-        "right": [
-            {
-                "id": "r1",
-                "text": "Vẽ biểu đồ Inertia theo số K. Chọn điểm mà đường cong bắt đầu bẻ gập nhanh (chững lại). Rất trực quan nhưng kém chính xác."
-            },
-            {
-                "id": "r2",
-                "text": "Đo lường mức độ một điểm dữ liệu nằm GẦN các điểm cùng cụm (Cohesion) so với mức độ nó nằm XA các điểm ở cụm lân cận gần nhất (Separation). Trị số từ -1 đến +1, càng gần +1 càng tốt."
-            }
-        ],
-        "correctPairs": {
-            "l1": "r1",
-            "l2": "r2"
-        },
-        "explanation": "Elbow dùng Inertia nên chỉ mang tính tương đối (vì Inertia luôn giảm khi K tăng). Silhouette Score đánh giá toàn diện hơn, +1 là gom cụm hoàn hảo, 0 là nằm sát biên, -1 là điểm bị gom nhầm cụm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Điểm yếu CHÍNH của thuật toán K-Means khi phân cụm là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó không thể xử lý dữ liệu lớn."
-            },
-            {
-                "id": "b",
-                "text": "Nó giả định rằng các cụm có HÌNH CẦU"
-            },
-            {
-                "id": "c",
-                "text": "Nó quá phức tạp để cài đặt lập trình."
-            },
-            {
-                "id": "d",
-                "text": "Nó luôn luôn yêu cầu phải chuẩn hóa dữ liệu."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(hoặc lồi) và KÍCH THƯỚC TƯƠNG ĐƯƠNG nhau. Nó sẽ thất bại thảm hại nếu các cụm có hình thuôn dài, kích thước khác nhau, hoặc lồng vào nhau (như hai vòng cung). Vì K-Means chỉ đo khoảng cách Euclidean tính từ tâm tròn, nó sẽ kéo mọi thứ thành hình cầu tròn. Nó không thể phân cụm dữ liệu hình mặt trăng khuyết, hình điếu xì gà, hoặc dữ liệu có độ lệch quá mạnh."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Dễ",
-        "question": "Ứng dụng K-Means cho Giảm chiều và Phân loại:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để Giảm chiều dữ liệu. Ví dụ dữ liệu có 1000 đặc trưng, bạn chạy K-Means với k=50. Sau đó dùng khoảng cách từ điểm dữ liệu đến 50 tâm cụm làm đặc trưng mới (giảm từ 1000 chiều xuống 50 chiều). Nếu bạn dùng tập 50 chiều này để huấn luyện một bộ Phân loại Logistic Regression, độ chính xác thường sẽ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do K-Means đã gom các điểm nhiễu thành các nhóm gọn gàng. Kỹ thuật này đôi khi được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Tăng lên / Cải thiện"
-            },
-            {
-                "id": "w2",
-                "text": "Giảm đi"
-            },
-            {
-                "id": "w3",
-                "text": "Biến đổi không gian cụm (Cluster-based Transform)"
-            },
-            {
-                "id": "w4",
-                "text": "Tăng số chiều"
+                "text": "Ngắn gọn"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Giống như biến 1 điểm tọa độ phức tạp thành 50 con số báo cáo 'Tôi cách quận A bao xa, cách quận B bao xa'. Việc này giúp Logistic Regression dễ thở hơn rất nhiều."
+        "explanation": "Nhiệt độ (Temperature) là cách chúng ta đưa 'Sự hỗn loạn' vào mô hình tính toán. Nó chia xác suất (logits) cho nhiệt độ trước khi đưa vào hàm Softmax. Nếu T lớn, mọi xác suất sẽ cào bằng nhau, máy có thể chọn chữ 'đá' thay vì chữ 'táo'."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Kỹ thuật 'Truyền nhãn' (Label Propagation) trong Học Bán Giám Sát (Semi-supervised Learning) sử dụng K-Means như thế nào?",
+        "question": "Trở ngại cực lớn của mô hình Dịch máy (Encoder-Decoder RNN) cổ điển là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó dùng K-Means để xóa các nhãn."
+                "text": "Mô hình không thể dịch được tiếng hiếm."
             },
             {
                 "id": "b",
-                "text": "Khi bạn có 10.000 dữ liệu nhưng chỉ có tiền thuê người gán nhãn 50 dữ liệu."
+                "text": "Bottleneck (Thắt cổ chai)."
             },
             {
                 "id": "c",
-                "text": "Nó biến đổi K-Means thành mạng Neural network."
+                "text": "Mô hình dịch quá nhanh."
             },
             {
                 "id": "d",
-                "text": "Nó sinh ra ngẫu nhiên nhãn cho toàn bộ dữ liệu."
+                "text": "Nó yêu cầu phải nối internet."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bạn dùng K=50. Lấy điểm nằm gần tâm nhất của 50 cụm (Representative instances) để gán nhãn thủ công. Sau đó TRUYỀN NHÃN đó cho toàn bộ các điểm còn lại trong cùng cụm. Học bán giám sát rất mạnh. Thay vì gán nhãn ngẫu nhiên 50 điểm (hiệu quả thấp), bạn gán nhãn cho 50 điểm ĐIỂN HÌNH NHẤT (Representative) của 50 cụm, rồi lây lan nhãn đó cho đồng bọn. Độ chính xác sẽ nhảy vọt."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "DBSCAN khác biệt lớn nhất so với K-Means ở điểm nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "DBSCAN bắt buộc phải cung cấp số lượng K."
-            },
-            {
-                "id": "b",
-                "text": "DBSCAN là thuật toán dựa trên MẬT ĐỘ (Density-based)."
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN chỉ chạy được trên 2 chiều."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN chạy nhanh hơn K-Means 100 lần."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Nó xác định các vùng có mật độ điểm cao (được ngăn cách bởi các vùng mật độ thấp). Nó không giới hạn hình dạng cụm và KHÔNG CẦN CHO TRƯỚC SỐ CỤM. DBSCAN hoạt động như giọt nước loang ra. Chỉ cần khoảng cách giữa các điểm còn đủ gần (mật độ dày), nó sẽ coi tất cả là 1 cụm dù nó ngoằn ngoèo hình mặt trăng khuyết hay chữ S."
+        "explanation": "Mạng Encoder phải đọc Toàn bộ câu văn dài 100 chữ, sau đó NÉN SẠCH mọi ý nghĩa vào MỘT VÉC-TƠ (Context Vector) duy nhất có độ dài cố định. Mạng Decoder sau đó phải moi móc ý nghĩa từ Vector nhỏ xíu đó để dịch. Nếu câu quá dài, thông tin ở đầu câu sẽ rớt sạch ra ngoài. Giống như việc bạn cố nhét 1 cái vali khổng lồ vào 1 cái balo nhỏ xíu. Thông tin chắc chắn sẽ bị thất thoát. Vấn đề này thúc đẩy sự ra đời của một cơ chế vĩ đại: Attention."
     },
     {
         "type": "ordering",
-        "difficulty": "Khó",
-        "question": "Cách DBSCAN hoạt động qua tham số epsilon (eps) và min_samples:",
+        "difficulty": "Trung bình",
+        "question": "Cơ chế Attention (Sự Chú ý) ra đời năm 2014 của Bahdanau hoạt động như thế nào để phá vỡ Bottleneck của Seq2Seq?",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "DBSCAN xét một điểm bất kỳ. Nó đếm xem có bao nhiêu điểm lân cận nằm trong vòng tròn bán kính 'eps' (epsilon)."
+                "text": "Thay vì bắt Encoder nén 100 chữ thành 1 Vector ngắn ngủi..."
             },
             {
                 "id": "2",
-                "text": "Nếu số điểm lân cận này LỚN HƠN hoặc BẰNG tham số 'min_samples', điểm đó được phong danh hiệu 'Điểm Lõi' (Core Instance)."
+                "text": "Encoder sẽ giữ lại TOÀN BỘ 100 cái Vector Trạng thái (đại diện cho 100 chữ)."
             },
             {
                 "id": "3",
-                "text": "Tất cả các điểm nằm trong vùng lân cận eps của Điểm Lõi sẽ được gom chung vào cùng 1 cụm."
+                "text": "Khi Decoder bắt đầu dịch từ thứ NHẤT (VD: nó cần dịch từ 'Tôi'), nó sẽ liếc nhìn (Attend) CẢ 100 Vector kia."
             },
             {
                 "id": "4",
-                "text": "Quá trình này lan truyền (chuỗi) sang các láng giềng. Bất kỳ điểm nào KHÔNG PHẢI là điểm lõi, và cũng KHÔNG NẰM trong vùng lân cận của bất kỳ điểm lõi nào, sẽ bị coi là Nhiễu (Anomaly/Noise)."
+                "text": "Decoder dùng một mạng Nơ-ron siêu nhỏ (Alignment model) để tính ĐIỂM CHÚ Ý: 'À, từ thứ 1, thứ 2 ở bản gốc là quan trọng nhất lúc này, mình sẽ cho điểm 90%, các từ khác 10%'."
+            },
+            {
+                "id": "5",
+                "text": "Decoder Tự trộn 100 vector đó theo Trọng số điểm vừa tính để tạo ra một Vector Ngữ Cảnh Tùy Biến (Custom Context Vector) và dùng nó để viết từ 'Tôi'."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "DBSCAN có 2 siêu tham số cực kỳ quan trọng: eps (bán kính) và min_samples (số điểm tối thiểu để lập phường hội). Điểm bơ vơ sẽ bị vứt ra thành Nhiễu."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Điều gì xảy ra nếu điểm dữ liệu bị đánh dấu là Nhiễu (Noise) trong thuật toán DBSCAN (Scikit-Learn)?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thuật toán sẽ tự động dừng lại."
-            },
-            {
-                "id": "b",
-                "text": "Dữ liệu đó sẽ bị xóa khỏi bộ nhớ gốc."
-            },
-            {
-                "id": "c",
-                "text": "Điểm đó sẽ được gán nhãn cụm"
-            },
-            {
-                "id": "d",
-                "text": "Dữ liệu được chuyển về tâm tọa độ (0,0)."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "(cluster label) là `-1` trong thuộc tính `labels_`. Scikit-Learn dùng quy ước nhãn `-1` để ám chỉ Outliers/Noise/Anomalies. K-Means không bao giờ từ chối điểm nào (điểm xa cỡ nào cũng bị ép vô 1 cụm). DBSCAN có khả năng chỉ ra thẳng điểm nào là ngoại lai."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Điểm yếu của DBSCAN:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "DBSCAN là một thuật toán rất tuyệt, nhưng nó sẽ gặp khó khăn lớn nếu các cụm trong tập dữ liệu có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thay đổi quá lớn (nơi rất dày đặc, nơi lại rất thưa thớt). Thuật toán này không cho phép dùng một siêu tham số `eps` (bán kính) chung cho tất cả. Ngoài ra, DBSCAN <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hàm `predict()` để dự đoán nhãn cho các điểm dữ liệu mới đến.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Mật độ (Density)"
-            },
-            {
-                "id": "w2",
-                "text": "Màu sắc (Color)"
-            },
-            {
-                "id": "w3",
-                "text": "KHÔNG CÓ (Does not have)"
-            },
-            {
-                "id": "w4",
-                "text": "CÓ (Has)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w3"
-        },
-        "explanation": "Nếu khu phố A nhà nằm sát nhau, khu phố B nhà cách nhau 10km. Bạn set eps=1km thì DBSCAN nhận diện được khu A nhưng đánh giá khu B là Rừng Hoang (Noise). Bạn set eps=15km thì nó nhận được khu B nhưng lại gộp luôn khu A vào chung với khu B. (DBSCAN không có predict, bạn phải dùng thuật toán KNN để gán điểm mới)."
+        "explanation": "Cơ chế Chú ý y hệt như con người khi dịch văn bản: Thay vì ghi nhớ toàn bộ cả bài (thuộc lòng), ta vừa viết chữ này vừa LIẾC MẮT TÌM CHỖ TƯƠNG ỨNG trên bài gốc để dịch."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép thuật toán Phân cụm với tính chất phù hợp:",
+        "difficulty": "Khó",
+        "question": "Ghép nối các thuật ngữ trong phương trình Cơ chế Chú Ý (Attention Mechanism):",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "Query (Truy vấn / Q)"
             },
             {
                 "id": "l2",
-                "text": "DBSCAN"
+                "text": "Key (Chìa khóa / K)"
+            },
+            {
+                "id": "l3",
+                "text": "Value (Giá trị / V)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc cho trước số K. Thích cụm hình cầu. Nhạy cảm với nhiễu ngoại lai."
+                "text": "Trạng thái HIỆN TẠI của Mạng Decoder (Ví dụ: 'Tôi đang chuẩn bị dịch từ thứ 3, tôi cần thông tin về tính từ')."
             },
             {
                 "id": "r2",
-                "text": "Tự động tìm số cụm. Xử lý tốt mọi hình dạng phức tạp. Chống nhiễu ngoại lai (tách riêng noise ra). Không thích hợp nếu mật độ các cụm khác nhau nhiều."
+                "text": "Nhãn dán (Label) của từng từ ở Mạng Encoder (Ví dụ: Từ số 5 giơ bảng lên: 'Tôi là Tính từ màu sắc'). Query và Key sẽ đập vào nhau để tính ra ĐIỂM SỐ TƯƠNG ĐỒNG (Dot-product)."
+            },
+            {
+                "id": "r3",
+                "text": "Nội dung thực sự (Meaning) của từ đó ở Mạng Encoder (Ví dụ: Nội dung ý nghĩa của chữ 'Đỏ'). Mạng sẽ nhân Điểm số tương đồng với Value này để rút trích thông tin."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Đây là so sánh kinh điển giữa K-Means (Distance-based) và DBSCAN (Density-based)."
+        "explanation": "Được lấy cảm hứng từ cấu trúc Database (Dictionary). Q giống như từ khóa bạn gõ vào ô Search (Google). K là tiêu đề các bài báo. V là nội dung bài báo đó. Điểm khác là Search của Attention là 'Soft Search', nó trả về 1 ít V của tất cả các bài báo có dính dáng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Bài báo khoa học vĩ đại nhất lịch sử AI hiện đại được xuất bản bởi Google năm 2017 có tên là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Deep Learning is All You Need"
+            },
+            {
+                "id": "b",
+                "text": "Attention Is All You Need"
+            },
+            {
+                "id": "c",
+                "text": "RNN and CNN for NLP"
+            },
+            {
+                "id": "d",
+                "text": "The Birth of ChatGPT"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Đội ngũ Google Brain đã đưa ra một lời khẳng định ngông cuồng nhưng hoàn toàn chính xác: Chẳng cần mạng CNN, cũng vứt luôn mạng RNN. Chỉ cần ĐỘC NHẤT 1 'Cơ chế Chú Ý' (Attention) là ĐỦ ĐỂ XÂY DỰNG MỘT ĐẾ CHẾ. Kiến trúc đó tên là Transformer."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Kiến trúc vĩ đại: Mạng Transformer",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Trước năm 2017, xử lý văn bản là độc quyền của mạng RNN (LSTM/GRU). Nhưng RNN có một điểm yếu chí mạng là nó xử lý dữ liệu một cách <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Từ trái qua phải, chữ sau phải đợi chữ trước tính xong). Điều này khiến GPU mạnh cỡ nào cũng bị nghẽn cổ chai. Mạng Transformer đã vứt bỏ hoàn toàn kiến trúc Hồi quy (Recurrent). Nó đưa CẢ CÂU VĂN VÀO CÙNG MỘT LÚC và sử dụng cơ chế <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để các chữ cái trong cùng 1 câu tự đánh giá mức độ liên quan lẫn nhau. Nhờ tính toán song song hoàn toàn, Transformer được train trên lượng dữ liệu lớn gấp hàng triệu lần RNN.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Tuần tự (Sequential)"
+            },
+            {
+                "id": "w2",
+                "text": "Tự Chú ý (Self-Attention)"
+            },
+            {
+                "id": "w3",
+                "text": "Trí nhớ ngắn hạn"
+            },
+            {
+                "id": "w4",
+                "text": "Tích chập (CNN)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Vứt bỏ RNN là một quyết định chấn động. Transformer biến bài toán thời gian tuần tự (cực chậm) thành một bài toán ma trận song song 100% (nhanh kinh hoàng trên GPU/TPU)."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Mô hình Hỗn hợp Gauss (Gaussian Mixture Models - GMM) là gì?",
+        "question": "Self-Attention (Tự Chú Ý) khác với Attention thông thường ở chỗ nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Là một biến thể của DBSCAN dùng phân phối Bernoulli."
+                "text": "Self-Attention tốn ít RAM hơn."
             },
             {
                 "id": "b",
-                "text": "Là một mô hình XÁC SUẤT giả định rằng toàn bộ các điểm dữ liệu được sinh ra từ việc trộn lẫn"
+                "text": "Trong Dịch máy (Seq2Seq), Attention thông thường là Mạng Decoder 'chú ý' sang mạng Encoder."
             },
             {
                 "id": "c",
-                "text": "Là thuật toán học có giám sát dùng để phân loại văn bản."
+                "text": "Self-Attention do Facebook tạo ra."
             },
             {
                 "id": "d",
-                "text": "Là một thuật toán không thể giải quyết được cụm hình elip."
+                "text": "Self-Attention là cơ chế để máy tính tự chú ý vào bộ nhớ RAM."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(mixture) một số lượng hữu hạn các phân phối Gaussian (hình quả chuông). Khác với K-Means gán 'Cứng' (Hard clustering - bạn chỉ có thể thuộc Cụm 1 hoặc Cụm 2). GMM dùng xác suất 'Mềm' (Soft clustering - bạn thuộc 80% Cụm 1, 20% Cụm 2). GMM giả định các cụm có hình Elip (bầu dục) ở các hướng và kích thước khác nhau."
+        "explanation": "Còn Self-Attention là các chữ BÊN TRONG CÙNG MỘT CÂU 'tự chú ý' lẫn nhau để hiểu ngữ cảnh. (Ví dụ câu: 'Con ngân hàng đang vỡ nợ, nó nằm trên bờ sông'. Chữ 'nó' sẽ Self-Attention mạnh nhất vào chữ 'bờ sông' để hiểu 'nó' là 'ngân hàng đất' (bank) chứ không phải 'ngân hàng tiền'). Self-Attention là phép màu giải quyết bài toán Đa nghĩa (Polysemy) trong ngôn ngữ. Một từ không có ý nghĩa cố định, ý nghĩa của nó được quyết định bởi các từ xung quanh nó."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán nào đứng đằng sau quá trình hội tụ của Gaussian Mixture Model?",
+        "question": "Tại sao kiến trúc Transformer lại PHẢI cần đến kỹ thuật 'Positional Encoding' (Mã hóa Vị trí)?",
         "options": [
             {
                 "id": "a",
-                "text": "Gradient Descent (Hạ gradient)."
+                "text": "Để vẽ biểu đồ 3D."
             },
             {
                 "id": "b",
-                "text": "Thuật toán EM (Expectation-Maximization - Cực đại hóa Kỳ vọng)."
+                "text": "Để dịch sang nhiều ngôn ngữ cùng lúc."
             },
             {
                 "id": "c",
-                "text": "Phương trình chuẩn (Normal Equation)."
+                "text": "Vì Transformer vứt bỏ RNN nên nó KHÔNG CÒN KHÁI NIỆM THỜI GIAN VÀ THỨ TỰ."
             },
             {
                 "id": "d",
-                "text": "Backpropagation (Lan truyền ngược)."
+                "text": "Để tăng tốc độ học."
             }
         ],
-        "correctAnswer": "b",
-        "explanation": "EM giống hệt cách K-Means hoạt động nhưng dành cho hình Elip. Bước E (Kỳ vọng): Ước tính xác suất mỗi điểm thuộc về cụm nào. Bước M (Cực đại hóa): Cập nhật lại hình dáng, vị trí, kích thước của Elip dựa trên các điểm vừa gom."
+        "correctAnswer": "c",
+        "explanation": "Nếu bạn đút 2 câu 'Chó cắn mèo' và 'Mèo cắn chó' vào mạng, lớp Self-Attention sẽ xử lý chúng CÙNG MỘT LÚC và ra kết quả giống hệt nhau (Vì nó xem câu như 1 cái túi đựng từ lộn xộn). Positional Encoding là việc ta 'Gắn thêm cái thẻ số thứ tự' (bằng hàm Sin/Cos) vào mỗi từ để mô hình biết từ nào đứng trước, từ nào đứng sau. Lợi thế của sự Tính toán Song Song đi kèm với cái giá là Mất đi khái niệm Trình tự. Positional Encoding bù đắp khiếm khuyết này một cách cực kỳ thanh lịch bằng toán học."
     },
     {
         "type": "ordering",
         "difficulty": "Trung bình",
-        "question": "Cách GMM phân biệt và tạo thành cụm thông qua siêu tham số 'covariance_type':",
+        "question": "Dòng chảy dữ liệu bên trong một Block của Transformer (Dựa theo bài báo 'Attention Is All You Need'):",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "'spherical' (Hình cầu): Rất giống K-Means, các cụm bị ép phải tròn xoe, nhưng mỗi cụm có thể có bán kính khác nhau."
+                "text": "Đầu vào đi qua lớp Multi-Head Self-Attention (Cho phép các từ tự trao đổi thông tin ngữ cảnh với nhau)."
             },
             {
                 "id": "2",
-                "text": "'diag' (Đường chéo): Các cụm có thể có hình elip (kéo dài trục X, Y khác nhau), nhưng các trục của elip phải SONG SONG với các trục tọa độ của đặc trưng."
+                "text": "Thực hiện Kết nối Tắt (Skip Connection) bằng cách cộng thẳng Đầu vào gốc vào Đầu ra của Attention, sau đó đưa qua lớp Layer Normalization."
             },
             {
                 "id": "3",
-                "text": "'tied' (Bị trói): Các cụm có thể có hình elip bất kỳ và nằm nghiêng, NHƯNG tất cả các cụm BẮT BUỘC phải chia sẻ CHUNG MỘT hình dạng, kích thước và góc nghiêng."
+                "text": "Tín hiệu đi tiếp qua một lớp Mạng Nơ-ron Tiến (Feed Forward Network / Dense Layer) đơn giản để tính toán đặc trưng phi tuyến."
             },
             {
                 "id": "4",
-                "text": "'full' (Đầy đủ - Mặc định): Cho phép mỗi cụm thỏa sức có hình elip riêng biệt, kích thước riêng, độ nghiêng riêng biệt. (Nhưng tính toán tốn kém nhất)."
+                "text": "Tiếp tục thực hiện Kết nối Tắt (Cộng tín hiệu cũ) và đi qua lớp Layer Normalization lần 2 trước khi ném lên Block Transformer tiếp theo."
             }
         ],
         "correctOrder": [
@@ -955,164 +753,148 @@
             "3",
             "4"
         ],
-        "explanation": "Tính linh hoạt của GMM nằm ở covariance_type (Ma trận hiệp phương sai). Bạn có thể giới hạn hình dáng của cụm để thuật toán chạy nhanh hơn."
+        "explanation": "Cấu trúc (Self-Attention -> Add & Norm -> FeedForward -> Add & Norm) được nhân bản lên hàng chục lần để tạo nên những con quái vật như GPT-4 hay BERT."
     },
     {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Cách sử dụng GMM (Gaussian Mixture) phổ biến để 'Phát hiện Sự bất thường' (Anomaly Detection) là gì?",
-        "options": [
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Tính năng Multi-Head Attention (Chú ý Đa đầu) trong Transformer có ý nghĩa gì?",
+        "left": [
             {
-                "id": "a",
-                "text": "Các điểm dữ liệu nằm ở vùng có 'Xác suất Mật độ'"
+                "id": "l1",
+                "text": "Single-Head Attention (1 Cái đầu)"
             },
             {
-                "id": "b",
-                "text": "Các điểm dữ liệu nằm ngay tại trung tâm hình elip."
+                "id": "l2",
+                "text": "Multi-Head Attention (Nhiều cái đầu)"
             },
             {
-                "id": "c",
-                "text": "Nó tự động gửi email báo cáo."
-            },
-            {
-                "id": "d",
-                "text": "Xóa hết toàn bộ dữ liệu."
+                "id": "l3",
+                "text": "Scaled Dot-Product"
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "(PDF - Probability Density Function) RẤT THẤP (tức là nằm rìa nằm xa các hình elip của cụm) sẽ bị gắn cờ là Bất thường. Vì GMM là mô hình phân phối xác suất, nó biết rõ chỗ nào đông đúc, chỗ nào hoang vắng. Bạn chỉ cần đặt một ngưỡng tỷ lệ (ví dụ 4% điểm có xác suất thấp nhất) và quy chúng thành Nhiễu (Anomalies)."
+        "right": [
+            {
+                "id": "r1",
+                "text": "Chỉ có thể tập trung chú ý vào MỘT Khía cạnh của câu. (Ví dụ: Từ 'Tôi' chỉ đang đi tìm Động từ 'đi' để ghép cặp)."
+            },
+            {
+                "id": "r2",
+                "text": "Tách 1 ma trận Q,K,V khổng lồ thành nhiều ma trận nhỏ song song (Ví dụ 8 cái đầu). Cùng một lúc, Đầu 1 tìm động từ, Đầu 2 tìm Đại từ nhân xưng, Đầu 3 tìm Tính từ. Giúp mạng hiểu câu văn dưới GÓC NHÌN ĐA CHIỀU phong phú hơn."
+            },
+            {
+                "id": "r3",
+                "text": "Phép tính chia cho căn bậc hai của số chiều (sqrt(dk)) trong công thức Attention. Nhằm ngăn chặn điểm số bị phình to dẫn đến hàm Softmax bị bão hòa (Đạo hàm bằng 0)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Cũng giống như một bức tranh, nếu nhìn bằng 1 góc (1 head) thì sẽ bị phiến diện. Chia nhỏ Vector ra cho 8 cái Head nhìn ở 8 khía cạnh Ngữ pháp/Ngữ nghĩa khác nhau giúp Transformer thông minh tột bậc."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Xác định số lượng cụm (K) cho GMM:",
+        "difficulty": "Trung bình",
+        "question": "Hai Lõi của Transformer và Các Siêu Mô hình Sinh ra từ Chúng:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn KHÔNG THỂ dùng Quán tính (Inertia) hay Silhouette Score cho GMM vì chúng không đo được hình dạng elip. Để tìm K tối ưu cho GMM, người ta sử dụng các tiêu chí thông tin lý thuyết như <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Bayesian Information Criterion) hoặc <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Akaike Information Criterion). Cả hai tiêu chí này sẽ HÌNH PHẠT các mô hình có quá nhiều thông số (quá nhiều cụm K). Mô hình có AIC/BIC THẤP NHẤT là mô hình tốt nhất.",
+        "text": "Mô hình Transformer nguyên bản có 2 khối: Encoder (Đọc và hiểu ngữ cảnh) và Decoder (Sinh câu trả lời). Tuy nhiên, sau năm 2018, các nhà khoa học đã chẻ đôi Transformer ra: \nNhóm Google cắt lấy riêng phần <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> để tạo ra mô hình BERT. Nó cực kỳ giỏi trong việc 'Đọc hiểu' 2 chiều toàn bộ câu văn (Dùng để Phân loại, Trích xuất thông tin).\nNhóm OpenAI thì cắt lấy riêng phần <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để tạo ra mô hình GPT (Generative Pre-trained Transformer). Nó chỉ đọc 1 chiều từ trái sang phải, nhưng lại là Vua trong việc 'Sinh văn bản' và Sáng tạo.",
         "words": [
             {
                 "id": "w1",
-                "text": "BIC"
+                "text": "Khối Encoder (Mã hóa)"
             },
             {
                 "id": "w2",
-                "text": "AIC"
+                "text": "Khối Decoder (Giải mã)"
             },
             {
                 "id": "w3",
-                "text": "MSE"
+                "text": "Mạng CNN"
             },
             {
                 "id": "w4",
-                "text": "Accuracy"
+                "text": "Dữ liệu ảnh"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "AIC và BIC phạt sự phức tạp của mô hình. Nếu bạn chia thành quá nhiều cụm (K lớn), mô hình khớp dữ liệu rất tốt (hàm log-likelihood tăng) nhưng AIC/BIC sẽ bị phạt cao lên. Điểm AIC/BIC thấp nhất chính là 'Điểm cân bằng' (Elbow) tối ưu."
-    },
-    {
-        "type": "matching",
-        "difficulty": "Trung bình",
-        "question": "Ghép nối 'Bayesian Gaussian Mixture' (Mô hình Hỗn hợp Gauss Bayes) so với GMM truyền thống:",
-        "left": [
-            {
-                "id": "l1",
-                "text": "GMM (GaussianMixture)"
-            },
-            {
-                "id": "l2",
-                "text": "BGM (BayesianGaussianMixture)"
-            }
-        ],
-        "right": [
-            {
-                "id": "r1",
-                "text": "Bắt buộc bạn phải chọn đúng số cụm (n_components) K. Nếu bạn nhập K dư thừa, nó vẫn sẽ cố chia ra K cụm."
-            },
-            {
-                "id": "r2",
-                "text": "Mô hình thông minh: Thay vì phải chọn đúng K, bạn cứ ném cho nó một số K RẤT LỚN (ví dụ 10). Thuật toán sẽ tự động ĐẨY TRỌNG SỐ của các cụm dư thừa về 0 (tự hủy các cụm không cần thiết), và trả lại cho bạn số lượng cụm thực sự (ví dụ 3)."
-            }
-        ],
-        "correctPairs": {
-            "l1": "r1",
-            "l2": "r2"
-        },
-        "explanation": "Bayesian Gaussian Mixture tự động loại bỏ bớt các cụm không cần thiết bằng cơ chế tiên nghiệm (prior). Đây là tính năng 'tự động tìm số K' cực kỳ thần thánh của nó."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Một thuật toán khác cũng rất nổi tiếng dùng để Phát hiện Bất thường (Anomaly Detection) dựa trên khái niệm 'Rừng' (Trees) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Isolation Forest (Rừng cách ly)."
-            },
-            {
-                "id": "b",
-                "text": "Random Forest."
-            },
-            {
-                "id": "c",
-                "text": "Gradient Boosting."
-            },
-            {
-                "id": "d",
-                "text": "K-Nearest Neighbors."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "Isolation Forest hoạt động bằng cách chẻ (split) dữ liệu ngẫu nhiên. Các điểm bất thường (anomalies) thường đứng một mình xa đàn, nên chỉ cần CHẺ VÀI NHÁT là nó đã bị cô lập khỏi cụm dữ liệu gốc. Điểm nào bị cô lập ở các nhánh cây nông nhất (đường dẫn ngắn) chính là điểm bất thường."
+        "explanation": "Cả thế giới NLP hiện nay đang chia thành 2 phe: Phe Encoder (BERT, RoBERTa) chuyên môn Phân tích và Hiểu dữ liệu. Phe Decoder (GPT-3, GPT-4, Llama) chuyên môn Nói chuyện, Sinh văn bản."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Phát hiện sự bất thường (Anomaly Detection) khác với Phát hiện cái mới (Novelty Detection) ở điểm nào?",
+        "question": "Tính năng Masked Multi-Head Attention trong khối Decoder của mạng GPT dùng để làm gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Hai khái niệm này hoàn toàn giống hệt nhau."
+                "text": "Nó che đi các từ nhạy cảm / chửi thề."
             },
             {
                 "id": "b",
-                "text": "Anomaly Detection cho phép tập dữ liệu huấn luyện ĐÃ CHỨA SẴN các ngoại lệ/nhiễu"
+                "text": "Khi Mạng Decoder học cách 'Đoán từ tiếp theo'"
             },
             {
                 "id": "c",
-                "text": "Novelty detection yêu cầu có nhãn."
+                "text": "Nó che đi một số nơ-ron để chống Overfitting (Giống Dropout)."
             },
             {
                 "id": "d",
-                "text": "Anomaly detection chậm hơn."
+                "text": "Nó giúp mạng chạy tốn ít RAM hơn."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(nó cố gắng tìm ra chúng). Novelty Detection yêu cầu tập huấn luyện phải 'SẠCH' 100% (chỉ chứa các ví dụ bình thường), và nó chỉ bắt lỗi ở các dữ liệu mới trong tương lai. Novelty: Bạn train mô hình trên hình ảnh 10.000 con chó (sạch bong). Ngày mai bạn đưa hình con mèo vào, nó kêu 'Đây là cái mới' (Novelty). Anomaly: Tập 10.000 ảnh gốc đã có lộn 10 con mèo trong đó, bạn yêu cầu mô hình lọc 10 con mèo đó ra (Anomaly)."
+        "explanation": "(Sinh văn bản) nó tuyệt đối KHÔNG ĐƯỢC PHÉP NHÌN THẤY CÁC TỪ TRONG TƯƠNG LAI. Masking (Mặt nạ) sẽ lấy một ma trận tam giác toàn số 0 đắp lên, che khuất hoàn toàn các từ đứng phía sau từ hiện tại. Từ thứ 3 chỉ được Attention vào từ số 1 và 2. Đó là sự khác biệt giữa BERT và GPT. BERT (Encoder) được phép Attention 2 chiều (nhìn thoải mái tới lui cả câu). Còn GPT (Decoder) là mô hình Tự hồi quy (Auto-regressive), nó bị BỊT MẮT TƯƠNG LAI, buộc phải đoán mò từ kế tiếp."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Phương pháp Huấn luyện Tự Giám sát (Self-Supervised Learning) làm nên thành công của BERT là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Thuê hàng triệu người gán nhãn dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "Masked Language Modeling (MLM)."
+            },
+            {
+                "id": "c",
+                "text": "Gắn mạng với công cụ tìm kiếm Google."
+            },
+            {
+                "id": "d",
+                "text": "Dùng mạng GAN để sinh ra chữ."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Google lấy toàn bộ Wikipedia (không gán nhãn), TỰ ĐỘNG lấy băng keo dán bừa (Mask) 15% số chữ trong bài. Nhiệm vụ của BERT là 'Điền từ vào chỗ trống'. Máy tự động đọ đáp án chữ bị che với chữ thật để tối ưu. Nhờ vậy BERT có thể học được kho tàng kiến thức khổng lồ mà con người KHÔNG TỐN MỘT XU TIỀN CÔNG gán nhãn nào. Sự thống trị của các Siêu Mô Hình Ngôn Ngữ (LLM) hiện nay đến từ 'Self-Supervised'. Bằng cách tự tạo ra bài kiểm tra (ẩn chữ đi rồi bắt máy tự đoán), chúng ta có thể nạp TẤT CẢ văn bản trên mạng Internet vào đầu AI mà không cần gán nhãn."
     },
     {
         "type": "ordering",
         "difficulty": "Dễ",
-        "question": "Quy trình làm việc của Học K-Means từ Scikit-Learn:",
-        "instruction": "(Sắp xếp các dòng mã để chạy K-Means đúng chuẩn)",
+        "question": "Quy trình ứng dụng thư viện Hugging Face Transformers để Phân tích Cảm xúc cực kỳ nhanh gọn:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "from sklearn.cluster import KMeans"
+                "text": "Cài đặt thư viện: `pip install transformers`."
             },
             {
                 "id": "2",
-                "text": "k = 5"
+                "text": "Nhập thư viện: `from transformers import pipeline`."
             },
             {
                 "id": "3",
-                "text": "kmeans = KMeans(n_clusters=k, random_state=42)"
+                "text": "Tạo ống dẫn (Pipeline): `classifier = pipeline('sentiment-analysis')` (Mô hình sẽ tự động được tải từ Hugging Face Hub về máy bạn)."
             },
             {
                 "id": "4",
-                "text": "y_pred = kmeans.fit_predict(X)"
+                "text": "Dự đoán thẳng: `classifier('Tôi yêu bộ phim này vô cùng!')` -> Output: Tích cực (Positive 99%)."
             }
         ],
         "correctOrder": [
@@ -1121,172 +903,452 @@
             "3",
             "4"
         ],
-        "explanation": "Import -> Khai báo K -> Khởi tạo đối tượng -> Fit_predict (do là Unsupervised nên chỉ truyền X, không truyền y)."
+        "explanation": "Hugging Face là 'GitHub của giới AI'. Nó giúp việc ứng dụng Deep Learning từ mất vài tuần để code kiến trúc, tải trọng số xuống chỉ còn 3 dòng code."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trong thư viện Hugging Face, công dụng của Tokenizer là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để bảo mật mô hình bằng Token."
+            },
+            {
+                "id": "b",
+                "text": "Nó thay thế hoàn toàn cho lớp TextVectorization."
+            },
+            {
+                "id": "c",
+                "text": "Để tạo ra giao diện chat."
+            },
+            {
+                "id": "d",
+                "text": "Để nén kích thước của mô hình."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Tokenizer không chỉ Tách câu văn thành các Mảnh từ vựng (Sub-word/BPE) mà còn ĐỒNG BỘ hoàn hảo với bộ từ điển của mô hình đã được train sẵn (như BERT/GPT). Nếu bạn dùng Mô hình BERT mà tự xài Tokenizer của GPT, mô hình sẽ hoàn toàn không hiểu gì. Quy tắc thép trong NLP hiện đại: Mô hình nào thì xài đúng Tokenizer của mô hình đó (`AutoTokenizer.from_pretrained('bert-base')`). Tokenizer là bộ não dịch thuật quy ước Chữ thành Số."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "One-Class SVM cho Phát hiện Cái mới (Novelty Detection):",
+        "question": "Kỹ thuật tách từ Sub-word (BPE / WordPiece):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Khác với SVM phân loại nhị phân truyền thống cố tách 2 lớp bằng siêu phẳng. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cố gắng tách các điểm dữ liệu (tất cả chỉ có 1 lớp bình thường) ra khỏi <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trong không gian chiều cao. Kết quả là nó tạo ra một cái 'bong bóng' phi tuyến khổng lồ bao bọc lấy các điểm bình thường. Điểm nào rơi ra ngoài bong bóng bị coi là dị thường.",
+        "text": "Xưa kia, ta tách từ bằng Dấu Cách (Word-level). Điều này gây thảm họa OOV (Từ chưa từng thấy) như 'Anti-gravity'. Tách bằng Từng Chữ Cái (Character-level) thì lại làm chuỗi trở nên vô cùng dài và máy mất hẳn khái niệm ngữ nghĩa. Giải pháp hiện tại của BERT/GPT là Tách Từ Phụ (Sub-word). Nó tách từ 'Anti-gravity' thành 2 mảnh: 'Anti' (Có nghĩa là chống lại) và 'gravity' (Có nghĩa là trọng lực). Kỹ thuật này giúp bộ từ điển thu nhỏ lại chỉ còn khoảng 30.000 đến 50.000 <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> nhưng có thể ghép nối lại để đọc hiểu <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> chưa từng xuất hiện trên đời.",
         "words": [
             {
                 "id": "w1",
-                "text": "One-Class SVM"
+                "text": "Tokens (Mảnh từ vựng)"
             },
             {
                 "id": "w2",
-                "text": "Gốc tọa độ (Origin)"
+                "text": "MỌI TỪ VỰNG"
             },
             {
                 "id": "w3",
-                "text": "Linear SVC"
+                "text": "Chữ cái (a, b, c)"
             },
             {
                 "id": "w4",
-                "text": "K-Means"
+                "text": "Hình ảnh"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "One-Class SVM nhốt toàn bộ dữ liệu sạch vào 1 cái túi bong bóng bằng cách đẩy chúng ra khỏi gốc tọa độ. Cực kỳ mạnh khi dữ liệu train sạch 100% nhưng gặp khó nếu dữ liệu có sẵn nhiễu."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Phân cụm Bằng Tích cực (Active Learning) sử dụng K-Means để làm gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thuê người dùng internet nhấp vào quảng cáo."
-            },
-            {
-                "id": "b",
-                "text": "Để tự động xóa dữ liệu."
-            },
-            {
-                "id": "c",
-                "text": "Tìm ra các điểm (Ví dụ: tâm của K-Means) có ý nghĩa và KHÓ phân loại nhất trình bày cho CHUYÊN GIA CON NGƯỜI (Human expert)"
-            },
-            {
-                "id": "d",
-                "text": "Tự động gán nhãn dựa trên dự đoán ngẫu nhiên."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Để họ gán nhãn thủ công. Việc này tiết kiệm tiền thuê người gán nhãn hàng triệu tấm ảnh mà chỉ cần gán vài ngàn tấm cốt lõi. Active Learning kết hợp máy + người. Máy phân cụm, móc ra những điểm trung tâm hoặc những điểm nằm ở biên giới lấp lửng khó quyết, đưa cho người thật xem. Sau đó máy học tiếp. Quy trình lặp lại."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Tính chất của DBSCAN trong việc sử dụng siêu tham số?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Siêu tham số eps có ý nghĩa là Số lượng vòng lặp tối đa."
-            },
-            {
-                "id": "b",
-                "text": "Bạn phải chỉnh siêu tham số eps"
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN không có siêu tham số nào."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN tự học eps bằng Gradient Descent."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(bán kính) và min_samples cực kỳ cẩn thận. Nếu eps quá nhỏ, mọi điểm đều trở thành Nhiễu. Nếu eps quá lớn, mọi điểm nhập chung vào 1 cụm khổng lồ. Khác với K-Means phải đoán K, thì ở DBSCAN bạn phải đoán bán kính lân cận eps. May thay, eps có ý nghĩa hình học (khoảng cách vật lý thực) nên đôi khi dễ set up hơn."
+        "explanation": "Byte-Pair Encoding (BPE) hay WordPiece là một phát minh vĩ đại. Nó là sự giao thoa hoàn hảo giữa Mức Chữ cái và Mức Từ. Giúp LLMs cực kỳ giỏi trong việc hiểu ngôn ngữ mới hoặc tiếng lóng."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép nối vai trò của hàm mục tiêu (Mục đích tối ưu hóa) của các thuật toán:",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các Token Đặc biệt (Special Tokens) cực kỳ quan trọng trong mô hình BERT:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "[CLS] (Classification)"
             },
             {
                 "id": "l2",
-                "text": "PCA (Phân tích Thành phần Chính)"
+                "text": "[SEP] (Separator)"
+            },
+            {
+                "id": "l3",
+                "text": "[PAD] (Padding)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Tối thiểu hóa 'Quán tính' (Inertia - Tổng khoảng cách từ điểm đến tâm)."
+                "text": "Luôn được Tokenizer TỰ ĐỘNG CHÈN VÀO ĐẦU CÂU (Vị trí 0). Vector ẩn của Token này được BERT dùng làm Đại diện Ngữ Nghĩa của Toàn bộ câu đó (Dùng để đưa vào Lớp Phân loại)."
             },
             {
                 "id": "r2",
-                "text": "Tối thiểu hóa 'Lỗi tái tạo' (Reconstruction error) hoặc Tối đa hóa 'Phương sai giải thích'."
+                "text": "Dùng để ngăn cách 2 câu văn khác nhau trong bài toán Hỏi-Đáp (Ví dụ: [Câu Hỏi] [SEP] [Đoạn Văn])."
+            },
+            {
+                "id": "r3",
+                "text": "Lấp đầy các khoảng trống nếu câu văn ngắn hơn kích thước tối đa của Batch. Attention Mask sẽ phớt lờ Token này."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Mỗi thuật toán Unsupervised đều ngầm tối ưu hóa một hàm toán học."
+        "explanation": "Token [CLS] mang một sứ mệnh vĩ đại. Nếu bạn muốn xây dựng mô hình Phân tích Cảm xúc bằng BERT, bạn chỉ cần lấy Vector Đầu ra tại vị trí [CLS] rồi cắm thẳng vào 1 lớp `Dense(1)` là xong!"
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán Local Outlier Factor (LOF) hoạt động trong bài toán Phát hiện Bất thường như thế nào?",
+        "question": "Tham số `attention_mask` (Mặt nạ chú ý) sinh ra từ thư viện Hugging Face Tokenizer có chức năng gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó so sánh MẬT ĐỘ của một điểm dữ liệu với mật độ của K LÁNG GIỀNG GẦN NHẤT của nó."
+                "text": "Đổi màu chữ."
             },
             {
                 "id": "b",
-                "text": "Nó dùng mạng Neural để học hàm phi tuyến."
+                "text": "Để che đi các từ nhạy cảm."
             },
             {
                 "id": "c",
-                "text": "Nó đo khoảng cách của điểm đó đến gốc tọa độ (0,0)."
+                "text": "Nó là một danh sách chứa toàn số 1 và 0."
             },
             {
                 "id": "d",
-                "text": "Nó sử dụng Decision Tree."
+                "text": "Để ép mô hình học nhanh hơn."
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Nếu điểm đó có mật độ THẤP HƠN NHIỀU so với những người hàng xóm, điểm đó là dị thường. Rất giống với tư tưởng của DBSCAN nhưng tinh tế hơn. DBSCAN xài một bán kính eps cứng nhắc. LOF đo độ 'cô đơn' tương đối (nếu ai xung quanh cũng ở nhà san sát nhau, tự nhiên nhà bạn cách xa mọi người 1km thì bạn là dị thường)."
+        "correctAnswer": "c",
+        "explanation": "Số 1 đánh dấu từ thật, Số 0 đánh dấu các từ [PAD] (độn thêm vào cho đủ độ dài). Khi đưa dữ liệu vào Mô hình Transformer, Mảng Mask này ép cơ chế Self-Attention phải LOẠI BỎ (cho điểm 0) tất cả các từ [PAD], không cho chúng làm nhiễu ý nghĩa câu. Transformer không có lớp Masking riêng biệt như RNN. Khái niệm Masking trong Transformer được thực hiện một cách toán học ngay bên trong công thức tính Attention (Nếu Mask=0, điểm số tương đồng bị set về âm vô cực -> Softmax ra 0)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Luồng Fine-Tuning (Tinh chỉnh) Mô hình BERT của Hugging Face cho bài toán Cụ thể (Ví dụ: Dự báo Email Spam):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Tải Tokenizer và Mô hình Pre-trained: `model = TFAutoModelForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2)`."
+            },
+            {
+                "id": "2",
+                "text": "Mã hóa tập dữ liệu văn bản bằng Tokenizer để sinh ra `input_ids` và `attention_mask`."
+            },
+            {
+                "id": "3",
+                "text": "Chuyển dữ liệu đã mã hóa thành định dạng `tf.data.Dataset`."
+            },
+            {
+                "id": "4",
+                "text": "Biên dịch mô hình (Compile) với Optimizer có Learning Rate CỰC NHỎ (VD: 2e-5) để không phá vỡ tri thức gốc của BERT."
+            },
+            {
+                "id": "5",
+                "text": "Gọi hàm `model.fit(dataset, epochs=3)` để mạng 'Tinh chỉnh' (Fine-tune) bộ trọng số phù hợp với giọng điệu của Email Spam."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Fine-Tuning các Đại Mô Hình (LLMs) có 2 quy tắc sinh tử: 1. Đừng train quá nhiều Epochs (3 là đủ). 2. Learning Rate phải siêu nhỏ để nâng niu bộ não ngàn đô của nó."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Trở ngại lớn nhất của việc mở rộng mạng Transformer (Ví dụ muốn xử lý đoạn văn dài 100.000 chữ thay vì 500 chữ) là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó làm chậm CPU."
+            },
+            {
+                "id": "b",
+                "text": "Độ phức tạp tính toán và tiêu thụ Bộ nhớ"
+            },
+            {
+                "id": "c",
+                "text": "Mô hình sẽ quên mất kiến thức cũ."
+            },
+            {
+                "id": "d",
+                "text": "Hugging Face không cho phép văn bản quá dài."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(RAM) của cơ chế Self-Attention BÌNH PHƯƠNG (O(n²)) theo số lượng từ. Nếu câu dài gấp 10 lần, số phép nhân Ma trận Attention tăng vọt 100 lần. Một quyển sách dài 100.000 từ sẽ cần một cái Ma trận Attention cực kỳ khổng lồ, làm nổ tung mọi loại GPU hiện tại. N² là cơn ác mộng của Transformer. Để giải quyết việc nhét cả 1 quyển sách vào AI, hàng chục biến thể như Longformer, Reformer, hay kỹ thuật FlashAttention đã được phát minh để giảm độ phức tạp xuống O(n*log(n))."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Trung bình",
-        "question": "Làm cách nào để chuyển một bức ảnh thành dữ liệu cho Phân cụm Màu sắc (Color Quantization)?",
+        "difficulty": "Khó",
+        "question": "Tính năng Beam Search (Tìm kiếm theo chùm) trong Sinh Văn Bản:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để giảm số lượng màu của bức ảnh từ 16 triệu màu xuống còn 10 màu. Bức ảnh là một ma trận 3D (Width x Height x 3 kênh RGB). Để dùng K-Means, bạn phải Reshape (Định hình lại) nó thành dạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tức là danh sách các pixel dài, mỗi pixel có 3 chiều RGB). Sau khi train K-Means(k=10), bạn thay thế màu gốc của từng pixel bằng màu của <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mà nó thuộc về.",
+        "text": "Trong kiến trúc Dịch máy hoặc Sinh Text, chiến thuật <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> sẽ luôn chọn từ có Xác suất cao nhất tại mỗi bước. Nhưng từ cao nhất ở Bước 1 chưa chắc đã dẫn đến Câu văn hoàn hảo ở Bước 10. Beam Search thông minh hơn: Nó duy trì <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Ví dụ: Beam Width = 3) cùng một lúc. Nó đánh giá toàn cảnh xác suất của Cả một nhánh câu. Mặc dù ở Bước 1, từ 'Và' có xác suất thấp hơn từ 'Tôi', nhưng Beam Search nhận thấy nhánh xuất phát từ 'Và' tạo ra ý nghĩa dài hạn tốt hơn, nó sẽ chọn nhánh đó.",
         "words": [
             {
                 "id": "w1",
-                "text": "2D"
+                "text": "Tham lam (Greedy)"
             },
             {
                 "id": "w2",
-                "text": "Tâm cụm (Centroid)"
+                "text": "K lượng ứng viên (K-best paths)"
             },
             {
                 "id": "w3",
-                "text": "1D"
+                "text": "Ngẫu nhiên (Random)"
             },
             {
                 "id": "w4",
-                "text": "Biên (Border)"
+                "text": "Gradient Descent"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "Sklearn bắt buộc đầu vào là mảng 2D (mẫu x đặc trưng). Bạn duỗi ảnh thành danh sách dài các pixel. Tâm cụm của K-Means(k=10) chính là 10 mã màu đại diện tốt nhất cho bức ảnh."
+        "explanation": "Beam Search là vị cứu tinh của các hệ thống Dịch máy. Nó giống việc bạn đánh Cờ Vua, thay vì chỉ đi nước cờ có lợi nhất ngay trước mắt (Greedy), bạn phải tính trước 3-4 nước cờ tương lai (Beam Width)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Trong Hugging Face, bạn muốn dùng mô hình để Dịch tiếng Việt sang tiếng Anh, bạn nên chọn Pipeline nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "pipeline('text-classification')"
+            },
+            {
+                "id": "b",
+                "text": "pipeline('translation_vi_to_en')"
+            },
+            {
+                "id": "c",
+                "text": "pipeline('question-answering')"
+            },
+            {
+                "id": "d",
+                "text": "pipeline('ner')"
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Hugging Face có sẵn rất nhiều Pipeline. Translation là dành riêng cho bài toán dịch máy. Nó tự động tải các kiến trúc Encoder-Decoder (Như MarianMT, T5, BART)."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép các nhiệm vụ NLP kinh điển (Được hỗ trợ tận răng bởi Hugging Face) với mô tả của nó:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Named Entity Recognition (NER)"
+            },
+            {
+                "id": "l2",
+                "text": "Question Answering (QA)"
+            },
+            {
+                "id": "l3",
+                "text": "Text Summarization"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Nhận diện Thực thể có tên. Mạng sẽ quét qua câu văn và bôi đen: Đây là [Người], Kia là [Tổ chức], Đó là [Địa điểm]."
+            },
+            {
+                "id": "r2",
+                "text": "Bạn mớm cho AI một Đoạn văn bản dài và một Câu hỏi. AI sẽ tự động đọc đoạn văn và chỉ ra vị trí (Khoanh vùng) câu trả lời nằm ở đâu trong đoạn văn đó."
+            },
+            {
+                "id": "r3",
+                "text": "Đưa vào một bài Báo dài 5 trang. AI sẽ tự viết lại một đoạn Tóm tắt dài 5 dòng. Bắt buộc dùng kiến trúc Encoder-Decoder (VD: T5, BART)."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Đây là 3 bài toán kiếm ra nhiều tiền nhất trong công nghiệp NLP (Bên cạnh Sentiment Analysis). BERT sinh ra để làm NER và QA siêu việt."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Phương pháp 'Tham số hiệu quả' (Parameter-Efficient Fine-Tuning - PEFT), cụ thể là LoRA, dùng để giải quyết thảm họa gì khi bạn muốn Train riêng một con GPT-4 cho Công ty của bạn?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Công ty bạn không có dữ liệu."
+            },
+            {
+                "id": "b",
+                "text": "LLM có hàng tỷ trọng số."
+            },
+            {
+                "id": "c",
+                "text": "Nó giúp giảm kích thước file cài đặt."
+            },
+            {
+                "id": "d",
+                "text": "Nó đổi ngôn ngữ sang Tiếng Việt."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Việc cập nhật (Fine-Tune) MỌI trọng số sẽ đòi hỏi các cụm Siêu Máy Tính (như 8x A100 80GB) cực kỳ đắt tiền. LoRA (Low-Rank Adaptation) đóng băng toàn bộ Mạng gốc khổng lồ, và chỉ chèn thêm 2 ma trận cực kì siêu nhỏ vào hệ thống để học. Việc này giảm số lượng thông số phải train đi 10.000 lần, cho phép bạn Tinh chỉnh AI Khổng lồ trên một con Card đồ họa bình dân (như RTX 3090). LoRA là kỹ thuật quan trọng nhất của giới Kỹ sư AI hiện đại (2023+). Nó là 'ma thuật' giúp một người bình thường có thể 'dạy' thêm kiến thức cho các hệ thống khổng lồ như Llama 3 hay Stable Diffusion."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Mô hình T5 (Text-to-Text Transfer Transformer) của Google:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Triết lý của T5 rất lạ lùng nhưng hiệu quả: Thay vì phải chia nhỏ ra nhiều loại Output khác nhau (Nhãn phân loại, Trích xuất câu trả lời...). Nhóm Google đã thiết kế T5 để nó coi <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> là Bài toán Text-to-Text (Sinh chuỗi chữ cái). Ví dụ: Bài toán dịch máy: 'translate English to German: That is good' -> Mạng sẽ sinh ra chữ 'Das ist gut'. Bài toán Phân loại cảm xúc: 'sentiment: Phim này tệ quá' -> Mạng sẽ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> chữ 'Negative'. Mọi tác vụ đều giải quyết bằng Sinh Chữ (Generation).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "MỌI BÀI TOÁN NLP"
+            },
+            {
+                "id": "w2",
+                "text": "Tự động viết ra"
+            },
+            {
+                "id": "w3",
+                "text": "Bài toán Hình ảnh"
+            },
+            {
+                "id": "w4",
+                "text": "Thoát lỗi"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "T5 là tiền thân cho cách hoạt động của ChatGPT (Prompting). Bạn điều khiển máy làm việc thông qua việc mớm cho nó Mệnh Lệnh (Prefix Text), và nó trả về mọi kết quả dưới dạng chuỗi."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "BLEU Score là thang đo phổ biến nhất để chấm điểm cho tác vụ NLP nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nhận diện khuôn mặt."
+            },
+            {
+                "id": "b",
+                "text": "Dịch máy (Machine Translation) và Sinh văn bản"
+            },
+            {
+                "id": "c",
+                "text": "Dự báo chứng khoán."
+            },
+            {
+                "id": "d",
+                "text": "Phân loại thư rác (Spam)."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Text Generation). Nó đánh giá sự đè lấp (Overlap) của các cụm từ (N-gram) giữa Câu dịch do AI tạo ra và Câu dịch chuẩn do Con người viết. (Từ 0 đến 1, càng lớn càng tốt). Không thể dùng Accuracy (Độ chính xác) để chấm điểm bài văn của AI. BLEU score được phát minh để máy tự chấm điểm độ 'Trôi chảy và Khớp nghĩa' của bản dịch."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Sự tiến hóa và trỗi dậy của các Kiến Trúc Mô Hình Ngôn Ngữ Cổ đến Hiện Đại:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "N-gram Models: Mô hình thống kê mù quáng, đếm số lần xuất hiện của các cụm từ. (Rất ngốc nghếch)."
+            },
+            {
+                "id": "2",
+                "text": "Word2Vec / GloVe (2013): Cấp cho mỗi từ một Vector số thực (Embedding) để chứa ngữ nghĩa. Nhưng một từ 'Bank' (Ngân hàng/Bờ sông) chỉ có DUY NHẤT 1 vector cứng nhắc."
+            },
+            {
+                "id": "3",
+                "text": "RNN / LSTM / Seq2Seq (2014-2016): Bắt đầu hiểu được Ngữ cảnh và Thứ tự. Tuy nhiên bị nghẽn Bottleneck và không nhớ được câu quá dài."
+            },
+            {
+                "id": "4",
+                "text": "Attention Mechanism & Transformer (2017): Xóa sổ RNN, Self-Attention giúp mỗi từ liên kết với mọi từ khác cực nhanh và cực sâu."
+            },
+            {
+                "id": "5",
+                "text": "LLMs Khổng lồ (BERT, GPT-3, GPT-4 - 2018 đến nay): Huấn luyện Transformer trên dữ liệu Tỷ Tỷ từ (Self-supervised) tạo ra cỗ máy có tư duy tiệm cận con người."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Lịch sử NLP 10 năm qua là một cuộc cách mạng vũ bão nhất trong lịch sử Khoa học Máy tính."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Bạn muốn lấy Output (Đầu ra) từ một Mô hình BERT trong Keras/HuggingFace. Đối tượng `outputs` trả về chứa nhiều thành phần. Thành phần `last_hidden_state` (Trạng thái ẩn cuối cùng) có kích thước là bao nhiêu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Một con số duy nhất."
+            },
+            {
+                "id": "b",
+                "text": "Một Tensor 3D có kích thước `[batch_size sequence_length, hidden_size]`."
+            },
+            {
+                "id": "c",
+                "text": "Một Tensor 2D chỉ chứa Token [CLS]."
+            },
+            {
+                "id": "d",
+                "text": "Là một ảnh RGB."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nó lưu trữ VÉC-TƠ ĐẠI DIỆN cho TỪNG TỪ MỘT trong câu của bạn (Đã được tẩm ướp ngữ cảnh của cả câu qua các khối Self-Attention). Bạn dùng Tensor này khi muốn đánh giá từng từ một (Ví dụ bài toán NER). Cần phân biệt rõ: `last_hidden_state` là thông tin của TOÀN BỘ CÁC TỪ. Trong khi đó `pooler_output` thường chỉ chứa thông tin của DUY NHẤT từ [CLS] đầu tiên (Dùng để đại diện cho cả câu)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Kiến trúc Hugging Face Models:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Thư viện Transformers cung cấp thiết kế hướng đối tượng cực tốt. Bạn tải Model bằng kiến trúc Auto Class, ví dụ: `TFAutoModel`. \nNếu bạn tải mô hình để Trích xuất Đặc trưng Thuần túy (Nhận về Tensor ẩn cuối), bạn gọi: `TFAutoModel.from_pretrained()`. \nNếu bạn muốn mô hình đã được NGÀM SẴN một Lớp Dense Phân loại ở trên đỉnh (Dùng để đoán Spam Email), bạn đổi class thành: `<span class=\"blank-slot\" data-id=\"1\">___(1)___</span>.from_pretrained(...)`. \nNếu bạn muốn mô hình có sẵn cái đầu để Hỏi-Đáp, dùng `<span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.from_pretrained(...)`. Thư viện sẽ lo toàn bộ việc lắp ráp layer cho bạn.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "TFAutoModelForSequenceClassification"
+            },
+            {
+                "id": "w2",
+                "text": "TFAutoModelForQuestionAnswering"
+            },
+            {
+                "id": "w3",
+                "text": "TFFullyConnectedModel"
+            },
+            {
+                "id": "w4",
+                "text": "TFDenseNetwork"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "AutoModel là cục động cơ xe. AutoModelForSequenceClassification là cục động cơ đã được ráp sẵn thành cái ô tô, có bánh có vô lăng (Lớp Classification Head) để bạn ấn chân ga (fit) là chạy luôn."
     }
 ];
 

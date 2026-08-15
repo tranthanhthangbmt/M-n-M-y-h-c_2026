@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Trắc Nghiệm Chương 9</title>
+    <title>Bài Tập Trắc Nghiệm Chương 17</title>
     <style>
         :root {
             --primary: #1a73e8;
@@ -467,652 +467,701 @@
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Sự khác biệt cốt lõi giữa Phân loại (Classification) và Phân cụm (Clustering) là gì?",
+        "question": "Kiến trúc cơ bản của một Bộ Mã hóa Tự động (Autoencoder) bao gồm hai phần chính nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Phân loại dùng cho dữ liệu văn bản, còn Phân cụm dùng cho dữ liệu hình ảnh."
+                "text": "Bộ Phát sinh (Generator) và Bộ Phân biệt (Discriminator)."
             },
             {
                 "id": "b",
-                "text": "Phân loại là học CÓ GIÁM SÁT (dữ liệu đã có sẵn nhãn)."
+                "text": "Bộ Mã hóa (Encoder) làm nhiệm vụ nén dữ liệu đầu vào thành một Véc-tơ không gian tiềm ẩn"
             },
             {
                 "id": "c",
-                "text": "Phân loại chậm hơn Phân cụm."
+                "text": "Mạng Tích chập (CNN) và Mạng Hồi quy (RNN)."
             },
             {
                 "id": "d",
-                "text": "Phân cụm yêu cầu người dùng phải gán nhãn thủ công trước."
+                "text": "Bộ Đọc (Reader) và Bộ Viết (Writer)."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Phân cụm là học KHÔNG GIÁM SÁT (dữ liệu hoàn toàn không có nhãn, thuật toán tự tìm ra các nhóm tương đồng). Trong Phân loại, ta biết trước ví dụ con chó, con mèo. Trong Phân cụm, ta chỉ đưa cho máy một đống ảnh động vật không có tên, và máy tự gộp những con có hình dáng giống nhau vào thành từng nhóm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Thuật toán K-Means hoạt động bằng cách nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tính khoảng cách tuyến tính giữa mọi cặp điểm dữ liệu."
-            },
-            {
-                "id": "b",
-                "text": "Nó thử tất cả các nhãn ngẫu nhiên cho đến khi tìm được nhãn đúng."
-            },
-            {
-                "id": "c",
-                "text": "Khởi tạo K tâm cụm (centroids) ngẫu nhiên gán mỗi điểm dữ liệu vào tâm gần nhất,"
-            },
-            {
-                "id": "d",
-                "text": "Nó xây dựng một cây phân quyết định."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Sau đó cập nhật lại vị trí tâm bằng trung bình của các điểm trong cụm, lặp lại cho đến khi tâm không đổi. K-Means cực kỳ đơn giản: Bốc bừa K điểm làm tâm -> Gom điểm gần tâm -> Tính lại tâm mới nằm giữa đám điểm vừa gom -> Lặp lại. Nó hội tụ rất nhanh."
+        "explanation": "(Latent space) nhỏ gọn và Bộ Giải mã (Decoder) làm nhiệm vụ tái tạo lại dữ liệu gốc từ Véc-tơ đó. Autoencoder được thiết kế với hình dáng giống cái 'Đồng hồ cát'. Nửa trên (Encoder) ép dữ liệu nhỏ lại, nửa dưới (Decoder) phóng to dữ liệu trở lại."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Nhược điểm lớn nhất của K-Means:",
+        "question": "Học biểu diễn (Representation Learning) với Autoencoder:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Mặc dù K-Means rất nhanh, nhưng nhược điểm chết người của nó là bắt buộc bạn phải cung cấp số lượng cụm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> từ trước. Hơn nữa, nó rất nhạy cảm với việc khởi tạo tâm cụm ban đầu, nếu khởi tạo xui xẻo, K-Means có thể hội tụ về một nghiệm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (không phải nghiệm tối ưu toàn cục).",
+        "text": "Autoencoder là một thuật toán Học <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Mục tiêu của nó KHÔNG PHẢI là tạo ra dữ liệu Output thật đẹp, mà là ép mạng Nơ-ron phải học cách tìm ra các đặc trưng cốt lõi nhất của dữ liệu. Do đó, Đầu ra mong muốn của Autoencoder chính là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Bằng cách cố gắng sao chép Input ra Output qua một 'nút thắt cổ chai' (bottleneck), mạng buộc phải bỏ qua các chi tiết thừa thãi và chỉ ghi nhớ bản chất của bức ảnh.",
         "words": [
             {
                 "id": "w1",
-                "text": "Tối ưu cục bộ (Local optimum)"
+                "text": "Không giám sát (Unsupervised)"
             },
             {
                 "id": "w2",
-                "text": "K (số lượng cluster)"
+                "text": "Chính Dữ liệu Đầu vào (Input)"
             },
             {
                 "id": "w3",
-                "text": "Max_iter (số vòng lặp)"
+                "text": "Có giám sát (Supervised)"
             },
             {
                 "id": "w4",
-                "text": "Tối ưu toàn cục (Global optimum)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w2",
-            "2": "w1"
-        },
-        "explanation": "Máy không tự biết trong dữ liệu có bao nhiêu cụm, bạn phải đoán số K. K-Means cũng hay bị mắc kẹt ở local optimum, do đó Scikit-Learn thường chạy thuật toán 10 lần với các khởi tạo ngẫu nhiên khác nhau (n_init=10) rồi lấy kết quả tốt nhất."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán K-Means++ (được Scikit-Learn dùng làm mặc định thay vì K-Means thường) giải quyết vấn đề gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tự động tìm ra số lượng cụm K."
-            },
-            {
-                "id": "b",
-                "text": "Nó thay đổi cách ĐÁNH GIÁ khoảng cách (dùng Manhattan thay vì Euclidean)."
-            },
-            {
-                "id": "c",
-                "text": "Nó giải quyết vấn đề KHỞI TẠO TÂM."
-            },
-            {
-                "id": "d",
-                "text": "Nó hỗ trợ chạy trên GPU."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Bằng cách chọn các tâm ban đầu nằm XA NHAU NHẤT CÓ THỂ, nó làm giảm đáng kể khả năng thuật toán hội tụ vào nghiệm tối ưu cục bộ tồi tệ. K-Means thường chọn K điểm ngẫu nhiên hoàn toàn. Nếu rủi ro chọn 2 điểm khởi tạo nằm cùng một chỗ, K-Means sẽ chia sai bét. K-Means++ đảm bảo các tâm khởi tạo trải đều ra toàn không gian."
-    },
-    {
-        "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Thuật toán Mini-batch K-Means được sử dụng khi nào?",
-        "instruction": "(Sắp xếp ưu điểm của Mini-batch K-Means so với K-Means truyền thống)",
-        "items": [
-            {
-                "id": "1",
-                "text": "Khi tập dữ liệu quá khổng lồ, không thể nạp tất cả vào RAM (Out-of-core)."
-            },
-            {
-                "id": "2",
-                "text": "Thay vì dùng toàn bộ dữ liệu ở mỗi lần lặp, nó chỉ dùng một lượng nhỏ (mini-batch) để di chuyển tâm cụm một chút."
-            },
-            {
-                "id": "3",
-                "text": "Kết quả: Tốc độ huấn luyện nhanh hơn gấp 3 đến 4 lần."
-            },
-            {
-                "id": "4",
-                "text": "Đánh đổi: Mô hình phân cụm cuối cùng thường kém chính xác (tệ hơn một chút) so với K-Means chạy full dữ liệu."
-            }
-        ],
-        "correctOrder": [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        "explanation": "Giống hệt Incremental PCA, Mini-batch K-Means hy sinh một phần nhỏ sự hoàn hảo để đổi lấy việc xử lý được Big Data và giảm sốc cho RAM."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Quán tính (Inertia) trong K-Means đo lường điều gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thời gian thuật toán chạy."
-            },
-            {
-                "id": "b",
-                "text": "Khoảng cách bình phương trung bình giữa mỗi điểm dữ liệu đến TÂM CỤM GẦN NHẤT CỦA NÓ."
-            },
-            {
-                "id": "c",
-                "text": "Khoảng cách giữa tâm cụm này với tâm cụm khác."
-            },
-            {
-                "id": "d",
-                "text": "Số lượng cụm K."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Inertia càng nhỏ thì các điểm trong cụm càng nén chặt (tốt). Inertia (Quán tính) là hàm mục tiêu mà K-Means cố gắng tối thiểu hóa. Tuy nhiên, ta không thể dùng Inertia để so sánh mô hình có K=3 với K=5, vì hiển nhiên khi K càng tăng (chia càng nhỏ), Inertia sẽ tự động giảm."
-    },
-    {
-        "type": "matching",
-        "difficulty": "Trung bình",
-        "question": "Ghép nối các phương pháp tìm số K (số lượng cụm) tối ưu:",
-        "left": [
-            {
-                "id": "l1",
-                "text": "Quy tắc Khửu tay (Elbow Rule)"
-            },
-            {
-                "id": "l2",
-                "text": "Điểm Silhouette (Silhouette Score)"
-            }
-        ],
-        "right": [
-            {
-                "id": "r1",
-                "text": "Vẽ biểu đồ Inertia theo số K. Chọn điểm mà đường cong bắt đầu bẻ gập nhanh (chững lại). Rất trực quan nhưng kém chính xác."
-            },
-            {
-                "id": "r2",
-                "text": "Đo lường mức độ một điểm dữ liệu nằm GẦN các điểm cùng cụm (Cohesion) so với mức độ nó nằm XA các điểm ở cụm lân cận gần nhất (Separation). Trị số từ -1 đến +1, càng gần +1 càng tốt."
-            }
-        ],
-        "correctPairs": {
-            "l1": "r1",
-            "l2": "r2"
-        },
-        "explanation": "Elbow dùng Inertia nên chỉ mang tính tương đối (vì Inertia luôn giảm khi K tăng). Silhouette Score đánh giá toàn diện hơn, +1 là gom cụm hoàn hảo, 0 là nằm sát biên, -1 là điểm bị gom nhầm cụm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Điểm yếu CHÍNH của thuật toán K-Means khi phân cụm là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó không thể xử lý dữ liệu lớn."
-            },
-            {
-                "id": "b",
-                "text": "Nó giả định rằng các cụm có HÌNH CẦU"
-            },
-            {
-                "id": "c",
-                "text": "Nó quá phức tạp để cài đặt lập trình."
-            },
-            {
-                "id": "d",
-                "text": "Nó luôn luôn yêu cầu phải chuẩn hóa dữ liệu."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(hoặc lồi) và KÍCH THƯỚC TƯƠNG ĐƯƠNG nhau. Nó sẽ thất bại thảm hại nếu các cụm có hình thuôn dài, kích thước khác nhau, hoặc lồng vào nhau (như hai vòng cung). Vì K-Means chỉ đo khoảng cách Euclidean tính từ tâm tròn, nó sẽ kéo mọi thứ thành hình cầu tròn. Nó không thể phân cụm dữ liệu hình mặt trăng khuyết, hình điếu xì gà, hoặc dữ liệu có độ lệch quá mạnh."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Dễ",
-        "question": "Ứng dụng K-Means cho Giảm chiều và Phân loại:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để Giảm chiều dữ liệu. Ví dụ dữ liệu có 1000 đặc trưng, bạn chạy K-Means với k=50. Sau đó dùng khoảng cách từ điểm dữ liệu đến 50 tâm cụm làm đặc trưng mới (giảm từ 1000 chiều xuống 50 chiều). Nếu bạn dùng tập 50 chiều này để huấn luyện một bộ Phân loại Logistic Regression, độ chính xác thường sẽ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do K-Means đã gom các điểm nhiễu thành các nhóm gọn gàng. Kỹ thuật này đôi khi được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Tăng lên / Cải thiện"
-            },
-            {
-                "id": "w2",
-                "text": "Giảm đi"
-            },
-            {
-                "id": "w3",
-                "text": "Biến đổi không gian cụm (Cluster-based Transform)"
-            },
-            {
-                "id": "w4",
-                "text": "Tăng số chiều"
+                "text": "Nhãn phân loại (Label)"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Giống như biến 1 điểm tọa độ phức tạp thành 50 con số báo cáo 'Tôi cách quận A bao xa, cách quận B bao xa'. Việc này giúp Logistic Regression dễ thở hơn rất nhiều."
+        "explanation": "Trong Keras, khi train Autoencoder, bạn sẽ truyền vào `model.fit(X_train, X_train)` thay vì `model.fit(X_train, Y_train)`. Nó tự lấy bản thân làm đáp án cho chính nó."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Kỹ thuật 'Truyền nhãn' (Label Propagation) trong Học Bán Giám Sát (Semi-supervised Learning) sử dụng K-Means như thế nào?",
+        "question": "Autoencoder 'Thiếu năng lực' (Undercomplete Autoencoder) là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó dùng K-Means để xóa các nhãn."
+                "text": "Là Autoencoder chưa được huấn luyện xong."
             },
             {
                 "id": "b",
-                "text": "Khi bạn có 10.000 dữ liệu nhưng chỉ có tiền thuê người gán nhãn 50 dữ liệu."
+                "text": "Là Autoencoder mà Không gian Tiềm ẩn"
             },
             {
                 "id": "c",
-                "text": "Nó biến đổi K-Means thành mạng Neural network."
+                "text": "Là Autoencoder không có lớp Giải mã (Decoder)."
             },
             {
                 "id": "d",
-                "text": "Nó sinh ra ngẫu nhiên nhãn cho toàn bộ dữ liệu."
+                "text": "Là Autoencoder sinh ra ảnh bị nhòe."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bạn dùng K=50. Lấy điểm nằm gần tâm nhất của 50 cụm (Representative instances) để gán nhãn thủ công. Sau đó TRUYỀN NHÃN đó cho toàn bộ các điểm còn lại trong cùng cụm. Học bán giám sát rất mạnh. Thay vì gán nhãn ngẫu nhiên 50 điểm (hiệu quả thấp), bạn gán nhãn cho 50 điểm ĐIỂN HÌNH NHẤT (Representative) của 50 cụm, rồi lây lan nhãn đó cho đồng bọn. Độ chính xác sẽ nhảy vọt."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "DBSCAN khác biệt lớn nhất so với K-Means ở điểm nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "DBSCAN bắt buộc phải cung cấp số lượng K."
-            },
-            {
-                "id": "b",
-                "text": "DBSCAN là thuật toán dựa trên MẬT ĐỘ (Density-based)."
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN chỉ chạy được trên 2 chiều."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN chạy nhanh hơn K-Means 100 lần."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Nó xác định các vùng có mật độ điểm cao (được ngăn cách bởi các vùng mật độ thấp). Nó không giới hạn hình dạng cụm và KHÔNG CẦN CHO TRƯỚC SỐ CỤM. DBSCAN hoạt động như giọt nước loang ra. Chỉ cần khoảng cách giữa các điểm còn đủ gần (mật độ dày), nó sẽ coi tất cả là 1 cụm dù nó ngoằn ngoèo hình mặt trăng khuyết hay chữ S."
+        "explanation": "(Latent Space - Lớp ẩn ở giữa) có kích thước NHỎ HƠN kích thước của dữ liệu Đầu vào. (Ví dụ: Đầu vào là ảnh 784 pixels, lớp giữa chỉ có 30 nơ-ron). Việc này BẮT BUỘC mạng phải nén thông tin. Nếu lớp giữa bằng hoặc lớn hơn lớp Đầu vào (Overcomplete), Autoencoder có thể học trò 'ăn gian' bằng cách copy y hệt các pixel từ trái sang phải mà không cần rút trích bất kỳ đặc trưng hữu ích nào."
     },
     {
         "type": "ordering",
-        "difficulty": "Khó",
-        "question": "Cách DBSCAN hoạt động qua tham số epsilon (eps) và min_samples:",
+        "difficulty": "Dễ",
+        "question": "Quy trình giảm chiều dữ liệu từ 3D xuống 2D bằng Autoencoder:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "DBSCAN xét một điểm bất kỳ. Nó đếm xem có bao nhiêu điểm lân cận nằm trong vòng tròn bán kính 'eps' (epsilon)."
+                "text": "Tạo dữ liệu đầu vào: Các điểm dữ liệu 3 chiều (x, y, z)."
             },
             {
                 "id": "2",
-                "text": "Nếu số điểm lân cận này LỚN HƠN hoặc BẰNG tham số 'min_samples', điểm đó được phong danh hiệu 'Điểm Lõi' (Core Instance)."
+                "text": "Xây dựng Encoder: Lớp Dense nhận 3 nơ-ron, xuất ra 2 nơ-ron (Latent space 2D)."
             },
             {
                 "id": "3",
-                "text": "Tất cả các điểm nằm trong vùng lân cận eps của Điểm Lõi sẽ được gom chung vào cùng 1 cụm."
+                "text": "Xây dựng Decoder: Lớp Dense nhận 2 nơ-ron từ Latent, xuất ngược ra 3 nơ-ron."
             },
             {
                 "id": "4",
-                "text": "Quá trình này lan truyền (chuỗi) sang các láng giềng. Bất kỳ điểm nào KHÔNG PHẢI là điểm lõi, và cũng KHÔNG NẰM trong vùng lân cận của bất kỳ điểm lõi nào, sẽ bị coi là Nhiễu (Anomaly/Noise)."
+                "text": "Ghép thành Autoencoder hoàn chỉnh, huấn luyện với hàm Loss là MSE (Mean Squared Error) so sánh Input 3D và Output 3D."
+            },
+            {
+                "id": "5",
+                "text": "Sau khi huấn luyện xong, VỨT BỎ Decoder. Chỉ dùng Encoder để nén các điểm 3D mới xuống thành 2D."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "DBSCAN có 2 siêu tham số cực kỳ quan trọng: eps (bán kính) và min_samples (số điểm tối thiểu để lập phường hội). Điểm bơ vơ sẽ bị vứt ra thành Nhiễu."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Điều gì xảy ra nếu điểm dữ liệu bị đánh dấu là Nhiễu (Noise) trong thuật toán DBSCAN (Scikit-Learn)?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thuật toán sẽ tự động dừng lại."
-            },
-            {
-                "id": "b",
-                "text": "Dữ liệu đó sẽ bị xóa khỏi bộ nhớ gốc."
-            },
-            {
-                "id": "c",
-                "text": "Điểm đó sẽ được gán nhãn cụm"
-            },
-            {
-                "id": "d",
-                "text": "Dữ liệu được chuyển về tâm tọa độ (0,0)."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "(cluster label) là `-1` trong thuộc tính `labels_`. Scikit-Learn dùng quy ước nhãn `-1` để ám chỉ Outliers/Noise/Anomalies. K-Means không bao giờ từ chối điểm nào (điểm xa cỡ nào cũng bị ép vô 1 cụm). DBSCAN có khả năng chỉ ra thẳng điểm nào là ngoại lai."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Điểm yếu của DBSCAN:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "DBSCAN là một thuật toán rất tuyệt, nhưng nó sẽ gặp khó khăn lớn nếu các cụm trong tập dữ liệu có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thay đổi quá lớn (nơi rất dày đặc, nơi lại rất thưa thớt). Thuật toán này không cho phép dùng một siêu tham số `eps` (bán kính) chung cho tất cả. Ngoài ra, DBSCAN <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hàm `predict()` để dự đoán nhãn cho các điểm dữ liệu mới đến.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Mật độ (Density)"
-            },
-            {
-                "id": "w2",
-                "text": "Màu sắc (Color)"
-            },
-            {
-                "id": "w3",
-                "text": "KHÔNG CÓ (Does not have)"
-            },
-            {
-                "id": "w4",
-                "text": "CÓ (Has)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w3"
-        },
-        "explanation": "Nếu khu phố A nhà nằm sát nhau, khu phố B nhà cách nhau 10km. Bạn set eps=1km thì DBSCAN nhận diện được khu A nhưng đánh giá khu B là Rừng Hoang (Noise). Bạn set eps=15km thì nó nhận được khu B nhưng lại gộp luôn khu A vào chung với khu B. (DBSCAN không có predict, bạn phải dùng thuật toán KNN để gán điểm mới)."
+        "explanation": "Autoencoder hoạt động hoàn toàn giống thuật toán PCA (Principal Component Analysis) nếu nó chỉ dùng các hàm kích hoạt Tuyến tính. Nhưng Autoencoder mạnh hơn PCA vì nó có thể nén Phi Tuyến bằng các hàm ReLU, Sigmoid."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép thuật toán Phân cụm với tính chất phù hợp:",
+        "difficulty": "Khó",
+        "question": "Ghép nối các biến thể Autoencoder và Cơ chế chống 'Ăn gian' của chúng:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "Sparse Autoencoder (AE thưa thớt)"
             },
             {
                 "id": "l2",
-                "text": "DBSCAN"
+                "text": "Denoising Autoencoder (AE khử nhiễu)"
+            },
+            {
+                "id": "l3",
+                "text": "Contractive Autoencoder (AE co thắt)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc cho trước số K. Thích cụm hình cầu. Nhạy cảm với nhiễu ngoại lai."
+                "text": "Kích thước lớp Latent có thể RẤT LỚN, nhưng ta thêm một 'hình phạt' vào Hàm Loss (như chuẩn L1 hoặc KL Divergence) bắt ép 90% các nơ-ron ở lớp giữa phải LUÔN TẮT (bằng 0). Mạng chỉ được phép dùng một vài nơ-ron sống sót để biểu diễn dữ liệu."
             },
             {
                 "id": "r2",
-                "text": "Tự động tìm số cụm. Xử lý tốt mọi hình dạng phức tạp. Chống nhiễu ngoại lai (tách riêng noise ra). Không thích hợp nếu mật độ các cụm khác nhau nhiều."
+                "text": "Cố tình ném rác, thêm nhiễu hạt (Gaussian Noise) hoặc bôi đen (Dropout) vào Dữ liệu Đầu vào. Nhưng ở Đầu ra, ta LẠI BẮT mạng phải xuất ra Bức ảnh gốc trong trẻo. Mạng buộc phải học cách gọt bỏ rác và đoán xem bên dưới lớp rác là gì."
+            },
+            {
+                "id": "r3",
+                "text": "Thêm một hình phạt phức tạp vào Hàm Loss dựa trên Đạo hàm của lớp ẩn đối với Input. Mục đích là ép Không gian Tiềm ẩn phải 'trơ' (Ít nhạy cảm) với những thay đổi nhỏ li ti trong dữ liệu đầu vào."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Đây là so sánh kinh điển giữa K-Means (Distance-based) và DBSCAN (Density-based)."
+        "explanation": "Nếu không có các kỹ thuật ép buộc này, một Autoencoder có kích thước lớn sẽ chỉ như một cái ống nước, dữ liệu chảy vào sao thì chảy ra y vậy, không đọng lại chút tri thức nào."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Denoising Autoencoder (AE khử nhiễu) không chỉ dùng để làm nét ảnh, nó còn được ứng dụng cực nhiều trong lĩnh vực nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dự báo thời tiết."
+            },
+            {
+                "id": "b",
+                "text": "Học biểu diễn Không giám sát"
+            },
+            {
+                "id": "c",
+                "text": "Phân loại thư rác."
+            },
+            {
+                "id": "d",
+                "text": "Dịch máy."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Unsupervised Feature Learning). Bạn nhặt hàng triệu bức ảnh trên mạng về, thêm nhiễu vào rồi bắt mạng khử nhiễu. Bằng cách đó mạng TỰ HỌC được các cạnh, góc, kết cấu của vật thể mà bạn không tốn 1 xu gán nhãn. Khử nhiễu là một dạng bài toán Self-Supervised (Tự giám sát) y hệt như Masked Language Modeling của BERT."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Sự Khác biệt cốt lõi giữa Autoencoder thông thường và Variational Autoencoder (VAE):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Autoencoder thông thường chỉ Nén dữ liệu thành một Véc-tơ con số CỐ ĐỊNH. Khi bạn trích xuất một Véc-tơ ngẫu nhiên không có trong dữ liệu gốc ném vào Decoder, nó sẽ sinh ra một bức ảnh rác. Ngược lại, VAE không nén ra con số cố định, mà nó nén ra các <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Kỳ vọng $\\mu$ và Phương sai $\\sigma$). Sau đó, nó sẽ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> một điểm dữ liệu từ phân phối đó để đưa vào Decoder. Điều này biến Latent Space của VAE thành một không gian liên tục, mịn màng. Nhờ đó VAE có thể SINH RA (Generate) các bức ảnh MỚI TOANH chưa từng tồn tại.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Phân phối Xác suất (Gauss)"
+            },
+            {
+                "id": "w2",
+                "text": "Lấy mẫu ngẫu nhiên (Sample)"
+            },
+            {
+                "id": "w3",
+                "text": "Ma trận hằng số"
+            },
+            {
+                "id": "w4",
+                "text": "Copy trực tiếp"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Chữ 'Variational' nghĩa là Biến phân. VAE không học thuộc lòng 'Con chó = Vector [0.5, 0.2]'. VAE học 'Con chó nằm trong một vùng không gian Hình chuông có tâm là 0.5, độ lệch 0.2'. Cứ bốc ngẫu nhiên trong vùng đó là ra con chó."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Mô hình Hỗn hợp Gauss (Gaussian Mixture Models - GMM) là gì?",
+        "question": "Thủ thuật 'Reparameterization Trick' trong huấn luyện VAE dùng để giải quyết vấn đề gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Là một biến thể của DBSCAN dùng phân phối Bernoulli."
+                "text": "Để mạng huấn luyện nhanh hơn trên GPU."
             },
             {
                 "id": "b",
-                "text": "Là một mô hình XÁC SUẤT giả định rằng toàn bộ các điểm dữ liệu được sinh ra từ việc trộn lẫn"
+                "text": "Quá trình 'Lấy mẫu ngẫu nhiên'"
             },
             {
                 "id": "c",
-                "text": "Là thuật toán học có giám sát dùng để phân loại văn bản."
+                "text": "Để thay đổi hàm kích hoạt ReLU thành Sigmoid."
             },
             {
                 "id": "d",
-                "text": "Là một thuật toán không thể giải quyết được cụm hình elip."
+                "text": "Giúp VAE lưu trữ dữ liệu vào ổ cứng."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(mixture) một số lượng hữu hạn các phân phối Gaussian (hình quả chuông). Khác với K-Means gán 'Cứng' (Hard clustering - bạn chỉ có thể thuộc Cụm 1 hoặc Cụm 2). GMM dùng xác suất 'Mềm' (Soft clustering - bạn thuộc 80% Cụm 1, 20% Cụm 2). GMM giả định các cụm có hình Elip (bầu dục) ở các hướng và kích thước khác nhau."
+        "explanation": "(Sampling) từ phân phối Gauss KHÔNG CÓ ĐẠO HÀM (Do nó phụ thuộc vào tính ngẫu nhiên). Nếu không có đạo hàm, thuật toán Backpropagation (Lan truyền ngược) sẽ bị đứt mạch. Thủ thuật này tách phần Ngẫu nhiên (epsilon) ra một nhánh riêng, giữ cho đường đi từ $\\mu$ và $\\sigma$ đến Output là một hàm toán học liên tục để có thể tính Gradient. Reparameterization Trick là phát minh thiên tài của Kingma & Welling (2013). Công thức: z = mu + sigma * epsilon (Với epsilon là nhiễu ngẫu nhiên chuẩn N(0,1))."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán nào đứng đằng sau quá trình hội tụ của Gaussian Mixture Model?",
+        "question": "Hàm Loss của Variational Autoencoder (VAE) được cấu tạo từ 2 thành phần nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Gradient Descent (Hạ gradient)."
+                "text": "Accuracy và F1-Score."
             },
             {
                 "id": "b",
-                "text": "Thuật toán EM (Expectation-Maximization - Cực đại hóa Kỳ vọng)."
+                "text": "1."
             },
             {
                 "id": "c",
-                "text": "Phương trình chuẩn (Normal Equation)."
+                "text": "L1 Loss và L2 Loss."
             },
             {
                 "id": "d",
-                "text": "Backpropagation (Lan truyền ngược)."
+                "text": "Generator Loss và Discriminator Loss."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "EM giống hệt cách K-Means hoạt động nhưng dành cho hình Elip. Bước E (Kỳ vọng): Ước tính xác suất mỗi điểm thuộc về cụm nào. Bước M (Cực đại hóa): Cập nhật lại hình dáng, vị trí, kích thước của Elip dựa trên các điểm vừa gom."
+        "explanation": "Reconstruction Loss (Lỗi Tái tạo): Ép Decoder giải mã ra bức ảnh giống ảnh gốc. Nếu không có KL Divergence, Encoder sẽ gian lận bằng cách ném các cụm dữ liệu (Chó, Mèo) ra cực kì xa nhau, tạo ra các khoảng trống khổng lồ ở giữa. Khi bạn chọn đại 1 điểm trong khoảng trống đó, máy sẽ sinh ra rác."
     },
     {
         "type": "ordering",
         "difficulty": "Trung bình",
-        "question": "Cách GMM phân biệt và tạo thành cụm thông qua siêu tham số 'covariance_type':",
+        "question": "Sắp xếp cấu trúc dữ liệu chảy trong Mạng VAE Keras:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "'spherical' (Hình cầu): Rất giống K-Means, các cụm bị ép phải tròn xoe, nhưng mỗi cụm có thể có bán kính khác nhau."
+                "text": "Ảnh gốc (X) đi vào Encoder."
             },
             {
                 "id": "2",
-                "text": "'diag' (Đường chéo): Các cụm có thể có hình elip (kéo dài trục X, Y khác nhau), nhưng các trục của elip phải SONG SONG với các trục tọa độ của đặc trưng."
+                "text": "Encoder xuất ra 2 lớp Dense song song: `z_mean` ($\\mu$) và `z_log_var` (Log Phương sai)."
             },
             {
                 "id": "3",
-                "text": "'tied' (Bị trói): Các cụm có thể có hình elip bất kỳ và nằm nghiêng, NHƯNG tất cả các cụm BẮT BUỘC phải chia sẻ CHUNG MỘT hình dạng, kích thước và góc nghiêng."
+                "text": "Một lớp Tùy chỉnh (Custom Layer) thực hiện Reparameterization Trick để Lấy mẫu ra Véc-tơ Z: `Z = mean + exp(log_var / 2) * epsilon`."
             },
             {
                 "id": "4",
-                "text": "'full' (Đầy đủ - Mặc định): Cho phép mỗi cụm thỏa sức có hình elip riêng biệt, kích thước riêng, độ nghiêng riêng biệt. (Nhưng tính toán tốn kém nhất)."
+                "text": "Véc-tơ Z được đẩy vào Decoder."
+            },
+            {
+                "id": "5",
+                "text": "Decoder tái tạo ra Bức ảnh mới (X_hat) từ Z."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "Tính linh hoạt của GMM nằm ở covariance_type (Ma trận hiệp phương sai). Bạn có thể giới hạn hình dáng của cụm để thuật toán chạy nhanh hơn."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Cách sử dụng GMM (Gaussian Mixture) phổ biến để 'Phát hiện Sự bất thường' (Anomaly Detection) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Các điểm dữ liệu nằm ở vùng có 'Xác suất Mật độ'"
-            },
-            {
-                "id": "b",
-                "text": "Các điểm dữ liệu nằm ngay tại trung tâm hình elip."
-            },
-            {
-                "id": "c",
-                "text": "Nó tự động gửi email báo cáo."
-            },
-            {
-                "id": "d",
-                "text": "Xóa hết toàn bộ dữ liệu."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "(PDF - Probability Density Function) RẤT THẤP (tức là nằm rìa nằm xa các hình elip của cụm) sẽ bị gắn cờ là Bất thường. Vì GMM là mô hình phân phối xác suất, nó biết rõ chỗ nào đông đúc, chỗ nào hoang vắng. Bạn chỉ cần đặt một ngưỡng tỷ lệ (ví dụ 4% điểm có xác suất thấp nhất) và quy chúng thành Nhiễu (Anomalies)."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Xác định số lượng cụm (K) cho GMM:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn KHÔNG THỂ dùng Quán tính (Inertia) hay Silhouette Score cho GMM vì chúng không đo được hình dạng elip. Để tìm K tối ưu cho GMM, người ta sử dụng các tiêu chí thông tin lý thuyết như <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Bayesian Information Criterion) hoặc <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Akaike Information Criterion). Cả hai tiêu chí này sẽ HÌNH PHẠT các mô hình có quá nhiều thông số (quá nhiều cụm K). Mô hình có AIC/BIC THẤP NHẤT là mô hình tốt nhất.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "BIC"
-            },
-            {
-                "id": "w2",
-                "text": "AIC"
-            },
-            {
-                "id": "w3",
-                "text": "MSE"
-            },
-            {
-                "id": "w4",
-                "text": "Accuracy"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w2"
-        },
-        "explanation": "AIC và BIC phạt sự phức tạp của mô hình. Nếu bạn chia thành quá nhiều cụm (K lớn), mô hình khớp dữ liệu rất tốt (hàm log-likelihood tăng) nhưng AIC/BIC sẽ bị phạt cao lên. Điểm AIC/BIC thấp nhất chính là 'Điểm cân bằng' (Elbow) tối ưu."
+        "explanation": "Việc dùng `log_var` thay vì `var` là một mẹo nhỏ trong Keras vì Phương sai phải luôn Dương, còn Đầu ra của Mạng nơ-ron có thể Âm. Lấy số mũ `exp` sẽ ép nó luôn dương."
     },
     {
         "type": "matching",
-        "difficulty": "Trung bình",
-        "question": "Ghép nối 'Bayesian Gaussian Mixture' (Mô hình Hỗn hợp Gauss Bayes) so với GMM truyền thống:",
+        "difficulty": "Dễ",
+        "question": "So sánh Đặc điểm của Hình ảnh do VAE sinh ra và GAN sinh ra:",
         "left": [
             {
                 "id": "l1",
-                "text": "GMM (GaussianMixture)"
+                "text": "Variational Autoencoder (VAE)"
             },
             {
                 "id": "l2",
-                "text": "BGM (BayesianGaussianMixture)"
+                "text": "Generative Adversarial Network (GAN)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc bạn phải chọn đúng số cụm (n_components) K. Nếu bạn nhập K dư thừa, nó vẫn sẽ cố chia ra K cụm."
+                "text": "Mô hình này sinh ra ảnh thường CÓ VẺ HƠI MỜ NHÒE (Blurry). Do hàm Loss Tái tạo (MSE) của nó thường lấy Trung bình cộng của các điểm ảnh. Bù lại Latent Space của nó cực kì liên tục và dễ kiểm soát."
             },
             {
                 "id": "r2",
-                "text": "Mô hình thông minh: Thay vì phải chọn đúng K, bạn cứ ném cho nó một số K RẤT LỚN (ví dụ 10). Thuật toán sẽ tự động ĐẨY TRỌNG SỐ của các cụm dư thừa về 0 (tự hủy các cụm không cần thiết), và trả lại cho bạn số lượng cụm thực sự (ví dụ 3)."
+                "text": "Mô hình này sinh ra ảnh CỰC KỲ SẮC NÉT và CHÂN THỰC. Nhưng nó cực kì khó huấn luyện, hay bị sụp đổ (Mode Collapse) và khó kiểm soát không gian sinh ảnh."
             }
         ],
         "correctPairs": {
             "l1": "r1",
             "l2": "r2"
         },
-        "explanation": "Bayesian Gaussian Mixture tự động loại bỏ bớt các cụm không cần thiết bằng cơ chế tiên nghiệm (prior). Đây là tính năng 'tự động tìm số K' cực kỳ thần thánh của nó."
+        "explanation": "VAE an toàn, toán học chặt chẽ. GAN liều lĩnh, nghệ thuật nhưng bất ổn. Suốt từ 2014 đến 2020, GAN là vị Vua không ngai của thế giới Sinh ảnh (Deepfake)."
     },
     {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Một thuật toán khác cũng rất nổi tiếng dùng để Phát hiện Bất thường (Anomaly Detection) dựa trên khái niệm 'Rừng' (Trees) là gì?",
-        "options": [
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm Mạng Đối kháng Tạo sinh (GAN):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Kiến trúc GAN (do Ian Goodfellow phát minh 2014) bao gồm 2 mạng Nơ-ron đấu đá nhau. \nMạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Kẻ làm tiền giả) nhận vào Nhiễu ngẫu nhiên và cố gắng vẽ ra một bức ảnh sao cho thật giống ảnh xịn.\nMạng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Cảnh sát) nhận vào các bức ảnh (Vừa có ảnh thật từ Database, vừa có ảnh giả do mạng kia vẽ). Nhiệm vụ của nó là nhìn vào ảnh và phán đoán xem đó là Real (Thật - 1) hay Fake (Giả - 0).",
+        "words": [
             {
-                "id": "a",
-                "text": "Isolation Forest (Rừng cách ly)."
+                "id": "w1",
+                "text": "Generator (Bộ Phát sinh)"
             },
             {
-                "id": "b",
-                "text": "Random Forest."
+                "id": "w2",
+                "text": "Discriminator (Bộ Phân biệt)"
             },
             {
-                "id": "c",
-                "text": "Gradient Boosting."
+                "id": "w3",
+                "text": "Encoder"
             },
             {
-                "id": "d",
-                "text": "K-Nearest Neighbors."
+                "id": "w4",
+                "text": "Decoder"
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Isolation Forest hoạt động bằng cách chẻ (split) dữ liệu ngẫu nhiên. Các điểm bất thường (anomalies) thường đứng một mình xa đàn, nên chỉ cần CHẺ VÀI NHÁT là nó đã bị cô lập khỏi cụm dữ liệu gốc. Điểm nào bị cô lập ở các nhánh cây nông nhất (đường dẫn ngắn) chính là điểm bất thường."
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Cuộc chơi này là một Trò chơi Tổng Không (Zero-sum Game / Minimax). Sự tiến bộ của Kẻ làm tiền giả sẽ làm Cảnh sát ngu đi, và ngược lại."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Phát hiện sự bất thường (Anomaly Detection) khác với Phát hiện cái mới (Novelty Detection) ở điểm nào?",
+        "question": "Trong quá trình huấn luyện GAN, tại sao ta PHẢI huấn luyện Bộ Phân biệt (Discriminator) và Bộ Phát sinh (Generator) theo kiểu LUÂN PHIÊN (Tắt cái này, bật cái kia)?",
         "options": [
             {
                 "id": "a",
-                "text": "Hai khái niệm này hoàn toàn giống hệt nhau."
+                "text": "Vì RAM của GPU không đủ chứa cả hai."
             },
             {
                 "id": "b",
-                "text": "Anomaly Detection cho phép tập dữ liệu huấn luyện ĐÃ CHỨA SẴN các ngoại lệ/nhiễu"
+                "text": "Khi huấn luyện Generator, ta KHÔNG CÓ HÀM LOSS THEO KIỂU TRUYỀN THỐNG"
             },
             {
                 "id": "c",
-                "text": "Novelty detection yêu cầu có nhãn."
+                "text": "Để tiết kiệm điện năng."
             },
             {
                 "id": "d",
-                "text": "Anomaly detection chậm hơn."
+                "text": "Đó là lỗi của thư viện Keras."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(nó cố gắng tìm ra chúng). Novelty Detection yêu cầu tập huấn luyện phải 'SẠCH' 100% (chỉ chứa các ví dụ bình thường), và nó chỉ bắt lỗi ở các dữ liệu mới trong tương lai. Novelty: Bạn train mô hình trên hình ảnh 10.000 con chó (sạch bong). Ngày mai bạn đưa hình con mèo vào, nó kêu 'Đây là cái mới' (Novelty). Anomaly: Tập 10.000 ảnh gốc đã có lộn 10 con mèo trong đó, bạn yêu cầu mô hình lọc 10 con mèo đó ra (Anomaly)."
+        "explanation": "(Không biết thế nào là ảnh đẹp). Ta cắm đầu ra của Generator vào đầu vào của Discriminator. Ta BẮT BUỘC ĐÓNG BĂNG trọng số của Discriminator (không cho nó học), và truyền Gradient ngược từ hàm Loss (Đánh lừa Discriminator = 1) về tận Generator để chỉnh sửa Generator. Nếu không đóng băng, mạng sẽ tự 'bóp méo' Cảnh sát thành kẻ ngốc để dễ đánh lừa thay vì vẽ ảnh đẹp hơn. Sự vi diệu của GAN là Generator tự học bằng cách 'ăn cắp' kiến thức từ Đạo hàm của Discriminator. Bạn không bao giờ được phép `fit` nguyên cả cái mạng GAN hỗn hợp mà không đóng băng Discriminator."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Hội chứng Sụp đổ Cục bộ (Mode Collapse) - Cơn ác mộng lớn nhất của mạng GAN là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Máy tính bị treo khi đang chạy."
+            },
+            {
+                "id": "b",
+                "text": "Bộ Phát sinh (Generator) phát hiện ra MỘT điểm mù duy nhất của Discriminator"
+            },
+            {
+                "id": "c",
+                "text": "Discriminator quá mạnh, từ chối mọi bức ảnh giả."
+            },
+            {
+                "id": "d",
+                "text": "Mạng tạo ra ảnh bị đảo ngược màu sắc."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Ví dụ Discriminator luôn luôn chấm điểm 10/10 cho một bức ảnh 'Con chó màu đen'). Thế là Generator LƯỜI BIẾNG, từ bỏ việc học vẽ mèo, chim, chuột... Nó bắt đầu VẼ RA HÀNG TRIỆU CON CHÓ MÀU ĐEN GIỐNG HỆT NHAU vì đó là cách dễ nhất để chiến thắng trò chơi. Mode Collapse (Mất tính đa dạng). Khắc phục nó là một cực hình. Hàng loạt biến thể như Wasserstein GAN (WGAN), Minibatch Discrimination sinh ra chỉ để trị cái bệnh lười biếng này."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Thứ tự Code 1 vòng lặp Huấn luyện tùy chỉnh (Custom Training Loop) cho GAN bằng `tf.GradientTape`:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Pha 1: Lấy một mẻ Ảnh Thật (Real). Sinh ra một mẻ Nhiễu ngẫu nhiên và dùng Generator vẽ ra một mẻ Ảnh Giả (Fake)."
+            },
+            {
+                "id": "2",
+                "text": "Gộp Ảnh Thật (Gán nhãn 1) và Ảnh Giả (Gán nhãn 0) lại."
+            },
+            {
+                "id": "3",
+                "text": "Dùng `GradientTape` tính đạo hàm Loss của Discriminator trên bộ dữ liệu gộp đó và cập nhật trọng số cho Discriminator. (Dạy cảnh sát nhận diện)."
+            },
+            {
+                "id": "4",
+                "text": "Pha 2: Sinh một mẻ Nhiễu ngẫu nhiên mới. GÁN NHÃN LÀ 1 (Dù nó là giả, ta đang muốn LỪA cảnh sát)."
+            },
+            {
+                "id": "5",
+                "text": "Dùng `GradientTape` đẩy Nhiễu qua Generator rồi chạy thẳng qua Discriminator (Đã đóng băng). Tính đạo hàm Loss và cập nhật trọng số cho RIÊNG Generator. (Dạy kẻ làm giả qua mặt cảnh sát)."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Với GAN, bạn không thể dùng lệnh `model.fit()` của Keras được nữa. Phải viết vòng lặp GradientTape bằng tay vì có 2 hàm Loss và 2 bộ Optimizer đan xen nhau."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Kiến trúc DCGAN (Deep Convolutional GAN) đã thay đổi GAN bản gốc như thế nào để tạo ra cú hích lớn trong sinh ảnh?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó thay thế Mạng Dense bằng Mạng CNN (Tích chập)."
+            },
+            {
+                "id": "b",
+                "text": "Nó dùng mạng RNN thay cho mạng Dense."
+            },
+            {
+                "id": "c",
+                "text": "Nó loại bỏ Discriminator."
+            },
+            {
+                "id": "d",
+                "text": "Nó dùng hàm kích hoạt Tuyến tính cho mọi nơ ron."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Cụ thể, Generator dùng các Lớp Tích chập Chuyển vị (Conv2DTranspose) để phóng to ảnh, còn Discriminator dùng Lớp Tích chập (Conv2D) thông thường kèm MaxPooling/Strides để thu nhỏ ảnh. Năm 2015, DCGAN đã biến GAN từ một 'Mớ lý thuyết toán học sinh ra ảnh mờ mờ cỡ 28x28' thành một cỗ máy sinh ảnh phong cảnh, khuôn mặt tương đối sắc nét bằng sức mạnh của CNN."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Sự thay thế Hàm Loss Cross-Entropy trong WGAN (Wasserstein GAN):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "GAN truyền thống dùng Binary Cross-Entropy làm hàm Loss. Nhưng nếu Cảnh sát (Discriminator) quá giỏi, hàm số này sẽ sinh ra đạo hàm bằng 0, khiến Kẻ làm giả (Generator) bị điếc hoàn toàn và không học được gì (Vanishing Gradient). \nWGAN thay thế bằng Toán học Vận chuyển tối ưu: Wasserstein Distance (Earth Mover's Distance). Mạng Cảnh sát giờ đây không còn xuất ra Xác suất (0 đến 1) qua hàm Sigmoid nữa, mà xuất ra một <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> tuyến tính (Được gọi là Critic / Kẻ đánh giá). Để đảm bảo toán học không bị nổ, WGAN yêu cầu phải xén bộ trọng số (Weight Clipping) hoặc phạt Đạo hàm (Gradient Penalty) để đảm bảo mạng luôn tuân thủ nguyên lý <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Điểm số thực (Real number score)"
+            },
+            {
+                "id": "w2",
+                "text": "1-Lipschitz (Hàm không dốc quá)"
+            },
+            {
+                "id": "w3",
+                "text": "Ảnh RGB"
+            },
+            {
+                "id": "w4",
+                "text": "Đạo hàm bậc 2"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "WGAN là một trong những paper nặng Toán nhất. Nó giải quyết triệt để Mode Collapse và giúp GAN hội tụ ổn định, bất chấp việc Generator có cùi bắp đến đâu."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Trung bình",
+        "question": "Ghép nối các họ AI Sinh (Generative AI) nổi tiếng nhất:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "ProGAN / StyleGAN"
+            },
+            {
+                "id": "l2",
+                "text": "CycleGAN"
+            },
+            {
+                "id": "l3",
+                "text": "Conditional GAN (cGAN)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Học sinh ảnh dần dần: Bắt đầu train 2 mạng ở độ phân giải siêu nhỏ (4x4), sau khi ổn định thì 'gắn thêm' các lớp mạng mới để train ở (8x8), (16x16) cho đến tận (1024x1024). Tạo ra bức ảnh khuôn mặt giả như thật (ThisPersonDoesNotExist)."
+            },
+            {
+                "id": "r2",
+                "text": "Chuyển đổi phong cách (Image-to-Image translation) MÀ KHÔNG CẦN DỮ LIỆU CẶP. Có thể biến Video Con ngựa thành Con ngựa vằn, Biến Mùa hè thành Mùa đông nhờ hàm Consistency Loss."
+            },
+            {
+                "id": "r3",
+                "text": "Mớm thêm Nhãn dán (Label) vào cả Generator và Discriminator. Nhờ đó bạn có thể RA LỆNH cho mạng: 'Hãy vẽ cho tao số 8' thay vì ngồi cầu nguyện nó bốc trúng số 8 ngẫu nhiên."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Dòng họ GAN đã thống trị hoàn toàn thế giới Deepfake cho đến khi Diffusion Models trỗi dậy."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Mô hình Khuếch tán (Diffusion Model - Công nghệ lõi của Midjourney, DALL-E, Stable Diffusion) được lấy cảm hứng từ hiện tượng vật lý nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Định luật bảo toàn năng lượng."
+            },
+            {
+                "id": "b",
+                "text": "Hiện tượng Nhiệt động lực học (Khuếch tán hạt)."
+            },
+            {
+                "id": "c",
+                "text": "Thuyết tương đối của Einstein."
+            },
+            {
+                "id": "d",
+                "text": "Lực hấp dẫn của Newton."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Khi bạn nhỏ một giọt mực vào cốc nước, giọt mực (Ảnh gốc rõ nét) sẽ dần dần tan ra thành một mớ hỗn độn (Nhiễu hạt - Noise). Mô hình AI sẽ học cách ĐẢO NGƯỢC THỜI GIAN (Reverse Process) để hút mớ mực hỗn độn đó gom lại thành giọt mực ban đầu (Tạo ra ảnh xịn từ Nhiễu vô nghĩa). Đó là một ý tưởng siêu việt. Phá hủy thì dễ, xây dựng thì khó. Ta dạy AI cách từ từ 'khôi phục' bức ảnh bị phá hủy từng bước một qua hàng trăm vòng lặp."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Quy trình Hoạt động của Mô hình Diffusion (Khuếch tán):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Quá trình Tiến (Forward Process): Lấy ảnh thật, cộng dần từng chút Nhiễu Gaussian (Noise) vào ảnh qua T bước thời gian (VD: 1000 bước) cho đến khi ảnh biến thành cục nhiễu TV hột é hoản toàn."
+            },
+            {
+                "id": "2",
+                "text": "Huấn luyện AI (U-Net): Mớm cho AI Bức ảnh đang bị nhiễu ở bước t. Bắt AI phải DỰ ĐOÁN xem CỤC NHIỄU nào vừa được cộng vào ở bước đó."
+            },
+            {
+                "id": "3",
+                "text": "Quá trình Sinh ảnh (Reverse Process): Khi đã học xong, ta Bốc một cục nhiễu ngẫu nhiên 100% từ không gian."
+            },
+            {
+                "id": "4",
+                "text": "Đưa cục nhiễu đó qua mạng AI 1000 vòng lặp lùi. Ở mỗi vòng, AI đoán cục nhiễu hiện tại và BÓC NÓ RA (Trừ đi) một ít."
+            },
+            {
+                "id": "5",
+                "text": "Sau 1000 bước bóc nhiễu rả rích, một bức ảnh nghệ thuật tuyệt đẹp sẽ hiện ra."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Khác với GAN đẻ ra ảnh BÙM một phát ngay lập tức. Diffusion phải 'khắc' ảnh ra từ từ qua 1000 bước. Đó là lý do Midjourney chạy tốn thời gian hơn GAN rất nhiều."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong Stable Diffusion (Phiên bản Diffusion xuất sắc và nhẹ nhất), thay vì đập nhiễu trực tiếp lên các điểm ảnh (Pixel Space) nặng hàng Megabyte, họ đã làm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Chỉ đập nhiễu lên màu Đen Trắng."
+            },
+            {
+                "id": "b",
+                "text": "Họ sử dụng Latent Diffusion."
+            },
+            {
+                "id": "c",
+                "text": "Dùng siêu máy tính Google để chạy bù lại phần nặng."
+            },
+            {
+                "id": "d",
+                "text": "Cắt bức ảnh ra thành nhiều miếng nhỏ ghép lại."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Họ kết hợp Diffusion với VAE! Đầu tiên dùng VAE nén bức ảnh 512x512 thành một Ma trận Tiềm ẩn cực nhỏ (Latent Space 64x64). Sau đó, Mạng Diffusion (U-Net) sẽ thực hiện quá trình Cộng Nhiễu và Bóc Nhiễu TRÊN KHÔNG GIAN TIỀM ẨN 64x64 siêu nhẹ đó. Cuối cùng mới dùng Decoder của VAE để bung ma trận 64x64 ra ảnh 512x512 thành phẩm. Latent Diffusion là một bước ngoặt. Việc nén thông tin giúp Stable Diffusion có thể chạy mượt mà sinh ra ảnh HD ngay trên chiếc Card đồ họa chơi game 8GB ở nhà bạn, đập tan thế độc quyền của các ông lớn."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Cách mô hình Diffusion hiểu văn bản Text-to-Image (Ví dụ: 'Vẽ con chó trên Sao Hỏa'):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Để ép quá trình bóc nhiễu (Denoise) của U-Net đi đúng hướng mà ta ra lệnh. Người ta nhét Câu Văn Bản (Prompt) qua một bộ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Thường là mô hình ngôn ngữ CLIP của OpenAI) để biến văn bản thành Vector Ngữ Nghĩa. Cục Vector Ngữ Nghĩa này được Cấy/Tiêm thẳng vào các lớp của mạng U-Net thông qua cơ chế <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Nhờ đó, mỗi khi U-Net bóc 1 hạt nhiễu, nó sẽ 'nhìn sang' Vector Văn Bản để biết nên bóc sao cho ra hình cái tai chó hay bóc sao cho ra đất đỏ sao Hỏa.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Text Encoder (Mã hóa Văn bản)"
+            },
+            {
+                "id": "w2",
+                "text": "Cross-Attention (Chú ý chéo)"
+            },
+            {
+                "id": "w3",
+                "text": "Discriminator"
+            },
+            {
+                "id": "w4",
+                "text": "MaxPooling"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Cross-Attention là chìa khóa kết nối Thế giới Ngôn Ngữ (LLMs) và Thế giới Thị giác (Computer Vision). Mạng ảnh (Q) sẽ truy vấn vào Mạng Chữ (K, V) để mượn ý tưởng vẽ tranh."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Sự Khác biệt về tốc độ giữa GAN và Diffusion là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "GAN chậm hơn Diffusion 1000 lần."
+            },
+            {
+                "id": "b",
+                "text": "GAN chạy Cực Nhanh (Sinh ảnh trong 0.01 giây)"
+            },
+            {
+                "id": "c",
+                "text": "Cả hai bằng tốc độ nhau."
+            },
+            {
+                "id": "d",
+                "text": "Diffusion bị giới hạn ở ảnh trắng đen nên nhanh hơn."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Vì nó chỉ cần 1 bước Feedforward duy nhất từ Vector ném thẳng ra Ảnh. Diffusion chạy Cực Chậm (Vài giây đến hàng phút) vì nó phải chạy vòng lặp trừ nhiễu Mạng U-Net lặp lại hàng chục/hàng trăm lần (Bước thời gian Markov). Tốc độ sinh ảnh (Inference Time) là nhược điểm chí mạng của Diffusion. Bù lại, Diffusion sinh ảnh đa dạng (Diversity) vô đối, không bao giờ bị Mode Collapse, và vẽ ảnh sát với Text Prompt một cách đáng sợ."
     },
     {
         "type": "ordering",
         "difficulty": "Dễ",
-        "question": "Quy trình làm việc của Học K-Means từ Scikit-Learn:",
-        "instruction": "(Sắp xếp các dòng mã để chạy K-Means đúng chuẩn)",
+        "question": "Kiến trúc mạng U-Net kinh điển (Dùng để khử nhiễu trong Diffusion hoặc Tách nền ảnh FCN):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "from sklearn.cluster import KMeans"
+                "text": "Dữ liệu đi xuống (Downsampling/Encoder): Dùng Tích chập và MaxPooling ép bức ảnh nhỏ lại, nhưng kênh đặc trưng (Filters) dày lên."
             },
             {
                 "id": "2",
-                "text": "k = 5"
+                "text": "Đáy U (Bottleneck): Nơi bức ảnh bị nén nhỏ nhất (VD 8x8), chứa thông tin ngữ nghĩa cốt lõi."
             },
             {
                 "id": "3",
-                "text": "kmeans = KMeans(n_clusters=k, random_state=42)"
+                "text": "Dữ liệu đi lên (Upsampling/Decoder): Dùng Tích chập Chuyển vị (Transposed Conv) để phóng to dần bức ảnh trở lại kích thước gốc."
             },
             {
                 "id": "4",
-                "text": "y_pred = kmeans.fit_predict(X)"
+                "text": "Skip Connections (Linh hồn của U-Net): Ở MỖI TẦNG PHÓNG TO, nối TRỰC TIẾP Bản đồ Đặc trưng từ Nhánh Đi Xuống vắt ngang sang Nhánh Đi Lên tương ứng. Giúp khôi phục lại các chi tiết góc cạnh sắc nét bị mờ do MaxPooling gây ra."
             }
         ],
         "correctOrder": [
@@ -1121,172 +1170,173 @@
             "3",
             "4"
         ],
-        "explanation": "Import -> Khai báo K -> Khởi tạo đối tượng -> Fit_predict (do là Unsupervised nên chỉ truyền X, không truyền y)."
+        "explanation": "Mạng U-Net có hình chữ U. Skip connection vắt ngang chữ U đó tạo thành một chiếc thang sắt. Cực kỳ mạnh mẽ cho bài toán Image-to-Image (Ảnh ra Ảnh)."
     },
     {
-        "type": "fill_in_blanks",
+        "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "One-Class SVM cho Phát hiện Cái mới (Novelty Detection):",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Khác với SVM phân loại nhị phân truyền thống cố tách 2 lớp bằng siêu phẳng. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cố gắng tách các điểm dữ liệu (tất cả chỉ có 1 lớp bình thường) ra khỏi <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trong không gian chiều cao. Kết quả là nó tạo ra một cái 'bong bóng' phi tuyến khổng lồ bao bọc lấy các điểm bình thường. Điểm nào rơi ra ngoài bong bóng bị coi là dị thường.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "One-Class SVM"
-            },
-            {
-                "id": "w2",
-                "text": "Gốc tọa độ (Origin)"
-            },
-            {
-                "id": "w3",
-                "text": "Linear SVC"
-            },
-            {
-                "id": "w4",
-                "text": "K-Means"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w2"
-        },
-        "explanation": "One-Class SVM nhốt toàn bộ dữ liệu sạch vào 1 cái túi bong bóng bằng cách đẩy chúng ra khỏi gốc tọa độ. Cực kỳ mạnh khi dữ liệu train sạch 100% nhưng gặp khó nếu dữ liệu có sẵn nhiễu."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Phân cụm Bằng Tích cực (Active Learning) sử dụng K-Means để làm gì?",
+        "question": "Thuật toán DDPM (Denoising Diffusion Probabilistic Models) năm 2020 thiết kế Mạng Nơ-ron dự đoán cái gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuê người dùng internet nhấp vào quảng cáo."
+                "text": "Dự đoán Bức ảnh Gốc hoàn hảo ngay từ bước đầu tiên."
             },
             {
                 "id": "b",
-                "text": "Để tự động xóa dữ liệu."
+                "text": "Mạng KHÔNG dự đoán Bức ảnh Gốc."
             },
             {
                 "id": "c",
-                "text": "Tìm ra các điểm (Ví dụ: tâm của K-Means) có ý nghĩa và KHÓ phân loại nhất trình bày cho CHUYÊN GIA CON NGƯỜI (Human expert)"
+                "text": "Dự đoán Nhãn phân loại của bức ảnh."
             },
             {
                 "id": "d",
-                "text": "Tự động gán nhãn dựa trên dự đoán ngẫu nhiên."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Để họ gán nhãn thủ công. Việc này tiết kiệm tiền thuê người gán nhãn hàng triệu tấm ảnh mà chỉ cần gán vài ngàn tấm cốt lõi. Active Learning kết hợp máy + người. Máy phân cụm, móc ra những điểm trung tâm hoặc những điểm nằm ở biên giới lấp lửng khó quyết, đưa cho người thật xem. Sau đó máy học tiếp. Quy trình lặp lại."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Tính chất của DBSCAN trong việc sử dụng siêu tham số?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Siêu tham số eps có ý nghĩa là Số lượng vòng lặp tối đa."
-            },
-            {
-                "id": "b",
-                "text": "Bạn phải chỉnh siêu tham số eps"
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN không có siêu tham số nào."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN tự học eps bằng Gradient Descent."
+                "text": "Dự đoán điểm số sắc nét."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(bán kính) và min_samples cực kỳ cẩn thận. Nếu eps quá nhỏ, mọi điểm đều trở thành Nhiễu. Nếu eps quá lớn, mọi điểm nhập chung vào 1 cụm khổng lồ. Khác với K-Means phải đoán K, thì ở DBSCAN bạn phải đoán bán kính lân cận eps. May thay, eps có ý nghĩa hình học (khoảng cách vật lý thực) nên đôi khi dễ set up hơn."
-    },
-    {
-        "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép nối vai trò của hàm mục tiêu (Mục đích tối ưu hóa) của các thuật toán:",
-        "left": [
-            {
-                "id": "l1",
-                "text": "K-Means"
-            },
-            {
-                "id": "l2",
-                "text": "PCA (Phân tích Thành phần Chính)"
-            }
-        ],
-        "right": [
-            {
-                "id": "r1",
-                "text": "Tối thiểu hóa 'Quán tính' (Inertia - Tổng khoảng cách từ điểm đến tâm)."
-            },
-            {
-                "id": "r2",
-                "text": "Tối thiểu hóa 'Lỗi tái tạo' (Reconstruction error) hoặc Tối đa hóa 'Phương sai giải thích'."
-            }
-        ],
-        "correctPairs": {
-            "l1": "r1",
-            "l2": "r2"
-        },
-        "explanation": "Mỗi thuật toán Unsupervised đều ngầm tối ưu hóa một hàm toán học."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán Local Outlier Factor (LOF) hoạt động trong bài toán Phát hiện Bất thường như thế nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó so sánh MẬT ĐỘ của một điểm dữ liệu với mật độ của K LÁNG GIỀNG GẦN NHẤT của nó."
-            },
-            {
-                "id": "b",
-                "text": "Nó dùng mạng Neural để học hàm phi tuyến."
-            },
-            {
-                "id": "c",
-                "text": "Nó đo khoảng cách của điểm đó đến gốc tọa độ (0,0)."
-            },
-            {
-                "id": "d",
-                "text": "Nó sử dụng Decision Tree."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "Nếu điểm đó có mật độ THẤP HƠN NHIỀU so với những người hàng xóm, điểm đó là dị thường. Rất giống với tư tưởng của DBSCAN nhưng tinh tế hơn. DBSCAN xài một bán kính eps cứng nhắc. LOF đo độ 'cô đơn' tương đối (nếu ai xung quanh cũng ở nhà san sát nhau, tự nhiên nhà bạn cách xa mọi người 1km thì bạn là dị thường)."
+        "explanation": "Ở mỗi bước t, mạng chỉ dự đoán ĐÚNG DUY NHẤT LƯỢNG NHIỄU (Epsilon) đã được cộng thêm vào bức ảnh tại bước đó. Hàm Loss cực kỳ đơn giản: Sai số MSE giữa Lượng Nhiễu Thật (Ta chủ động tự cộng vào lúc Train) và Lượng Nhiễu do AI dự đoán. Dự đoán Noise thay vì dự đoán Image là thủ thuật toán học xuất sắc của Ho et al (2020), làm cho Diffusion Models thực sự cất cánh và dễ code hơn bao giờ hết."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Làm cách nào để chuyển một bức ảnh thành dữ liệu cho Phân cụm Màu sắc (Color Quantization)?",
+        "question": "Tính năng CFG (Classifier-Free Guidance) trong Sinh ảnh AI:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để giảm số lượng màu của bức ảnh từ 16 triệu màu xuống còn 10 màu. Bức ảnh là một ma trận 3D (Width x Height x 3 kênh RGB). Để dùng K-Means, bạn phải Reshape (Định hình lại) nó thành dạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tức là danh sách các pixel dài, mỗi pixel có 3 chiều RGB). Sau khi train K-Means(k=10), bạn thay thế màu gốc của từng pixel bằng màu của <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mà nó thuộc về.",
+        "text": "Bạn hay thấy thông số CFG Scale (Từ 1-30) trong giao diện Midjourney/WebUI. Khi sinh ảnh, mô hình Diffusion chạy song song 2 luồng: Luồng 1 có tiêm Text Prompt ('Vẽ con mèo'). Luồng 2 hoàn toàn KHÔNG CÓ Text (Unconditional - Vẽ bừa rác). Thuật toán sẽ lấy (Vector Luồng 1 Trừ Vector Luồng 2) rồi nhân với tham số <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Nếu tham số này càng Cao (VD: 15), AI sẽ Cực Kỳ <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> lời bạn mô tả (Mèo phải ra mèo). Nếu tham số này Thấp (VD: 2), AI sẽ vẽ sáng tạo lung tung bất chấp câu lệnh.",
         "words": [
             {
                 "id": "w1",
-                "text": "2D"
+                "text": "CFG Scale"
             },
             {
                 "id": "w2",
-                "text": "Tâm cụm (Centroid)"
+                "text": "Tuân thủ chặt chẽ"
             },
             {
                 "id": "w3",
-                "text": "1D"
+                "text": "Bỏ qua"
             },
             {
                 "id": "w4",
-                "text": "Biên (Border)"
+                "text": "Batch Size"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "Sklearn bắt buộc đầu vào là mảng 2D (mẫu x đặc trưng). Bạn duỗi ảnh thành danh sách dài các pixel. Tâm cụm của K-Means(k=10) chính là 10 mã màu đại diện tốt nhất cho bức ảnh."
+        "explanation": "CFG hoạt động như một cái Loa khuếch đại (Extrapolation). Nó đẩy xa hướng đi của Bức ảnh RA KHỎI hướng đi Vô định (Không Text), tiến sát vào Hướng đi có Text."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tại sao trong mô hình Diffusion, ta có thể Mớm Nhiễu (Forward Process) ngay lập tức tới Bước thứ T (VD: Bước 500) mà không cần phải dùng vòng lặp For tính tuần tự 500 lần?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Do CPU chạy quá nhanh."
+            },
+            {
+                "id": "b",
+                "text": "Nhờ tính chất của Chuỗi Markov và phân phối chuẩn Gaussian các nhà toán học đã tìm ra 'Công thức Đóng'"
+            },
+            {
+                "id": "c",
+                "text": "Do bỏ qua bước cộng nhiễu."
+            },
+            {
+                "id": "d",
+                "text": "Do thư viện tự tối ưu."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Closed-form). Bằng cách sử dụng chuỗi tích lũy của tham số Phương sai (Alpha_bar), ta có thể Nhảy Cóc một phát từ Ảnh Gốc X_0 thẳng lên Ảnh Nhiễu X_500 chỉ bằng 1 công thức toán đơn giản. Điều này giúp quá trình Huấn Luyện (Train) siêu tốc song song. Đây là cốt lõi toán học của DDPM. Train thì có công thức đóng (siêu lẹ), nhưng Inference/Sinh ảnh (Denoise) thì KHÔNG CÓ công thức đóng, bắt buộc phải lặp lùi từ 1000 về 0 (siêu chậm)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Sự phát triển của các thế hệ Generative AI (Học Sinh Sản Dữ Liệu):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Autoencoders & VAEs (2013): Khái niệm Latent Space, sinh ảnh mờ nhòe bằng toán học xác suất chặt chẽ."
+            },
+            {
+                "id": "2",
+                "text": "GANs (2014): Cuộc chiến Minimax Cảnh sát - Kẻ làm giả, sinh ảnh siêu nét nhưng bất ổn, hay sụp đổ cục bộ."
+            },
+            {
+                "id": "3",
+                "text": "Autoregressive (PixelRNN / PixelCNN - 2016): Vẽ ảnh từng Pixel một giống như mạng RNN đoán chữ. Chất lượng tốt nhưng tốc độ chậm thê thảm."
+            },
+            {
+                "id": "4",
+                "text": "Diffusion Models (2020-Nay): Kết hợp quá trình Nhiệt động lực học, sinh ảnh đỉnh cao, sát Prompt, đa dạng, chính thức đưa AI Art bùng nổ toàn cầu."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Mỗi mô hình đều có sự đánh đổi (Trade-off). VAE dễ train nhưng ảnh xấu. GAN nét nhưng đa dạng kém, khó train. Diffusion đa dạng, nét nhưng lại quá chậm."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Bạn muốn thay đổi Khuôn mặt (Deepfake) trong Video. Bạn nên chọn kiến trúc nào là phù hợp nhất?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Mạng RNN."
+            },
+            {
+                "id": "b",
+                "text": "Autoencoder."
+            },
+            {
+                "id": "c",
+                "text": "Mạng LSTM 1D."
+            },
+            {
+                "id": "d",
+                "text": "Mạng VGG-16."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Cụ thể là dùng Chung 1 Encoder cho cả 2 người, nhưng tách làm 2 Decoder riêng biệt (Dec_A cho mặt A, Dec_B cho mặt B). Khi tráo đổi Decoder B để giải mã Latent Face của người A, ta sẽ có khuôn mặt B với biểu cảm của A. Thuật toán DeepFaceLab đình đám làm ra 99% clip Deepfake trên mạng chính là dựa trên kiến trúc Autoencoder kép này."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Inpainting và Image-to-Image trong Diffusion:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Diffusion không chỉ dùng để gõ Text ra Ảnh. \nKỹ thuật Image-to-Image (Ảnh ra Ảnh): Thay vì bắt đầu Sinh ảnh từ cục Nhiễu ngẫu nhiên 100%. Ta lấy 1 Bức ảnh vẽ tay nguệch ngoạc của bạn, MỚM VÀO ĐÓ khoảng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tương đương bước Thời gian t=500). Sau đó chạy quá trình Denoise lùi về 0. AI sẽ giữ lại cái khung hình vẽ tay của bạn và biến nó thành Kiệt tác tả thực.\nKỹ thuật Inpainting (Vẽ đè vùng chọn): Bạn bôi đen 1 vùng trên ảnh. Tại vùng bị bôi đen, AI sẽ chạy Denoise. Tại vùng KHÔNG bị bôi, AI sẽ liên tục <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> từ Ảnh gốc để giữ nguyên vẹn cảnh vật xung quanh.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "50% Nhiễu (Noise)"
+            },
+            {
+                "id": "w2",
+                "text": "Copy và Đè Pixel (Overwrite)"
+            },
+            {
+                "id": "w3",
+                "text": "100% Ảnh Đen"
+            },
+            {
+                "id": "w4",
+                "text": "Xóa toàn bộ"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Đó là lý do Diffusion được coi là CÔNG CỤ (Tool) của nghệ sĩ, chứ không chỉ là cỗ máy tạo ảnh random. Bạn có quyền kiểm soát cực cao (ControlNet, Inpaint, Img2Img) lên tác phẩm của mình."
     }
 ];
 

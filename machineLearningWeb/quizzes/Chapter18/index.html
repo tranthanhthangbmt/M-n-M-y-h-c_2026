@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Trắc Nghiệm Chương 9</title>
+    <title>Bài Tập Trắc Nghiệm Chương 18</title>
     <style>
         :root {
             --primary: #1a73e8;
@@ -467,826 +467,912 @@
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Sự khác biệt cốt lõi giữa Phân loại (Classification) và Phân cụm (Clustering) là gì?",
+        "question": "Học Tăng Cường (Reinforcement Learning - RL) khác biệt như thế nào so với Học Có Giám Sát (Supervised Learning)?",
         "options": [
             {
                 "id": "a",
-                "text": "Phân loại dùng cho dữ liệu văn bản, còn Phân cụm dùng cho dữ liệu hình ảnh."
+                "text": "RL không cần dùng mạng Nơ-ron."
             },
             {
                 "id": "b",
-                "text": "Phân loại là học CÓ GIÁM SÁT (dữ liệu đã có sẵn nhãn)."
+                "text": "Học Có Giám Sát cần Bác sĩ (Người gán nhãn) chỉ sẵn 'Đây là ung thư,"
             },
             {
                 "id": "c",
-                "text": "Phân loại chậm hơn Phân cụm."
+                "text": "RL học nhanh hơn gấp 10 lần."
             },
             {
                 "id": "d",
-                "text": "Phân cụm yêu cầu người dùng phải gán nhãn thủ công trước."
+                "text": "RL dùng để dịch ngôn ngữ."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Phân cụm là học KHÔNG GIÁM SÁT (dữ liệu hoàn toàn không có nhãn, thuật toán tự tìm ra các nhóm tương đồng). Trong Phân loại, ta biết trước ví dụ con chó, con mèo. Trong Phân cụm, ta chỉ đưa cho máy một đống ảnh động vật không có tên, và máy tự gộp những con có hình dáng giống nhau vào thành từng nhóm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Thuật toán K-Means hoạt động bằng cách nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tính khoảng cách tuyến tính giữa mọi cặp điểm dữ liệu."
-            },
-            {
-                "id": "b",
-                "text": "Nó thử tất cả các nhãn ngẫu nhiên cho đến khi tìm được nhãn đúng."
-            },
-            {
-                "id": "c",
-                "text": "Khởi tạo K tâm cụm (centroids) ngẫu nhiên gán mỗi điểm dữ liệu vào tâm gần nhất,"
-            },
-            {
-                "id": "d",
-                "text": "Nó xây dựng một cây phân quyết định."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Sau đó cập nhật lại vị trí tâm bằng trung bình của các điểm trong cụm, lặp lại cho đến khi tâm không đổi. K-Means cực kỳ đơn giản: Bốc bừa K điểm làm tâm -> Gom điểm gần tâm -> Tính lại tâm mới nằm giữa đám điểm vừa gom -> Lặp lại. Nó hội tụ rất nhanh."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Trung bình",
-        "question": "Nhược điểm lớn nhất của K-Means:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Mặc dù K-Means rất nhanh, nhưng nhược điểm chết người của nó là bắt buộc bạn phải cung cấp số lượng cụm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> từ trước. Hơn nữa, nó rất nhạy cảm với việc khởi tạo tâm cụm ban đầu, nếu khởi tạo xui xẻo, K-Means có thể hội tụ về một nghiệm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (không phải nghiệm tối ưu toàn cục).",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Tối ưu cục bộ (Local optimum)"
-            },
-            {
-                "id": "w2",
-                "text": "K (số lượng cluster)"
-            },
-            {
-                "id": "w3",
-                "text": "Max_iter (số vòng lặp)"
-            },
-            {
-                "id": "w4",
-                "text": "Tối ưu toàn cục (Global optimum)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w2",
-            "2": "w1"
-        },
-        "explanation": "Máy không tự biết trong dữ liệu có bao nhiêu cụm, bạn phải đoán số K. K-Means cũng hay bị mắc kẹt ở local optimum, do đó Scikit-Learn thường chạy thuật toán 10 lần với các khởi tạo ngẫu nhiên khác nhau (n_init=10) rồi lấy kết quả tốt nhất."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán K-Means++ (được Scikit-Learn dùng làm mặc định thay vì K-Means thường) giải quyết vấn đề gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tự động tìm ra số lượng cụm K."
-            },
-            {
-                "id": "b",
-                "text": "Nó thay đổi cách ĐÁNH GIÁ khoảng cách (dùng Manhattan thay vì Euclidean)."
-            },
-            {
-                "id": "c",
-                "text": "Nó giải quyết vấn đề KHỞI TẠO TÂM."
-            },
-            {
-                "id": "d",
-                "text": "Nó hỗ trợ chạy trên GPU."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Bằng cách chọn các tâm ban đầu nằm XA NHAU NHẤT CÓ THỂ, nó làm giảm đáng kể khả năng thuật toán hội tụ vào nghiệm tối ưu cục bộ tồi tệ. K-Means thường chọn K điểm ngẫu nhiên hoàn toàn. Nếu rủi ro chọn 2 điểm khởi tạo nằm cùng một chỗ, K-Means sẽ chia sai bét. K-Means++ đảm bảo các tâm khởi tạo trải đều ra toàn không gian."
-    },
-    {
-        "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Thuật toán Mini-batch K-Means được sử dụng khi nào?",
-        "instruction": "(Sắp xếp ưu điểm của Mini-batch K-Means so với K-Means truyền thống)",
-        "items": [
-            {
-                "id": "1",
-                "text": "Khi tập dữ liệu quá khổng lồ, không thể nạp tất cả vào RAM (Out-of-core)."
-            },
-            {
-                "id": "2",
-                "text": "Thay vì dùng toàn bộ dữ liệu ở mỗi lần lặp, nó chỉ dùng một lượng nhỏ (mini-batch) để di chuyển tâm cụm một chút."
-            },
-            {
-                "id": "3",
-                "text": "Kết quả: Tốc độ huấn luyện nhanh hơn gấp 3 đến 4 lần."
-            },
-            {
-                "id": "4",
-                "text": "Đánh đổi: Mô hình phân cụm cuối cùng thường kém chính xác (tệ hơn một chút) so với K-Means chạy full dữ liệu."
-            }
-        ],
-        "correctOrder": [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        "explanation": "Giống hệt Incremental PCA, Mini-batch K-Means hy sinh một phần nhỏ sự hoàn hảo để đổi lấy việc xử lý được Big Data và giảm sốc cho RAM."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Quán tính (Inertia) trong K-Means đo lường điều gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thời gian thuật toán chạy."
-            },
-            {
-                "id": "b",
-                "text": "Khoảng cách bình phương trung bình giữa mỗi điểm dữ liệu đến TÂM CỤM GẦN NHẤT CỦA NÓ."
-            },
-            {
-                "id": "c",
-                "text": "Khoảng cách giữa tâm cụm này với tâm cụm khác."
-            },
-            {
-                "id": "d",
-                "text": "Số lượng cụm K."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Inertia càng nhỏ thì các điểm trong cụm càng nén chặt (tốt). Inertia (Quán tính) là hàm mục tiêu mà K-Means cố gắng tối thiểu hóa. Tuy nhiên, ta không thể dùng Inertia để so sánh mô hình có K=3 với K=5, vì hiển nhiên khi K càng tăng (chia càng nhỏ), Inertia sẽ tự động giảm."
+        "explanation": "Kia là bình thường'. RL KHÔNG CÓ Bác sĩ nào chỉ sẵn đáp án. Thay vào đó, AI (Agent) phải tự mò mẫm tương tác với Môi trường (Environment). Khi làm đúng nó được Phần Thưởng (Reward), làm sai bị Phạt (Penalty). Nó học bằng cách tự tối đa hóa Phần Thưởng. RL là cách học tự nhiên nhất của vạn vật: Học qua thử và sai (Trial and Error). Giống như huấn luyện viên ném cho con chó miếng thịt khi nó biết bắt tay."
     },
     {
         "type": "matching",
         "difficulty": "Trung bình",
-        "question": "Ghép nối các phương pháp tìm số K (số lượng cụm) tối ưu:",
+        "question": "Ghép nối 4 thuật ngữ cốt lõi nhất của Reinforcement Learning:",
         "left": [
             {
                 "id": "l1",
-                "text": "Quy tắc Khửu tay (Elbow Rule)"
+                "text": "Tác tử (Agent)"
             },
             {
                 "id": "l2",
-                "text": "Điểm Silhouette (Silhouette Score)"
+                "text": "Trạng thái (State)"
+            },
+            {
+                "id": "l3",
+                "text": "Hành động (Action)"
+            },
+            {
+                "id": "l4",
+                "text": "Chính sách (Policy)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Vẽ biểu đồ Inertia theo số K. Chọn điểm mà đường cong bắt đầu bẻ gập nhanh (chững lại). Rất trực quan nhưng kém chính xác."
+                "text": "Chính là con AI đang học (Ví dụ: Con Robot hoặc Nhân vật Mario trong game)."
             },
             {
                 "id": "r2",
-                "text": "Đo lường mức độ một điểm dữ liệu nằm GẦN các điểm cùng cụm (Cohesion) so với mức độ nó nằm XA các điểm ở cụm lân cận gần nhất (Separation). Trị số từ -1 đến +1, càng gần +1 càng tốt."
+                "text": "Bức tranh toàn cảnh hiện tại của Môi trường (Ví dụ: Màn hình game Mario hiện tại, Mario đang đứng ở đâu, có con quái nào gần không)."
+            },
+            {
+                "id": "r3",
+                "text": "Những gì con AI có thể làm (Ví dụ: Bấm nút Nhảy, Đi tới, Đi lùi)."
+            },
+            {
+                "id": "r4",
+                "text": "Là BỘ NÃO của con AI. Là một Thuật toán (hoặc Mạng Nơ-ron) quyết định xem: 'Với cái Màn hình game này (State), tôi nên bấm nút nào (Action) để qua màn?'."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3",
+            "l4": "r4"
         },
-        "explanation": "Elbow dùng Inertia nên chỉ mang tính tương đối (vì Inertia luôn giảm khi K tăng). Silhouette Score đánh giá toàn diện hơn, +1 là gom cụm hoàn hảo, 0 là nằm sát biên, -1 là điểm bị gom nhầm cụm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Điểm yếu CHÍNH của thuật toán K-Means khi phân cụm là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó không thể xử lý dữ liệu lớn."
-            },
-            {
-                "id": "b",
-                "text": "Nó giả định rằng các cụm có HÌNH CẦU"
-            },
-            {
-                "id": "c",
-                "text": "Nó quá phức tạp để cài đặt lập trình."
-            },
-            {
-                "id": "d",
-                "text": "Nó luôn luôn yêu cầu phải chuẩn hóa dữ liệu."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(hoặc lồi) và KÍCH THƯỚC TƯƠNG ĐƯƠNG nhau. Nó sẽ thất bại thảm hại nếu các cụm có hình thuôn dài, kích thước khác nhau, hoặc lồng vào nhau (như hai vòng cung). Vì K-Means chỉ đo khoảng cách Euclidean tính từ tâm tròn, nó sẽ kéo mọi thứ thành hình cầu tròn. Nó không thể phân cụm dữ liệu hình mặt trăng khuyết, hình điếu xì gà, hoặc dữ liệu có độ lệch quá mạnh."
+        "explanation": "Trong RL, mục tiêu cuối cùng của mọi thuật toán đều là tìm ra được một 'Chính sách' (Policy) Tối ưu nhất."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Dễ",
-        "question": "Ứng dụng K-Means cho Giảm chiều và Phân loại:",
+        "difficulty": "Khó",
+        "question": "Vấn đề Trì hoãn Phần thưởng (Delayed Reward) và Gán Cờ (Credit Assignment):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để Giảm chiều dữ liệu. Ví dụ dữ liệu có 1000 đặc trưng, bạn chạy K-Means với k=50. Sau đó dùng khoảng cách từ điểm dữ liệu đến 50 tâm cụm làm đặc trưng mới (giảm từ 1000 chiều xuống 50 chiều). Nếu bạn dùng tập 50 chiều này để huấn luyện một bộ Phân loại Logistic Regression, độ chính xác thường sẽ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do K-Means đã gom các điểm nhiễu thành các nhóm gọn gàng. Kỹ thuật này đôi khi được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "text": "Trong trò chơi Cờ vua, AI phải đi 50 nước cờ. Nước cờ thứ 50 nó chiếu tướng và nhận được +1 Phần thưởng (Chiến thắng). Tuy nhiên, làm sao nó biết trong 50 nước cờ đó, nước nào là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> và nước nào là nước đi tồi? (Có thể nó đã đi tồi ở nước 2 nhưng vẫn thắng nhờ may mắn). \nKhó khăn này gọi là Bài toán <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Để giải quyết, AI phải biết ĐÁNH GIÁ (Value) từng trạng thái. Không chỉ nhìn vào Phần thưởng ngay lập tức, mà phải tính Tổng phần thưởng dự kiến trong tương lai.",
         "words": [
             {
                 "id": "w1",
-                "text": "Tăng lên / Cải thiện"
+                "text": "Nước đi xuất sắc mang tính quyết định"
             },
             {
                 "id": "w2",
-                "text": "Giảm đi"
+                "text": "Credit Assignment (Phân bổ công lao)"
             },
             {
                 "id": "w3",
-                "text": "Biến đổi không gian cụm (Cluster-based Transform)"
+                "text": "Tham lam (Greedy)"
             },
             {
                 "id": "w4",
-                "text": "Tăng số chiều"
+                "text": "Đạo hàm ngược"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Giống như biến 1 điểm tọa độ phức tạp thành 50 con số báo cáo 'Tôi cách quận A bao xa, cách quận B bao xa'. Việc này giúp Logistic Regression dễ thở hơn rất nhiều."
+        "explanation": "Đây là lý do RL rất khó. Một con AI chơi Flappy Bird đâm vào ống nước chết. Lỗi không phải do hành động 'Bay lên' ngay trước lúc chết, mà do hành động 'Không bay' từ 3 giây trước đó."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Kỹ thuật 'Truyền nhãn' (Label Propagation) trong Học Bán Giám Sát (Semi-supervised Learning) sử dụng K-Means như thế nào?",
+        "difficulty": "Dễ",
+        "question": "Trong RL, sự Cân bằng giữa 'Khai phá' (Exploration) và 'Khai thác' (Exploitation) nghĩa là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó dùng K-Means để xóa các nhãn."
+                "text": "Khai thác dữ liệu nhanh hay chậm."
             },
             {
                 "id": "b",
-                "text": "Khi bạn có 10.000 dữ liệu nhưng chỉ có tiền thuê người gán nhãn 50 dữ liệu."
+                "text": "Nếu AI tìm thấy một nhà hàng ăn khá ngon"
             },
             {
                 "id": "c",
-                "text": "Nó biến đổi K-Means thành mạng Neural network."
+                "text": "Khai thác phần cứng GPU tối đa."
             },
             {
                 "id": "d",
-                "text": "Nó sinh ra ngẫu nhiên nhãn cho toàn bộ dữ liệu."
+                "text": "Đào coin bằng AI."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bạn dùng K=50. Lấy điểm nằm gần tâm nhất của 50 cụm (Representative instances) để gán nhãn thủ công. Sau đó TRUYỀN NHÃN đó cho toàn bộ các điểm còn lại trong cùng cụm. Học bán giám sát rất mạnh. Thay vì gán nhãn ngẫu nhiên 50 điểm (hiệu quả thấp), bạn gán nhãn cho 50 điểm ĐIỂN HÌNH NHẤT (Representative) của 50 cụm, rồi lây lan nhãn đó cho đồng bọn. Độ chính xác sẽ nhảy vọt."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "DBSCAN khác biệt lớn nhất so với K-Means ở điểm nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "DBSCAN bắt buộc phải cung cấp số lượng K."
-            },
-            {
-                "id": "b",
-                "text": "DBSCAN là thuật toán dựa trên MẬT ĐỘ (Density-based)."
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN chỉ chạy được trên 2 chiều."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN chạy nhanh hơn K-Means 100 lần."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Nó xác định các vùng có mật độ điểm cao (được ngăn cách bởi các vùng mật độ thấp). Nó không giới hạn hình dạng cụm và KHÔNG CẦN CHO TRƯỚC SỐ CỤM. DBSCAN hoạt động như giọt nước loang ra. Chỉ cần khoảng cách giữa các điểm còn đủ gần (mật độ dày), nó sẽ coi tất cả là 1 cụm dù nó ngoằn ngoèo hình mặt trăng khuyết hay chữ S."
+        "explanation": "(Khai thác) nó có nên ăn ở đó mãi mãi không? Nếu làm thế, nó sẽ bỏ lỡ nhà hàng 5 sao ở con phố bên cạnh (Khai phá). AI cần phải CÂN BẰNG: Vừa tận dụng những kiến thức đã biết để lấy điểm cao (Exploitation), vừa thỉnh thoảng Thử bừa một hành động mới (Exploration) để tìm ra chiến thuật đột phá hơn. Hầu hết các thuật toán RL sử dụng chính sách Epsilon-Greedy. AI có xác suất Epsilon (VD: 10%) nhắm mắt bấm nút ngẫu nhiên, và 90% làm theo kinh nghiệm tốt nhất hiện tại."
     },
     {
         "type": "ordering",
-        "difficulty": "Khó",
-        "question": "Cách DBSCAN hoạt động qua tham số epsilon (eps) và min_samples:",
+        "difficulty": "Trung bình",
+        "question": "Chu trình tương tác chuẩn của một Quá trình Quyết định Markov (MDP - Markov Decision Process):",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "DBSCAN xét một điểm bất kỳ. Nó đếm xem có bao nhiêu điểm lân cận nằm trong vòng tròn bán kính 'eps' (epsilon)."
+                "text": "Agent (AI) quan sát Trạng thái (S_t) hiện tại từ Môi trường."
             },
             {
                 "id": "2",
-                "text": "Nếu số điểm lân cận này LỚN HƠN hoặc BẰNG tham số 'min_samples', điểm đó được phong danh hiệu 'Điểm Lõi' (Core Instance)."
+                "text": "Dựa trên Chính sách (Policy), Agent đưa ra Hành động (A_t)."
             },
             {
                 "id": "3",
-                "text": "Tất cả các điểm nằm trong vùng lân cận eps của Điểm Lõi sẽ được gom chung vào cùng 1 cụm."
+                "text": "Hành động A_t tác động vào Môi trường."
             },
             {
                 "id": "4",
-                "text": "Quá trình này lan truyền (chuỗi) sang các láng giềng. Bất kỳ điểm nào KHÔNG PHẢI là điểm lõi, và cũng KHÔNG NẰM trong vùng lân cận của bất kỳ điểm lõi nào, sẽ bị coi là Nhiễu (Anomaly/Noise)."
+                "text": "Môi trường phản hồi lại: Chuyển sang Trạng thái mới (S_t+1) và trả về Phần thưởng (R_t+1)."
+            },
+            {
+                "id": "5",
+                "text": "Agent cập nhật lại Bộ não của mình dựa trên (S_t, A_t, R_t+1, S_t+1) và lặp lại bước 1."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "DBSCAN có 2 siêu tham số cực kỳ quan trọng: eps (bán kính) và min_samples (số điểm tối thiểu để lập phường hội). Điểm bơ vơ sẽ bị vứt ra thành Nhiễu."
+        "explanation": "MDP là bộ khung Toán học chi phối toàn bộ thế giới RL. Thuộc tính quan trọng nhất của Markov là: Tương lai chỉ phụ thuộc vào Hiện Tại, không phụ thuộc vào Quá Khứ."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Điều gì xảy ra nếu điểm dữ liệu bị đánh dấu là Nhiễu (Noise) trong thuật toán DBSCAN (Scikit-Learn)?",
+        "question": "Hệ số Chiết khấu (Discount Factor - Gamma $\\gamma$) trong công thức tính Tổng Phần Thưởng của RL có ý nghĩa thực tế là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuật toán sẽ tự động dừng lại."
+                "text": "Là phần trăm giảm giá khi mua thư viện."
             },
             {
                 "id": "b",
-                "text": "Dữ liệu đó sẽ bị xóa khỏi bộ nhớ gốc."
+                "text": "Giống như Lãi suất ngân hàng ngược."
             },
             {
                 "id": "c",
-                "text": "Điểm đó sẽ được gán nhãn cụm"
+                "text": "Là tỷ lệ lỗi của mô hình."
             },
             {
                 "id": "d",
-                "text": "Dữ liệu được chuyển về tâm tọa độ (0,0)."
+                "text": "Để tăng tốc độ chạy của AI."
             }
         ],
-        "correctAnswer": "c",
-        "explanation": "(cluster label) là `-1` trong thuộc tính `labels_`. Scikit-Learn dùng quy ước nhãn `-1` để ám chỉ Outliers/Noise/Anomalies. K-Means không bao giờ từ chối điểm nào (điểm xa cỡ nào cũng bị ép vô 1 cụm). DBSCAN có khả năng chỉ ra thẳng điểm nào là ngoại lai."
+        "correctAnswer": "b",
+        "explanation": "Nhận 100$ hôm nay giá trị hơn nhận 100$ vào 10 năm sau. Trong AI, Gamma (thường bằng 0.99) làm cho các phần thưởng Tương Lai Mù Mịt bị giảm giá trị. Ép con AI ưu tiên các Phần thưởng Nhanh Chóng và Chắc Chắn hơn, đồng thời giúp giới hạn Tổng điểm không bị tiến tới vô cực. Nếu Gamma = 0, con AI sẽ cực kỳ thiển cận, chỉ nhìn phần thưởng trước mắt. Nếu Gamma = 1, AI sẽ tính toán xa tít tắp đến vô tận."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "Điểm yếu của DBSCAN:",
+        "question": "Định lý Bellman và Giá trị Hành động (Q-Value):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "DBSCAN là một thuật toán rất tuyệt, nhưng nó sẽ gặp khó khăn lớn nếu các cụm trong tập dữ liệu có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thay đổi quá lớn (nơi rất dày đặc, nơi lại rất thưa thớt). Thuật toán này không cho phép dùng một siêu tham số `eps` (bán kính) chung cho tất cả. Ngoài ra, DBSCAN <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hàm `predict()` để dự đoán nhãn cho các điểm dữ liệu mới đến.",
+        "text": "Bảng Q-Table lưu trữ các giá trị Q(s, a). Nó trả lời câu hỏi: 'Nếu ở màn hình (s), tôi bấm nút (a) thì <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> mà tôi thu được TỪ NAY VỀ SAU là bao nhiêu?'. Phương trình Bellman dùng để cập nhật bảng này một cách thần kỳ: Giá trị Q hiện tại sẽ bằng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> cộng với Giá trị Q Tốt nhất của bước tiếp theo (Đã được chiết khấu Gamma). Nghĩa là, nó tự lùi thời gian (Backtracking) để cập nhật giá trị từ Tương lai về Hiện tại.",
         "words": [
             {
                 "id": "w1",
-                "text": "Mật độ (Density)"
+                "text": "Tổng Phần Thưởng dự kiến"
             },
             {
                 "id": "w2",
-                "text": "Màu sắc (Color)"
+                "text": "Phần thưởng ngay lập tức (Reward)"
             },
             {
                 "id": "w3",
-                "text": "KHÔNG CÓ (Does not have)"
+                "text": "Xác suất tử vong"
             },
             {
                 "id": "w4",
-                "text": "CÓ (Has)"
+                "text": "Đạo hàm lỗi"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Nếu khu phố A nhà nằm sát nhau, khu phố B nhà cách nhau 10km. Bạn set eps=1km thì DBSCAN nhận diện được khu A nhưng đánh giá khu B là Rừng Hoang (Noise). Bạn set eps=15km thì nó nhận được khu B nhưng lại gộp luôn khu A vào chung với khu B. (DBSCAN không có predict, bạn phải dùng thuật toán KNN để gán điểm mới)."
+        "explanation": "Phương trình Bellman: Q(s,a) = R + gamma * max(Q(s', a')). Đây là phương trình Toán học đẹp nhất của Học tăng cường."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Tại sao Q-Learning truyền thống (Dùng bảng Q-Table) lại BẤT LỰC trước các trò chơi phức tạp như cờ vây (Go) hay Starcraft?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Vì game quá khó."
+            },
+            {
+                "id": "b",
+                "text": "Vấn đề Bùng nổ Không gian Trạng thái"
+            },
+            {
+                "id": "c",
+                "text": "Vì Q-Learning không hỗ trợ 3D."
+            },
+            {
+                "id": "d",
+                "text": "Vì AI không biết xài chuột."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(State Space Explosion). Bảng Q-Table phải tạo ra MỘT HÀNG CHO MỖI MỘT TRẠNG THÁI (Mỗi một bức ảnh màn hình) khác nhau. Trong Cờ Vây có 10^170 trạng thái (nhiều hơn số nguyên tử trong vũ trụ). Bộ nhớ máy tính không thể chứa nổi một cái bảng to như vậy, và AI cũng không đủ thời gian để điền hết bảng. Q-Table chỉ xài được cho các trò chơi vô cùng đơn giản như Mê cung 5x5 ô. Với các game hiện đại, ta buộc phải vứt bỏ cái Bảng đó và thay bằng Mạng Nơ-ron."
     },
     {
         "type": "matching",
         "difficulty": "Dễ",
-        "question": "Ghép thuật toán Phân cụm với tính chất phù hợp:",
+        "question": "Sự Khác Biệt giữa Thuật toán RL Dựa trên Giá Trị (Value-based) và Dựa trên Chính sách (Policy-based):",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "Value-based (Ví dụ: Q-Learning, DQN)"
             },
             {
                 "id": "l2",
-                "text": "DBSCAN"
+                "text": "Policy-based (Ví dụ: REINFORCE)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc cho trước số K. Thích cụm hình cầu. Nhạy cảm với nhiễu ngoại lai."
+                "text": "Mạng Nơ-ron KHÔNG TRỰC TIẾP RA LỆNH BẤM NÚT NÀO. Nó chấm điểm (Ví dụ: Nút A: 10đ, Nút B: -5đ). Con AI sau đó cứ thấy nút nào điểm cao nhất thì bấm. (Nhược điểm: Không thể xài cho Game có Vô lăng xoay vòng tròn liên tục)."
             },
             {
                 "id": "r2",
-                "text": "Tự động tìm số cụm. Xử lý tốt mọi hình dạng phức tạp. Chống nhiễu ngoại lai (tách riêng noise ra). Không thích hợp nếu mật độ các cụm khác nhau nhiều."
+                "text": "Mạng Nơ-ron xuất ra thẳng XÁC SUẤT BẤM NÚT (VD: Nút A: 90%, Nút B: 10%). Mạng tự động điều chỉnh Xác suất này nếu hành động mang lại hậu quả tốt. (Hỗ trợ được các hành động liên tục như Bẻ lái xe)."
             }
         ],
         "correctPairs": {
             "l1": "r1",
             "l2": "r2"
         },
-        "explanation": "Đây là so sánh kinh điển giữa K-Means (Distance-based) và DBSCAN (Density-based)."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Mô hình Hỗn hợp Gauss (Gaussian Mixture Models - GMM) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Là một biến thể của DBSCAN dùng phân phối Bernoulli."
-            },
-            {
-                "id": "b",
-                "text": "Là một mô hình XÁC SUẤT giả định rằng toàn bộ các điểm dữ liệu được sinh ra từ việc trộn lẫn"
-            },
-            {
-                "id": "c",
-                "text": "Là thuật toán học có giám sát dùng để phân loại văn bản."
-            },
-            {
-                "id": "d",
-                "text": "Là một thuật toán không thể giải quyết được cụm hình elip."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(mixture) một số lượng hữu hạn các phân phối Gaussian (hình quả chuông). Khác với K-Means gán 'Cứng' (Hard clustering - bạn chỉ có thể thuộc Cụm 1 hoặc Cụm 2). GMM dùng xác suất 'Mềm' (Soft clustering - bạn thuộc 80% Cụm 1, 20% Cụm 2). GMM giả định các cụm có hình Elip (bầu dục) ở các hướng và kích thước khác nhau."
+        "explanation": "Hai trường phái lớn của RL. Sau này người ta kết hợp cả 2 lại tạo ra kiến trúc Actor-Critic (Diễn viên - Nhà phê bình)."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Khó",
-        "question": "Thuật toán nào đứng đằng sau quá trình hội tụ của Gaussian Mixture Model?",
+        "question": "Deep Q-Network (DQN) do DeepMind phát minh năm 2013 dùng để chơi game Atari đã giải quyết vấn đề Bùng nổ Không gian Trạng thái như thế nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Gradient Descent (Hạ gradient)."
+                "text": "Dùng siêu máy tính có nhiều RAM hơn."
             },
             {
                 "id": "b",
-                "text": "Thuật toán EM (Expectation-Maximization - Cực đại hóa Kỳ vọng)."
+                "text": "Họ DÙNG MẠNG CNN ĐỂ THAY THẾ CHO BẢNG Q-TABLE."
             },
             {
                 "id": "c",
-                "text": "Phương trình chuẩn (Normal Equation)."
+                "text": "Dùng hàm Random."
             },
             {
                 "id": "d",
-                "text": "Backpropagation (Lan truyền ngược)."
+                "text": "Bắt con người chơi hộ để thu thập dữ liệu."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "EM giống hệt cách K-Means hoạt động nhưng dành cho hình Elip. Bước E (Kỳ vọng): Ước tính xác suất mỗi điểm thuộc về cụm nào. Bước M (Cực đại hóa): Cập nhật lại hình dáng, vị trí, kích thước của Elip dựa trên các điểm vừa gom."
+        "explanation": "Mạng CNN nhận đầu vào là Bức ảnh màn hình Game (State), và xuất ra một Véc-tơ các Điểm số (Q-Values) tương ứng với số Nút bấm (Ví dụ: Lên, Xuống, Bắn). Mạng CNN có khả năng 'Nội suy' cực tốt: Dù gặp một màn hình chưa từng thấy bao giờ, nó vẫn đoán được điểm số chính xác dựa trên các màn hình tương tự đã học. DQN là phát súng mở màn cho kỷ nguyên Deep Reinforcement Learning. Bằng cách kết hợp Thị Giác Máy Tính (CNN) với Toán học Cờ bạc (Q-Learning)."
     },
     {
         "type": "ordering",
-        "difficulty": "Trung bình",
-        "question": "Cách GMM phân biệt và tạo thành cụm thông qua siêu tham số 'covariance_type':",
+        "difficulty": "Khó",
+        "question": "Kỹ thuật Experience Replay (Phát lại Kinh nghiệm) - Bí quyết sinh tử của mạng DQN:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "'spherical' (Hình cầu): Rất giống K-Means, các cụm bị ép phải tròn xoe, nhưng mỗi cụm có thể có bán kính khác nhau."
+                "text": "Khi AI chơi game, các khung hình liên tiếp rất RẤT GIỐNG NHAU. Nếu ta đút các khung hình dính liền này vào Mạng Nơ-ron, mạng sẽ bị 'Cuốn theo chiều gió' (Quên mất kinh nghiệm cũ, Overfit vào tình huống hiện tại)."
             },
             {
                 "id": "2",
-                "text": "'diag' (Đường chéo): Các cụm có thể có hình elip (kéo dài trục X, Y khác nhau), nhưng các trục của elip phải SONG SONG với các trục tọa độ của đặc trưng."
+                "text": "Để khắc phục, AI tạo ra một Bộ nhớ đệm (Replay Buffer) chứa hàng vạn kinh nghiệm (Trạng thái, Hành động, Điểm, Trạng thái mới)."
             },
             {
                 "id": "3",
-                "text": "'tied' (Bị trói): Các cụm có thể có hình elip bất kỳ và nằm nghiêng, NHƯNG tất cả các cụm BẮT BUỘC phải chia sẻ CHUNG MỘT hình dạng, kích thước và góc nghiêng."
+                "text": "AI không học ngay lập tức. Nó cứ chơi để nhét kinh nghiệm vào kho."
             },
             {
                 "id": "4",
-                "text": "'full' (Đầy đủ - Mặc định): Cho phép mỗi cụm thỏa sức có hình elip riêng biệt, kích thước riêng, độ nghiêng riêng biệt. (Nhưng tính toán tốn kém nhất)."
+                "text": "Đến giờ học, AI bốc MỘT MẺ NGẪU NHIÊN (Random Batch) gồm 32 kinh nghiệm hỗn độn từ kho (Có thể là 1 pha nhảy từ đầu game + 1 pha bắn từ cuối game)."
+            },
+            {
+                "id": "5",
+                "text": "Đút mẻ hỗn độn này vào train. Việc xáo trộn này phá vỡ sự tương quan thời gian, giúp mạng học cực kỳ ổn định."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "Tính linh hoạt của GMM nằm ở covariance_type (Ma trận hiệp phương sai). Bạn có thể giới hạn hình dáng của cụm để thuật toán chạy nhanh hơn."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Cách sử dụng GMM (Gaussian Mixture) phổ biến để 'Phát hiện Sự bất thường' (Anomaly Detection) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Các điểm dữ liệu nằm ở vùng có 'Xác suất Mật độ'"
-            },
-            {
-                "id": "b",
-                "text": "Các điểm dữ liệu nằm ngay tại trung tâm hình elip."
-            },
-            {
-                "id": "c",
-                "text": "Nó tự động gửi email báo cáo."
-            },
-            {
-                "id": "d",
-                "text": "Xóa hết toàn bộ dữ liệu."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "(PDF - Probability Density Function) RẤT THẤP (tức là nằm rìa nằm xa các hình elip của cụm) sẽ bị gắn cờ là Bất thường. Vì GMM là mô hình phân phối xác suất, nó biết rõ chỗ nào đông đúc, chỗ nào hoang vắng. Bạn chỉ cần đặt một ngưỡng tỷ lệ (ví dụ 4% điểm có xác suất thấp nhất) và quy chúng thành Nhiễu (Anomalies)."
+        "explanation": "Neural Network căm thù Dữ liệu có tính tương quan (Correlated). Bốc ngẫu nhiên từ kho (IID) là cách mạng Nơ-ron học tốt nhất."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "Xác định số lượng cụm (K) cho GMM:",
+        "question": "Kỹ thuật Target Network (Mạng Mục tiêu) trong DQN:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn KHÔNG THỂ dùng Quán tính (Inertia) hay Silhouette Score cho GMM vì chúng không đo được hình dạng elip. Để tìm K tối ưu cho GMM, người ta sử dụng các tiêu chí thông tin lý thuyết như <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Bayesian Information Criterion) hoặc <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Akaike Information Criterion). Cả hai tiêu chí này sẽ HÌNH PHẠT các mô hình có quá nhiều thông số (quá nhiều cụm K). Mô hình có AIC/BIC THẤP NHẤT là mô hình tốt nhất.",
+        "text": "Theo phương trình Bellman, mạng Q-Network phải học cách đoán Điểm Q sao cho bằng với [Phần Thưởng + Điểm Q Tương lai lớn nhất]. Nghĩa là mạng Vừa phải Đoán (Bên trái phương trình), Lại vừa tự chấm điểm cho chính mình (Bên phải phương trình). Trò 'Vừa đá bóng vừa thổi còi' này khiến mạng bị nhiễu loạn điên cuồng (Chó đuổi đuôi). \nGiải pháp của DeepMind: Nhân bản Q-Network thành Mạng thứ hai tên là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Mạng này bị <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>, chỉ được dùng để tính Điểm Q Tương lai (Bên phải phương trình). Sau mỗi vài ngàn bước, ta mới Copy trọng số từ mạng đang học sang mạng này để cập nhật mục tiêu.",
         "words": [
             {
                 "id": "w1",
-                "text": "BIC"
+                "text": "Target Network"
             },
             {
                 "id": "w2",
-                "text": "AIC"
+                "text": "Đóng băng trọng số (Freeze)"
             },
             {
                 "id": "w3",
-                "text": "MSE"
+                "text": "Đạo hàm liên tục"
             },
             {
                 "id": "w4",
-                "text": "Accuracy"
+                "text": "Discriminator"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "AIC và BIC phạt sự phức tạp của mô hình. Nếu bạn chia thành quá nhiều cụm (K lớn), mô hình khớp dữ liệu rất tốt (hàm log-likelihood tăng) nhưng AIC/BIC sẽ bị phạt cao lên. Điểm AIC/BIC thấp nhất chính là 'Điểm cân bằng' (Elbow) tối ưu."
+        "explanation": "Target Network giữ cho Mục tiêu (Target) luôn ĐỨNG YÊN trong một khoảng thời gian, giúp mạng chính dễ dàng bắn trúng mục tiêu hơn."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thuật toán Policy Gradient (Ví dụ: REINFORCE) điều chỉnh mạng Nơ-ron như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Xóa bớt nút trong mạng."
+            },
+            {
+                "id": "b",
+                "text": "Mạng xuất ra Xác suất (Ví dụ: Bắn=60%, Chạy=40%)."
+            },
+            {
+                "id": "c",
+                "text": "Thay đổi hình ảnh game."
+            },
+            {
+                "id": "d",
+                "text": "Nó dùng Bảng Q-table."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Cho con AI chơi hết MỘT TRẬN. Trận đó thắng (Phần thưởng dương), thuật toán sẽ LÀM TĂNG XÁC SUẤT của tất cả các hành động nó đã làm trong trận đó. Trận đó thua (Phần thưởng âm), thuật toán sẽ LÀM GIẢM XÁC SUẤT của các hành động đó. Rất trực quan! Policy Gradient không cần đoán điểm số Q-value rườm rà. 'Làm ra kết quả tốt thì tăng xác suất, kết quả xấu thì giảm'. Đó là triết lý cốt lõi."
     },
     {
         "type": "matching",
         "difficulty": "Trung bình",
-        "question": "Ghép nối 'Bayesian Gaussian Mixture' (Mô hình Hỗn hợp Gauss Bayes) so với GMM truyền thống:",
+        "question": "Ghép nối các Thành phần của kiến trúc Actor-Critic (Kẻ diễn xuất - Nhà phê bình):",
         "left": [
             {
                 "id": "l1",
-                "text": "GMM (GaussianMixture)"
+                "text": "Actor (Diễn viên)"
             },
             {
                 "id": "l2",
-                "text": "BGM (BayesianGaussianMixture)"
+                "text": "Critic (Nhà phê bình)"
+            },
+            {
+                "id": "l3",
+                "text": "Sự kết hợp hoàn hảo"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc bạn phải chọn đúng số cụm (n_components) K. Nếu bạn nhập K dư thừa, nó vẫn sẽ cố chia ra K cụm."
+                "text": "Là một Mạng Nơ-ron sử dụng Policy Gradient. Nó nhìn vào màn hình và quyết định XÁC SUẤT sẽ bấm nút nào (Hành động)."
             },
             {
                 "id": "r2",
-                "text": "Mô hình thông minh: Thay vì phải chọn đúng K, bạn cứ ném cho nó một số K RẤT LỚN (ví dụ 10). Thuật toán sẽ tự động ĐẨY TRỌNG SỐ của các cụm dư thừa về 0 (tự hủy các cụm không cần thiết), và trả lại cho bạn số lượng cụm thực sự (ví dụ 3)."
+                "text": "Là một Mạng Nơ-ron sử dụng Value-Based (Giống DQN). Nó nhìn vào màn hình và quyết định ĐIỂM SỐ của hành động mà Actor vừa làm. (Đánh giá xem Actor làm tốt hay tệ)."
+            },
+            {
+                "id": "r3",
+                "text": "Actor làm việc, Critic đứng ngoài chấm điểm. Lời nhận xét của Critic được dùng làm Đạo hàm (Lợi thế - Advantage) để cập nhật Trọng số cho Actor. Cả hai cùng nhau tiến bộ."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Bayesian Gaussian Mixture tự động loại bỏ bớt các cụm không cần thiết bằng cơ chế tiên nghiệm (prior). Đây là tính năng 'tự động tìm số K' cực kỳ thần thánh của nó."
+        "explanation": "Actor-Critic là nền tảng của mọi hệ thống AI chơi game đỉnh cao nhất hiện nay như AlphaStar (Starcraft) hay OpenAI Five (Dota 2)."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Một thuật toán khác cũng rất nổi tiếng dùng để Phát hiện Bất thường (Anomaly Detection) dựa trên khái niệm 'Rừng' (Trees) là gì?",
+        "difficulty": "Khó",
+        "question": "PPO (Proximal Policy Optimization) - Thuật toán đằng sau ChatGPT (RLHF) - có đặc điểm nổi trội gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Isolation Forest (Rừng cách ly)."
+                "text": "Nó dùng cây tìm kiếm Monte Carlo."
             },
             {
                 "id": "b",
-                "text": "Random Forest."
+                "text": "Nó có khả năng SINH RA ẢNH siêu thực."
             },
             {
                 "id": "c",
-                "text": "Gradient Boosting."
+                "text": "Các thuật toán Policy Gradient cũ rất nhạy cảm."
             },
             {
                 "id": "d",
-                "text": "K-Nearest Neighbors."
+                "text": "Nó chạy không cần GPU."
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Isolation Forest hoạt động bằng cách chẻ (split) dữ liệu ngẫu nhiên. Các điểm bất thường (anomalies) thường đứng một mình xa đàn, nên chỉ cần CHẺ VÀI NHÁT là nó đã bị cô lập khỏi cụm dữ liệu gốc. Điểm nào bị cô lập ở các nhánh cây nông nhất (đường dẫn ngắn) chính là điểm bất thường."
+        "correctAnswer": "c",
+        "explanation": "Một trận thắng quá lớn có thể khiến mạng Cập nhật Trọng số TĂNG QUÁ ĐÀ, làm vỡ nát toàn bộ mạng (Ngã xuống vách đá). PPO giải quyết bằng cách Gọt xén (Clipping) Lợi thế. Nó KHÔNG CHO PHÉP mạng Nơ-ron cập nhật quá một tỷ lệ phần trăm (VD: Không được đổi chính sách quá 20% mỗi lần). Việc này giúp PPO học CỰC KỲ ỔN ĐỊNH. PPO (Của OpenAI) đã trở thành thuật toán mặc định của toàn ngành RL. Nó dễ code hơn TRPO, ổn định hơn DQN và hiệu năng thì vượt trội."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "RLHF (Reinforcement Learning from Human Feedback) - Quá trình huấn luyện ChatGPT làm người tốt:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Pre-training: Dạy mô hình LLM (GPT) đọc chữ trên mạng để biết 'Sinh văn bản' (Nó có thể nói tục, chửi thề lúc này)."
+            },
+            {
+                "id": "2",
+                "text": "Thu thập dữ liệu Phản hồi từ Con người: Cho GPT sinh ra 4 câu trả lời. Con người sẽ Xếp hạng (1, 2, 3, 4) xem câu nào lễ phép và đúng đắn nhất."
+            },
+            {
+                "id": "3",
+                "text": "Train Mạng Phê bình (Reward Model): Dùng Dữ liệu Xếp hạng đó để train một mạng AI thứ 2 làm Giám khảo. Giám khảo này sẽ chấm điểm (Reward) cho bất kỳ câu văn nào."
+            },
+            {
+                "id": "4",
+                "text": "Quá trình RL (Dùng PPO): Mô hình GPT bắt đầu sinh chữ. Mạng Giám khảo tự động chấm điểm cho chữ đó."
+            },
+            {
+                "id": "5",
+                "text": "GPT dùng thuật toán PPO để điều chỉnh lại Trọng số, tự ép bản thân nói những câu được Giám khảo chấm điểm cao. ChatGPT trở nên hiền lành và hữu ích."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "RLHF là cây cầu nối giữa một 'Con vẹt chỉ biết nhại văn bản' (GPT-3 gốc) và một 'Trợ lý ảo thông minh biết vâng lời' (ChatGPT)."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Phát hiện sự bất thường (Anomaly Detection) khác với Phát hiện cái mới (Novelty Detection) ở điểm nào?",
+        "question": "Trò chơi Cờ Caro / Tic-Tac-Toe / Cờ Vua là những trò chơi thuộc loại nào trong RL?",
         "options": [
             {
                 "id": "a",
-                "text": "Hai khái niệm này hoàn toàn giống hệt nhau."
+                "text": "Trò chơi Thông tin Hoàn hảo (Perfect Information)."
             },
             {
                 "id": "b",
-                "text": "Anomaly Detection cho phép tập dữ liệu huấn luyện ĐÃ CHỨA SẴN các ngoại lệ/nhiễu"
+                "text": "Trò chơi Hành động liên tục."
             },
             {
                 "id": "c",
-                "text": "Novelty detection yêu cầu có nhãn."
+                "text": "Trò chơi Bắn súng góc nhìn thứ nhất."
             },
             {
                 "id": "d",
-                "text": "Anomaly detection chậm hơn."
+                "text": "Trò chơi Không có phần thưởng."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "Cả hai người chơi nhìn thấy RÕ RÀNG mọi quân cờ trên bàn. (Không giống Bài Poker - giấu bài). Ở trò này, AI có thể dùng Cây Tìm kiếm Minimax (MCTS) để dự đoán nước đi tột đỉnh hoàn hảo. AlphaGo đánh bại nhà vô địch cờ vây thế giới bằng cách kết hợp: RL (Value Network + Policy Network) + Cây tìm kiếm Monte Carlo (MCTS)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Khái niệm Episode (Tập phim) trong RL:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Nhiều trò chơi kết thúc sau một khoảng thời gian (Ví dụ: Chơi Mario đến khi chết hoặc qua màn). Quá trình từ lúc bắt đầu đến lúc kết thúc đó gọi là một <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Khi kết thúc, Môi trường phải được <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để AI chơi lại tập mới. Nếu một môi trường không bao giờ kết thúc (Như giao dịch chứng khoán liên tục), ta gọi nó là Môi trường Liên tục (Continuous task).",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Episode (Tập phim/Ván game)"
+            },
+            {
+                "id": "w2",
+                "text": "Reset (Đặt lại Trạng thái)"
+            },
+            {
+                "id": "w3",
+                "text": "Epoch"
+            },
+            {
+                "id": "w4",
+                "text": "Tắt nguồn"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Quá trình huấn luyện RL thường đo bằng số lượng Episode (Ví dụ: Train AI lái xe trong 1 triệu Episode)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thư viện Gym (Gymnasium của OpenAI/Farama) dùng để làm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Để tính toán ma trận."
+            },
+            {
+                "id": "b",
+                "text": "Là một bộ sưu tập khổng lồ các MÔI TRƯỜNG chuẩn (Mê cung Cân gậy, Atari, Robot 3D)"
+            },
+            {
+                "id": "c",
+                "text": "Là phần mềm đồ họa 3D."
+            },
+            {
+                "id": "d",
+                "text": "Là thư viện dịch văn bản."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(nó cố gắng tìm ra chúng). Novelty Detection yêu cầu tập huấn luyện phải 'SẠCH' 100% (chỉ chứa các ví dụ bình thường), và nó chỉ bắt lỗi ở các dữ liệu mới trong tương lai. Novelty: Bạn train mô hình trên hình ảnh 10.000 con chó (sạch bong). Ngày mai bạn đưa hình con mèo vào, nó kêu 'Đây là cái mới' (Novelty). Anomaly: Tập 10.000 ảnh gốc đã có lộn 10 con mèo trong đó, bạn yêu cầu mô hình lọc 10 con mèo đó ra (Anomaly)."
+        "explanation": "Để huấn luyện AI Học Tăng Cường. Nó cung cấp hàm `env.step(action)` chung cho mọi game, giúp các nhà khoa học dễ dàng test thuật toán AI của mình. Nếu không có Gym, mỗi nhà nghiên cứu sẽ tự code một game Mario khác nhau, và không ai so sánh được thuật toán của ai xịn hơn. Gym mang lại chuẩn mực cho thế giới RL."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Ghép nối các Thách thức Lớn nhất của RL và ý nghĩa của chúng:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "Môi trường Một phần (Partially Observable MDP - POMDP)"
+            },
+            {
+                "id": "l2",
+                "text": "Hiệu quả Dữ liệu Thấp (Sample Inefficiency)"
+            },
+            {
+                "id": "l3",
+                "text": "Đóng khung Phần Thưởng (Reward Shaping)"
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Game Dota 2 có lớp 'Sương mù chiến tranh' che khuất tầm nhìn. AI Không thể biết toàn bộ Trạng Thái (State). Lúc này nó phải dùng Mạng Hồi quy (RNN/LSTM) để GHI NHỚ những gì nó đã thấy ở các giây trước nhằm suy luận kẻ địch đang ở đâu."
+            },
+            {
+                "id": "r2",
+                "text": "Không giống Supervised Learning học 1 lần là xong. RL cần hàng TRĂM TRIỆU trận đấu (Khung hình) để hiểu trò chơi. Việc này tốn khổng lồ tiền điện và GPU."
+            },
+            {
+                "id": "r3",
+                "text": "Nếu bạn lập trình: 'Chạy xe tới đích được 100 điểm'. AI có thể chạy vòng vòng mất 10 năm mới tới đích ngẫu nhiên 1 lần. Bạn phải 'Thiết kế mồi nhử': Đi tới 1 mét được 1 điểm, Lấn làn trừ 10 điểm. Việc thiết kế mồi nhử này cực khó và hay sinh ra lỗi HACK phần thưởng của AI."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Có một truyền thuyết: AI được thiết kế ăn điểm khi Lướt sóng bằng thuyền. Thay vì lướt tới đích, nó đi vào một góc bản đồ nơi có lỗi bug game, cứ xoay vòng tròn cái thuyền ở đó và nhận điểm vĩnh viễn. Đó là HACK phần thưởng."
     },
     {
         "type": "ordering",
         "difficulty": "Dễ",
-        "question": "Quy trình làm việc của Học K-Means từ Scikit-Learn:",
-        "instruction": "(Sắp xếp các dòng mã để chạy K-Means đúng chuẩn)",
+        "question": "Quy trình sử dụng thư viện Gymnasium (Gym) để cho AI chơi bừa:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "from sklearn.cluster import KMeans"
+                "text": "Tạo môi trường: `env = gym.make('CartPole-v1')`."
             },
             {
                 "id": "2",
-                "text": "k = 5"
+                "text": "Reset màn chơi để lấy Trạng thái đầu tiên: `state = env.reset()`."
             },
             {
                 "id": "3",
-                "text": "kmeans = KMeans(n_clusters=k, random_state=42)"
+                "text": "Tạo vòng lặp (Bắt đầu chơi). Bốc ngẫu nhiên một nút bấm: `action = env.action_space.sample()`."
             },
             {
                 "id": "4",
-                "text": "y_pred = kmeans.fit_predict(X)"
+                "text": "Thực thi nút bấm: `next_state, reward, done, truncated, info = env.step(action)`."
+            },
+            {
+                "id": "5",
+                "text": "Kiểm tra nếu `done == True` (Nhân vật chết hoặc win), thì Thoát vòng lặp và gọi `env.close()`."
             }
         ],
         "correctOrder": [
             "1",
             "2",
             "3",
-            "4"
+            "4",
+            "5"
         ],
-        "explanation": "Import -> Khai báo K -> Khởi tạo đối tượng -> Fit_predict (do là Unsupervised nên chỉ truyền X, không truyền y)."
+        "explanation": "Đó là 5 dòng code khai lòng mở lối cho bạn bước vào thế giới làm Game AI."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Trung bình",
+        "question": "Thuật toán A3C (Asynchronous Advantage Actor-Critic) sử dụng chiến thuật gì để tăng tốc quá trình học?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó nhân bản ra HÀNG CHỤC"
+            },
+            {
+                "id": "b",
+                "text": "Nó dùng mạng GAN."
+            },
+            {
+                "id": "c",
+                "text": "Nó nén RAM game lại."
+            },
+            {
+                "id": "d",
+                "text": "Nó đóng băng thời gian."
+            }
+        ],
+        "correctAnswer": "a",
+        "explanation": "(Thậm chí hàng trăm) Môi trường Game chạy song song trên nhiều luồng CPU. Mỗi luồng có một con Agent 'Nhỏ' tự chơi và tự gửi Đạo hàm (Gradient) về cho một Mạng 'Mẹ' (Global Network) trên đỉnh. Giống như tổ kiến đi tìm mồi. Việc này nhanh gấp 10 lần DQN và loại bỏ luôn cả Replay Buffer. A3C chứng minh rằng: Nếu bạn huy động đủ nhiều người chơi song song, họ sẽ khám phá ra mọi ngóc ngách của trò chơi cực kỳ nhanh chóng."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Khó",
-        "question": "One-Class SVM cho Phát hiện Cái mới (Novelty Detection):",
+        "question": "Toán học của Phương trình Bellman cho Q-Learning:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Khác với SVM phân loại nhị phân truyền thống cố tách 2 lớp bằng siêu phẳng. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cố gắng tách các điểm dữ liệu (tất cả chỉ có 1 lớp bình thường) ra khỏi <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trong không gian chiều cao. Kết quả là nó tạo ra một cái 'bong bóng' phi tuyến khổng lồ bao bọc lấy các điểm bình thường. Điểm nào rơi ra ngoài bong bóng bị coi là dị thường.",
+        "text": "Mục tiêu là cập nhật bảng Q(s,a) dần dần tiến đến tối ưu. Công thức cập nhật: \n$Q(s,a) \\leftarrow Q(s,a) + \\alpha [ R + \\gamma \\max_{a'} Q(s', a') - Q(s,a) ]$\nTrong đó $\\alpha$ là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (quyết định việc AI tiếp thu cái mới mạnh đến đâu). Giá trị $R + \\gamma \\max_{a'} Q(s', a')$ chính là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Mục tiêu thực tế) mà AI muốn hướng tới. Cụm chữ nhật trong ngoặc vuông chính là Lỗi TD (Temporal Difference Error).",
         "words": [
             {
                 "id": "w1",
-                "text": "One-Class SVM"
+                "text": "Tốc độ học (Learning Rate)"
             },
             {
                 "id": "w2",
-                "text": "Gốc tọa độ (Origin)"
+                "text": "TD Target (Mục tiêu Kế thừa)"
             },
             {
                 "id": "w3",
-                "text": "Linear SVC"
+                "text": "Epsilon"
             },
             {
                 "id": "w4",
-                "text": "K-Means"
+                "text": "Epoch"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "One-Class SVM nhốt toàn bộ dữ liệu sạch vào 1 cái túi bong bóng bằng cách đẩy chúng ra khỏi gốc tọa độ. Cực kỳ mạnh khi dữ liệu train sạch 100% nhưng gặp khó nếu dữ liệu có sẵn nhiễu."
+        "explanation": "TD Learning (Học Khác Biệt Thời Gian) là Trái tim của RL hiện đại. AI không chờ đến cuối game để rút kinh nghiệm (Như Monte Carlo). Nó rút kinh nghiệm NGAY LẬP TỨC ở MỖI BƯỚC ĐI dựa trên phán đoán tương lai."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Phân cụm Bằng Tích cực (Active Learning) sử dụng K-Means để làm gì?",
+        "difficulty": "Khó",
+        "question": "Thuật toán DDPG (Deep Deterministic Policy Gradient) được sinh ra để xử lý bài toán gì mà DQN hoàn toàn bó tay?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuê người dùng internet nhấp vào quảng cáo."
+                "text": "Bài toán Hình ảnh 3D."
             },
             {
                 "id": "b",
-                "text": "Để tự động xóa dữ liệu."
+                "text": "Bài toán HÀNH ĐỘNG LIÊN TỤC (Continuous Action Space)."
             },
             {
                 "id": "c",
-                "text": "Tìm ra các điểm (Ví dụ: tâm của K-Means) có ý nghĩa và KHÓ phân loại nhất trình bày cho CHUYÊN GIA CON NGƯỜI (Human expert)"
+                "text": "Bài toán cờ Vây."
             },
             {
                 "id": "d",
-                "text": "Tự động gán nhãn dựa trên dự đoán ngẫu nhiên."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Để họ gán nhãn thủ công. Việc này tiết kiệm tiền thuê người gán nhãn hàng triệu tấm ảnh mà chỉ cần gán vài ngàn tấm cốt lõi. Active Learning kết hợp máy + người. Máy phân cụm, móc ra những điểm trung tâm hoặc những điểm nằm ở biên giới lấp lửng khó quyết, đưa cho người thật xem. Sau đó máy học tiếp. Quy trình lặp lại."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Tính chất của DBSCAN trong việc sử dụng siêu tham số?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Siêu tham số eps có ý nghĩa là Số lượng vòng lặp tối đa."
-            },
-            {
-                "id": "b",
-                "text": "Bạn phải chỉnh siêu tham số eps"
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN không có siêu tham số nào."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN tự học eps bằng Gradient Descent."
+                "text": "Phân loại thư rác."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(bán kính) và min_samples cực kỳ cẩn thận. Nếu eps quá nhỏ, mọi điểm đều trở thành Nhiễu. Nếu eps quá lớn, mọi điểm nhập chung vào 1 cụm khổng lồ. Khác với K-Means phải đoán K, thì ở DBSCAN bạn phải đoán bán kính lân cận eps. May thay, eps có ý nghĩa hình học (khoảng cách vật lý thực) nên đôi khi dễ set up hơn."
+        "explanation": "DQN xuất ra 3 nút (Trái, Phải, Nhảy) - Rất Dễ. Nhưng DDPG dùng cho Xe Ô Tô hoặc Cánh Tay Robot, đầu ra của hành động là 'Bẻ vô lăng 25.5 độ' hoặc 'Đạp ga 60.2%'. DDPG kết hợp ưu điểm của DQN (Replay Buffer) với Kiến trúc Actor-Critic để sinh ra Hành động là Số Thực thay vì Discrete. Robot công nghiệp (Robotics) không hoạt động bằng phím bấm lên xuống. Chúng cần Lực Moment Xoắn ở các khớp nối (Con số liên tục). Đó là sân chơi của DDPG, SAC, PPO."
     },
     {
         "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép nối vai trò của hàm mục tiêu (Mục đích tối ưu hóa) của các thuật toán:",
+        "difficulty": "Trung bình",
+        "question": "Ghép các Ứng dụng thực tế MẠNH NHẤT của Reinforcement Learning:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "Robotics (Người máy)"
             },
             {
                 "id": "l2",
-                "text": "PCA (Phân tích Thành phần Chính)"
+                "text": "Cooling Datacenters (Làm mát máy chủ)"
+            },
+            {
+                "id": "l3",
+                "text": "Recommendation Systems (Gợi ý)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Tối thiểu hóa 'Quán tính' (Inertia - Tổng khoảng cách từ điểm đến tâm)."
+                "text": "Thay vì lập trình tay hàng ngàn dòng code để Robot chó Boston Dynamics giữ thăng bằng. Người ta vứt mô hình Robot vào Phần mềm mô phỏng (Mujoco/Isaac Gym), dùng RL dạy nó tự bò, tự chạy, tự vượt chướng ngại vật rồi đổ trọng số đó vào Robot thật."
             },
             {
                 "id": "r2",
-                "text": "Tối thiểu hóa 'Lỗi tái tạo' (Reconstruction error) hoặc Tối đa hóa 'Phương sai giải thích'."
+                "text": "Google dùng RL để điều khiển hệ thống quạt và máy lạnh trong các trung tâm dữ liệu. AI liên tục quan sát nhiệt độ (State) và tinh chỉnh quạt (Action). Đã tiết kiệm được 40% chi phí tiền điện của Google."
+            },
+            {
+                "id": "r3",
+                "text": "YouTube dùng RL để quan sát hành vi của bạn (Xem lâu, Skip, Like). Mỗi video bạn xem là 1 State. Nó tung ra Video mới (Action) để tối đa hóa Thời gian xem của bạn (Reward)."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Mỗi thuật toán Unsupervised đều ngầm tối ưu hóa một hàm toán học."
+        "explanation": "Nhiều người nghĩ RL chỉ dùng chơi Game. Thực tế, RL đang ngầm chi phối các hệ thống Tự động hóa khổng lồ nhất thế giới."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán Local Outlier Factor (LOF) hoạt động trong bài toán Phát hiện Bất thường như thế nào?",
+        "difficulty": "Trung bình",
+        "question": "Tại sao việc 'Huấn luyện RL trong phần mềm Mô phỏng (Simulator)' thường gặp khó khăn khi triển khai ra Thế giới thực (Sim-to-Real Gap)?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó so sánh MẬT ĐỘ của một điểm dữ liệu với mật độ của K LÁNG GIỀNG GẦN NHẤT của nó."
+                "text": "Vì mô phỏng quá đắt tiền."
             },
             {
                 "id": "b",
-                "text": "Nó dùng mạng Neural để học hàm phi tuyến."
+                "text": "Thế giới thật CÓ MA SÁT, CÓ GIÓ CÓ TRỌNG LỰC NHIỄU loạn không hoàn hảo như trong Game."
             },
             {
                 "id": "c",
-                "text": "Nó đo khoảng cách của điểm đó đến gốc tọa độ (0,0)."
+                "text": "Vì code Python không chạy được trên Robot."
             },
             {
                 "id": "d",
-                "text": "Nó sử dụng Decision Tree."
+                "text": "Vì không có mạng internet."
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Nếu điểm đó có mật độ THẤP HƠN NHIỀU so với những người hàng xóm, điểm đó là dị thường. Rất giống với tư tưởng của DBSCAN nhưng tinh tế hơn. DBSCAN xài một bán kính eps cứng nhắc. LOF đo độ 'cô đơn' tương đối (nếu ai xung quanh cũng ở nhà san sát nhau, tự nhiên nhà bạn cách xa mọi người 1km thì bạn là dị thường)."
+        "correctAnswer": "b",
+        "explanation": "Một con Robot tập đi hoàn hảo trong Unity 3D khi đem ra đời thực có thể ngã dập mặt vì một cục đá gồ ghề. Cần phải Randomize (Xáo trộn) vật lý trong lúc Train để nó chống chịu với đời thực. Sim-to-Real là lĩnh vực nghiên cứu lớn nhất của Robotics. Domain Randomization (Thay đổi màu sắc, độ trơn trượt của sàn nhà liên tục trong Game) là giải pháp hàng đầu."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Trung bình",
-        "question": "Làm cách nào để chuyển một bức ảnh thành dữ liệu cho Phân cụm Màu sắc (Color Quantization)?",
+        "difficulty": "Dễ",
+        "question": "Tính ổn định của Deep Q-Network (DQN):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để giảm số lượng màu của bức ảnh từ 16 triệu màu xuống còn 10 màu. Bức ảnh là một ma trận 3D (Width x Height x 3 kênh RGB). Để dùng K-Means, bạn phải Reshape (Định hình lại) nó thành dạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tức là danh sách các pixel dài, mỗi pixel có 3 chiều RGB). Sau khi train K-Means(k=10), bạn thay thế màu gốc của từng pixel bằng màu của <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mà nó thuộc về.",
+        "text": "Để DQN có thể chơi game Atari bằng cách 'Nhìn Màn Hình', ta không thể chỉ đưa cho nó MỘT tấm ảnh tĩnh. Nếu chỉ nhìn 1 tấm ảnh, AI không thể biết quả bóng đang bay lên hay rớt xuống. Thủ thuật là phải Ghép <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> liên tiếp nhau để tạo thành một khối Tensor (Trạng thái). Khối Tensor này được đưa vào <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để trích xuất đặc trưng vị trí và gia tốc của vật thể.",
         "words": [
             {
                 "id": "w1",
-                "text": "2D"
+                "text": "4 khung hình (Frames)"
             },
             {
                 "id": "w2",
-                "text": "Tâm cụm (Centroid)"
+                "text": "Mạng CNN"
             },
             {
                 "id": "w3",
-                "text": "1D"
+                "text": "Âm thanh"
             },
             {
                 "id": "w4",
-                "text": "Biên (Border)"
+                "text": "Bảng Q-Table"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "Sklearn bắt buộc đầu vào là mảng 2D (mẫu x đặc trưng). Bạn duỗi ảnh thành danh sách dài các pixel. Tâm cụm của K-Means(k=10) chính là 10 mã màu đại diện tốt nhất cho bức ảnh."
+        "explanation": "Kỹ thuật Frame Stacking. CNN học không gian (Space). Nhờ có 4 tấm hình dính nhau, CNN tự học được luôn cả Gia tốc và Vận tốc (Thời gian - Time)."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Khó",
+        "question": "Quy trình xây dựng mạng DQN hoàn chỉnh với Keras:",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Định nghĩa Mạng Nơ-ron (Q-Network): Đầu vào là Quan sát `(4,)`, 2 lớp Dense `64` nơ ron, Đầu ra là Dense `2` nơ ron đại diện cho Điểm số của nút (Trái, Phải). Không xài Softmax."
+            },
+            {
+                "id": "2",
+                "text": "Tạo Hàm Chọn Hành Động: Nếu Random() < epsilon -> Bấm ngẫu nhiên. Ngược lại -> Chạy mạng Keras lấy argmax() của Đầu ra."
+            },
+            {
+                "id": "3",
+                "text": "Tạo Replay Buffer (Dạng Deque) chứa tối đa 10.000 kinh nghiệm."
+            },
+            {
+                "id": "4",
+                "text": "Vòng lặp Train: Trích xuất 1 Batch 32 phần tử từ Buffer. Tính Điểm Q_Mục Tiêu dựa vào mạng Target Network."
+            },
+            {
+                "id": "5",
+                "text": "Dùng `model.fit(state, q_target)` để huấn luyện Mạng Chính. Từ từ giảm hệ số Epsilon xuống để AI bớt thử bừa."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Đó là 5 mảng kiến trúc bắt buộc phải có để code một thuật toán Deep Reinforcement Learning tử tế từ đầu."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Lỗi 'Đánh giá Quá Mức' (Overestimation) trong DQN do phép Toán Max gây ra được khắc phục bởi thuật toán nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "CNN-DQN."
+            },
+            {
+                "id": "b",
+                "text": "Double DQN (DDQN)."
+            },
+            {
+                "id": "c",
+                "text": "PPO."
+            },
+            {
+                "id": "d",
+                "text": "Q-Table."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Trong DQN gốc, mạng Target lấy HÀNH ĐỘNG CÓ ĐIỂM CAO NHẤT làm mục tiêu, việc này thường xuyên dính 'ảo tưởng' điểm số cao do nhiễu. DDQN chia làm 2 bước: Bước 1: Dùng Mạng CHÍNH để Quyết định ĐÂU là hành động tốt nhất. Bước 2: Dùng Mạng TARGET để ĐÁNH GIÁ ĐIỂM SỐ của hành động vừa được chọn đó. Nó chặn đứng việc tự thổi phồng điểm số. Một biến thể khác là Dueling DQN (Tách mạng ra làm Nhánh Value và Nhánh Advantage). Thường người ta kết hợp tất cả lại thành Rainbow DQN cực kỳ mạnh."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Tổng kết Học Tăng Cường (RL):",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "RL là một hệ thống tối ưu hóa Dựa trên Thử & Sai. Nó không cần dữ liệu có sẵn của con người. Thay vào đó, nó tự tạo ra dữ liệu thông qua <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Sự kết hợp giữa Mạng Nơ-ron Sâu (Thị giác, Ngôn ngữ) và Các thuật toán RL (DQN, PPO) tạo ra <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> - Nền tảng của các AI vượt trí tuệ con người như AlphaGo, AlphaStar, và ChatGPT.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Tương tác với Môi trường"
+            },
+            {
+                "id": "w2",
+                "text": "Deep Reinforcement Learning (DRL)"
+            },
+            {
+                "id": "w3",
+                "text": "Cơ sở Dữ liệu SQL"
+            },
+            {
+                "id": "w4",
+                "text": "Random Forest"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Học Tăng Cường là bước tiến gần nhất của Nhân loại chạm đến Trí Tuệ Nhân Tạo Chung (AGI) - thứ máy móc có thể TỰ SUY NGHĨ VÀ LẬP CHIẾN LƯỢC."
     }
 ];
 

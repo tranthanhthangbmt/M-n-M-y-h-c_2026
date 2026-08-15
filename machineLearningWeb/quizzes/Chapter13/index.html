@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Tạo ra một 'Ống dẫn dữ liệu' (Data Pipeline) hiệu năng cực cao, giúp tải, biến đổi, xáo trộn và nhóm mẻ (batch) dữ liệu từ ổ cứng (hoặc RAM) để đẩy liên tục vào GPU mà không gây ra hiện tượng thắt cổ chai (bottleneck)."
+                "text": "Tạo ra một 'Ống dẫn dữ liệu' (Data Pipeline) hiệu năng cực cao"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi huấn luyện Deep Learning, GPU tính toán rất nhanh. Nếu CPU đọc dữ liệu từ ổ cứng quá chậm, GPU sẽ phải 'ngồi chơi xơi nước'. `tf.data` giải quyết triệt để vấn đề này."
+        "explanation": "Giúp tải, biến đổi, xáo trộn và nhóm mẻ (batch) dữ liệu từ ổ cứng (hoặc RAM) để đẩy liên tục vào GPU mà không gây ra hiện tượng thắt cổ chai (bottleneck). Khi huấn luyện Deep Learning, GPU tính toán rất nhanh. Nếu CPU đọc dữ liệu từ ổ cứng quá chậm, GPU sẽ phải 'ngồi chơi xơi nước'. `tf.data` giải quyết triệt để vấn đề này."
     },
     {
         "type": "multiple_choice",
@@ -500,7 +500,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó nhận một Tensor (hoặc NumPy array) nhiều chiều, và cắt nó DỌC THEO CHIỀU ĐẦU TIÊN (chiều số 0 - thường là số lượng mẫu). Kết quả tạo ra một Dataset trong đó mỗi phần tử là một điểm dữ liệu (1 hàng) của X."
+                "text": "Nó nhận một Tensor (hoặc NumPy array) nhiều chiều và cắt nó DỌC THEO CHIỀU ĐẦU TIÊN"
             },
             {
                 "id": "c",
@@ -512,7 +512,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Ví dụ X là mảng [1000, 28, 28] (1000 tấm ảnh). `from_tensor_slices(X)` sẽ tạo ra 1 dataset chứa 1000 phần tử, mỗi phần tử là 1 tấm ảnh [28, 28]."
+        "explanation": "(chiều số 0 - thường là số lượng mẫu). Kết quả tạo ra một Dataset trong đó mỗi phần tử là một điểm dữ liệu (1 hàng) của X. Ví dụ X là mảng [1000, 28, 28] (1000 tấm ảnh). `from_tensor_slices(X)` sẽ tạo ra 1 dataset chứa 1000 phần tử, mỗi phần tử là 1 tấm ảnh [28, 28]."
     },
     {
         "type": "matching",
@@ -594,7 +594,7 @@
             },
             {
                 "id": "b",
-                "text": "Gọi lệnh `dataset.map(preprocess_func, num_parallel_calls=tf.data.AUTOTUNE)`. TensorFlow sẽ tự động kích hoạt nhiều luồng C++ chạy song song dựa trên số lõi CPU hiện có của máy tính."
+                "text": "Gọi lệnh `dataset.map(preprocess_func num_parallel_calls=tf.data.AUTOTUNE)`."
             },
             {
                 "id": "c",
@@ -606,7 +606,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Quá trình đọc file ảnh từ ổ cứng và giải mã JPEG (trong hàm map) tốn rất nhiều CPU. Nếu không bật `num_parallel_calls`, nó sẽ chỉ chạy 1 luồng rất chậm. Dùng `AUTOTUNE` là 'câu thần chú' để TensorFlow tự vắt kiệt sức mạnh CPU."
+        "explanation": "TensorFlow sẽ tự động kích hoạt nhiều luồng C++ chạy song song dựa trên số lõi CPU hiện có của máy tính. Quá trình đọc file ảnh từ ổ cứng và giải mã JPEG (trong hàm map) tốn rất nhiều CPU. Nếu không bật `num_parallel_calls`, nó sẽ chỉ chạy 1 luồng rất chậm. Dùng `AUTOTUNE` là 'câu thần chú' để TensorFlow tự vắt kiệt sức mạnh CPU."
     },
     {
         "type": "ordering",
@@ -659,7 +659,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó tách biệt (Decouple) thời gian chạy của CPU và GPU. Thông thường, GPU train xong phải ĐỢI CPU đọc mẻ mới. Có prefetch, trong lúc GPU đang train mẻ số 1, CPU sẽ LÀM VIỆC ĐỒNG THỜI để đọc và xử lý sẵn mẻ số 2 ném vào RAM chờ. Nhờ đó, GPU vừa train xong mẻ 1 là có ngay mẻ 2 để làm, loại bỏ hoàn toàn thời gian chết (idle time)."
+                "text": "Nó tách biệt (Decouple) thời gian chạy của CPU và GPU."
             },
             {
                 "id": "d",
@@ -667,7 +667,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Prefetch (Lấy trước) biến quá trình huấn luyện từ 'tuần tự' (CPU làm -> GPU làm -> CPU làm) thành 'đường ống' (Pipelining - CPU và GPU làm cùng lúc chồng lấp lên nhau). Nó tăng tốc gấp đôi thời gian train."
+        "explanation": "Thông thường, GPU train xong phải ĐỢI CPU đọc mẻ mới. Có prefetch, trong lúc GPU đang train mẻ số 1, CPU sẽ LÀM VIỆC ĐỒNG THỜI để đọc và xử lý sẵn mẻ số 2 ném vào RAM chờ. Nhờ đó, GPU vừa train xong mẻ 1 là có ngay mẻ 2 để làm, loại bỏ hoàn toàn thời gian chết (idle time). Prefetch (Lấy trước) biến quá trình huấn luyện từ 'tuần tự' (CPU làm -> GPU làm -> CPU làm) thành 'đường ống' (Pipelining - CPU và GPU làm cùng lúc chồng lấp lên nhau). Nó tăng tốc gấp đôi thời gian train."
     },
     {
         "type": "multiple_choice",
@@ -680,7 +680,7 @@
             },
             {
                 "id": "b",
-                "text": "Là một định dạng file nhị phân (binary) tùy chỉnh của TensorFlow, dùng để lưu trữ tuần tự hàng triệu bản ghi dữ liệu nối tiếp nhau. Nó giúp quá trình đọc dữ liệu từ ổ cứng (đặc biệt là ổ HDD) cực kỳ trơn tru và siêu tốc."
+                "text": "Là một định dạng file nhị phân (binary) tùy chỉnh của TensorFlow dùng"
             },
             {
                 "id": "c",
@@ -692,7 +692,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Đọc 1 triệu file `.jpg` nhỏ lẻ sẽ bắt kim đọc của ổ cứng chạy loạn xạ (Random Access - rất chậm). Đóng gói chúng vào 1 file `.tfrecord` bự, kim đọc chỉ cần trượt thẳng một đường (Sequential Access - siêu nhanh)."
+        "explanation": "Để lưu trữ tuần tự hàng triệu bản ghi dữ liệu nối tiếp nhau. Nó giúp quá trình đọc dữ liệu từ ổ cứng (đặc biệt là ổ HDD) cực kỳ trơn tru và siêu tốc. Đọc 1 triệu file `.jpg` nhỏ lẻ sẽ bắt kim đọc của ổ cứng chạy loạn xạ (Random Access - rất chậm). Đóng gói chúng vào 1 file `.tfrecord` bự, kim đọc chỉ cần trượt thẳng một đường (Sequential Access - siêu nhanh)."
     },
     {
         "type": "fill_in_blanks",
@@ -735,7 +735,7 @@
             },
             {
                 "id": "b",
-                "text": "Bạn phải dùng hàm `tf.io.parse_single_example()`. Hàm này ĐÒI HỎI BẠN PHẢI CUNG CẤP một cuốn từ điển (Feature Description). Trong đó định nghĩa rõ ràng: cột A là float32, cột B là string... Nếu bạn không khai báo Description, nó không biết cách giải mã (decode) khối nhị phân đó."
+                "text": "Bạn phải dùng hàm `tf.io.parse_single_example()`."
             },
             {
                 "id": "c",
@@ -747,7 +747,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Vì TFRecord ghi dữ liệu cứng nhắc dính liền vào nhau không có thẻ tag nhãn (như JSON). Nên khi bung nén, bạn phải cấp cho nó 1 cái khung khuôn mẫu (Ví dụ: `{'image': tf.io.FixedLenFeature([], tf.string)}`) để nó cắt dữ liệu ra đúng vị trí."
+        "explanation": "Hàm này ĐÒI HỎI BẠN PHẢI CUNG CẤP một cuốn từ điển (Feature Description). Trong đó định nghĩa rõ ràng: cột A là float32, cột B là string... Nếu bạn không khai báo Description, nó không biết cách giải mã (decode) khối nhị phân đó. Vì TFRecord ghi dữ liệu cứng nhắc dính liền vào nhau không có thẻ tag nhãn (như JSON). Nên khi bung nén, bạn phải cấp cho nó 1 cái khung khuôn mẫu (Ví dụ: `{'image': tf.io.FixedLenFeature([], tf.string)}`) để nó cắt dữ liệu ra đúng vị trí."
     },
     {
         "type": "matching",
@@ -803,7 +803,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó ÁNH XẠ mỗi từ vựng thành một điểm tọa độ trong một Không gian nhiều chiều (ví dụ 300D). Những từ CÓ NGHĨA GIỐNG NHAU (ví dụ 'King' và 'Queen') sẽ bị mô hình tự động 'kéo' lại GẦN NHAU trong không gian đó suốt quá trình huấn luyện. Chúng còn hỗ trợ cả phép toán học: vector('King') - vector('Man') + vector('Woman') ≈ vector('Queen')."
+                "text": "Nó ÁNH XẠ mỗi từ vựng thành một điểm tọa độ trong một Không gian nhiều chiều"
             },
             {
                 "id": "d",
@@ -811,7 +811,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Embedding là phát minh mang tính cách mạng của NLP (Xử lý ngôn ngữ tự nhiên). Thay vì gán một ID vô nghĩa cho chữ, Embedding cấp cho chữ đó một 'linh hồn' toán học để máy tính hiểu được 'sự tương đồng' ngữ nghĩa."
+        "explanation": "(ví dụ 300D). Những từ CÓ NGHĨA GIỐNG NHAU (ví dụ 'King' và 'Queen') sẽ bị mô hình tự động 'kéo' lại GẦN NHAU trong không gian đó suốt quá trình huấn luyện. Chúng còn hỗ trợ cả phép toán học: vector('King') - vector('Man') + vector('Woman') ≈ vector('Queen'). Embedding là phát minh mang tính cách mạng của NLP (Xử lý ngôn ngữ tự nhiên). Thay vì gán một ID vô nghĩa cho chữ, Embedding cấp cho chữ đó một 'linh hồn' toán học để máy tính hiểu được 'sự tương đồng' ngữ nghĩa."
     },
     {
         "type": "multiple_choice",
@@ -832,11 +832,11 @@
             },
             {
                 "id": "d",
-                "text": "Nó nhận vào Câu văn thô (String). Tự động tách từ bằng dấu cách, chuyển chữ thường, xóa dấu câu, và quy đổi từng từ thành số nguyên ID dựa trên Bộ từ vựng nó đã học qua hàm `.adapt(text_data)`."
+                "text": "Nó nhận vào Câu văn thô (String)."
             }
         ],
         "correctAnswer": "d",
-        "explanation": "Lớp `TextVectorization` giúp bạn tích hợp TRỰC TIẾP bước tiền xử lý văn bản vào BÊN TRONG Mô hình Keras. Bạn có thể xuất mô hình này cho Mobile và đút thẳng chữ vào mà không cần code lại bước tách từ bằng C++."
+        "explanation": "Tự động tách từ bằng dấu cách, chuyển chữ thường, xóa dấu câu, và quy đổi từng từ thành số nguyên ID dựa trên Bộ từ vựng nó đã học qua hàm `.adapt(text_data)`. Lớp `TextVectorization` giúp bạn tích hợp TRỰC TIẾP bước tiền xử lý văn bản vào BÊN TRONG Mô hình Keras. Bạn có thể xuất mô hình này cho Mobile và đút thẳng chữ vào mà không cần code lại bước tách từ bằng C++."
     },
     {
         "type": "ordering",
@@ -914,7 +914,7 @@
             },
             {
                 "id": "c",
-                "text": "Nó thay thế thư viện StandardScaler của Scikit-Learn. Bạn gọi hàm `.adapt(X_train)`, nó sẽ tính và ghi nhớ Mean và Phương sai của dữ liệu. Sau đó, nó tự động chuẩn hóa mọi dữ liệu chạy ngang qua nó: (X - Mean) / Variance."
+                "text": "Nó thay thế thư viện StandardScaler của Scikit-Learn."
             },
             {
                 "id": "d",
@@ -922,7 +922,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Đây là lớp tiện lợi nhất để chuẩn hóa dữ liệu dạng Bảng (Tabular). Các chỉ số Mean/Variance được lưu thẳng vào h5 file như các tham số không huấn luyện (Non-trainable weights)."
+        "explanation": "Bạn gọi hàm `.adapt(X_train)`, nó sẽ tính và ghi nhớ Mean và Phương sai của dữ liệu. Sau đó, nó tự động chuẩn hóa mọi dữ liệu chạy ngang qua nó: (X - Mean) / Variance. Đây là lớp tiện lợi nhất để chuẩn hóa dữ liệu dạng Bảng (Tabular). Các chỉ số Mean/Variance được lưu thẳng vào h5 file như các tham số không huấn luyện (Non-trainable weights)."
     },
     {
         "type": "matching",
@@ -974,7 +974,7 @@
             },
             {
                 "id": "b",
-                "text": "Lớp `Normalization` của Keras tuy tốt nhưng nó BẮT BUỘC phải tải toàn bộ dữ liệu vào RAM 1 lần để gọi hàm `.adapt()`. Nếu dữ liệu 10TB thì vỡ RAM. TFT dùng nền tảng Apache Beam phân tán hàng ngàn máy chủ để quét toàn bộ dữ liệu 1 lần, lấy ra Mean/Var, sau đó tạo ra hàm tf.function để nhúng thẳng vào Model."
+                "text": "Lớp `Normalization` của Keras tuy tốt"
             },
             {
                 "id": "c",
@@ -986,7 +986,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Tiền xử lý trong mô hình (Preprocessing Layers) rất tiện, nhưng khi gọi .adapt() nó gom dữ liệu lên RAM một cục. Khi dữ liệu của công ty quá bự, ta phải dùng công cụ Big Data như TF Transform."
+        "explanation": "Nhưng nó BẮT BUỘC phải tải toàn bộ dữ liệu vào RAM 1 lần để gọi hàm `.adapt()`. Nếu dữ liệu 10TB thì vỡ RAM. TFT dùng nền tảng Apache Beam phân tán hàng ngàn máy chủ để quét toàn bộ dữ liệu 1 lần, lấy ra Mean/Var, sau đó tạo ra hàm tf.function để nhúng thẳng vào Model. Tiền xử lý trong mô hình (Preprocessing Layers) rất tiện, nhưng khi gọi .adapt() nó gom dữ liệu lên RAM một cục. Khi dữ liệu của công ty quá bự, ta phải dùng công cụ Big Data như TF Transform."
     },
     {
         "type": "fill_in_blanks",
@@ -1029,7 +1029,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó ghi nhớ (Lưu trữ) toàn bộ dữ liệu VÀO RAM hoặc ổ cứng ngay sau epoch đầu tiên. Kể từ epoch thứ 2 trở đi, nó sẽ đọc dữ liệu trực tiếp từ RAM, không cần phải cày ải ổ cứng HDD hay thực hiện lại các phép biến đổi nặng nhọc (như giải nén ảnh)."
+                "text": "Nó ghi nhớ (Lưu trữ) toàn bộ dữ liệu VÀO RAM hoặc ổ cứng ngay sau epoch đầu tiên."
             },
             {
                 "id": "c",
@@ -1041,7 +1041,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Nút thắt cổ chai lớn nhất là giải mã ảnh `.jpg` thành ma trận điểm ảnh. Nếu dữ liệu của bạn ĐỦ NHỎ để nhét vừa RAM, hãy gọi `.cache()` ngay sau bước `.map()`. Tốc độ epoch 2 sẽ bay như tên lửa."
+        "explanation": "Kể từ epoch thứ 2 trở đi, nó sẽ đọc dữ liệu trực tiếp từ RAM, không cần phải cày ải ổ cứng HDD hay thực hiện lại các phép biến đổi nặng nhọc (như giải nén ảnh). Nút thắt cổ chai lớn nhất là giải mã ảnh `.jpg` thành ma trận điểm ảnh. Nếu dữ liệu của bạn ĐỦ NHỎ để nhét vừa RAM, hãy gọi `.cache()` ngay sau bước `.map()`. Tốc độ epoch 2 sẽ bay như tên lửa."
     },
     {
         "type": "ordering",
@@ -1090,7 +1090,7 @@
             },
             {
                 "id": "b",
-                "text": "Là một thư viện riêng biệt chứa SẴN HÀNG TRĂM bộ dữ liệu nổi tiếng (như MNIST, ImageNet, IMDB). Nó sẽ tự động Tải file từ internet về máy bạn, giải nén và BỌC SẴN nó dưới định dạng `tf.data.Dataset` hoàn hảo để bạn đút thẳng vào mô hình."
+                "text": "Là một thư viện riêng biệt chứa SẴN HÀNG TRĂM bộ dữ liệu nổi tiếng"
             },
             {
                 "id": "c",
@@ -1102,7 +1102,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Thay vì phải lên Kaggle tải file, viết code giải nén, viết hàm đọc ảnh lằng nhằng. Bạn chỉ cần gõ `tfds.load('mnist')`. Nó xử lý mọi thứ cho bạn. TFDS là kho đạn dược khổng lồ của lập trình viên AI."
+        "explanation": "(như MNIST ImageNet, IMDB). Nó sẽ tự động Tải file từ internet về máy bạn, giải nén và BỌC SẴN nó dưới định dạng `tf.data.Dataset` hoàn hảo để bạn đút thẳng vào mô hình. Thay vì phải lên Kaggle tải file, viết code giải nén, viết hàm đọc ảnh lằng nhằng. Bạn chỉ cần gõ `tfds.load('mnist')`. Nó xử lý mọi thứ cho bạn. TFDS là kho đạn dược khổng lồ của lập trình viên AI."
     },
     {
         "type": "multiple_choice",
@@ -1209,7 +1209,7 @@
             },
             {
                 "id": "b",
-                "text": "Dành riêng 1 ID (thường là số 0 hoặc 1) đại diện chung cho MỌI TỪ MỚI LẠ. Nếu lúc test xuất hiện từ 'Sars-Cov-2' mà lúc train chưa từng thấy, thay vì báo lỗi, nó sẽ gán từ này vào giỏ OOV. Nhờ đó mô hình không bị vỡ trận."
+                "text": "Dành riêng 1 ID (thường là số 0 hoặc 1) đại diện chung cho MỌI TỪ MỚI LẠ."
             },
             {
                 "id": "c",
@@ -1221,7 +1221,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Từ vựng tiếng người là vô hạn. Bạn chỉ học được 100.000 từ phổ biến. Giỏ OOV (Out-Of-Vocab) là cái sọt rác thần thánh hứng mọi từ lạ lùng, giúp hệ thống chịu lỗi (fault-tolerant) tuyệt đối."
+        "explanation": "Nếu lúc test xuất hiện từ 'Sars-Cov-2' mà lúc train chưa từng thấy, thay vì báo lỗi, nó sẽ gán từ này vào giỏ OOV. Nhờ đó mô hình không bị vỡ trận. Từ vựng tiếng người là vô hạn. Bạn chỉ học được 100.000 từ phổ biến. Giỏ OOV (Out-Of-Vocab) là cái sọt rác thần thánh hứng mọi từ lạ lùng, giúp hệ thống chịu lỗi (fault-tolerant) tuyệt đối."
     },
     {
         "type": "multiple_choice",
@@ -1234,7 +1234,7 @@
             },
             {
                 "id": "b",
-                "text": "Chỉ cần bạn sắp xếp thư mục ổ cứng (VD: Thư mục `Mèo` chứa ảnh mèo, `Chó` chứa ảnh chó). Hàm này sẽ quét ổ cứng, tự dán nhãn, tự đọc ảnh từ từ (batching) dưới dạng đối tượng `tf.data.Dataset` hoàn hảo để fit() thẳng vào mô hình."
+                "text": "Chỉ cần bạn sắp xếp thư mục ổ cứng"
             },
             {
                 "id": "c",
@@ -1246,7 +1246,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Thay vì hì hục tự viết mã quét file ảnh, cắt chuỗi dán nhãn, chuyển mảng NumPy. Công cụ này xử lý trong 1 dòng code. Rất phổ biến cho anh em làm Computer Vision."
+        "explanation": "(VD Thư mục `Mèo` chứa ảnh mèo, `Chó` chứa ảnh chó). Hàm này sẽ quét ổ cứng, tự dán nhãn, tự đọc ảnh từ từ (batching) dưới dạng đối tượng `tf.data.Dataset` hoàn hảo để fit() thẳng vào mô hình. Thay vì hì hục tự viết mã quét file ảnh, cắt chuỗi dán nhãn, chuyển mảng NumPy. Công cụ này xử lý trong 1 dòng code. Rất phổ biến cho anh em làm Computer Vision."
     },
     {
         "type": "ordering",
@@ -1290,7 +1290,7 @@
             },
             {
                 "id": "b",
-                "text": "Câu văn có độ dài ngắn khác nhau. Ta buộc phải thêm các số 0 (Padding) vào cuối để chúng thành ma trận chữ nhật bằng nhau. 'Masking' (Mặt nạ) sẽ báo hiệu cho các lớp RNN / LSTM phía sau rằng: 'Ê, mấy số 0 này là giả đấy, ngó lơ nó đi, đừng tính toán làm sai lệch kết quả'."
+                "text": "Câu văn có độ dài ngắn khác nhau."
             },
             {
                 "id": "c",
@@ -1302,7 +1302,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Padding (chèn số 0) là bắt buộc. Nhưng số 0 sẽ làm thuật toán RNN bị 'nhiễu'. Khai báo `Embedding(..., mask_zero=True)` sẽ phóng ra 1 tia 'Mặt nạ' chạy xuyên suốt mạng nơ-ron, dập tắt tính toán tại vị trí có số 0."
+        "explanation": "Ta buộc phải thêm các số 0 (Padding) vào cuối để chúng thành ma trận chữ nhật bằng nhau. 'Masking' (Mặt nạ) sẽ báo hiệu cho các lớp RNN / LSTM phía sau rằng: 'Ê, mấy số 0 này là giả đấy, ngó lơ nó đi, đừng tính toán làm sai lệch kết quả'. Padding (chèn số 0) là bắt buộc. Nhưng số 0 sẽ làm thuật toán RNN bị 'nhiễu'. Khai báo `Embedding(..., mask_zero=True)` sẽ phóng ra 1 tia 'Mặt nạ' chạy xuyên suốt mạng nơ-ron, dập tắt tính toán tại vị trí có số 0."
     },
     {
         "type": "fill_in_blanks",

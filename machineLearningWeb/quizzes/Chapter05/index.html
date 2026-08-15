@@ -475,7 +475,7 @@
             },
             {
                 "id": "b",
-                "text": "Phân loại (Classification), Hồi quy (Regression) và Phát hiện bất thường (Outlier Detection)."
+                "text": "Phân loại (Classification), Hồi quy"
             },
             {
                 "id": "c",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "SVM là một trong những mô hình phổ biến và linh hoạt nhất, có thể dùng cho cả classification, regression và outlier detection (tuy nhiên ít dùng cho các tập dữ liệu cực kỳ lớn)."
+        "explanation": "(Regression) và Phát hiện bất thường (Outlier Detection). SVM là một trong những mô hình phổ biến và linh hoạt nhất, có thể dùng cho cả classification, regression và outlier detection (tuy nhiên ít dùng cho các tập dữ liệu cực kỳ lớn)."
     },
     {
         "type": "multiple_choice",
@@ -555,7 +555,7 @@
             },
             {
                 "id": "b",
-                "text": "Hard Margin yêu cầu KHÔNG CÓ BẤT KỲ ĐIỂM NÀO nằm trong lề hoặc sai phía (chỉ hoạt động nếu dữ liệu phân tách tuyến tính hoàn hảo). Soft Margin cho phép một số điểm vi phạm lề để lề rộng hơn và mô hình tổng quát hóa tốt hơn."
+                "text": "Hard Margin yêu cầu KHÔNG CÓ BẤT KỲ ĐIỂM NÀO nằm trong lề hoặc sai phía"
             },
             {
                 "id": "c",
@@ -567,7 +567,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Lề cứng (Hard margin) rất cực đoan, nếu có 1 điểm nhiễu (outlier) lọt vào giữa 2 lớp thì nó sẽ không tìm được nghiệm. Lề mềm (Soft margin) linh hoạt hơn, cho phép 'vi phạm lề' (margin violations)."
+        "explanation": "(chỉ hoạt động nếu dữ liệu phân tách tuyến tính hoàn hảo). Soft Margin cho phép một số điểm vi phạm lề để lề rộng hơn và mô hình tổng quát hóa tốt hơn. Lề cứng (Hard margin) rất cực đoan, nếu có 1 điểm nhiễu (outlier) lọt vào giữa 2 lớp thì nó sẽ không tìm được nghiệm. Lề mềm (Soft margin) linh hoạt hơn, cho phép 'vi phạm lề' (margin violations)."
     },
     {
         "type": "multiple_choice",
@@ -576,7 +576,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Giá trị C càng thấp, mô hình càng cho phép NHIỀU điểm vi phạm lề (lề rộng hơn, nhưng có thể bị underfit). Giá trị C cao làm lề hẹp lại và phạt nặng các điểm vi phạm."
+                "text": "Giá trị C càng thấp, mô hình càng cho phép NHIỀU điểm vi phạm lề"
             },
             {
                 "id": "b",
@@ -592,7 +592,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Trong SVM, C tỷ lệ nghịch với độ rộng của lề. C nhỏ -> Lề rộng (Nhiều vi phạm, mô hình đơn giản/chính quy hóa mạnh). C lớn -> Lề hẹp (Ít vi phạm, dễ overfit)."
+        "explanation": "(lề rộng hơn nhưng có thể bị underfit). Giá trị C cao làm lề hẹp lại và phạt nặng các điểm vi phạm. Trong SVM, C tỷ lệ nghịch với độ rộng của lề. C nhỏ -> Lề rộng (Nhiều vi phạm, mô hình đơn giản/chính quy hóa mạnh). C lớn -> Lề hẹp (Ít vi phạm, dễ overfit)."
     },
     {
         "type": "matching",
@@ -644,7 +644,7 @@
             },
             {
                 "id": "b",
-                "text": "Thêm đặc trưng đa thức (Polynomial Features) ví dụ x^2. Bằng cách nâng số chiều lên, dữ liệu có thể trở nên phân tách tuyến tính ở chiều không gian cao hơn."
+                "text": "Thêm đặc trưng đa thức (Polynomial Features) ví dụ x^2."
             },
             {
                 "id": "c",
@@ -656,7 +656,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Thêm các đặc trưng bậc cao (như bình phương x2 = (x1)^2) sẽ tạo đường cong dạng parabol ở không gian mới, cho phép siêu phẳng tuyến tính cắt qua và phân tách 2 lớp."
+        "explanation": "Bằng cách nâng số chiều lên, dữ liệu có thể trở nên phân tách tuyến tính ở chiều không gian cao hơn. Thêm các đặc trưng bậc cao (như bình phương x2 = (x1)^2) sẽ tạo đường cong dạng parabol ở không gian mới, cho phép siêu phẳng tuyến tính cắt qua và phân tách 2 lớp."
     },
     {
         "type": "ordering",
@@ -700,7 +700,7 @@
             },
             {
                 "id": "b",
-                "text": "Bậc cao tạo ra số lượng đặc trưng khổng lồ khiến mô hình chạy quá chậm (tốn RAM). Kernel Trick cho phép tính toán kết quả tương tự MÀ KHÔNG CẦN thực sự phải thêm các đặc trưng đó vào bộ nhớ."
+                "text": "Bậc cao tạo ra số lượng đặc trưng khổng lồ khiến mô hình chạy quá chậm (tốn RAM)."
             },
             {
                 "id": "c",
@@ -712,7 +712,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Kernel trick là một phép toán thần kỳ: Nó trả về cùng một kết quả như khi bạn biến đổi dữ liệu sang không gian chiều cực cao, nhưng thực tế nó chỉ tính toán dựa trên các vector ở không gian chiều thấp ban đầu."
+        "explanation": "Kernel Trick cho phép tính toán kết quả tương tự MÀ KHÔNG CẦN thực sự phải thêm các đặc trưng đó vào bộ nhớ. Kernel trick là một phép toán thần kỳ: Nó trả về cùng một kết quả như khi bạn biến đổi dữ liệu sang không gian chiều cực cao, nhưng thực tế nó chỉ tính toán dựa trên các vector ở không gian chiều thấp ban đầu."
     },
     {
         "type": "fill_in_blanks",
@@ -759,7 +759,7 @@
             },
             {
                 "id": "c",
-                "text": "Hàm cơ sở hướng tâm Gauss (Gaussian Radial Basis Function - RBF)"
+                "text": "Hàm cơ sở hướng tâm Gauss"
             },
             {
                 "id": "d",
@@ -767,7 +767,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Gaussian RBF đo khoảng cách từ mỗi điểm dữ liệu đến một điểm mốc (landmark). Khoảng cách càng gần, giá trị tương đồng càng tiến về 1. Khoảng cách xa, tiến về 0. Nó tạo ra đồ thị hình chuông."
+        "explanation": "(Gaussian Radial Basis Function - RBF) Gaussian RBF đo khoảng cách từ mỗi điểm dữ liệu đến một điểm mốc (landmark). Khoảng cách càng gần, giá trị tương đồng càng tiến về 1. Khoảng cách xa, tiến về 0. Nó tạo ra đồ thị hình chuông."
     },
     {
         "type": "multiple_choice",
@@ -780,7 +780,7 @@
             },
             {
                 "id": "b",
-                "text": "Gamma quyết định độ rộng của đường cong hình chuông. Gamma LỚN làm hình chuông HẸP lại (ảnh hưởng của mỗi mẫu nhỏ đi, ranh giới uốn lượn nhiều -> dễ overfit). Gamma NHỎ làm hình chuông RỘNG ra (ranh giới mượt mà hơn)."
+                "text": "Gamma quyết định độ rộng của đường cong hình chuông."
             },
             {
                 "id": "c",
@@ -792,7 +792,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Gamma hoạt động giống như một núm điều chỉnh độ 'chú ý' của mô hình vào từng điểm dữ liệu đơn lẻ. Gamma cao = mô hình quá chú ý tiểu tiết (uốn lượn quanh từng điểm, gây overfit). Gamma thấp = nhìn bức tranh tổng quát (mượt mà)."
+        "explanation": "Gamma LỚN làm hình chuông HẸP lại (ảnh hưởng của mỗi mẫu nhỏ đi, ranh giới uốn lượn nhiều -> dễ overfit). Gamma NHỎ làm hình chuông RỘNG ra (ranh giới mượt mà hơn). Gamma hoạt động giống như một núm điều chỉnh độ 'chú ý' của mô hình vào từng điểm dữ liệu đơn lẻ. Gamma cao = mô hình quá chú ý tiểu tiết (uốn lượn quanh từng điểm, gây overfit). Gamma thấp = nhìn bức tranh tổng quát (mượt mà)."
     },
     {
         "type": "matching",
@@ -835,7 +835,7 @@
             },
             {
                 "id": "b",
-                "text": "Luôn luôn thử Linear Kernel (như LinearSVC) đầu tiên vì nó rất nhanh. Đặc biệt khi dữ liệu có nhiều đặc trưng."
+                "text": "Luôn luôn thử Linear Kernel"
             },
             {
                 "id": "c",
@@ -847,7 +847,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "LinearSVC chạy cực nhanh và thường đủ tốt nếu dữ liệu có nhiều đặc trưng (VD văn bản). Nếu dữ liệu không quá lớn và Linear không hiệu quả, mới thử đến Gaussian RBF."
+        "explanation": "(như LinearSVC) đầu tiên vì nó rất nhanh. Đặc biệt khi dữ liệu có nhiều đặc trưng. LinearSVC chạy cực nhanh và thường đủ tốt nếu dữ liệu có nhiều đặc trưng (VD văn bản). Nếu dữ liệu không quá lớn và Linear không hiệu quả, mới thử đến Gaussian RBF."
     },
     {
         "type": "fill_in_blanks",
@@ -886,7 +886,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Nó đảo ngược bài toán: Thay vì cố gắng đẩy các điểm ra khỏi lề (như Phân loại), Hồi quy SVM cố gắng CHỨA CÀNG NHIỀU ĐIỂM CÀNG TỐT vào bên trong lề, đồng thời giới hạn các điểm vi phạm lề."
+                "text": "Nó đảo ngược bài toán: Thay vì cố gắng đẩy các điểm ra khỏi lề (như Phân loại) Hồi quy SVM cố gắng CHỨA CÀNG NHIỀU ĐIỂM CÀNG TỐT vào bên trong lề,"
             },
             {
                 "id": "b",
@@ -902,7 +902,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Trong Classification: 'Lề phải rộng, các điểm phải nằm NGOÀI lề'. Trong Regression: 'Lề chứa dữ liệu, các điểm phải nằm TRONG lề (cái lề này bao quanh đường dự đoán)'."
+        "explanation": "Đồng thời giới hạn các điểm vi phạm lề. Trong Classification: 'Lề phải rộng, các điểm phải nằm NGOÀI lề'. Trong Regression: 'Lề chứa dữ liệu, các điểm phải nằm TRONG lề (cái lề này bao quanh đường dự đoán)'."
     },
     {
         "type": "multiple_choice",
@@ -971,7 +971,7 @@
             },
             {
                 "id": "b",
-                "text": "Giảm thiểu ||w|| (chuẩn của w), đồng thời tuân thủ điều kiện mọi điểm dữ liệu phải nằm đúng phía và xa lề ít nhất là 1."
+                "text": "Giảm thiểu ||w|| (chuẩn của w)"
             },
             {
                 "id": "c",
@@ -983,7 +983,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Độ rộng của lề tỷ lệ nghịch với ||w|| (độ lớn của trọng số w). Để tối đa hóa lề (tức là làm con đường rộng nhất), ta phải cực tiểu hóa ||w||."
+        "explanation": "Đồng thời tuân thủ điều kiện mọi điểm dữ liệu phải nằm đúng phía và xa lề ít nhất là 1. Độ rộng của lề tỷ lệ nghịch với ||w|| (độ lớn của trọng số w). Để tối đa hóa lề (tức là làm con đường rộng nhất), ta phải cực tiểu hóa ||w||."
     },
     {
         "type": "matching",
@@ -1065,7 +1065,7 @@
             },
             {
                 "id": "b",
-                "text": "Vì mô hình chỉ lưu lại và đưa ra dự đoán dựa trên một số ít điểm dữ liệu nằm sát lề (các điểm chống đỡ lề - support vectors). Mọi điểm ở xa lề không hề ảnh hưởng đến mô hình."
+                "text": "Vì mô hình chỉ lưu lại và đưa ra dự đoán dựa trên một số ít điểm dữ liệu nằm sát lề"
             },
             {
                 "id": "c",
@@ -1077,7 +1077,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Đúng như tên gọi 'Support Vector', đường ranh giới được 'chống đỡ' hoàn toàn bởi các điểm nằm trên ranh giới. Xóa đi các điểm an toàn không làm ảnh hưởng mô hình."
+        "explanation": "(các điểm chống đỡ lề - support vectors). Mọi điểm ở xa lề không hề ảnh hưởng đến mô hình. Đúng như tên gọi 'Support Vector', đường ranh giới được 'chống đỡ' hoàn toàn bởi các điểm nằm trên ranh giới. Xóa đi các điểm an toàn không làm ảnh hưởng mô hình."
     },
     {
         "type": "multiple_choice",
@@ -1086,7 +1086,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Logistic Regression xuất ra xác suất (probabilty) còn SVM Tuyến tính mặc định KHÔNG xuất ra xác suất, nó chỉ xuất ra một khoảng cách tuyến tính so với ranh giới và quyết định nhãn."
+                "text": "Logistic Regression xuất ra xác suất"
             },
             {
                 "id": "b",
@@ -1102,7 +1102,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Logistic Regression sử dụng hàm Sigmoid nên đầu ra là Xác suất p=[0,1]. SVM dùng hàm Hinge Loss và quyết định cứng (Hard decision) dựa trên dấu của (w.x+b), do đó không cung cấp xác suất một cách tự nhiên (trừ khi đặt tham số probability=True, rất tốn kém thời gian)."
+        "explanation": "(probabilty) còn SVM Tuyến tính mặc định KHÔNG xuất ra xác suất nó chỉ xuất ra một khoảng cách tuyến tính so với ranh giới và quyết định nhãn. Logistic Regression sử dụng hàm Sigmoid nên đầu ra là Xác suất p=[0,1]. SVM dùng hàm Hinge Loss và quyết định cứng (Hard decision) dựa trên dấu của (w.x+b), do đó không cung cấp xác suất một cách tự nhiên (trừ khi đặt tham số probability=True, rất tốn kém thời gian)."
     },
     {
         "type": "multiple_choice",
@@ -1111,7 +1111,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Khi số lượng mẫu huấn luyện (m) nhỏ hơn rất nhiều so với số lượng đặc trưng (n)."
+                "text": "Khi số lượng mẫu huấn luyện"
             },
             {
                 "id": "b",
@@ -1127,7 +1127,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Bài toán đối ngẫu tính toán m x m (số mẫu x số mẫu). Primal tính toán n x n (số features x số features). Do đó, Dual sẽ cực nhanh nếu m < n (ví dụ: y khoa có 500 mẫu nhưng 10,000 features)."
+        "explanation": "(m) nhỏ hơn rất nhiều so với số lượng đặc trưng (n). Bài toán đối ngẫu tính toán m x m (số mẫu x số mẫu). Primal tính toán n x n (số features x số features). Do đó, Dual sẽ cực nhanh nếu m < n (ví dụ: y khoa có 500 mẫu nhưng 10,000 features)."
     },
     {
         "type": "ordering",
@@ -1210,7 +1210,7 @@
             },
             {
                 "id": "b",
-                "text": "Không, hàm Hinge Loss max(0, 1-t) KHÔNG khả vi (không có đạo hàm) tại điểm t=1 (giống như đầu nhọn của hình chữ V)."
+                "text": "Không, hàm Hinge Loss max(0, 1-t) KHÔNG khả vi"
             },
             {
                 "id": "c",
@@ -1222,7 +1222,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Giống như hàm Lasso (L1) không khả vi tại 0, hàm Hinge Loss không khả vi tại t=1. Để dùng Gradient Descent (SGDClassifier), thuật toán phải sử dụng Subgradient (đạo hàm dưới) tại điểm đó."
+        "explanation": "(không có đạo hàm) tại điểm t=1 (giống như đầu nhọn của hình chữ V). Giống như hàm Lasso (L1) không khả vi tại 0, hàm Hinge Loss không khả vi tại t=1. Để dùng Gradient Descent (SGDClassifier), thuật toán phải sử dụng Subgradient (đạo hàm dưới) tại điểm đó."
     },
     {
         "type": "fill_in_blanks",
@@ -1261,7 +1261,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Hoàn toàn tương tự, ta dùng SVR(kernel='poly', degree=...) hoặc SVR(kernel='rbf')."
+                "text": "Hoàn toàn tương tự, ta dùng SVR(kernel='poly' degree=...) hoặc SVR(kernel='rbf')."
             },
             {
                 "id": "b",
@@ -1294,7 +1294,7 @@
             },
             {
                 "id": "c",
-                "text": "Lớp SVC với Kernel (O(m^2) đến O(m^3)) không phù hợp cho 1 triệu dữ liệu. Hãy chuyển sang LinearSVC, hoặc nếu bắt buộc phải phi tuyến, hãy thử lấy ngẫu nhiên 1 tập con dữ liệu (subsample) hoặc dùng mô hình khác như RandomForest."
+                "text": "Lớp SVC với Kernel (O(m^2) đến O(m^3)) không phù hợp cho 1 triệu dữ liệu."
             },
             {
                 "id": "d",
@@ -1302,7 +1302,7 @@
             }
         ],
         "correctAnswer": "c",
-        "explanation": "Điểm yếu chí mạng của SVM Kernel là độ phức tạp thời gian tăng theo bình phương/lập phương của m. Trên 100,000 dòng, nó bắt đầu chậm không tưởng tượng nổi."
+        "explanation": "Hãy chuyển sang LinearSVC, hoặc nếu bắt buộc phải phi tuyến, hãy thử lấy ngẫu nhiên 1 tập con dữ liệu (subsample) hoặc dùng mô hình khác như RandomForest. Điểm yếu chí mạng của SVM Kernel là độ phức tạp thời gian tăng theo bình phương/lập phương của m. Trên 100,000 dòng, nó bắt đầu chậm không tưởng tượng nổi."
     }
 ];
 

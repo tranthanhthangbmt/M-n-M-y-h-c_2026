@@ -471,7 +471,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Việc có quá nhiều đặc trưng (features) khiến mô hình chạy cực kỳ chậm và dễ bị quá khớp (overfitting) do không gian dữ liệu trở nên quá thưa thớt."
+                "text": "Việc có quá nhiều đặc trưng"
             },
             {
                 "id": "b",
@@ -487,7 +487,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Khi số chiều (số lượng đặc trưng) tăng lên, không gian dữ liệu mở rộng theo cấp số nhân khiến các điểm dữ liệu nằm rất xa nhau. Điều này làm cho việc dự đoán trở nên khó khăn và rất dễ xảy ra hiện tượng overfitting."
+        "explanation": "(features) khiến mô hình chạy cực kỳ chậm và dễ bị quá khớp (overfitting) do không gian dữ liệu trở nên quá thưa thớt. Khi số chiều (số lượng đặc trưng) tăng lên, không gian dữ liệu mở rộng theo cấp số nhân khiến các điểm dữ liệu nằm rất xa nhau. Điều này làm cho việc dự đoán trở nên khó khăn và rất dễ xảy ra hiện tượng overfitting."
     },
     {
         "type": "multiple_choice",
@@ -580,7 +580,7 @@
             },
             {
                 "id": "b",
-                "text": "Tìm trục bảo toàn được PHƯƠNG SAI (Variance) tối đa. Tức là trục mà khi chiếu xuống, các điểm dữ liệu trải rộng ra nhiều nhất, mất ít thông tin nhất."
+                "text": "Tìm trục bảo toàn được PHƯƠNG SAI (Variance) tối đa."
             },
             {
                 "id": "c",
@@ -592,7 +592,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Hãy tưởng tượng chiếu một nhóm điểm xuống 1 đường thẳng. Nếu đường thẳng đó song song với hướng phân bố của nhóm điểm (phương sai lớn nhất), các điểm chiếu xuống sẽ không bị chồng chéo lên nhau, giữ lại được hình dáng (thông tin) ban đầu."
+        "explanation": "Tức là trục mà khi chiếu xuống, các điểm dữ liệu trải rộng ra nhiều nhất, mất ít thông tin nhất. Hãy tưởng tượng chiếu một nhóm điểm xuống 1 đường thẳng. Nếu đường thẳng đó song song với hướng phân bố của nhóm điểm (phương sai lớn nhất), các điểm chiếu xuống sẽ không bị chồng chéo lên nhau, giữ lại được hình dáng (thông tin) ban đầu."
     },
     {
         "type": "matching",
@@ -644,7 +644,7 @@
             },
             {
                 "id": "b",
-                "text": "Đặt `n_components` là một số thập phân từ 0.0 đến 1.0 (ví dụ `n_components=0.95`). Scikit-Learn sẽ tự động tính toán số chiều tối thiểu cần thiết để bảo toàn được 95% phương sai (thông tin) ban đầu."
+                "text": "Đặt `n_components` là một số thập phân từ 0.0 đến 1.0"
             },
             {
                 "id": "c",
@@ -656,7 +656,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Thay vì tự tính toán cộng dồn Explained Variance Ratio, bạn chỉ cần báo cho sklearn biết bạn muốn giữ lại bao nhiêu phần trăm thông tin (VD: 95%). Nó sẽ tự chọn số nguyên n chiều tối ưu."
+        "explanation": "(ví dụ `n_components=0.95`). Scikit-Learn sẽ tự động tính toán số chiều tối thiểu cần thiết để bảo toàn được 95% phương sai (thông tin) ban đầu. Thay vì tự tính toán cộng dồn Explained Variance Ratio, bạn chỉ cần báo cho sklearn biết bạn muốn giữ lại bao nhiêu phần trăm thông tin (VD: 95%). Nó sẽ tự chọn số nguyên n chiều tối ưu."
     },
     {
         "type": "ordering",
@@ -730,7 +730,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó dùng một thuật toán ngẫu nhiên (stochastic) cực nhanh để TÌM RA ƯỚC LƯỢNG (approximate) cho d thành phần chính đầu tiên. Khi d (số chiều mục tiêu) nhỏ hơn nhiều so với n (số chiều gốc), nó nhanh hơn SVD tiêu chuẩn rất nhiều."
+                "text": "Nó dùng một thuật toán ngẫu nhiên"
             },
             {
                 "id": "c",
@@ -742,7 +742,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Randomized PCA là phiên bản 'tính xấp xỉ/ước lượng' của PCA. Bằng cách không cố tính toán số liệu chính xác tuyệt đối mà dùng tính ngẫu nhiên, tốc độ của nó nhanh hơn SVD thông thường theo cấp số nhân khi cần giảm số chiều xuống rất thấp."
+        "explanation": "(stochastic) cực nhanh để TÌM RA ƯỚC LƯỢNG (approximate) cho d thành phần chính đầu tiên. Khi d (số chiều mục tiêu) nhỏ hơn nhiều so với n (số chiều gốc), nó nhanh hơn SVD tiêu chuẩn rất nhiều. Randomized PCA là phiên bản 'tính xấp xỉ/ước lượng' của PCA. Bằng cách không cố tính toán số liệu chính xác tuyệt đối mà dùng tính ngẫu nhiên, tốc độ của nó nhanh hơn SVD thông thường theo cấp số nhân khi cần giảm số chiều xuống rất thấp."
     },
     {
         "type": "multiple_choice",
@@ -755,7 +755,7 @@
             },
             {
                 "id": "b",
-                "text": "Là khoảng cách bình phương trung bình (MSE) giữa Dữ liệu Gốc ban đầu và Dữ liệu đã được nén rồi Giải nén (Reconstructed data). Khoảng cách này càng nhỏ nghĩa là mô hình giữ được càng nhiều thông tin gốc."
+                "text": "Là khoảng cách bình phương trung bình"
             },
             {
                 "id": "c",
@@ -767,7 +767,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Khi bạn ép dữ liệu từ 3D xuống 2D (mất thông tin chiều Z), rồi phồng lại thành 3D, tọa độ mới sẽ bị sai lệch so với tọa độ cũ. Sự sai lệch đó chính là Reconstruction Error."
+        "explanation": "(MSE) giữa Dữ liệu Gốc ban đầu và Dữ liệu đã được nén rồi Giải nén (Reconstructed data). Khoảng cách này càng nhỏ nghĩa là mô hình giữ được càng nhiều thông tin gốc. Khi bạn ép dữ liệu từ 3D xuống 2D (mất thông tin chiều Z), rồi phồng lại thành 3D, tọa độ mới sẽ bị sai lệch so với tọa độ cũ. Sự sai lệch đó chính là Reconstruction Error."
     },
     {
         "type": "matching",
@@ -819,7 +819,7 @@
             },
             {
                 "id": "b",
-                "text": "Nó hoạt động bằng cách đo mối quan hệ tuyến tính của mỗi điểm với các láng giềng gần nhất (k-nearest neighbors) của nó, sau đó tìm một không gian chiều thấp nơi các mối quan hệ CỤC BỘ này được bảo tồn tốt nhất."
+                "text": "Nó hoạt động bằng cách đo mối quan hệ tuyến tính của mỗi điểm với các láng giềng gần nhất"
             },
             {
                 "id": "c",
@@ -831,7 +831,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "LLE hoàn toàn bỏ qua bức tranh toàn cảnh (global). Nó chỉ yêu cầu mỗi điểm dữ liệu phải giữ khoảng cách không đổi với những 'người hàng xóm' sát vách của nó khi bị ném xuống không gian 2D. Kết quả là cả cuộn dây sẽ tự động được trải phẳng."
+        "explanation": "(k-nearest neighbors) của nó sau đó tìm một không gian chiều thấp nơi các mối quan hệ CỤC BỘ này được bảo tồn tốt nhất. LLE hoàn toàn bỏ qua bức tranh toàn cảnh (global). Nó chỉ yêu cầu mỗi điểm dữ liệu phải giữ khoảng cách không đổi với những 'người hàng xóm' sát vách của nó khi bị ném xuống không gian 2D. Kết quả là cả cuộn dây sẽ tự động được trải phẳng."
     },
     {
         "type": "fill_in_blanks",
@@ -874,7 +874,7 @@
             },
             {
                 "id": "b",
-                "text": "Chúng không có hàm `inverse_transform()`. Rất khó (hoặc không thể) để đưa dữ liệu mới từ không gian chiều thấp quay ngược trở lại không gian chiều cao gốc ban đầu."
+                "text": "Chúng không có hàm `inverse_transform()`."
             },
             {
                 "id": "c",
@@ -886,7 +886,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "PCA có ma trận toán học rõ ràng để nhân ngược lại (inverse_transform). Các mô hình phi tuyến (Manifold) tính toán dựa trên tối ưu khoảng cách, do đó chúng một đi không trở lại, không thể khôi phục ảnh gốc từ dữ liệu đã nén."
+        "explanation": "Rất khó (hoặc không thể) để đưa dữ liệu mới từ không gian chiều thấp quay ngược trở lại không gian chiều cao gốc ban đầu. PCA có ma trận toán học rõ ràng để nhân ngược lại (inverse_transform). Các mô hình phi tuyến (Manifold) tính toán dựa trên tối ưu khoảng cách, do đó chúng một đi không trở lại, không thể khôi phục ảnh gốc từ dữ liệu đã nén."
     },
     {
         "type": "ordering",
@@ -930,7 +930,7 @@
             },
             {
                 "id": "b",
-                "text": "Kiểm soát thuật toán phân tích SVD. 'auto' (mặc định) sẽ tự động chọn 'randomized' nếu dữ liệu cực lớn, và chọn 'full' (toàn bộ) nếu dữ liệu nhỏ."
+                "text": "Kiểm soát thuật toán phân tích SVD."
             },
             {
                 "id": "c",
@@ -942,7 +942,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "svd_solver='auto' rất thông minh. Nếu m > 500 và n > 500 và số lượng component muốn lấy ít hơn 80% ban đầu, nó sẽ tự xài Randomized PCA để tăng tốc. Nếu không nó xài full SVD truyền thống."
+        "explanation": "'auto' (mặc định) sẽ tự động chọn 'randomized' nếu dữ liệu cực lớn, và chọn 'full' (toàn bộ) nếu dữ liệu nhỏ. svd_solver='auto' rất thông minh. Nếu m > 500 và n > 500 và số lượng component muốn lấy ít hơn 80% ban đầu, nó sẽ tự xài Randomized PCA để tăng tốc. Nếu không nó xài full SVD truyền thống."
     },
     {
         "type": "matching",
@@ -1020,7 +1020,7 @@
         "options": [
             {
                 "id": "a",
-                "text": "Để Trực quan hóa dữ liệu (Data Visualization). Giúp con người có thể vẽ được đồ thị 2D, 3D và quan sát bằng mắt thường cấu trúc ẩn của dữ liệu phức tạp."
+                "text": "Để Trực quan hóa dữ liệu (Data Visualization)."
             },
             {
                 "id": "b",
@@ -1036,7 +1036,7 @@
             }
         ],
         "correctAnswer": "a",
-        "explanation": "Mắt người chỉ nhìn được tối đa 3 chiều. Giảm chiều dữ liệu xuống 2 hoặc 3 chiều là cách duy nhất để vẽ biểu đồ cho các bộ dữ liệu 100 chiều."
+        "explanation": "Giúp con người có thể vẽ được đồ thị 2D, 3D và quan sát bằng mắt thường cấu trúc ẩn của dữ liệu phức tạp. Mắt người chỉ nhìn được tối đa 3 chiều. Giảm chiều dữ liệu xuống 2 hoặc 3 chiều là cách duy nhất để vẽ biểu đồ cho các bộ dữ liệu 100 chiều."
     },
     {
         "type": "multiple_choice",
@@ -1049,7 +1049,7 @@
             },
             {
                 "id": "b",
-                "text": "PCA là phương pháp KHÔNG GIÁM SÁT (không quan tâm nhãn của dữ liệu, chỉ tìm hướng có phương sai lớn). LDA là phương pháp CÓ GIÁM SÁT, nó học các TRỤC giúp tối đa hóa KHOẢNG CÁCH GIỮA CÁC LỚP, cực kỳ tốt để giảm chiều trước khi dùng bộ phân loại (Classifier)."
+                "text": "PCA là phương pháp KHÔNG GIÁM SÁT"
             },
             {
                 "id": "c",
@@ -1061,7 +1061,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Vì LDA nhìn thấy Nhãn (Labels), nó sẽ xoay dữ liệu sao cho các lớp tách rời nhau xa nhất có thể. PCA thì 'mù' nhãn, nó chỉ cần điểm phân bố rộng là được, đôi khi khiến 2 lớp đè lên nhau."
+        "explanation": "(không quan tâm nhãn của dữ liệu chỉ tìm hướng có phương sai lớn). LDA là phương pháp CÓ GIÁM SÁT, nó học các TRỤC giúp tối đa hóa KHOẢNG CÁCH GIỮA CÁC LỚP, cực kỳ tốt để giảm chiều trước khi dùng bộ phân loại (Classifier). Vì LDA nhìn thấy Nhãn (Labels), nó sẽ xoay dữ liệu sao cho các lớp tách rời nhau xa nhất có thể. PCA thì 'mù' nhãn, nó chỉ cần điểm phân bố rộng là được, đôi khi khiến 2 lớp đè lên nhau."
     },
     {
         "type": "ordering",
@@ -1195,11 +1195,11 @@
             },
             {
                 "id": "b",
-                "text": "Sai, PCA hoàn toàn là một thuật toán Không giám sát (Unsupervised Learning). Nó không quan tâm đến biến mục tiêu (y) mà chỉ phân tích đặc trưng đầu vào (X)."
+                "text": "Sai, PCA hoàn toàn là một thuật toán Không giám sát"
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Vì là Unsupervised, PCA hàm transform/fit chỉ nhận X làm tham số đầu vào. Nó không hề biết điểm dữ liệu đó thuộc lớp chó hay lớp mèo."
+        "explanation": "(Unsupervised Learning). Nó không quan tâm đến biến mục tiêu (y) mà chỉ phân tích đặc trưng đầu vào (X). Vì là Unsupervised, PCA hàm transform/fit chỉ nhận X làm tham số đầu vào. Nó không hề biết điểm dữ liệu đó thuộc lớp chó hay lớp mèo."
     },
     {
         "type": "multiple_choice",
@@ -1237,7 +1237,7 @@
             },
             {
                 "id": "b",
-                "text": "Là số lượng chiều (Kích thước) THỰC SỰ cần thiết (tối thiểu) để biểu diễn một tập dữ liệu mà không làm mất đi các thông tin cấu trúc quan trọng. Dù dữ liệu được lưu dưới dạng ảnh 1000 pixel (chiều), số chiều nội tại của nó có thể chỉ là 3."
+                "text": "Là số lượng chiều (Kích thước) THỰC SỰ cần thiết"
             },
             {
                 "id": "c",
@@ -1249,7 +1249,7 @@
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Ví dụ 1 bức ảnh chụp quả bóng di chuyển trên một đường thẳng. Dù có 1 triệu pixel, trạng thái thực sự của hệ thống chỉ cần 1 chiều duy nhất (Tọa độ X của quả bóng). Đó là số chiều nội tại."
+        "explanation": "(tối thiểu) để biểu diễn một tập dữ liệu mà không làm mất đi các thông tin cấu trúc quan trọng. Dù dữ liệu được lưu dưới dạng ảnh 1000 pixel (chiều), số chiều nội tại của nó có thể chỉ là 3. Ví dụ 1 bức ảnh chụp quả bóng di chuyển trên một đường thẳng. Dù có 1 triệu pixel, trạng thái thực sự của hệ thống chỉ cần 1 chiều duy nhất (Tọa độ X của quả bóng). Đó là số chiều nội tại."
     },
     {
         "type": "fill_in_blanks",

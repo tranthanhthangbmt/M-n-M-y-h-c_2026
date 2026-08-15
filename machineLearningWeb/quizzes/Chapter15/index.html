@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Trắc Nghiệm Chương 9</title>
+    <title>Bài Tập Trắc Nghiệm Chương 15</title>
     <style>
         :root {
             --primary: #1a73e8;
@@ -467,320 +467,143 @@
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Sự khác biệt cốt lõi giữa Phân loại (Classification) và Phân cụm (Clustering) là gì?",
+        "question": "Sự khác biệt cốt lõi nhất giữa Mạng Nơ-ron Tiến (Feedforward NN) và Mạng Nơ-ron Hồi quy (RNN) là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Phân loại dùng cho dữ liệu văn bản, còn Phân cụm dùng cho dữ liệu hình ảnh."
+                "text": "RNN không có lớp ẩn (Hidden Layers)."
             },
             {
                 "id": "b",
-                "text": "Phân loại là học CÓ GIÁM SÁT (dữ liệu đã có sẵn nhãn)."
+                "text": "Mạng Feedforward truyền dữ liệu đi thẳng từ Đầu vào đến Đầu ra."
             },
             {
                 "id": "c",
-                "text": "Phân loại chậm hơn Phân cụm."
+                "text": "RNN chỉ có thể xử lý hình ảnh 3D."
             },
             {
                 "id": "d",
-                "text": "Phân cụm yêu cầu người dùng phải gán nhãn thủ công trước."
+                "text": "Mạng Feedforward chạy chậm hơn RNN."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Phân cụm là học KHÔNG GIÁM SÁT (dữ liệu hoàn toàn không có nhãn, thuật toán tự tìm ra các nhóm tương đồng). Trong Phân loại, ta biết trước ví dụ con chó, con mèo. Trong Phân cụm, ta chỉ đưa cho máy một đống ảnh động vật không có tên, và máy tự gộp những con có hình dáng giống nhau vào thành từng nhóm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Thuật toán K-Means hoạt động bằng cách nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tính khoảng cách tuyến tính giữa mọi cặp điểm dữ liệu."
-            },
-            {
-                "id": "b",
-                "text": "Nó thử tất cả các nhãn ngẫu nhiên cho đến khi tìm được nhãn đúng."
-            },
-            {
-                "id": "c",
-                "text": "Khởi tạo K tâm cụm (centroids) ngẫu nhiên gán mỗi điểm dữ liệu vào tâm gần nhất,"
-            },
-            {
-                "id": "d",
-                "text": "Nó xây dựng một cây phân quyết định."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Sau đó cập nhật lại vị trí tâm bằng trung bình của các điểm trong cụm, lặp lại cho đến khi tâm không đổi. K-Means cực kỳ đơn giản: Bốc bừa K điểm làm tâm -> Gom điểm gần tâm -> Tính lại tâm mới nằm giữa đám điểm vừa gom -> Lặp lại. Nó hội tụ rất nhanh."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Trung bình",
-        "question": "Nhược điểm lớn nhất của K-Means:",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Mặc dù K-Means rất nhanh, nhưng nhược điểm chết người của nó là bắt buộc bạn phải cung cấp số lượng cụm <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> từ trước. Hơn nữa, nó rất nhạy cảm với việc khởi tạo tâm cụm ban đầu, nếu khởi tạo xui xẻo, K-Means có thể hội tụ về một nghiệm <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (không phải nghiệm tối ưu toàn cục).",
-        "words": [
-            {
-                "id": "w1",
-                "text": "Tối ưu cục bộ (Local optimum)"
-            },
-            {
-                "id": "w2",
-                "text": "K (số lượng cluster)"
-            },
-            {
-                "id": "w3",
-                "text": "Max_iter (số vòng lặp)"
-            },
-            {
-                "id": "w4",
-                "text": "Tối ưu toàn cục (Global optimum)"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w2",
-            "2": "w1"
-        },
-        "explanation": "Máy không tự biết trong dữ liệu có bao nhiêu cụm, bạn phải đoán số K. K-Means cũng hay bị mắc kẹt ở local optimum, do đó Scikit-Learn thường chạy thuật toán 10 lần với các khởi tạo ngẫu nhiên khác nhau (n_init=10) rồi lấy kết quả tốt nhất."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán K-Means++ (được Scikit-Learn dùng làm mặc định thay vì K-Means thường) giải quyết vấn đề gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó tự động tìm ra số lượng cụm K."
-            },
-            {
-                "id": "b",
-                "text": "Nó thay đổi cách ĐÁNH GIÁ khoảng cách (dùng Manhattan thay vì Euclidean)."
-            },
-            {
-                "id": "c",
-                "text": "Nó giải quyết vấn đề KHỞI TẠO TÂM."
-            },
-            {
-                "id": "d",
-                "text": "Nó hỗ trợ chạy trên GPU."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Bằng cách chọn các tâm ban đầu nằm XA NHAU NHẤT CÓ THỂ, nó làm giảm đáng kể khả năng thuật toán hội tụ vào nghiệm tối ưu cục bộ tồi tệ. K-Means thường chọn K điểm ngẫu nhiên hoàn toàn. Nếu rủi ro chọn 2 điểm khởi tạo nằm cùng một chỗ, K-Means sẽ chia sai bét. K-Means++ đảm bảo các tâm khởi tạo trải đều ra toàn không gian."
-    },
-    {
-        "type": "ordering",
-        "difficulty": "Dễ",
-        "question": "Thuật toán Mini-batch K-Means được sử dụng khi nào?",
-        "instruction": "(Sắp xếp ưu điểm của Mini-batch K-Means so với K-Means truyền thống)",
-        "items": [
-            {
-                "id": "1",
-                "text": "Khi tập dữ liệu quá khổng lồ, không thể nạp tất cả vào RAM (Out-of-core)."
-            },
-            {
-                "id": "2",
-                "text": "Thay vì dùng toàn bộ dữ liệu ở mỗi lần lặp, nó chỉ dùng một lượng nhỏ (mini-batch) để di chuyển tâm cụm một chút."
-            },
-            {
-                "id": "3",
-                "text": "Kết quả: Tốc độ huấn luyện nhanh hơn gấp 3 đến 4 lần."
-            },
-            {
-                "id": "4",
-                "text": "Đánh đổi: Mô hình phân cụm cuối cùng thường kém chính xác (tệ hơn một chút) so với K-Means chạy full dữ liệu."
-            }
-        ],
-        "correctOrder": [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-        "explanation": "Giống hệt Incremental PCA, Mini-batch K-Means hy sinh một phần nhỏ sự hoàn hảo để đổi lấy việc xử lý được Big Data và giảm sốc cho RAM."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Quán tính (Inertia) trong K-Means đo lường điều gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Thời gian thuật toán chạy."
-            },
-            {
-                "id": "b",
-                "text": "Khoảng cách bình phương trung bình giữa mỗi điểm dữ liệu đến TÂM CỤM GẦN NHẤT CỦA NÓ."
-            },
-            {
-                "id": "c",
-                "text": "Khoảng cách giữa tâm cụm này với tâm cụm khác."
-            },
-            {
-                "id": "d",
-                "text": "Số lượng cụm K."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Inertia càng nhỏ thì các điểm trong cụm càng nén chặt (tốt). Inertia (Quán tính) là hàm mục tiêu mà K-Means cố gắng tối thiểu hóa. Tuy nhiên, ta không thể dùng Inertia để so sánh mô hình có K=3 với K=5, vì hiển nhiên khi K càng tăng (chia càng nhỏ), Inertia sẽ tự động giảm."
+        "explanation": "Trong khi đó, RNN có các 'Kết nối vòng ngược' (Recurrent connections), cho phép tín hiệu đầu ra ở một bước thời gian được dội ngược lại làm đầu vào cho chính nó ở bước thời gian tiếp theo, tạo ra TRÍ NHỚ (Memory). Khả năng lưu trữ trạng thái (State) từ quá khứ chính là lý do RNN là vua trong việc xử lý Dữ liệu chuỗi (Sequence Data) như văn bản, âm thanh, hay biểu đồ chứng khoán."
     },
     {
         "type": "matching",
         "difficulty": "Trung bình",
-        "question": "Ghép nối các phương pháp tìm số K (số lượng cụm) tối ưu:",
+        "question": "Ghép nối các cấu hình Đầu vào - Đầu ra (Input-Output) của RNN với Bài toán thực tế:",
         "left": [
             {
                 "id": "l1",
-                "text": "Quy tắc Khửu tay (Elbow Rule)"
+                "text": "Sequence-to-Sequence (Seq2Seq)"
             },
             {
                 "id": "l2",
-                "text": "Điểm Silhouette (Silhouette Score)"
+                "text": "Sequence-to-Vector (Seq2Vec)"
+            },
+            {
+                "id": "l3",
+                "text": "Vector-to-Sequence (Vec2Seq)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Vẽ biểu đồ Inertia theo số K. Chọn điểm mà đường cong bắt đầu bẻ gập nhanh (chững lại). Rất trực quan nhưng kém chính xác."
+                "text": "Dịch máy (Google Translate). Đưa vào một câu tiếng Anh dài, xuất ra một câu tiếng Việt dài."
             },
             {
                 "id": "r2",
-                "text": "Đo lường mức độ một điểm dữ liệu nằm GẦN các điểm cùng cụm (Cohesion) so với mức độ nó nằm XA các điểm ở cụm lân cận gần nhất (Separation). Trị số từ -1 đến +1, càng gần +1 càng tốt."
+                "text": "Phân tích cảm xúc (Sentiment Analysis). Đưa vào một bài bình luận phim siêu dài, xuất ra đúng một điểm số từ 1 đến 5 sao."
+            },
+            {
+                "id": "r3",
+                "text": "Tạo chú thích ảnh (Image Captioning). Đưa vào một Vector (Được trích xuất từ ảnh bởi CNN), xuất ra một chuỗi các từ miêu tả bức ảnh đó."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Elbow dùng Inertia nên chỉ mang tính tương đối (vì Inertia luôn giảm khi K tăng). Silhouette Score đánh giá toàn diện hơn, +1 là gom cụm hoàn hảo, 0 là nằm sát biên, -1 là điểm bị gom nhầm cụm."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Điểm yếu CHÍNH của thuật toán K-Means khi phân cụm là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó không thể xử lý dữ liệu lớn."
-            },
-            {
-                "id": "b",
-                "text": "Nó giả định rằng các cụm có HÌNH CẦU"
-            },
-            {
-                "id": "c",
-                "text": "Nó quá phức tạp để cài đặt lập trình."
-            },
-            {
-                "id": "d",
-                "text": "Nó luôn luôn yêu cầu phải chuẩn hóa dữ liệu."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(hoặc lồi) và KÍCH THƯỚC TƯƠNG ĐƯƠNG nhau. Nó sẽ thất bại thảm hại nếu các cụm có hình thuôn dài, kích thước khác nhau, hoặc lồng vào nhau (như hai vòng cung). Vì K-Means chỉ đo khoảng cách Euclidean tính từ tâm tròn, nó sẽ kéo mọi thứ thành hình cầu tròn. Nó không thể phân cụm dữ liệu hình mặt trăng khuyết, hình điếu xì gà, hoặc dữ liệu có độ lệch quá mạnh."
+        "explanation": "Tính linh hoạt tuyệt đối của RNN nằm ở chỗ nó không bị gò bó bởi kích thước cố định của Đầu vào và Đầu ra như các mạng CNN hay MLP."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Dễ",
-        "question": "Ứng dụng K-Means cho Giảm chiều và Phân loại:",
+        "difficulty": "Khó",
+        "question": "Tính toán Kích thước Ma trận Trọng số trong một Nơ-ron RNN (SimpleRNN):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để Giảm chiều dữ liệu. Ví dụ dữ liệu có 1000 đặc trưng, bạn chạy K-Means với k=50. Sau đó dùng khoảng cách từ điểm dữ liệu đến 50 tâm cụm làm đặc trưng mới (giảm từ 1000 chiều xuống 50 chiều). Nếu bạn dùng tập 50 chiều này để huấn luyện một bộ Phân loại Logistic Regression, độ chính xác thường sẽ <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> do K-Means đã gom các điểm nhiễu thành các nhóm gọn gàng. Kỹ thuật này đôi khi được gọi là <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>.",
+        "text": "Một Nơ-ron RNN nhận 2 luồng dữ liệu tại thời điểm t: Luồng thứ nhất là Đầu vào $x_{(t)}$ từ thế giới thực. Luồng thứ hai là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> $y_{(t-1)}$ dội về từ chính nó ở bước trước. Do đó, nó phải sở hữu 2 ma trận Trọng số: $W_x$ để nhân với $x_{(t)}$ và <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để nhân với $y_{(t-1)}$. Tổng của 2 phép nhân này (cộng thêm Bias) sẽ được đưa qua một Hàm kích hoạt (thường là tanh) để tính ra Đầu ra mới $y_{(t)}$.",
         "words": [
             {
                 "id": "w1",
-                "text": "Tăng lên / Cải thiện"
+                "text": "Trạng thái trước đó (Đầu ra trước đó)"
             },
             {
                 "id": "w2",
-                "text": "Giảm đi"
+                "text": "Ma trận $W_y$"
             },
             {
                 "id": "w3",
-                "text": "Biến đổi không gian cụm (Cluster-based Transform)"
+                "text": "Đạo hàm lỗi"
             },
             {
                 "id": "w4",
-                "text": "Tăng số chiều"
+                "text": "Ma trận Kích hoạt"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Giống như biến 1 điểm tọa độ phức tạp thành 50 con số báo cáo 'Tôi cách quận A bao xa, cách quận B bao xa'. Việc này giúp Logistic Regression dễ thở hơn rất nhiều."
+        "explanation": "Toán học của RNN rất đơn giản: $y_{(t)} = \\phi(W_x \\cdot x_{(t)} + W_y \\cdot y_{(t-1)} + b)$. Nơ-ron vừa phải học cách đánh giá Dữ liệu hiện tại ($W_x$), vừa phải học cách đánh giá Trí nhớ quá khứ ($W_y$)."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Kỹ thuật 'Truyền nhãn' (Label Propagation) trong Học Bán Giám Sát (Semi-supervised Learning) sử dụng K-Means như thế nào?",
+        "question": "Tại sao Keras lại yêu cầu Dữ liệu đầu vào của RNN (ví dụ `SimpleRNN` hoặc `LSTM`) phải là một Tensor 3 Chiều (3D Tensor) có hình dáng `[batch_size, time_steps, features]`?",
         "options": [
             {
                 "id": "a",
-                "text": "Nó dùng K-Means để xóa các nhãn."
+                "text": "Để ép buộc dữ liệu phải là hình ảnh màu RGB."
             },
             {
                 "id": "b",
-                "text": "Khi bạn có 10.000 dữ liệu nhưng chỉ có tiền thuê người gán nhãn 50 dữ liệu."
+                "text": "Vì dữ liệu dạng Chuỗi luôn có yếu tố Thời gian."
             },
             {
                 "id": "c",
-                "text": "Nó biến đổi K-Means thành mạng Neural network."
+                "text": "Để dễ dàng vẽ biểu đồ 3D."
             },
             {
                 "id": "d",
-                "text": "Nó sinh ra ngẫu nhiên nhãn cho toàn bộ dữ liệu."
+                "text": "Đó là lỗi thiết kế của Keras."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "Bạn dùng K=50. Lấy điểm nằm gần tâm nhất của 50 cụm (Representative instances) để gán nhãn thủ công. Sau đó TRUYỀN NHÃN đó cho toàn bộ các điểm còn lại trong cùng cụm. Học bán giám sát rất mạnh. Thay vì gán nhãn ngẫu nhiên 50 điểm (hiệu quả thấp), bạn gán nhãn cho 50 điểm ĐIỂN HÌNH NHẤT (Representative) của 50 cụm, rồi lây lan nhãn đó cho đồng bọn. Độ chính xác sẽ nhảy vọt."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "DBSCAN khác biệt lớn nhất so với K-Means ở điểm nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "DBSCAN bắt buộc phải cung cấp số lượng K."
-            },
-            {
-                "id": "b",
-                "text": "DBSCAN là thuật toán dựa trên MẬT ĐỘ (Density-based)."
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN chỉ chạy được trên 2 chiều."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN chạy nhanh hơn K-Means 100 lần."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "Nó xác định các vùng có mật độ điểm cao (được ngăn cách bởi các vùng mật độ thấp). Nó không giới hạn hình dạng cụm và KHÔNG CẦN CHO TRƯỚC SỐ CỤM. DBSCAN hoạt động như giọt nước loang ra. Chỉ cần khoảng cách giữa các điểm còn đủ gần (mật độ dày), nó sẽ coi tất cả là 1 cụm dù nó ngoằn ngoèo hình mặt trăng khuyết hay chữ S."
+        "explanation": "`time_steps` quy định chuỗi đó dài bao nhiêu nhịp (VD: 10 ngày). `features` quy định mỗi nhịp có bao nhiêu con số (VD: giá mở cửa, giá đóng cửa). Kích thước cố định này giúp Keras biết phải 'Mở cuộn' (Unroll) mạng RNN bao nhiêu lần theo trục thời gian. Sự khác biệt lớn nhất giữa Code Dense và Code RNN là việc biến ma trận bảng 2D thành Khối chuỗi 3D. Ví dụ: Dữ liệu chứng khoán 1000 ngày, dùng cửa sổ 30 ngày để đoán ngày 31, sẽ cắt thành các khối [Batch_size, 30 (timesteps), 1 (feature: Giá)]."
     },
     {
         "type": "ordering",
-        "difficulty": "Khó",
-        "question": "Cách DBSCAN hoạt động qua tham số epsilon (eps) và min_samples:",
+        "difficulty": "Dễ",
+        "question": "Sắp xếp quy trình dự đoán Chuỗi thời gian (Time Series) cơ bản với RNN:",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "DBSCAN xét một điểm bất kỳ. Nó đếm xem có bao nhiêu điểm lân cận nằm trong vòng tròn bán kính 'eps' (epsilon)."
+                "text": "Chia dữ liệu chứng khoán liên tục thành các 'Cửa sổ thời gian' (Windows). Ví dụ: Dùng ngày 1-30 làm (X), ngày 31 làm nhãn (Y)."
             },
             {
                 "id": "2",
-                "text": "Nếu số điểm lân cận này LỚN HƠN hoặc BẰNG tham số 'min_samples', điểm đó được phong danh hiệu 'Điểm Lõi' (Core Instance)."
+                "text": "Định hình lại (Reshape) (X) thành Tensor 3D: [số_mẫu, 30, 1]."
             },
             {
                 "id": "3",
-                "text": "Tất cả các điểm nằm trong vùng lân cận eps của Điểm Lõi sẽ được gom chung vào cùng 1 cụm."
+                "text": "Xây dựng mô hình: `Sequential([ SimpleRNN(20), Dense(1) ])`."
             },
             {
                 "id": "4",
-                "text": "Quá trình này lan truyền (chuỗi) sang các láng giềng. Bất kỳ điểm nào KHÔNG PHẢI là điểm lõi, và cũng KHÔNG NẰM trong vùng lân cận của bất kỳ điểm lõi nào, sẽ bị coi là Nhiễu (Anomaly/Noise)."
+                "text": "Biên dịch mô hình với Loss='mse' và gọi `model.fit(X, Y)`."
             }
         ],
         "correctOrder": [
@@ -789,164 +612,173 @@
             "3",
             "4"
         ],
-        "explanation": "DBSCAN có 2 siêu tham số cực kỳ quan trọng: eps (bán kính) và min_samples (số điểm tối thiểu để lập phường hội). Điểm bơ vơ sẽ bị vứt ra thành Nhiễu."
+        "explanation": "Kỹ thuật trượt cửa sổ (Sliding Window) là kỹ năng quan trọng nhất để tạo bộ dữ liệu cho Time Series."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tính năng `return_sequences=True` trong các lớp RNN của Keras dùng để làm gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó đảo ngược chuỗi thời gian từ cuối lên đầu."
+            },
+            {
+                "id": "b",
+                "text": "Mặc định, RNN xử lý 30 bước thời gian"
+            },
+            {
+                "id": "c",
+                "text": "Nó giúp mô hình tự động tạo ra thêm dữ liệu mới."
+            },
+            {
+                "id": "d",
+                "text": "Làm mất tính năng ghi nhớ của mạng."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nhưng chỉ 'nhả' ra kết quả CỦA BƯỚC CUỐI CÙNG (bước 30). Nếu bạn xếp chồng 2 lớp RNN lên nhau, lớp thứ nhất BẮT BUỘC phải bật `return_sequences=True` để nó xuất ra kết quả ở CẢ 30 BƯỚC (Tensor 3D), nếu không lớp RNN thứ hai sẽ báo lỗi vì không nhận được chuỗi thời gian. Nếu quên `return_sequences=True` khi xếp chồng RNN (Deep RNN), bạn sẽ nhận ngay dòng lỗi đỏ chót từ Keras báo Ranks Tensor không khớp. Nó biến cấu trúc từ Seq2Vec thành Seq2Seq."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Điều gì xảy ra nếu điểm dữ liệu bị đánh dấu là Nhiễu (Noise) trong thuật toán DBSCAN (Scikit-Learn)?",
+        "question": "Trong dự báo chuỗi thời gian (Forecasting), dự báo theo kiểu 'Naive Forecasting' (Dự báo Ngây thơ) nghĩa là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuật toán sẽ tự động dừng lại."
+                "text": "Lấy trung bình cộng của toàn bộ dữ liệu làm dự báo."
             },
             {
                 "id": "b",
-                "text": "Dữ liệu đó sẽ bị xóa khỏi bộ nhớ gốc."
+                "text": "Dùng một mạng Nơ ron chưa được huấn luyện để đoán bừa."
             },
             {
                 "id": "c",
-                "text": "Điểm đó sẽ được gán nhãn cụm"
+                "text": "Một phương pháp cực kỳ đơn giản Giá trị của ngày mai sẽ CHÍNH XÁC BẰNG giá trị của ngày hôm nay."
             },
             {
                 "id": "d",
-                "text": "Dữ liệu được chuyển về tâm tọa độ (0,0)."
+                "text": "Đoán bằng cách ném đồng xu."
             }
         ],
         "correctAnswer": "c",
-        "explanation": "(cluster label) là `-1` trong thuộc tính `labels_`. Scikit-Learn dùng quy ước nhãn `-1` để ám chỉ Outliers/Noise/Anomalies. K-Means không bao giờ từ chối điểm nào (điểm xa cỡ nào cũng bị ép vô 1 cụm). DBSCAN có khả năng chỉ ra thẳng điểm nào là ngoại lai."
+        "explanation": "(VD: Nếu hôm nay cổ phiếu 100$, tôi đoán ngày mai là 100$). Phương pháp này dùng làm Đường Cơ sở (Baseline) bắt buộc để so sánh xem mạng RNN có thực sự đang 'học' hay không. Đừng vội mừng khi thấy sai số MAE của RNN là 0.05. Hãy thử tính MAE của 'Naive Baseline'. Nếu RNN của bạn (MAE=0.05) còn thua cả việc lấy y hệt ngày hôm qua (MAE=0.04), thì thuật toán AI của bạn là đồ bỏ."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Điểm yếu của DBSCAN:",
+        "difficulty": "Trung bình",
+        "question": "Thuật toán BPTT (Backpropagation Through Time):",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "DBSCAN là một thuật toán rất tuyệt, nhưng nó sẽ gặp khó khăn lớn nếu các cụm trong tập dữ liệu có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> thay đổi quá lớn (nơi rất dày đặc, nơi lại rất thưa thớt). Thuật toán này không cho phép dùng một siêu tham số `eps` (bán kính) chung cho tất cả. Ngoài ra, DBSCAN <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> hàm `predict()` để dự đoán nhãn cho các điểm dữ liệu mới đến.",
+        "text": "Để huấn luyện được RNN, người ta phải dùng kỹ thuật Mở cuộn qua Thời gian (Unrolling through time). Nghĩa là, nếu dữ liệu có 30 bước thời gian, mạng RNN bé nhỏ sẽ được nhân bản ra làm 30 mạng kết nối nối tiếp nhau (tạo thành một mạng Feedforward ảo cực sâu). Lỗi từ bước cuối cùng sẽ được tính Đạo hàm ngược chảy tràn qua cả <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> mạng ảo đó để điều chỉnh <span class=\"blank-slot\" data-id=\"2\">___(2)___</span>. Đây gọi là BPTT.",
         "words": [
             {
                 "id": "w1",
-                "text": "Mật độ (Density)"
+                "text": "30 lớp"
             },
             {
                 "id": "w2",
-                "text": "Màu sắc (Color)"
+                "text": "Cùng một bộ Trọng số"
             },
             {
                 "id": "w3",
-                "text": "KHÔNG CÓ (Does not have)"
+                "text": "Dữ liệu mới"
             },
             {
                 "id": "w4",
-                "text": "CÓ (Has)"
+                "text": "2 lớp"
             }
         ],
         "correctAnswers": {
             "1": "w1",
-            "2": "w3"
+            "2": "w2"
         },
-        "explanation": "Nếu khu phố A nhà nằm sát nhau, khu phố B nhà cách nhau 10km. Bạn set eps=1km thì DBSCAN nhận diện được khu A nhưng đánh giá khu B là Rừng Hoang (Noise). Bạn set eps=15km thì nó nhận được khu B nhưng lại gộp luôn khu A vào chung với khu B. (DBSCAN không có predict, bạn phải dùng thuật toán KNN để gán điểm mới)."
+        "explanation": "BPTT giải thích tại sao RNN rất khó train. 30 bước thời gian tương đương việc train một mạng sâu 30 lớp. Nếu chuỗi dài 1000 bước, mạng sẽ sâu 1000 lớp ảo, và gần như 100% bị hội chứng Tiêu biến Đạo hàm (Vanishing Gradient)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Hội chứng Trí nhớ ngắn hạn (Short-term Memory) - nhược điểm chí mạng của lớp `SimpleRNN` là do đâu?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Do nó có quá ít tham số."
+            },
+            {
+                "id": "b",
+                "text": "Mỗi bước đi qua 1 nơ-ron SimpleRNN tín hiệu phải đi qua hàm kích hoạt 'tanh'"
+            },
+            {
+                "id": "c",
+                "text": "Do RAM máy tính không đủ lớn."
+            },
+            {
+                "id": "d",
+                "text": "Do tốc độ học (Learning Rate) quá lớn."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(và bị nhân với một ma trận trọng số). Sau khoảng 10-20 bước thời gian (time steps), các tín hiệu đầu tiên bị nhào nặn biến dạng đến mức hoàn toàn biến mất (Vanishing Gradients). Mạng KHÔNG THỂ nhớ nổi chữ đầu tiên trong một câu văn dài 20 chữ. SimpleRNN thực tế là một 'mô hình đồ chơi' không ai xài trong công nghiệp. Để dịch một đoạn văn dài 100 chữ, bạn không thể dùng SimpleRNN vì nó đọc đến chữ 100 thì quên mất chữ số 1."
     },
     {
         "type": "matching",
         "difficulty": "Dễ",
-        "question": "Ghép thuật toán Phân cụm với tính chất phù hợp:",
+        "question": "Giải pháp để vượt qua giới hạn Trí nhớ ngắn hạn của SimpleRNN:",
         "left": [
             {
                 "id": "l1",
-                "text": "K-Means"
+                "text": "LSTM (Long Short-Term Memory)"
             },
             {
                 "id": "l2",
-                "text": "DBSCAN"
+                "text": "GRU (Gated Recurrent Unit)"
+            },
+            {
+                "id": "l3",
+                "text": "WaveNet / 1D-CNN"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc cho trước số K. Thích cụm hình cầu. Nhạy cảm với nhiễu ngoại lai."
+                "text": "Vua của Mạng hồi quy (1997). Tạo ra một 'Đường Băng Chuyền' (Trạng thái Tế bào - Cell state) tách biệt hoàn toàn để dẫn truyền thông tin từ xa xưa tiến thẳng về hiện tại mà không bị suy hao. Sở hữu 3 cánh cổng (Quên, Đầu vào, Đầu ra)."
             },
             {
                 "id": "r2",
-                "text": "Tự động tìm số cụm. Xử lý tốt mọi hình dạng phức tạp. Chống nhiễu ngoại lai (tách riêng noise ra). Không thích hợp nếu mật độ các cụm khác nhau nhiều."
+                "text": "Phiên bản 'rút gọn' của LSTM (2014). Hợp nhất Cổng Quên và Cổng Đầu vào thành Cổng Cập nhật. Chạy nhanh hơn, ít tốn RAM hơn mà hiệu quả gần tương đương."
+            },
+            {
+                "id": "r3",
+                "text": "Không thèm dùng mạng Hồi quy. Dùng lớp Tích chập Không gian 1 Chiều (Conv1D) với kỹ thuật Dilated (Giãn cách) để quét trên chuỗi thời gian như quét hình ảnh."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Đây là so sánh kinh điển giữa K-Means (Distance-based) và DBSCAN (Density-based)."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Mô hình Hỗn hợp Gauss (Gaussian Mixture Models - GMM) là gì?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Là một biến thể của DBSCAN dùng phân phối Bernoulli."
-            },
-            {
-                "id": "b",
-                "text": "Là một mô hình XÁC SUẤT giả định rằng toàn bộ các điểm dữ liệu được sinh ra từ việc trộn lẫn"
-            },
-            {
-                "id": "c",
-                "text": "Là thuật toán học có giám sát dùng để phân loại văn bản."
-            },
-            {
-                "id": "d",
-                "text": "Là một thuật toán không thể giải quyết được cụm hình elip."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "(mixture) một số lượng hữu hạn các phân phối Gaussian (hình quả chuông). Khác với K-Means gán 'Cứng' (Hard clustering - bạn chỉ có thể thuộc Cụm 1 hoặc Cụm 2). GMM dùng xác suất 'Mềm' (Soft clustering - bạn thuộc 80% Cụm 1, 20% Cụm 2). GMM giả định các cụm có hình Elip (bầu dục) ở các hướng và kích thước khác nhau."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán nào đứng đằng sau quá trình hội tụ của Gaussian Mixture Model?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Gradient Descent (Hạ gradient)."
-            },
-            {
-                "id": "b",
-                "text": "Thuật toán EM (Expectation-Maximization - Cực đại hóa Kỳ vọng)."
-            },
-            {
-                "id": "c",
-                "text": "Phương trình chuẩn (Normal Equation)."
-            },
-            {
-                "id": "d",
-                "text": "Backpropagation (Lan truyền ngược)."
-            }
-        ],
-        "correctAnswer": "b",
-        "explanation": "EM giống hệt cách K-Means hoạt động nhưng dành cho hình Elip. Bước E (Kỳ vọng): Ước tính xác suất mỗi điểm thuộc về cụm nào. Bước M (Cực đại hóa): Cập nhật lại hình dáng, vị trí, kích thước của Elip dựa trên các điểm vừa gom."
+        "explanation": "LSTM và GRU là 2 cấu trúc bắt buộc phải dùng khi làm việc với Dữ liệu chuỗi. SimpleRNN chỉ có trong Sách giáo khoa."
     },
     {
         "type": "ordering",
-        "difficulty": "Trung bình",
-        "question": "Cách GMM phân biệt và tạo thành cụm thông qua siêu tham số 'covariance_type':",
+        "difficulty": "Khó",
+        "question": "Luồng thông tin chảy qua cấu trúc kinh điển của 1 Tế bào LSTM (Các Cổng Gated):",
         "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "'spherical' (Hình cầu): Rất giống K-Means, các cụm bị ép phải tròn xoe, nhưng mỗi cụm có thể có bán kính khác nhau."
+                "text": "Forget Gate (Cổng Quên): Nhìn vào x(t) và h(t-1), quyết định XÓA đi lượng rác nào từ Băng chuyền Trạng thái tế bào C(t-1)."
             },
             {
                 "id": "2",
-                "text": "'diag' (Đường chéo): Các cụm có thể có hình elip (kéo dài trục X, Y khác nhau), nhưng các trục của elip phải SONG SONG với các trục tọa độ của đặc trưng."
+                "text": "Input Gate (Cổng Đầu vào): Quyết định GHI THÊM thông tin quan trọng nào từ hiện tại vào Băng chuyền C(t)."
             },
             {
                 "id": "3",
-                "text": "'tied' (Bị trói): Các cụm có thể có hình elip bất kỳ và nằm nghiêng, NHƯNG tất cả các cụm BẮT BUỘC phải chia sẻ CHUNG MỘT hình dạng, kích thước và góc nghiêng."
+                "text": "Cập nhật băng chuyền: C(t) = C(t-1)*Forget + NewInfo*Input. Băng chuyền băng băng trôi qua tế bào."
             },
             {
                 "id": "4",
-                "text": "'full' (Đầy đủ - Mặc định): Cho phép mỗi cụm thỏa sức có hình elip riêng biệt, kích thước riêng, độ nghiêng riêng biệt. (Nhưng tính toán tốn kém nhất)."
+                "text": "Output Gate (Cổng Đầu ra): Nhìn vào Băng chuyền C(t) vừa được cập nhật, quyết định RÚT TRÍCH thông tin gì để ném ra làm h(t) (Đầu ra ngắn hạn)."
             }
         ],
         "correctOrder": [
@@ -955,164 +787,494 @@
             "3",
             "4"
         ],
-        "explanation": "Tính linh hoạt của GMM nằm ở covariance_type (Ma trận hiệp phương sai). Bạn có thể giới hạn hình dáng của cụm để thuật toán chạy nhanh hơn."
+        "explanation": "Khái niệm 'Cổng' (Gate) trong AI thực chất là một Hàm Sigmoid xuất ra các con số từ 0 đến 1. Nhân với 0 nghĩa là Khóa (Xóa), nhân với 1 nghĩa là Mở (Ghi nhớ)."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Dễ",
-        "question": "Cách sử dụng GMM (Gaussian Mixture) phổ biến để 'Phát hiện Sự bất thường' (Anomaly Detection) là gì?",
+        "difficulty": "Trung bình",
+        "question": "Ưu điểm tuyệt vời của Mạng GRU so với LSTM là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Các điểm dữ liệu nằm ở vùng có 'Xác suất Mật độ'"
+                "text": "GRU chính xác gấp 10 lần LSTM."
             },
             {
                 "id": "b",
-                "text": "Các điểm dữ liệu nằm ngay tại trung tâm hình elip."
+                "text": "GRU gộp Trạng thái Ngắn hạn"
             },
             {
                 "id": "c",
-                "text": "Nó tự động gửi email báo cáo."
+                "text": "GRU có thể nhận hình ảnh làm đầu vào trực tiếp."
             },
             {
                 "id": "d",
-                "text": "Xóa hết toàn bộ dữ liệu."
+                "text": "GRU không bao giờ bị overfitting."
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "(PDF - Probability Density Function) RẤT THẤP (tức là nằm rìa nằm xa các hình elip của cụm) sẽ bị gắn cờ là Bất thường. Vì GMM là mô hình phân phối xác suất, nó biết rõ chỗ nào đông đúc, chỗ nào hoang vắng. Bạn chỉ cần đặt một ngưỡng tỷ lệ (ví dụ 4% điểm có xác suất thấp nhất) và quy chúng thành Nhiễu (Anomalies)."
+        "correctAnswer": "b",
+        "explanation": "(h) và Trạng thái Dài hạn (C) thành một luồng Tín hiệu duy nhất. Đồng thời giảm số lượng Cổng từ 3 xuống 2. Điều này giúp CẢI THIỆN ĐÁNG KỂ TỐC ĐỘ HUẤN LUYỆN và tiết kiệm Bộ nhớ (RAM) mà hiệu suất dịch thuật vẫn tiệm cận LSTM. Trong hầu hết các bài toán NLP thông dụng, mọi người thường thử nghiệm với mạng GRU trước vì nó train lẹ hơn. Nếu kết quả không tốt mới lôi 'cỗ xe tăng' LSTM ra xài."
     },
     {
         "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "Xác định số lượng cụm (K) cho GMM:",
+        "difficulty": "Trung bình",
+        "question": "Tính năng Layer Normalization trong xử lý Dữ liệu Chuỗi:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn KHÔNG THỂ dùng Quán tính (Inertia) hay Silhouette Score cho GMM vì chúng không đo được hình dạng elip. Để tìm K tối ưu cho GMM, người ta sử dụng các tiêu chí thông tin lý thuyết như <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Bayesian Information Criterion) hoặc <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Akaike Information Criterion). Cả hai tiêu chí này sẽ HÌNH PHẠT các mô hình có quá nhiều thông số (quá nhiều cụm K). Mô hình có AIC/BIC THẤP NHẤT là mô hình tốt nhất.",
+        "text": "Trong mạng CNN, người ta thường dùng Batch Normalization (Chuẩn hóa Mẻ). Nhưng mạng RNN rất khó xài Batch Norm vì độ dài các chuỗi văn bản thường thay đổi liên tục. Thay vào đó, Ba (2016) đề xuất <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>. Kỹ thuật này không chuẩn hóa xuyên qua các Mẫu (Batch dimension) mà chuẩn hóa KHÔNG GIAN ĐẶC TRƯNG dọc theo <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> độc lập. Nó vô cùng phù hợp với dữ liệu chuỗi động và giúp RNN hội tụ rất nhanh.",
         "words": [
             {
                 "id": "w1",
-                "text": "BIC"
+                "text": "Layer Normalization (Chuẩn hóa Lớp)"
             },
             {
                 "id": "w2",
-                "text": "AIC"
+                "text": "Từng mẫu (Per-instance)"
             },
             {
                 "id": "w3",
-                "text": "MSE"
+                "text": "DropOut"
             },
             {
                 "id": "w4",
-                "text": "Accuracy"
+                "text": "Từng Pixel"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "AIC và BIC phạt sự phức tạp của mô hình. Nếu bạn chia thành quá nhiều cụm (K lớn), mô hình khớp dữ liệu rất tốt (hàm log-likelihood tăng) nhưng AIC/BIC sẽ bị phạt cao lên. Điểm AIC/BIC thấp nhất chính là 'Điểm cân bằng' (Elbow) tối ưu."
+        "explanation": "Batch Norm tính trung bình trên cả Batch. Layer Norm tính trung bình trên chính CÁC ĐẶC TRƯNG của một dòng văn bản duy nhất. Layer Norm là công nghệ cốt lõi của kiến trúc Transformer sau này."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Dễ",
+        "question": "Thư viện `keras.layers.Conv1D` dùng để làm gì trong các bài toán Chuỗi Thời Gian / NLP?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Dùng để nén file văn bản."
+            },
+            {
+                "id": "b",
+                "text": "Thay vì quét bộ lọc trượt trên ảnh 2D Conv1D TRƯỢT BỘ LỌC CỦA NÓ THEO CHIỀU DỌC XUYÊN QUA THỜI GIAN của chuỗi văn bản"
+            },
+            {
+                "id": "c",
+                "text": "Dùng để vẽ đồ thị chứng khoán."
+            },
+            {
+                "id": "d",
+                "text": "Không thể dùng CNN cho bài toán chuỗi."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(VD: quét 3 từ liên tiếp một lúc). Nó dò tìm các cụm từ (N-grams) hoặc chuỗi nhịp điệu (Patterns). Mạng CNN không chỉ dùng cho ảnh. Một mạng CNN 1D quét chuỗi thời gian RẤT NHANH (do mọi phép tính chạy song song, không cần đợi thời gian t-1 tính xong như RNN). Thường người ta dùng Conv1D để ép nhỏ chuỗi dài trước khi cho vào LSTM."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Trong mạng WaveNet (2016, tạo ra giọng nói Siri / Google Assistant cực đỉnh), thuật toán cốt lõi làm nên sức mạnh Xử lý Audio dài hàng triệu bước thời gian là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Một cái LSTM khổng lồ có 1 triệu tế bào."
+            },
+            {
+                "id": "b",
+                "text": "Sử dụng Tích chập Giãn cách"
+            },
+            {
+                "id": "c",
+                "text": "Chuyển audio thành hình ảnh rồi dùng ResNet."
+            },
+            {
+                "id": "d",
+                "text": "Dùng mạng GAN."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "(Dilated Convolution 1D) 100% không dùng RNN. Ở lớp dưới, nó nối 2 nốt nhạc sát nhau. Ở lớp trên, nó nối 2 nốt nhạc cách nhau 2 nhịp. Lên cao nữa cách 4 nhịp... 512 nhịp. Nhờ cấu trúc phân nhánh cây này, chỉ với 10 lớp mạng, MỘT nơ ron trên đỉnh có thể NHÌN BAO QUÁT được hàng ngàn nốt nhạc trong quá khứ mà tốc độ chạy trên GPU thì siêu phàm. Dilated Convolution (Tích chập có lỗ thủng) bỏ qua một số điểm dữ liệu để phóng to Trường Cảm thụ (Receptive Field) theo cấp số nhân mà không tăng số Tham số. WaveNet đã chứng minh CNN có thể đánh bại RNN ở sân chơi Audio dài hạn."
     },
     {
         "type": "matching",
         "difficulty": "Trung bình",
-        "question": "Ghép nối 'Bayesian Gaussian Mixture' (Mô hình Hỗn hợp Gauss Bayes) so với GMM truyền thống:",
+        "question": "Sự khác biệt khi code Mô hình Dự báo Chứng khoán trong Keras:",
         "left": [
             {
                 "id": "l1",
-                "text": "GMM (GaussianMixture)"
+                "text": "Dự báo 1 bước (Single-step forecast)"
             },
             {
                 "id": "l2",
-                "text": "BGM (BayesianGaussianMixture)"
+                "text": "Dự báo nhiều bước (Multi-step forecast)"
+            },
+            {
+                "id": "l3",
+                "text": "Sequence-to-Sequence (Dự báo chập)"
             }
         ],
         "right": [
             {
                 "id": "r1",
-                "text": "Bắt buộc bạn phải chọn đúng số cụm (n_components) K. Nếu bạn nhập K dư thừa, nó vẫn sẽ cố chia ra K cụm."
+                "text": "Dùng giá của ngày 1-30 để dự đoán đúng giá của ngày 31. Output layer: `Dense(1)`."
             },
             {
                 "id": "r2",
-                "text": "Mô hình thông minh: Thay vì phải chọn đúng K, bạn cứ ném cho nó một số K RẤT LỚN (ví dụ 10). Thuật toán sẽ tự động ĐẨY TRỌNG SỐ của các cụm dư thừa về 0 (tự hủy các cụm không cần thiết), và trả lại cho bạn số lượng cụm thực sự (ví dụ 3)."
+                "text": "Dùng giá của ngày 1-30 để dự đoán MỘT LÚC giá của 10 ngày tương lai (31 đến 40). Output layer: `Dense(10)`."
+            },
+            {
+                "id": "r3",
+                "text": "Mạng RNN phải bật `return_sequences=True`. Ở BẤT CỨ BƯỚC NÀO (Ví dụ bước 10), mạng cũng phải xuất ra kết quả dự đoán của 10 bước tương lai (từ 11 đến 20). Thay vì chỉ tối ưu lỗi ở đỉnh chóp, mạng bị 'ép' tối ưu lỗi ở mọi cột mốc thời gian, tạo ra siêu mô hình."
             }
         ],
         "correctPairs": {
             "l1": "r1",
-            "l2": "r2"
+            "l2": "r2",
+            "l3": "r3"
         },
-        "explanation": "Bayesian Gaussian Mixture tự động loại bỏ bớt các cụm không cần thiết bằng cơ chế tiên nghiệm (prior). Đây là tính năng 'tự động tìm số K' cực kỳ thần thánh của nó."
+        "explanation": "Thay vì chỉ chấm điểm học sinh ở bài thi Cuối kỳ (Seq2Vec), chấm điểm ở MỌI bài kiểm tra 15 phút (Seq2Seq) sẽ ép mạng Nơ-ron lan truyền Gradient ổn định hơn và học nhanh hơn hẳn."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Giải quyết Dữ liệu Chuỗi thiếu sót hoặc Có độ dài bất đồng:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có 2 đoạn review: 'Phim hay' (2 chữ) và 'Phim này dở tệ quá đi mất' (7 chữ). Khi tạo Batch, bạn phải nhét thêm các số 0 vào đoạn ngắn (gọi là <span class=\"blank-slot\" data-id=\"1\">___(1)___</span>) để chúng có chung chiều dài bằng 7. Tuy nhiên, LSTM không thể tự biết số 0 này là vô nghĩa, nó vẫn sẽ tính toán và làm sai lệch cảm xúc gốc. Giải pháp là khai báo `Embedding(..., mask_zero=True)`. Tính năng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> này sẽ tạo một lớp lá chắn báo cho tất cả các lớp LSTM và Dense phía sau KHÔNG ĐƯỢC TÍNH TOÁN tại những ô có chứa mốc Padding.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Padding (Đệm)"
+            },
+            {
+                "id": "w2",
+                "text": "Masking (Mặt nạ)"
+            },
+            {
+                "id": "w3",
+                "text": "Dropout"
+            },
+            {
+                "id": "w4",
+                "text": "Cắt bớt (Truncation)"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Rất nhiều người bị sai số lớn trong mô hình Chuỗi vì quên sử dụng Masking. Lớp LSTM phải cày cuốc qua đống số 0 Padding vô nghĩa và đánh mất Trạng thái ẩn quý giá."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Dễ",
-        "question": "Một thuật toán khác cũng rất nổi tiếng dùng để Phát hiện Bất thường (Anomaly Detection) dựa trên khái niệm 'Rừng' (Trees) là gì?",
+        "question": "Tính năng `TimeDistributed` trong Keras được dùng cho loại mạng RNN nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Isolation Forest (Rừng cách ly)."
+                "text": "Chỉ dùng cho mạng dự báo thời tiết."
             },
             {
                 "id": "b",
-                "text": "Random Forest."
+                "text": "Dùng trong các bài toán Sequence-to-Sequence."
             },
             {
                 "id": "c",
-                "text": "Gradient Boosting."
+                "text": "Nó nhân đôi thời gian train mạng."
             },
             {
                 "id": "d",
-                "text": "K-Nearest Neighbors."
+                "text": "Để tự động tải dữ liệu từ internet theo thời gian thực."
             }
         ],
-        "correctAnswer": "a",
-        "explanation": "Isolation Forest hoạt động bằng cách chẻ (split) dữ liệu ngẫu nhiên. Các điểm bất thường (anomalies) thường đứng một mình xa đàn, nên chỉ cần CHẺ VÀI NHÁT là nó đã bị cô lập khỏi cụm dữ liệu gốc. Điểm nào bị cô lập ở các nhánh cây nông nhất (đường dẫn ngắn) chính là điểm bất thường."
+        "correctAnswer": "b",
+        "explanation": "Nó đóng gói một Lớp (ví dụ: `Dense(10)`) và áp dụng lớp Dense đó lặp lại một cách độc lập lên TOÀN BỘ CÁC BƯỚC THỜI GIAN của đầu ra RNN. Nếu RNN nhả ra 100 cái Output (cho 100 từ). Keras TimeDistributed(Dense(10)) sẽ dùng chung 1 bộ trọng số Dense để đập liên hoàn vào cả 100 cái Output đó, xuất ra 100 nhãn tương ứng."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Thủ thuật Dạy ép bằng giáo viên (Teacher Forcing) trong mạng Seq2Seq (Ví dụ: Dịch máy):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Bình thường, để dự đoán từ thứ 3 của câu dịch, mạng sẽ lấy kết quả do chính nó DỰ ĐOÁN ở từ thứ 2 nhét vào làm Đầu vào."
+            },
+            {
+                "id": "2",
+                "text": "Nếu từ thứ 2 nó lỡ dịch SAI, từ thứ 3 và thứ 4 sẽ sai dây chuyền. Mạng không thể nào học nổi."
+            },
+            {
+                "id": "3",
+                "text": "Kỹ thuật Teacher Forcing: TRONG LÚC HUẤN LUYỆN, bất chấp việc mạng đoán sai hay đúng ở từ thứ 2..."
+            },
+            {
+                "id": "4",
+                "text": "...Ta vẫn CƯỠNG CHẾ đưa ĐÁP ÁN ĐÚNG của từ thứ 2 làm Đầu vào cho bước đoán từ thứ 3. Việc này giúp quá trình học ổn định và tăng tốc siêu nhanh."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "explanation": "Teacher Forcing là bí quyết để huấn luyện các mô hình sinh văn bản (Text Generation) hay Dịch máy. (Nhưng lúc Predict thực tế, mạng sẽ không còn 'Giáo viên' mớm đáp án nữa mà phải tự lực cánh sinh)."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Kiến trúc RNN Hai chiều (Bidirectional RNN) giải quyết vấn đề gì trong Phân tích Cảm xúc ngôn ngữ?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Giúp dịch văn bản qua lại giữa 2 ngôn ngữ."
+            },
+            {
+                "id": "b",
+                "text": "Trong câu văn 'Tôi không thích trái táo này' từ 'không' ảnh hưởng trực tiếp đến từ 'thích' phía sau nó."
+            },
+            {
+                "id": "c",
+                "text": "Nó làm tăng tốc quá trình huấn luyện gấp 2 lần."
+            },
+            {
+                "id": "d",
+                "text": "Giúp nén kích thước mô hình."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "RNN bình thường đọc từ trái qua phải nên khi tới chữ 'thích', nó đã biết chữ 'không'. Tuy nhiên có những trường hợp từ phía sau quyết định ngữ cảnh của từ phía trước. Bidirectional sẽ chạy 2 mạng RNN: một dọc từ trái sang phải, một đọc lộn ngược từ phải sang trái, sau đó gộp kết quả lại. Mạng sẽ hiểu câu văn với tư duy 'Biết trước tương lai'. Trong NLP thực tế, gần như KHÔNG AI xài RNN một chiều (trừ bài toán Sinh văn bản hoặc Dự báo chứng khoán không được phép nhìn thấy tương lai). Bidirectional RNN là chuẩn mực vàng."
+    },
+    {
+        "type": "matching",
+        "difficulty": "Khó",
+        "question": "Các tham số State (Trạng thái ẩn) quan trọng trong Keras RNN:",
+        "left": [
+            {
+                "id": "l1",
+                "text": "return_state=True"
+            },
+            {
+                "id": "l2",
+                "text": "stateful=True"
+            },
+            {
+                "id": "l3",
+                "text": "initial_state=..."
+            }
+        ],
+        "right": [
+            {
+                "id": "r1",
+                "text": "Bắt buộc mạng phải nhả ra (Output) luôn cả Mảng Trạng thái Ẩn cuối cùng. Rất cần thiết cho Kiến trúc Bộ mã hóa-Giải mã (Encoder-Decoder) để truyền ý nghĩa đoạn văn bản từ Mạng Đọc sang Mạng Viết."
+            },
+            {
+                "id": "r2",
+                "text": "Bình thường, qua mỗi Batch mới, RNN sẽ bị XÓA SẠCH TRÍ NHỚ (Reset State=0). Thuộc tính này bắt mô hình giữ nguyên Trạng thái ở Batch trước làm nền tảng cho Batch hiện tại. Dùng khi bạn chia 1 bài hát quá dài thành nhiều Batch nối tiếp nhau."
+            },
+            {
+                "id": "r3",
+                "text": "Tham số bạn gài vào hàm call(). Ví dụ bạn muốn mớm trước Cảm xúc Buồn bã (bằng 1 ma trận) vào đầu não của RNN trước khi nó bắt đầu đọc văn bản."
+            }
+        ],
+        "correctPairs": {
+            "l1": "r1",
+            "l2": "r2",
+            "l3": "r3"
+        },
+        "explanation": "Làm chủ 3 tham số States này, bạn sẽ làm chủ hoàn toàn mọi kiến trúc NLP phức tạp (Seq2Seq, Transformer)."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Trung bình",
+        "question": "Kết hợp CNN 1D và RNN:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Bạn có chuỗi Âm thanh thu âm dài 100.000 bước thời gian (time steps). Nếu đút thẳng vào LSTM, nó sẽ khóc thét và chạy chậm như rùa. Chiến thuật xuất sắc là: Phủ một vài lớp <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> với Bước nhảy (Stride) lớn ở giai đoạn đầu. Lớp này quét cực nhanh, gộp các cụm âm thanh ngắn (âm vị) lại, ép chiều dài chuỗi từ 100.000 xuống còn 1.000 bước. Sau đó, ta mới đẩy chuỗi siêu đặc 1.000 bước đó vào mạng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> để phân tích sự liên kết ý nghĩa đường dài.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Conv1D (CNN)"
+            },
+            {
+                "id": "w2",
+                "text": "LSTM / GRU (RNN)"
+            },
+            {
+                "id": "w3",
+                "text": "Dense"
+            },
+            {
+                "id": "w4",
+                "text": "PCA"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "CNN dùng làm Kẻ dọn đường (Downsampling) siêu hạng. RNN đóng vai trò Kẻ tổng hợp trí nhớ dài hạn. Cặp bài trùng này có mặt trong mọi máy chủ nhận diện giọng nói."
     },
     {
         "type": "multiple_choice",
         "difficulty": "Trung bình",
-        "question": "Phát hiện sự bất thường (Anomaly Detection) khác với Phát hiện cái mới (Novelty Detection) ở điểm nào?",
+        "question": "Vấn đề 'Thiếu dữ liệu tĩnh' trong Dự báo Chứng khoán/Khí hậu với RNN là gì?",
         "options": [
             {
                 "id": "a",
-                "text": "Hai khái niệm này hoàn toàn giống hệt nhau."
+                "text": "RNN không chịu chạy nếu không có mạng internet."
             },
             {
                 "id": "b",
-                "text": "Anomaly Detection cho phép tập dữ liệu huấn luyện ĐÃ CHỨA SẴN các ngoại lệ/nhiễu"
+                "text": "Mạng dự báo nhiệt độ nhận vào một chuỗi"
             },
             {
                 "id": "c",
-                "text": "Novelty detection yêu cầu có nhãn."
+                "text": "Không thể dùng RNN để đoán chứng khoán."
             },
             {
                 "id": "d",
-                "text": "Anomaly detection chậm hơn."
+                "text": "RNN tự động xóa các cột dữ liệu rỗng."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(nó cố gắng tìm ra chúng). Novelty Detection yêu cầu tập huấn luyện phải 'SẠCH' 100% (chỉ chứa các ví dụ bình thường), và nó chỉ bắt lỗi ở các dữ liệu mới trong tương lai. Novelty: Bạn train mô hình trên hình ảnh 10.000 con chó (sạch bong). Ngày mai bạn đưa hình con mèo vào, nó kêu 'Đây là cái mới' (Novelty). Anomaly: Tập 10.000 ảnh gốc đã có lộn 10 con mèo trong đó, bạn yêu cầu mô hình lọc 10 con mèo đó ra (Anomaly)."
+        "explanation": "(Nhiệt độ 30 ngày qua) và dự báo ngày mai. NHƯNG đôi khi ta còn có các đặc trưng 'Tĩnh' (Không đổi theo thời gian) như Tọa độ Vĩ độ, Mùa trong năm, hay Mã Chứng khoán. Nếu nhét các biến tĩnh này nối thêm vào mỗi bước thời gian của chuỗi thì rất lãng phí. Cách tốt nhất là đút Chuỗi vào RNN, đút biến Tĩnh vào lớp Dense riêng, rồi Gộp (Concatenate) cả 2 ở cuối để đưa ra dự báo cuối cùng. Đừng bao giờ bắt mạng RNN phải gánh vác các con số KHÔNG MANG TÍNH THỜI GIAN. Hãy dùng kiến trúc Phân Nhánh Keras (Functional API) để gộp luồng dữ liệu 1 chiều (Dense) vào luồng thời gian (RNN) ở phút chót."
     },
     {
         "type": "ordering",
         "difficulty": "Dễ",
-        "question": "Quy trình làm việc của Học K-Means từ Scikit-Learn:",
-        "instruction": "(Sắp xếp các dòng mã để chạy K-Means đúng chuẩn)",
+        "question": "Thứ tự khai báo đúng một Mô hình Phân loại Đoạn văn bản (Ví dụ: Dự đoán IMDb Review Tích cực/Tiêu cực):",
+        "instruction": "(Nhấn vào từng mục ở danh sách bên dưới để chuyển lên bảng đã chọn)",
         "items": [
             {
                 "id": "1",
-                "text": "from sklearn.cluster import KMeans"
+                "text": "`Input()`: Nhận vào chuỗi chữ văn bản."
             },
             {
                 "id": "2",
-                "text": "k = 5"
+                "text": "`TextVectorization()`: Chuyển đổi các chữ 'Hay', 'Dở' thành Số nguyên ID."
             },
             {
                 "id": "3",
-                "text": "kmeans = KMeans(n_clusters=k, random_state=42)"
+                "text": "`Embedding()`: Biến các Số nguyên vô hồn thành Vector số thực đa chiều (Có gài tính năng mask_zero=True)."
             },
             {
                 "id": "4",
-                "text": "y_pred = kmeans.fit_predict(X)"
+                "text": "`Bidirectional(LSTM(64))` đọc đoạn văn bản đó và trích xuất ý nghĩa cảm xúc."
+            },
+            {
+                "id": "5",
+                "text": "`Dense(1, activation='sigmoid')` xuất ra 1 con số Xác suất Tích cực/Tiêu cực."
+            }
+        ],
+        "correctOrder": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "explanation": "Đây là mẫu Skeleton kiến trúc NLP kinh điển nhất mà bất kỳ AI Engineer nào cũng nằm lòng."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Tính năng `Dropout` hoạt động bên TRONG mạng LSTM như thế nào?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó xóa bớt số lượng bộ nhớ."
+            },
+            {
+                "id": "b",
+                "text": "Cực kỳ phức tạp."
+            },
+            {
+                "id": "c",
+                "text": "Nó tắt đi ngẫu nhiên 50% số lượng lớp của mạng."
+            },
+            {
+                "id": "d",
+                "text": "Không thể dùng Dropout trong LSTM."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Nếu bạn dùng Dropout ngẫu nhiên ở mỗi bước thời gian t, bạn sẽ phá hủy mất Băng chuyền Trí nhớ (Cell state). Theo nghiên cứu của Yarin Gal, RNN phải áp dụng cùng MỘT MẶT NẠ DROP OUT GIỐNG HỆT NHAU xuyên suốt mọi bước thời gian của mạng. Keras tích hợp sẵn điều này qua tham số `dropout` (Cho Đầu vào) và `recurrent_dropout` (Cho trạng thái ẩn dội ngược). Chính vì sự phức tạp này, bạn KHÔNG NÊN nhét một lớp Dropout() bình thường vào giữa lớp Embedding và lớp LSTM. Hãy xài trực tiếp tham số `LSTM(..., dropout=0.2, recurrent_dropout=0.2)`."
+    },
+    {
+        "type": "fill_in_blanks",
+        "difficulty": "Khó",
+        "question": "Sự ra đời của mô hình Bộ Mã hóa - Giải mã (Encoder-Decoder) cho Bài toán Dịch máy:",
+        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
+        "text": "Câu tiếng Anh có thể dài 10 chữ, nhưng khi dịch ra tiếng Việt có thể chỉ tốn 5 chữ. RNN bình thường (nhận 1 nhả 1) sẽ bất lực. Mô hình Seq2Seq tách nó làm 2 Mạng. Mạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> sẽ đọc toàn bộ câu tiếng Anh tốn 10 nhịp thời gian, và không nhả ra chữ nào, nó chỉ GÓI GỌN toàn bộ ý nghĩa câu đó thành một <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> (Context Vector). Cục Vector đó sẽ được truyền vào não bộ của Mạng Decoder. Mạng Decoder sau đó bắt đầu 'nhả' từng chữ tiếng Việt ra cho đến khi gặp token <END> báo hiệu kết thúc.",
+        "words": [
+            {
+                "id": "w1",
+                "text": "Encoder (Mã hóa)"
+            },
+            {
+                "id": "w2",
+                "text": "Trạng thái Ẩn cuối cùng (Final State)"
+            },
+            {
+                "id": "w3",
+                "text": "Dense Layer"
+            },
+            {
+                "id": "w4",
+                "text": "Từ điển Dịch thuật"
+            }
+        ],
+        "correctAnswers": {
+            "1": "w1",
+            "2": "w2"
+        },
+        "explanation": "Encoder-Decoder là kiến trúc làm rung chuyển giới công nghệ 2014, tạo ra Google Translate hiện đại. Thay vì dịch Word-by-Word (Cực kỳ máy móc), mô hình Nhồi toàn bộ Ý Nghĩa cả câu vào 1 cục Vector Ngữ Nghĩa rồi mới viết lại bằng ngôn ngữ khác."
+    },
+    {
+        "type": "multiple_choice",
+        "difficulty": "Khó",
+        "question": "Vấn đề của cục 'Context Vector' (Trạng thái ẩn cuối cùng) trong mô hình Encoder-Decoder là gì?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Nó chiếm quá nhiều dung lượng Ổ cứng."
+            },
+            {
+                "id": "b",
+                "text": "Nó bị NÚT THẮT CỔ CHAI (Bottleneck)."
+            },
+            {
+                "id": "c",
+                "text": "Không thể dùng Gradient Descent để tối ưu cục Vector đó."
+            },
+            {
+                "id": "d",
+                "text": "Nó không hiểu được tiếng lóng."
+            }
+        ],
+        "correctAnswer": "b",
+        "explanation": "Ép ý nghĩa của một câu văn DÀI 100 CHỮ vào một cái hộp Vector Cố định nhỏ bé (Ví dụ: Mảng 512 con số) là một nhiệm vụ bất khả thi, thông tin đoạn đầu câu sẽ rơi rụng sạch sẽ. (Đó là lý do Attention ra đời). Bạn thử tóm tắt 1 cuốn sách tiểu thuyết dài 500 trang chỉ bằng 1 câu văn duy nhất xem? Đó chính là việc mà RNN Encoder phải làm. Thật sự quá sức! Vì vậy, mô hình Transformer đã ra đời để dẹp bỏ RNN."
+    },
+    {
+        "type": "ordering",
+        "difficulty": "Trung bình",
+        "question": "Cơ chế 'Peephole Connections' (Kết nối lỗ khóa) - Một biến thể siêu nhỏ của LSTM:",
+        "instruction": "(Sắp xếp ý tưởng của biến thể này)",
+        "items": [
+            {
+                "id": "1",
+                "text": "Trong LSTM gốc, các Cổng (Quên, Đầu Vào) chỉ được quyền nhìn vào Đầu vào hiện tại x(t) và Trạng thái ẩn ngắn hạn h(t-1) để ra quyết định đóng/mở."
+            },
+            {
+                "id": "2",
+                "text": "Chúng BỊ BỊT MẮT và hoàn toàn KHÔNG BIẾT trong Băng chuyền Trạng thái dài hạn C(t-1) đang chứa cái gì."
+            },
+            {
+                "id": "3",
+                "text": "Nghiên cứu của Gers và Schmidhuber quyết định đục một 'lỗ khóa' (Peephole)."
+            },
+            {
+                "id": "4",
+                "text": "Cho phép Cổng Quên được nhìn XUYÊN VÀO băng chuyền C(t-1). Nếu nó thấy băng chuyền đang chứa thông tin quan trọng, nó sẽ mở cửa to hơn để bảo vệ thông tin đó."
             }
         ],
         "correctOrder": [
@@ -1121,172 +1283,62 @@
             "3",
             "4"
         ],
-        "explanation": "Import -> Khai báo K -> Khởi tạo đối tượng -> Fit_predict (do là Unsupervised nên chỉ truyền X, không truyền y)."
-    },
-    {
-        "type": "fill_in_blanks",
-        "difficulty": "Khó",
-        "question": "One-Class SVM cho Phát hiện Cái mới (Novelty Detection):",
-        "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Khác với SVM phân loại nhị phân truyền thống cố tách 2 lớp bằng siêu phẳng. <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> cố gắng tách các điểm dữ liệu (tất cả chỉ có 1 lớp bình thường) ra khỏi <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> trong không gian chiều cao. Kết quả là nó tạo ra một cái 'bong bóng' phi tuyến khổng lồ bao bọc lấy các điểm bình thường. Điểm nào rơi ra ngoài bong bóng bị coi là dị thường.",
-        "words": [
-            {
-                "id": "w1",
-                "text": "One-Class SVM"
-            },
-            {
-                "id": "w2",
-                "text": "Gốc tọa độ (Origin)"
-            },
-            {
-                "id": "w3",
-                "text": "Linear SVC"
-            },
-            {
-                "id": "w4",
-                "text": "K-Means"
-            }
-        ],
-        "correctAnswers": {
-            "1": "w1",
-            "2": "w2"
-        },
-        "explanation": "One-Class SVM nhốt toàn bộ dữ liệu sạch vào 1 cái túi bong bóng bằng cách đẩy chúng ra khỏi gốc tọa độ. Cực kỳ mạnh khi dữ liệu train sạch 100% nhưng gặp khó nếu dữ liệu có sẵn nhiễu."
+        "explanation": "Có hàng ngàn biến thể của LSTM. Nhưng thực tế chứng minh, các biến thể này chỉ cải thiện được khoảng 1-2% hiệu năng so với bản gốc 1997."
     },
     {
         "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Phân cụm Bằng Tích cực (Active Learning) sử dụng K-Means để làm gì?",
+        "difficulty": "Dễ",
+        "question": "Tính năng CuDNN trong Keras tác động đến mạng LSTM/GRU như thế nào?",
         "options": [
             {
                 "id": "a",
-                "text": "Thuê người dùng internet nhấp vào quảng cáo."
+                "text": "Nó vô hiệu hóa GPU."
             },
             {
                 "id": "b",
-                "text": "Để tự động xóa dữ liệu."
+                "text": "Nếu máy tính có card đồ họa NVIDIA"
             },
             {
                 "id": "c",
-                "text": "Tìm ra các điểm (Ví dụ: tâm của K-Means) có ý nghĩa và KHÓ phân loại nhất trình bày cho CHUYÊN GIA CON NGƯỜI (Human expert)"
+                "text": "Nó làm cho LSTM hoạt động giống CNN."
             },
             {
                 "id": "d",
-                "text": "Tự động gán nhãn dựa trên dự đoán ngẫu nhiên."
-            }
-        ],
-        "correctAnswer": "c",
-        "explanation": "Để họ gán nhãn thủ công. Việc này tiết kiệm tiền thuê người gán nhãn hàng triệu tấm ảnh mà chỉ cần gán vài ngàn tấm cốt lõi. Active Learning kết hợp máy + người. Máy phân cụm, móc ra những điểm trung tâm hoặc những điểm nằm ở biên giới lấp lửng khó quyết, đưa cho người thật xem. Sau đó máy học tiếp. Quy trình lặp lại."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Trung bình",
-        "question": "Tính chất của DBSCAN trong việc sử dụng siêu tham số?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Siêu tham số eps có ý nghĩa là Số lượng vòng lặp tối đa."
-            },
-            {
-                "id": "b",
-                "text": "Bạn phải chỉnh siêu tham số eps"
-            },
-            {
-                "id": "c",
-                "text": "DBSCAN không có siêu tham số nào."
-            },
-            {
-                "id": "d",
-                "text": "DBSCAN tự học eps bằng Gradient Descent."
+                "text": "Tự động dịch ngôn ngữ cho mô hình."
             }
         ],
         "correctAnswer": "b",
-        "explanation": "(bán kính) và min_samples cực kỳ cẩn thận. Nếu eps quá nhỏ, mọi điểm đều trở thành Nhiễu. Nếu eps quá lớn, mọi điểm nhập chung vào 1 cụm khổng lồ. Khác với K-Means phải đoán K, thì ở DBSCAN bạn phải đoán bán kính lân cận eps. May thay, eps có ý nghĩa hình học (khoảng cách vật lý thực) nên đôi khi dễ set up hơn."
-    },
-    {
-        "type": "matching",
-        "difficulty": "Dễ",
-        "question": "Ghép nối vai trò của hàm mục tiêu (Mục đích tối ưu hóa) của các thuật toán:",
-        "left": [
-            {
-                "id": "l1",
-                "text": "K-Means"
-            },
-            {
-                "id": "l2",
-                "text": "PCA (Phân tích Thành phần Chính)"
-            }
-        ],
-        "right": [
-            {
-                "id": "r1",
-                "text": "Tối thiểu hóa 'Quán tính' (Inertia - Tổng khoảng cách từ điểm đến tâm)."
-            },
-            {
-                "id": "r2",
-                "text": "Tối thiểu hóa 'Lỗi tái tạo' (Reconstruction error) hoặc Tối đa hóa 'Phương sai giải thích'."
-            }
-        ],
-        "correctPairs": {
-            "l1": "r1",
-            "l2": "r2"
-        },
-        "explanation": "Mỗi thuật toán Unsupervised đều ngầm tối ưu hóa một hàm toán học."
-    },
-    {
-        "type": "multiple_choice",
-        "difficulty": "Khó",
-        "question": "Thuật toán Local Outlier Factor (LOF) hoạt động trong bài toán Phát hiện Bất thường như thế nào?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Nó so sánh MẬT ĐỘ của một điểm dữ liệu với mật độ của K LÁNG GIỀNG GẦN NHẤT của nó."
-            },
-            {
-                "id": "b",
-                "text": "Nó dùng mạng Neural để học hàm phi tuyến."
-            },
-            {
-                "id": "c",
-                "text": "Nó đo khoảng cách của điểm đó đến gốc tọa độ (0,0)."
-            },
-            {
-                "id": "d",
-                "text": "Nó sử dụng Decision Tree."
-            }
-        ],
-        "correctAnswer": "a",
-        "explanation": "Nếu điểm đó có mật độ THẤP HƠN NHIỀU so với những người hàng xóm, điểm đó là dị thường. Rất giống với tư tưởng của DBSCAN nhưng tinh tế hơn. DBSCAN xài một bán kính eps cứng nhắc. LOF đo độ 'cô đơn' tương đối (nếu ai xung quanh cũng ở nhà san sát nhau, tự nhiên nhà bạn cách xa mọi người 1km thì bạn là dị thường)."
+        "explanation": "(GPU) Keras sẽ tự động sử dụng một phiên bản cài đặt LSTM bằng C++ siêu tối ưu hóa của Nvidia (CuDNNLSTM) được tích hợp trong lõi cuDNN. Nhờ đó tốc độ huấn luyện nhanh gấp 3 đến 5 lần so với tính toán ma trận bình thường. Miễn là bạn ĐỪNG can thiệp vào tham số mặc định của LSTM (ví dụ: cấm xài activation khác ngoài 'tanh'), Keras sẽ ngầm gọi phép thuật CuDNN để tăng tốc phần cứng cực đại."
     },
     {
         "type": "fill_in_blanks",
         "difficulty": "Trung bình",
-        "question": "Làm cách nào để chuyển một bức ảnh thành dữ liệu cho Phân cụm Màu sắc (Color Quantization)?",
+        "question": "Tổng kết RNN vs CNN trong dự báo Chuỗi Thời Gian:",
         "instruction": "(Nhấn vào chỗ trống, sau đó nhấn vào từ bên dưới để điền)",
-        "text": "Bạn có thể dùng K-Means để giảm số lượng màu của bức ảnh từ 16 triệu màu xuống còn 10 màu. Bức ảnh là một ma trận 3D (Width x Height x 3 kênh RGB). Để dùng K-Means, bạn phải Reshape (Định hình lại) nó thành dạng <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> (Tức là danh sách các pixel dài, mỗi pixel có 3 chiều RGB). Sau khi train K-Means(k=10), bạn thay thế màu gốc của từng pixel bằng màu của <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> mà nó thuộc về.",
+        "text": "Mạng RNN (đặc biệt là LSTM) có lợi thế cực lớn vì chúng có <span class=\"blank-slot\" data-id=\"1\">___(1)___</span> vô tận (ít nhất là về lý thuyết). Tuy nhiên RNN chạy rất chậm do bản chất tính toán TUẦN TỰ (Phải xong Bước 1 mới tính được Bước 2, không thể dùng đa luồng GPU tối đa). Ngược lại, mạng <span class=\"blank-slot\" data-id=\"2\">___(2)___</span> không có bộ nhớ, nhưng có thể Quét và tính toán toàn bộ đoạn thời gian CÙNG MỘT LÚC Song Song. Hiện nay xu hướng công nghiệp thường chuộng CNN kết hợp Attention hơn là RNN.",
         "words": [
             {
                 "id": "w1",
-                "text": "2D"
+                "text": "Trí nhớ quá khứ (Memory)"
             },
             {
                 "id": "w2",
-                "text": "Tâm cụm (Centroid)"
+                "text": "Conv1D (CNN)"
             },
             {
                 "id": "w3",
-                "text": "1D"
+                "text": "SimpleRNN"
             },
             {
                 "id": "w4",
-                "text": "Biên (Border)"
+                "text": "Dữ liệu lớn"
             }
         ],
         "correctAnswers": {
             "1": "w1",
             "2": "w2"
         },
-        "explanation": "Sklearn bắt buộc đầu vào là mảng 2D (mẫu x đặc trưng). Bạn duỗi ảnh thành danh sách dài các pixel. Tâm cụm của K-Means(k=10) chính là 10 mã màu đại diện tốt nhất cho bức ảnh."
+        "explanation": "Câu chuyện của RNN là một chương huy hoàng trong Deep Learning. Nhưng cái giá của sự tính toán Tuần Tự (Không chạy song song được) khiến chúng đang dần bị thay thế bởi Transformer."
     }
 ];
 
