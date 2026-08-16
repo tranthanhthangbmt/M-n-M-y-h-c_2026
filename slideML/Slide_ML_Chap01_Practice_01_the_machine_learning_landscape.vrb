@@ -1,0 +1,12 @@
+\frametitle{Tải và chuẩn bị dữ liệu Sự hài lòng trong cuộc sống (Biểu đồ) (Biểu đồ) (Biểu đồ) (Biểu đồ) (Biểu đồ) (Biểu đồ) (Tiếp theo 5)}
+\begin{lstlisting}[language=Python]
+         label="Regularized linear model on partial data")
+plt.legend(loc="lower right")
+
+plt.axis([0, 115_000, min_life_sat, max_life_sat])
+
+save_fig('ridge_model_plot')
+plt.show()
+\end{lstlisting}
+
+
