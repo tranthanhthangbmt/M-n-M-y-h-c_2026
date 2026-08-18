@@ -294,7 +294,26 @@
         btnEn.style.background = lang === 'EN' ? '#1a73e8' : '#f1f3f4';
         btnEn.style.color = lang === 'EN' ? '#fff' : '#5f6368';
       }
-    }
+    };
+
+    window.checkPasswordAndShow = function(btn) {
+      if (sessionStorage.getItem('solutionVerified') === 'true') {
+        var content = btn.nextElementSibling;
+        if (content) content.style.display = "block";
+        btn.style.display = "none";
+        return;
+      }
+
+      var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+      if (pass === "1234@Abc") {
+        sessionStorage.setItem('solutionVerified', 'true');
+        var content = btn.nextElementSibling;
+        if (content) content.style.display = "block";
+        btn.style.display = "none";
+      } else if (pass !== null) {
+        alert("Mật khẩu không đúng!");
+      }
+    };
   </script>
 </body>
 

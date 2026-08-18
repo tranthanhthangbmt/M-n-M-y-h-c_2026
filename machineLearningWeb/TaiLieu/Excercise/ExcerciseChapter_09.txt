@@ -1,0 +1,308 @@
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để giải quyết yêu cầu của bạn về các bài tập thuộc **Chương 9: Các kỹ thuật học không giám sát**, tôi tiến hành phân tích hệ thống bài tập dựa trên các nguồn tài liệu của giáo trình:
+
+1. **Xác định danh mục bài tập**:
+   - Dựa trên tài liệu lý thuyết `"CHƯƠNG 9.docx"` (Mục **9.4. Bài tập**) [cite: 627, 666] và notebook thực hành `"09_unsupervised_learning_VN.ipynb - Colab.pdf"` [cite: 91], Chương 9 kết thúc bằng danh sách **12 câu hỏi bài tập** [cite: 666, 667, 668, 669, 670].
+   - **Các câu từ 1 đến 9**: Là các câu hỏi tự luận lý thuyết cốt lõi, yêu cầu giải nghĩa bản chất các thuật toán phân cụm, ước tính mật độ, học bán giám sát và phát hiện dị thường [cite: 666, 667].
+   - **Các câu từ 10 đến 12**: Là các bài tập lập trình thực hành nâng cao đòi hỏi xử lý trực tiếp tập dữ liệu ảnh khuôn mặt Olivetti (`fetch_olivetti_faces`) với đường ống tích hợp K-Means, PCA và mô hình hỗn hợp Gaussian [cite: 111, 668, 669, 670].
+
+2. **Kế hoạch phân chia nội dung**:
+   - Do 3 bài tập lập trình (10, 11, 12) rất dài, yêu cầu thiết kế pipeline, tối ưu hóa siêu tham số và viết mã Python chi tiết, tôi sẽ thực hiện đúng chỉ dẫn của bạn: **Chia làm 2 phần**.
+     - **Phần 1 (Lượt này)**: Cung cấp **danh sách đầy đủ của 12 bài tập Chương 9**, sau đó phân tích sâu sắc và trình bày lời giải chi tiết cho **từ Câu 1 đến Câu 9** [cite: 666, 667].
+     - **Phần 2 (Lượt sau)**: Tập trung giải quyết trọn vẹn phần thực hành lập trình từ **Câu 10 đến Câu 12** kèm theo các đoạn mã Python tối ưu và phân tích kết quả thực nghiệm cụ thể [cite: 668, 669, 670].
+
+---
+
+### Danh sách 12 bài tập Chương 9
+
+1. Bạn sẽ định nghĩa phân cụm như thế nào? Bạn có thể kể tên một vài thuật toán phân cụm không? [cite: 666]
+2. Một số ứng dụng chính của thuật toán phân cụm là gì? [cite: 667]
+3. Mô tả hai kỹ thuật để chọn số lượng cụm phù hợp khi sử dụng k-means. [cite: 666]
+4. Truyền nhãn (label propagation) là gì? Tại sao bạn lại triển khai nó, và bằng cách nào? [cite: 667]
+5. Bạn có thể kể tên hai thuật toán phân cụm có thể mở rộng cho các tập dữ liệu lớn không? Và hai thuật toán tìm kiếm các vùng mật độ cao? [cite: 667]
+6. Bạn có thể nghĩ ra một trường hợp sử dụng nào mà học tích cực (active learning) sẽ hữu ích không? Bạn sẽ triển khai nó như thế nào? [cite: 667]
+7. Sự khác biệt giữa phát hiện dị thường (anomaly detection) và phát hiện điểm mới (novelty detection) là gì? [cite: 667]
+8. Hỗn hợp Gaussian (Gaussian Mixture) là gì? Bạn có thể sử dụng nó cho những tác vụ nào? [cite: 667]
+9. Bạn có thể kể tên hai kỹ thuật để tìm số lượng cụm phù hợp khi sử dụng mô hình hỗn hợp Gaussian không? [cite: 667]
+10. **Bài tập thực hành 10**: Thiết lập hệ thống phân loại khuôn mặt trên tập dữ liệu Olivetti, sử dụng K-Means làm công cụ giảm chiều dữ liệu [cite: 668].
+11. **Bài tập thực hành 11**: Huấn luyện mô hình hỗn hợp Gaussian trên tập Olivetti để sinh khuôn mặt mới và phát hiện ảnh dị thường [cite: 669].
+12. **Bài tập thực hành 12**: Ứng dụng kỹ thuật giảm chiều dữ liệu PCA trên tập Olivetti để phát hiện dị thường dựa trên sai số tái tạo [cite: 670].
+
+---
+
+### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 9)
+
+#### **Câu 1: Bạn sẽ định nghĩa phân cụm như thế nào? Bạn có thể kể tên một vài thuật toán phân cụm không?**
+*   **Lời giải chi tiết**: 
+    *   **Định nghĩa**: Trong học máy, **phân cụm (clustering)** là một tác vụ không giám sát nhằm mục đích nhóm các thể hiện (instances) tương tự nhau vào các nhóm riêng biệt gọi là các **cụm** [cite: 108, 628]. Tiêu chí đánh giá sự tương đồng phụ thuộc vào từng bài toán cụ thể: có trường hợp các điểm ở gần nhau trong không gian đặc trưng được coi là tương tự, nhưng trong các trường hợp khác, các điểm nằm cách xa nhau vẫn có thể tương tự nếu chúng thuộc cùng một cấu trúc nhóm được đóng gói dày đặc [cite: 108].
+    *   **Một số thuật toán phân cụm phổ biến**: K-Trung bình (K-Means), DBSCAN, phân cụm kết tụ (agglomerative clustering), BIRCH, Dịch chuyển Trung bình (Mean-Shift), lan truyền quan hệ (affinity propagation), và phân cụm phổ (spectral clustering) [cite: 108, 634].
+
+#### **Câu 2: Một số ứng dụng chính của thuật toán phân cụm là gì?**
+*   **Lời giải chi tiết**: 
+    Phân cụm là một công cụ đa năng được ứng dụng rộng rãi trong nhiều lĩnh vực thực tế [cite: 628]:
+    1.  **Phân đoạn khách hàng (customer segmentation)**: Nhóm khách hàng dựa trên hành vi tiêu dùng và lịch sử mua sắm để thiết kế các chiến dịch tiếp thị cá nhân hóa hoặc xây dựng hệ thống đề xuất [cite: 628, 631].
+    2.  **Phân tích dữ liệu**: Chạy thuật toán phân cụm để tự động gom nhóm và phân tích độc lập các phân khúc đặc trưng trong tập dữ liệu mới [cite: 632].
+    3.  **Giảm chiều dữ liệu (dimensionality reduction)**: Thay thế vector đặc trưng nhiều chiều ban đầu bằng vector đo độ tương đồng của thể hiện đó đối với từng cụm dữ liệu [cite: 632].
+    4.  **Học bán giám sát (semisupervised learning)**: Gán nhãn cho một số ít mẫu đại diện rồi lan truyền nhãn đó ra toàn cụm dữ liệu để tạo tập huấn luyện lớn cho thuật toán học có giám sát [cite: 633].
+    5.  **Công cụ tìm kiếm**: Tìm kiếm các hình ảnh tương tự với một hình ảnh tham chiếu bằng cách truy xuất các mẫu nằm chung cụm [cite: 633].
+    6.  **Phân đoạn ảnh (image segmentation)**: Phân cụm các pixel theo màu sắc để giảm số lượng màu, phục vụ cho việc phát hiện đường viền và theo dõi đối tượng [cite: 634].
+    7.  **Phát hiện dị thường (anomaly detection)** và **phát hiện tính mới (novelty detection)** [cite: 109].
+
+#### **Câu 3: Mô tả hai kỹ thuật để chọn số lượng cụm phù hợp khi sử dụng k-means.**
+*   **Lời giải chi tiết**: 
+    Do K-Means bắt buộc người dùng phải chỉ định trước số lượng cụm \\(k\\) [cite: 636], chúng ta có hai kỹ thuật chính để xác định giá trị tối ưu này:
+    1.  **Quy tắc cùi chỏ (elbow rule)**: Tiến hành vẽ đồ thị biểu diễn giá trị quán tính (inertia - tổng bình phương khoảng cách từ các mẫu đến tâm cụm gần nhất của chúng) theo hàm của số lượng cụm \\(k\\) [cite: 109, 640]. Điểm uốn trên đường cong nơi mà quán tính ngừng giảm nhanh (trông giống như một chiếc cùi chỏ) chính là số lượng cụm tối ưu [cite: 109, 640].
+    2.  **Điểm số hình bóng (silhouette score)**: Tính toán giá trị trung bình của hệ số hình bóng (silhouette coefficient) trên tất cả các thể hiện và vẽ theo hàm của \\(k\\) [cite: 109, 641]. Số lượng cụm tối ưu thường nằm ở đỉnh cao nhất của đồ thị này [cite: 109]. Ngoài ra, ta có thể vẽ **sơ đồ hình bóng (silhouette diagram)** để phân tích sâu hơn: một giá trị \\(k\\) tốt là khi tất cả các cụm đều có độ rộng (kích thước) đồng đều và tất cả đều vượt qua đường gạch ngang biểu diễn điểm số hình bóng trung bình [cite: 98, 109, 641].
+
+#### **Câu 4: Truyền nhãn (label propagation) là gì? Tại sao bạn lại triển khai nó, và bằng cách nào?**
+*   **Lời giải chi tiết**: 
+    *   **Khái niệm**: Truyền nhãn là kỹ thuật tự động lan truyền nhãn từ một số ít các thể hiện đã được gán nhãn sang các thể hiện chưa được gán nhãn lân cận hoặc nằm chung một cụm dữ liệu [cite: 633, 648].
+    *   **Tại sao cần triển khai**: Trong thực tế, việc thu thập dữ liệu thô chưa gán nhãn rất dễ dàng và rẻ tiền, nhưng việc thuê chuyên gia gán nhãn thủ công lại cực kỳ tốn kém và mất thời gian [cite: 110, 627]. Truyền nhãn giúp nhanh chóng tạo ra một lượng lớn dữ liệu có nhãn chất lượng cao từ một số lượng rất nhỏ nhãn thủ công ban đầu, phục vụ hiệu quả cho các mô hình học có giám sát [cite: 633].
+    *   **Cách triển khai**: 
+        1. Chạy thuật toán phân cụm (như K-Means) trên toàn bộ tập dữ liệu (gồm cả dữ liệu có nhãn và không nhãn) [cite: 647].
+        2. Xác định các **hình ảnh/mẫu đại diện** nằm gần tâm của từng cụm nhất [cite: 647].
+        3. Gán nhãn thủ công cho các mẫu đại diện này [cite: 647].
+        4. Tiến hành lan truyền nhãn của mẫu đại diện cho tất cả các mẫu không nhãn khác nằm trong cùng một cụm [cite: 633] (hoặc truyền nhãn cho các mẫu nằm trong một phạm vi khoảng cách gần nhất định) [cite: 102].
+
+#### **Câu 5: Bạn có thể kể tên hai thuật toán phân cụm có thể mở rộng cho các tập dữ liệu lớn không? Và hai thuật toán tìm kiếm các vùng mật độ cao?**
+*   **Lời giải chi tiết**: 
+    *   **Mở rộng tốt cho tập dữ liệu lớn**: **K-Trung bình (K-Means)** (bao gồm cả biến thể Mini-Batch K-Means để xử lý ngoài bộ nhớ) và thuật toán **BIRCH** (đặc biệt hiệu quả khi số lượng đặc trưng không quá lớn, dưới 20) [cite: 110, 653].
+    *   **Tìm kiếm các vùng có mật độ cao**: Thuật toán **DBSCAN** và thuật toán **Dịch chuyển Trung bình (Mean-Shift)** [cite: 110, 634].
+
+#### **Câu 6: Bạn có thể nghĩ ra một trường hợp sử dụng nào mà học tích cực (active learning) sẽ hữu ích không? Bạn sẽ triển khai nó như thế nào?**
+*   **Lời giải chi tiết**: 
+    *   **Trường hợp sử dụng thực tế**: Phân loại ảnh y khoa (ví dụ: phát hiện khối u ác tính từ ảnh chụp X-quang hoặc MRI) [cite: 716]. Việc này đòi hỏi các bác sĩ chuyên khoa có trình độ cao tham gia dán nhãn, khiến chi phí dán nhãn cho hàng trăm nghìn bức ảnh trở nên vô cùng đắt đỏ [cite: 110, 627].
+    *   **Cách triển khai**: Áp dụng chiến lược **lấy mẫu không chắc chắn (uncertainty sampling)** [cite: 110, 648]:
+        1. Huấn luyện một mô hình phân loại ban đầu trên một lượng rất nhỏ ảnh chụp đã được bác sĩ dán nhãn sẵn [cite: 101].
+        2. Sử dụng mô hình này để dự đoán và tính toán xác suất lớp cho toàn bộ kho ảnh khổng lồ chưa được gán nhãn [cite: 102, 648].
+        3. Thuật toán sẽ tự động lọc ra những hình ảnh mà mô hình **ít chắc chắn nhất** (ví dụ: xác suất dự đoán ung thư và bình thường gần xấp xỉ nhau, khoảng 50-50) [cite: 102, 648].
+        4. Gửi các mẫu nghi ngờ này cho bác sĩ để gán nhãn thủ công [cite: 102, 648].
+        5. Cập nhật các mẫu mới dán nhãn này vào tập huấn luyện, huấn luyện lại mô hình và lặp lại quy trình [cite: 102, 648].
+
+#### **Câu 7: Sự khác biệt giữa phát hiện dị thường (anomaly detection) và phát hiện điểm mới (novelty detection) là gì?**
+*   **Lời giải chi tiết**: 
+    *   **Phát hiện dị thường (Anomaly/Outlier Detection)**: Thuật toán được huấn luyện trên một tập dữ liệu **không hoàn toàn sạch**, tức là tập dữ liệu ban đầu có thể đã bị nhiễm các ngoại lệ (outliers) hoặc các mẫu lỗi ẩn chứa bên trong [cite: 628, 659]. Mục tiêu là học cấu trúc dữ liệu bình thường để phát hiện và loại bỏ các điểm bất thường này ra khỏi tập dữ liệu [cite: 628, 659].
+    *   **Phát hiện điểm mới (Novelty Detection)**: Thuật toán được giả định là huấn luyện trên một tập dữ liệu **hoàn toàn sạch**, hoàn toàn không chứa bất kỳ dị thường nào [cite: 659]. Mục tiêu là xác định xem một điểm dữ liệu hoàn toàn mới xuất hiện sau này có phải là một "điểm mới" (mang đặc tính khác biệt so với dữ liệu huấn luyện sạch ban đầu) hay không [cite: 659].
+
+#### **Câu 8: Hỗn hợp Gaussian (Gaussian Mixture) là gì? Bạn có thể sử dụng nó cho những tác vụ nào?**
+*   **Lời giải chi tiết**: 
+    *   **Khái niệm**: Mô hình hỗn hợp Gaussian (GMM) là một mô hình xác suất giả định rằng các điểm dữ liệu trong tập huấn luyện được tạo ra từ một tổ hợp của một số phân phối Gaussian (hình elip) với các tham số chưa biết (trung bình, ma trận hiệp phương sai và trọng số cụm) [cite: 654]. Thuật toán sử dụng phương pháp cực đại hóa kỳ vọng (EM) để ước lượng các tham số này [cite: 655].
+    *   **Các tác vụ ứng dụng**:
+        1.  **Phân cụm (Clustering)**: Đặc biệt mạnh mẽ cho phân cụm mềm (gán xác suất thuộc về từng cụm) và xử lý các cụm có hình dạng elip, kích thước và mật độ khác nhau mà K-Means thất bại [cite: 654, 656, 657].
+        2.  **Ước tính mật độ (Density estimation)**: Tính toán hàm mật độ xác suất (PDF) của quá trình ngẫu nhiên sinh ra dữ liệu [cite: 629, 654].
+        3.  **Phát hiện dị thường (Anomaly detection)**: Các điểm dữ liệu nằm trong các vùng có mật độ xác suất cực thấp (score thấp) sẽ bị coi là dị thường [cite: 629, 659].
+
+#### **Câu 9: Bạn có thể kể tên hai kỹ thuật để tìm số lượng cụm phù hợp khi sử dụng mô hình hỗn hợp Gaussian không?**
+*   **Lời giải chi tiết**: 
+    Khác với K-Means, chúng ta không thể dùng quán tính hay điểm silhouette cho GMM vì chúng không đáng tin cậy khi các cụm có hình dạng elip phi cầu [cite: 660]. Thay vào đó, ta sử dụng:
+    1.  **Tối thiểu hóa tiêu chí thông tin**: Huấn luyện nhiều mô hình GMM với số cụm \\(k\\) khác nhau, vẽ đồ thị và chọn số lượng cụm giúp tối thiểu hóa **tiêu chí thông tin Bayesian (BIC)** hoặc **tiêu chí thông tin Akaike (AIC)** [cite: 111, 660].
+    2.  **Sử dụng Mô hình hỗn hợp Gaussian Bayes (Bayesian Gaussian Mixture model)**: Khởi tạo mô hình với số cụm lớn hơn mức cần thiết, thuật toán dựa trên cơ chế phân phối Bayes sẽ tự động triệt tiêu các cụm dư thừa bằng cách gán trọng số cụm (weights) của chúng bằng hoặc xấp xỉ bằng \\(0\\) [cite: 111, 664].
+
+---
+
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để giải quyết trọn vẹn và tối ưu nhất nhóm bài tập thực hành cuối cùng của **Chương 9: Các kỹ thuật học không giám sát** (Bài 10, 11, 12) liên quan đến tập dữ liệu khuôn mặt Olivetti cổ điển, chúng ta sẽ áp dụng phương pháp lập luận từng bước (Chain of Thought). Quy trình phân tích dữ liệu, thiết kế hệ thống và giải thuật lập trình được mô tả chi tiết như sau:
+
+1.  **Phân tích đặc trưng của tập dữ liệu khuôn mặt Olivetti**:
+    *   Tập dữ liệu chứa 400 ảnh khuôn mặt mức xám kích thước \\(64 \times 64\\) pixel của 40 người khác nhau (mỗi người có đúng 10 ảnh với các biểu cảm, điều kiện ánh sáng, góc chụp hoặc phụ kiện khác nhau) [cite: 102, 103, 104]. Dữ liệu đã được chuẩn hóa về phạm vi \\(\\) [cite: 649].
+    *   **Thách thức**: Tập dữ liệu rất nhỏ (400 ảnh) nhưng số chiều lại cực kỳ lớn (\\(64 \times 64 = 4.096\\) đặc trưng) [cite: 102]. Vì vậy, việc **chuẩn bị dữ liệu bằng phân tách phân tầng (Stratified Split)** là bắt buộc để đảm bảo cả tập Train, Validation và Test đều có sự hiện diện đồng đều của cả 40 người [cite: 105, 649]. Ngoài ra, áp dụng **PCA** để giảm số chiều từ 4096 xuống mức giữ lại 99% phương sai (~199 chiều) là vô cùng cần thiết nhằm tăng tốc độ huấn luyện cho K-Means và GMM [cite: 106, 107, 651].
+
+2.  **Lập luận giải thuật cho Bài 10 (Phân cụm K-Means & Bộ phân loại)**:
+    *   *Tại sao số lượng cụm tối ưu lại lớn hơn số người (40)?* Thực tế huấn luyện cho thấy cùi chỏ không rõ ràng trên sơ đồ quán tính, và điểm số hình bóng tốt nhất thường đạt được ở giá trị \\(k\\) rất cao (khoảng \\(k=120\\)) [cite: 108, 109]. Điều này là do một người có thể trông rất khác nhau giữa các bức ảnh (ví dụ: có/không có kính, cười/không cười, lệch trái/phải) [cite: 108].
+    *   *Sử dụng K-Means làm công cụ giảm chiều*: Khoảng cách từ một bức ảnh tới \\(k\\) tâm cụm (tính qua `kmeans.transform()`) tạo ra một không gian đặc trưng mới gồm \\(k\\) chiều [cite: 627, 637]. Ta sẽ kiểm chứng hiệu suất phân loại của mô hình (ví dụ: `RandomForestClassifier`) trên 3 không gian: ảnh gốc (hoặc PCA), chỉ dùng khoảng cách K-Means, và gộp cả hai không gian [cite: 650].
+
+3.  **Lập luận giải thuật cho Bài 11 (Mô hình hỗn hợp Gaussian GMM & Tạo ảnh mới & Phát hiện dị thường)**:
+    *   *Tại sao chọn GMM trên không gian PCA?* GMM có độ phức tạp tính toán rất lớn theo số lượng chiều dữ liệu vì phải ước tính ma trận hiệp phương sai [cite: 645, 651]. Chạy GMM trực tiếp trên 4096 chiều sẽ gây sập bộ nhớ và không thể hội tụ. Do đó ta phải huấn luyện GMM trên không gian PCA (~199 chiều) [cite: 651].
+    *   *Tạo ảnh khuôn mặt mới*: GMM là một mô hình xác suất sinh [cite: 513]. Sử dụng `gmm.sample()` để sinh ra các vector đặc trưng mới trong không gian tiềm ẩn của PCA [cite: 651], sau đó dùng `pca.inverse_transform()` để chiếu ngược lại không gian ảnh \\(64 \times 64\\) để hiển thị [cite: 651].
+    *   *Phát hiện dị thường*: Ta chủ động tạo ra các dị thường bằng cách xoay ảnh, lật ngược ảnh, hoặc làm tối ảnh [cite: 651]. Sử dụng `gmm.score_samples()` để tính log-likelihood (mật độ xác suất) [cite: 625, 651]. Các ảnh dị thường sẽ có điểm số mật độ xác suất cực kỳ thấp so với ảnh bình thường [cite: 625, 651].
+
+4.  **Lập luận giải thuật cho Bài 12 (Phát hiện dị thường bằng sai số tái tạo PCA)**:
+    *   *Nguyên lý*: PCA học không gian con tuyến tính đại diện cho các khuôn mặt bình thường, thẳng đứng [cite: 652]. Khi đưa một ảnh dị thường (ví dụ: bị xoay ngược \\(180^\circ\\) hoặc bôi đen) qua đường ống `pca.transform()` rồi `pca.inverse_transform()` để tái tạo [cite: 652], mô hình PCA sẽ cố gắng tái tạo nó thành một khuôn mặt bình thường thẳng đứng [cite: 652]. Điều này tạo ra một **sai số tái tạo (reconstruction error)** cực kỳ lớn giữa ảnh gốc và ảnh tái tạo [cite: 647, 652]. Đây là một trong những kỹ thuật phát hiện dị thường đơn giản nhưng cực kỳ hiệu quả [cite: 647].
+
+---
+
+### PHẦN 2: Lời giải chi tiết và mã nguồn Python tối ưu (Bài 10, 11 và 12)
+
+#### **Bài 10: Phân cụm K-Means và Ứng dụng giảm chiều dữ liệu**
+
+*   **Mã nguồn Python tối ưu**:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_olivetti_faces
+from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# 1. Tải tập dữ liệu Olivetti faces [cite: 102]
+olivetti = fetch_olivetti_faces() [cite: 102]
+X, y = olivetti.data, olivetti.target [cite: 105]
+
+# 2. Phân chia tập dữ liệu thành Train (280), Valid (80), Test (40) bằng phân tầng [cite: 105, 106]
+strat_split = StratifiedShuffleSplit(n_splits=1, test_size=40, random_state=42) [cite: 105]
+train_valid_idx, test_idx = next(strat_split.split(X, y)) [cite: 105]
+
+X_train_valid, y_train_valid = X[train_valid_idx], y[train_valid_idx] [cite: 105]
+X_test, y_test = X[test_idx], y[test_idx] [cite: 105]
+
+# Tiếp tục chia train_valid thành train và validation
+strat_split_2 = StratifiedShuffleSplit(n_splits=1, test_size=80, random_state=43) [cite: 106]
+train_idx, valid_idx = next(strat_split_2.split(X_train_valid, y_train_valid)) [cite: 106]
+
+X_train, y_train = X_train_valid[train_idx], y_train_valid[train_idx] [cite: 106]
+X_valid, y_valid = X_train_valid[valid_idx], y_train_valid[valid_idx] [cite: 106]
+
+# 3. Áp dụng PCA giữ 99% phương sai để tăng tốc [cite: 106, 107]
+pca = PCA(0.99, random_state=42) [cite: 107]
+X_train_pca = pca.fit_transform(X_train) [cite: 107]
+X_valid_pca = pca.transform(X_valid) [cite: 107]
+X_test_pca = pca.transform(X_test) [cite: 107]
+
+# 4. Huấn luyện K-Means với k = 120 (Số cụm tối ưu từ quán tính và sơ đồ hình bóng) [cite: 108, 109]
+best_k = 120 [cite: 108]
+kmeans = KMeans(n_clusters=best_k, n_init=10, random_state=42) [cite: 107]
+kmeans.fit(X_train_pca) [cite: 107]
+
+# 5. Đánh giá bộ phân loại trên dữ liệu gốc (Baseline) [cite: 650]
+rf_clf = RandomForestClassifier(n_estimators=150, random_state=42)
+rf_clf.fit(X_train_pca, y_train)
+y_pred_baseline = rf_clf.predict(X_valid_pca)
+baseline_acc = accuracy_score(y_valid, y_pred_baseline)
+print(f"1. Độ chính xác trên không gian PCA gốc: {baseline_acc * 100:.2f}%")
+
+# 6. Sử dụng K-Means làm công cụ giảm chiều (Khoảng cách tới các tâm cụm) [cite: 650]
+X_train_reduced = kmeans.transform(X_train_pca) [cite: 650]
+X_valid_reduced = kmeans.transform(X_valid_pca)
+
+rf_clf_reduced = RandomForestClassifier(n_estimators=150, random_state=42)
+rf_clf_reduced.fit(X_train_reduced, y_train)
+y_pred_reduced = rf_clf_reduced.predict(X_valid_reduced)
+reduced_acc = accuracy_score(y_valid, y_pred_reduced)
+print(f"2. Độ chính xác chỉ dùng đặc trưng khoảng cách K-Means: {reduced_acc * 100:.2f}%")
+
+# 7. Nối đặc trưng K-Means vào đặc trưng gốc để nâng cao hiệu suất [cite: 650]
+X_train_combined = np.c_[X_train_pca, X_train_reduced] [cite: 650]
+X_valid_combined = np.c_[X_valid_pca, X_valid_reduced]
+
+rf_clf_combined = RandomForestClassifier(n_estimators=150, random_state=42)
+rf_clf_combined.fit(X_train_combined, y_train)
+y_pred_combined = rf_clf_combined.predict(X_valid_combined)
+combined_acc = accuracy_score(y_valid, y_pred_combined)
+print(f"3. Độ chính xác khi gộp cả đặc trưng gốc và K-Means: {combined_acc * 100:.2f}%")
+```
+
+*   **Phân tích kết quả**:
+    *   Độ chính xác chỉ dùng khoảng cách K-Means thường sẽ thấp hơn đặc trưng PCA gốc [cite: 650]. Lý do là K-Means chuyển thông tin khuôn mặt thành các khoảng cách hình học thô, làm mất đi các chi tiết tần số cao [cite: 650].
+    *   Tuy nhiên, khi **nối gộp đặc trưng gốc và đặc trưng K-Means**, hiệu suất phân loại thường được cải thiện nhẹ [cite: 650]. Điều này là do thông tin khoảng cách cụm bổ sung các đặc trưng phi tuyến giúp bộ phân loại rừng ngẫu nhiên dễ dàng thiết lập ranh giới quyết định tốt hơn [cite: 650].
+
+---
+
+#### **Bài 11: Huấn luyện GMM, Sinh ảnh khuôn mặt mới và Phát hiện ảnh dị thường**
+
+*   **Mã nguồn Python tối ưu**:
+
+```python
+from sklearn.mixture import GaussianMixture
+
+# 1. Huấn luyện mô hình hỗn hợp Gaussian (GMM) trên không gian PCA [cite: 651]
+# Dùng covariance_type="type" phù hợp, ở đây dùng "class" hoặc mặc định là "full" [cite: 645]
+gmm = GaussianMixture(n_components=30, covariance_type="full", random_state=42)
+gmm.fit(X_train_pca)
+
+# 2. Sinh ra 10 ảnh khuôn mặt mới từ GMM [cite: 651]
+X_gen_pca, y_gen = gmm.sample(n_samples=10) [cite: 651]
+
+# Chiếu ngược lại không gian 4096 chiều từ PCA [cite: 651]
+X_gen_original = pca.inverse_transform(X_gen_pca) [cite: 651]
+
+# Vẽ các khuôn mặt được sinh ra
+fig, axes = plt.subplots(2, 5, figsize=(10, 5))
+for i, ax in enumerate(axes.flat):
+    ax.imshow(X_gen_original[i].reshape(64, 64), cmap="gray")
+    ax.axis("off")
+    ax.set_title(f"Gen {i+1}")
+plt.suptitle("Khuôn mặt được sinh ra ngẫu nhiên từ GMM")
+plt.show()
+
+# 3. Tạo tập dữ liệu dị thường (Xoay ảnh 180 độ, làm tối mạnh) [cite: 651]
+X_normal = X_valid[:10]
+# Tạo bản sao và xoay ngược ảnh 180 độ (lật dọc và lật ngang ảnh 64x64) [cite: 651]
+X_rotated = np.array([np.rot90(img.reshape(64, 64), 2).flatten() for img in X_normal]) [cite: 651]
+# Tạo ảnh bị làm tối đi 80% [cite: 651]
+X_darkened = X_normal * 0.2 [cite: 651]
+
+# Biến đổi các tập ảnh này qua không gian PCA [cite: 107]
+X_normal_pca = pca.transform(X_normal)
+X_rotated_pca = pca.transform(X_rotated)
+X_darkened_pca = pca.transform(X_darkened)
+
+# 4. Tính toán điểm mật độ xác suất (score_samples) [cite: 651]
+scores_normal = gmm.score_samples(X_normal_pca) [cite: 651]
+scores_rotated = gmm.score_samples(X_rotated_pca) [cite: 651]
+scores_darkened = gmm.score_samples(X_darkened_pca) [cite: 651]
+
+print("--- Đánh giá điểm Log-Likelihood từ GMM ---")
+print(f"Ảnh bình thường (Trung bình): {scores_normal.mean():.2f}")
+print(f"Ảnh bị xoay 180 độ (Trung bình): {scores_rotated.mean():.2f}")
+print(f"Ảnh bị làm tối mạnh (Trung bình): {scores_darkened.mean():.2f}")
+```
+
+*   **Phân tích kết quả**:
+    *   **Sinh khuôn mặt mới**: Các khuôn mặt do GMM sinh ra trông khá thuyết phục [cite: 541]. Chúng có đầy đủ các bộ phận mắt, mũi, miệng nhưng có thể hơi mờ hoặc mang các đặc điểm lai giữa nhiều người khác nhau do quá trình nội suy trong không gian tiềm ẩn [cite: 541, 547].
+    *   **Phát hiện dị thường**: Điểm log-likelihood của các bức ảnh bị lật ngược hoặc làm tối **thấp hơn rất nhiều** (thường âm sâu hơn hàng trăm đơn vị) so với ảnh bình thường [cite: 625, 651]. Điều này chứng tỏ GMM là một công cụ phát hiện dị thường cực kỳ mạnh mẽ dựa trên mật độ xác suất của phân phối đa biến [cite: 625, 651].
+
+---
+
+#### **Bài 12: Phát hiện dị thường bằng sai số tái tạo PCA**
+
+*   **Mã nguồn Python tối ưu**:
+
+```python
+# 1. Tính toán sai số tái tạo cho ảnh bình thường và ảnh dị thường [cite: 652]
+def get_reconstruction_error(X_original, pca_model):
+    X_pca = pca_model.transform(X_original) [cite: 107]
+    X_reconstructed = pca_model.inverse_transform(X_pca) [cite: 652]
+    # Sai số bình phương trung bình (MSE) giữa ảnh gốc và tái tạo [cite: 652]
+    mse_errors = np.mean((X_original - X_reconstructed) ** 2, axis=1) [cite: 652]
+    return mse_errors, X_reconstructed
+
+# Tính toán sai số
+errors_normal, X_rec_normal = get_reconstruction_error(X_normal, pca)
+errors_rotated, X_rec_rotated = get_reconstruction_error(X_rotated, pca) [cite: 652]
+
+print("--- Sai số tái tạo (MSE) của PCA ---")
+print(f"Ảnh bình thường: {errors_normal.mean():.6f}")
+print(f"Ảnh bị xoay 180 độ (Dị thường): {errors_rotated.mean():.6f}")
+
+# 2. Trực quan hóa so sánh ảnh gốc và ảnh tái tạo của ảnh dị thường [cite: 652]
+fig, axes = plt.subplots(2, 2, figsize=(6, 6))
+axes.imshow(X_rotated.reshape(64, 64), cmap="gray")
+axes.set_title("Gốc: Ảnh xoay 180°")
+axes.axis("off")
+
+axes.imshow(X_rec_rotated.reshape(64, 64), cmap="gray")
+axes.set_title("Tái tạo từ PCA")
+axes.axis("off")
+
+axes.imshow(X_normal.reshape(64, 64), cmap="gray")
+axes.set_title("Gốc: Ảnh bình thường")
+axes.axis("off")
+
+axes.imshow(X_rec_normal.reshape(64, 64), cmap="gray")
+axes.set_title("Tái tạo từ PCA")
+axes.axis("off")
+
+plt.tight_layout()
+plt.show()
+```
+
+*   **Phân tích kết quả**:
+    *   Sai số tái tạo của ảnh dị thường (bị xoay \\(180^\circ\\)) **lớn hơn gấp nhiều lần** so với ảnh bình thường [cite: 652].
+    *   **Giải thích hiện tượng**: Bản chất của PCA là tìm các trục trực giao (thành phần chính) đại diện cho hướng biến thiên mạnh nhất của các bức ảnh khuôn mặt thẳng đứng có sẵn trong tập huấn luyện [cite: 652]. Khi đưa một bức ảnh bị lật ngược \\(180^\circ\\) vào, mô hình PCA không có khả năng hiểu được hướng xoay này [cite: 652]. Nó sẽ cố gắng chiếu ảnh lên "không gian khuôn mặt thẳng đứng" và tái tạo ra một bức ảnh thẳng đứng mờ nhạt [cite: 652]. Điều này tạo ra sự sai khác rất lớn (MSE cao) so với ảnh gốc lật ngược, giúp ta dễ dàng gán nhãn dị thường bằng cách đặt một ngưỡng (threshold) sai số thích hợp [cite: 652].
+
+---

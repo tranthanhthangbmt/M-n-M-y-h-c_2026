@@ -1752,4 +1752,515 @@ Between Learning Algorithms”, Neural Computation 8, no. 7 (1996): 1341–1390.
   </div>
 </div>
 
+
+#### ** 📝 Bài Tập **
+
+<script>
+if (typeof checkPasswordAndShow !== 'function') {
+  window.checkPasswordAndShow = function(btn) {
+    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (pass === "1234@Abc") {
+      var content = btn.nextElementSibling;
+      content.style.display = "block";
+      btn.style.display = "none";
+    } else if (pass !== null) {
+      alert("Mật khẩu không đúng!");
+    }
+  }
+}
+</script>
+
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Bạn sẽ định nghĩa học máy như thế nào?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    **Học máy (Machine Learning)** là khoa học (và nghệ thuật) xây dựng các hệ thống máy tính có khả năng **học hỏi từ dữ liệu**. Theo định nghĩa kỹ thuật của Tom Mitchell (1997): Một chương trình máy tính được cho là học từ **kinh nghiệm E** đối với một **nhiệm vụ T** và một **thước đo hiệu suất P**, nếu hiệu suất của nó trên T, được đo bằng P, cải thiện theo kinh nghiệm E. Nói một cách ngắn gọn, "học" có nghĩa là trở nên tốt hơn ở một nhiệm vụ nào đó dựa trên một thước đo hiệu suất cụ thể.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Bạn có thể kể tên bốn loại ứng dụng mà nó tỏa sáng không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Học máy cực kỳ mạnh mẽ và tỏa sáng trong các trường hợp sau:
+    1.  Các **vấn đề phức tạp** mà phương pháp truyền thống không có giải pháp thuật toán rõ ràng (ví dụ: nhận dạng giọng nói hoặc thị giác máy tính).
+    2.  Để **thay thế cho danh sách dài các quy tắc phức tạp** được tinh chỉnh thủ công (ví dụ: bộ lọc thư rác kiểu cũ).
+    3.  Xây dựng các **hệ thống tự động thích ứng** với môi trường biến động liên tục (ví dụ: tự động cập nhật từ khóa spam mới mà không cần can thiệp thủ công).
+    4.  Giúp **con người học hỏi** và khám phá các mối liên hệ mới thông qua việc khai phá các mẫu ẩn trong các tập dữ liệu khổng lồ (Khai phá dữ liệu - Data Mining).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Tập huấn luyện có nhãn là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Một **tập huấn luyện có nhãn (labeled training set)** là tập dữ liệu huấn luyện mà trong đó **chứa giải pháp mong muốn** (được gọi là nhãn hay target) cho mỗi trường hợp huấn luyện. Ví dụ, trong bài toán lọc thư rác, tập huấn luyện có nhãn sẽ bao gồm nội dung các email đi kèm nhãn ghi rõ email đó là "thư rác" (spam) hay "thư thường" (ham).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Hai tác vụ có giám sát phổ biến nhất là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Hai tác vụ phổ biến nhất trong học có giám sát là:
+    *   **Phân loại (Classification)**: Dự đoán một lớp hoặc danh mục rời rạc cho một trường hợp mới (ví dụ: phân loại email là "spam" hay "ham", phân loại chữ số viết tay từ 0 đến 9).
+    *   **Hồi quy (Regression)**: Dự đoán một giá trị số liên tục cho một trường hợp mới dựa trên một tập hợp các đặc trưng đầu vào (ví dụ: dự đoán giá của một chiếc ô tô dựa trên số dặm, tuổi thọ, thương hiệu; hoặc dự đoán giá nhà).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Bạn có thể kể tên bốn tác vụ không giám sát phổ biến không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Bốn tác vụ học không giám sát (dữ liệu huấn luyện không có nhãn sẵn) phổ biến bao gồm:
+    1.  **Phân cụm (Clustering)**: Tự động nhóm các trường hợp tương tự nhau vào các nhóm (cụm) riêng biệt (ví dụ: phân khúc khách hàng mua sắm).
+    2.  **Trực quan hóa dữ liệu (Visualization)**: Chuyển đổi dữ liệu phức tạp nhiều chiều thành các biểu diễn 2D hoặc 3D trực quan để con người dễ hiểu và phát hiện các mẫu không ngờ tới.
+    3.  **Giảm chiều dữ liệu (Dimensionality reduction)**: Đơn giản hóa dữ liệu bằng cách gộp hoặc loại bỏ các đặc trưng tương quan mạnh mà không làm mất quá nhiều thông tin hữu ích.
+    4.  **Học luật kết hợp (Association rule learning)**: Đào sâu vào lượng dữ liệu lớn để tìm ra các mối quan hệ và quy luật hành vi thú vị giữa các thuộc tính (ví dụ: khách hàng mua bít tết thường mua kèm sốt thịt nướng).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Bạn sẽ sử dụng loại thuật toán nào để cho phép một robot đi trên nhiều địa hình không xác định khác nhau?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Thuật toán phù hợp nhất cho tác vụ này là **Học tăng cường (Reinforcement Learning)**. Trong học tăng cường, một tác nhân phần mềm (robot) sẽ quan sát môi trường thực tế, đưa ra quyết định hành động và nhận lại các tín hiệu phản hồi từ môi trường dưới dạng **phần thưởng** (để khuyến khích hành vi tốt) hoặc **hình phạt** (cho hành vi sai sót). Thông qua quá trình thử và sai liên tục, tác nhân sẽ tự tìm ra chính sách tối ưu để đạt được hiệu suất đi bộ tốt nhất.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Bạn sẽ sử dụng loại thuật toán nào để phân khúc khách hàng của mình thành nhiều nhóm?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Lựa chọn thuật toán phụ thuộc vào việc bạn đã có thông tin phân nhóm trước đó hay chưa:
+    *   Nếu bạn **chưa biết trước các nhóm** (dữ liệu khách hàng chưa có nhãn nhóm), bạn nên sử dụng thuật toán **Phân cụm (Clustering)** – một kỹ thuật thuộc học không giám sát – để hệ thống tự động phát hiện các phân khúc khách hàng dựa trên sự tương đồng về hành vi mua sắm hoặc hồ sơ cá nhân.
+    *   Nếu bạn **đã xác định rõ các nhóm cụ thể** và có dữ liệu lịch sử đã được gán nhãn nhóm tương ứng cho từng khách hàng, bạn có thể sử dụng thuật toán **Phân loại (Classification)** – một kỹ thuật thuộc học có giám sát – để gán các khách hàng mới vào các nhóm sẵn có.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Bạn sẽ coi vấn đề phát hiện thư rác là một vấn đề học có giám sát hay một vấn đề học không giám sát?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Phát hiện thư rác (spam detection) là một bài toán **học có giám sát** điển hình. Lý do là thuật toán cần được huấn luyện trên một tập dữ liệu có nhãn đầy đủ, nơi mỗi email ví dụ đều đã được con người hoặc hệ thống phân loại rõ ràng là "thư rác" (spam) hoặc "thư thường" (ham). Từ đó, mô hình học cách ánh xạ các đặc trưng từ email mới để đưa ra dự đoán nhãn chính xác.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 9: Hệ thống học trực tuyến là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    Hệ thống **học trực tuyến (online learning)** là hệ thống có khả năng **học tập tăng dần (incrementally)** bằng cách liên tục tiếp nhận dữ liệu mới theo dạng tuần tự (từng mẫu một) hoặc theo các nhóm nhỏ gọi là các **mini-batches**. Mỗi bước học của hệ thống diễn ra rất nhanh và tốn ít tài nguyên, cho phép mô hình thích ứng ngay lập tức với các thay đổi dữ liệu thời gian thực (như thị trường chứng khoán). Điều này hoàn toàn trái ngược với **học theo lô (batch learning)**, nơi hệ thống phải được huấn luyện ngoại tuyến trên toàn bộ tập dữ liệu sẵn có trong một lần.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 10: Học ngoài lõi (out-of-core learning) là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: 
+    **Học ngoài bộ nhớ / ngoài lõi (out-of-core learning)** là kỹ thuật sử dụng thuật toán học trực tuyến để huấn luyện mô hình trên các **tập dữ liệu khổng lồ vượt quá dung lượng RAM** của máy tính. Thuật toán sẽ chia nhỏ tập dữ liệu trên ổ đĩa cứng, tải từng phần dữ liệu nhỏ lên bộ nhớ chính để thực hiện một bước huấn luyện, và lặp lại quy trình này cho đến khi quét hết toàn bộ dữ liệu.
+
+---
+
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để tiếp tục phân tích chi tiết **Phần 2 (từ Câu 11 đến Câu 19)** của bài tập Chương 1, chúng ta sẽ áp dụng phương pháp lập luận từng bước (Chain of Thought) để truy xuất dữ liệu gốc và giải nghĩa chi tiết:
+
+1.  **Thu thập dữ liệu câu hỏi**: Câu 11 đến Câu 19 tập trung vào các khái niệm nâng cao của Chương 1 bao gồm: các phương pháp tổng quát hóa (học dựa trên thực thể vs học dựa trên mô hình), tham số vs siêu tham số, các thách thức trong học máy (quá khớp, dưới khớp, chất lượng dữ liệu), và quy trình đánh giá mô hình (tập kiểm thử, tập xác thực, tập train-dev).
+2.  **Khớp mã nguồn lời giải**: 
+    *   Lời giải trực tiếp của các câu hỏi này nằm ở cuối file mã nguồn của chương: `"01.1_the_machine_learning_landscape_VN.ipynb - Colab.pdf"` (các mục lời giải từ 11 đến 19).
+    *   Nội dung lý thuyết chuyên sâu bổ trợ nằm trong tệp `"Chương 1_Hand-on.docx"` (phần 1.3 đến 1.5).
+3.  **Tổng hợp và trình bày**: Trình bày rõ ràng câu hỏi, câu trả lời cốt lõi từ lời giải mẫu, và phân tích sâu sắc từ nội dung lý thuyết trong chương để người học nắm vững bản chất thay vì chỉ học thuộc lòng.
+
+---
+
+### PHẦN 2: Chi tiết bài tập và lời giải (Từ Câu 11 đến Câu 19)
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 11: Loại thuật toán nào dựa vào một thước đo tương tự để đưa ra dự đoán?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Đây là phương pháp **học dựa trên thực thể (instance-based learning)**.
+    *   **Bản chất**: Hệ thống sẽ học thuộc lòng các ví dụ huấn luyện (ghi nhớ dữ liệu). Khi xuất hiện một trường hợp mới cần dự đoán, hệ thống sẽ sử dụng một **thước đo độ tương đồng (similarity measure)** để so sánh trường hợp mới này với các ví dụ đã học và đưa ra phân loại hoặc giá trị dự đoán.
+    *   **Ví dụ thực tế**: Thuật toán *Hồi quy k-láng giềng gần nhất (k-Nearest Neighbors)* hoạt động theo nguyên lý này. Khi dự đoán chỉ số hài lòng cuộc sống của Síp, nó sẽ tìm các quốc gia lân cận có GDP gần nhất (như Israel, Litva, Slovenia) và lấy trung bình cộng điểm số của chúng.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 12: Sự khác biệt giữa tham số mô hình và siêu tham số mô hình là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Tham số mô hình (Model Parameter)**: Là các biến số nội tại của mô hình, quyết định trực tiếp đến giá trị mà mô hình sẽ dự đoán. Các tham số này được **thuật toán học tự động điều chỉnh và tối ưu hóa** trong quá trình huấn luyện (ví dụ: các trọng số \\(\theta_0, \theta_1\\) trong hồi quy tuyến tính).
+    *   **Siêu tham số (Hyperparameter)**: Là tham số của chính **thuật toán học**, không phải của mô hình. Siêu tham số không bị ảnh hưởng bởi quá trình huấn luyện mà phải được **người thiết kế đặt cố định từ trước** (ví dụ: siêu tham số \\(\alpha\\) kiểm soát mức độ chính quy hóa nhằm tránh quá khớp).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 13: Các thuật toán dựa trên mô hình tìm kiếm điều gì? Chiến lược phổ biến nhất mà chúng sử dụng để thành công là gì? Chúng đưa ra dự đoán như thế nào?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Điều tìm kiếm**: Các thuật toán dựa trên mô hình (model-based learning) tìm kiếm **giá trị tối ưu cho các tham số mô hình** sao cho mô hình có khả năng khái quát hóa tốt nhất trên các trường hợp mới.
+    *   **Chiến lược phổ biến nhất**: Huấn luyện mô hình bằng cách **giảm thiểu một hàm chi phí (cost function)**. Hàm chi phí này đo lường mức độ tồi tệ (khoảng cách sai số) giữa dự đoán của mô hình và dữ liệu huấn luyện thực tế; thuật toán học sẽ tìm cách điều chỉnh các tham số để kéo sai số này xuống mức tối thiểu.
+    *   **Cách đưa ra dự đoán**: Sau khi đã tìm được các tham số tối ưu (ví dụ: \\(\theta_0\\) và \\(\theta_1\\) tốt nhất), thuật toán sẽ nạp các đặc trưng của trường hợp mới vào hàm toán học của mô hình (hàm giả thuyết) để tính toán ra kết quả dự đoán (suy luận).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 14: Bạn có thể kể tên bốn trong số những thách thức chính trong học máy không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    Tài liệu chỉ ra các thách thức lớn mà một dự án học máy thường gặp phải bao gồm:
+    1.  **Số lượng dữ liệu huấn luyện không đủ**: Thuật toán học máy luôn cần một lượng dữ liệu lớn (hàng nghìn đến hàng triệu mẫu) để có thể học chính xác.
+    2.  **Dữ liệu chất lượng kém**: Dữ liệu chứa quá nhiều lỗi, giá trị ngoại lai (outliers) và nhiễu làm hệ thống khó phát hiện ra các mẫu cơ bản.
+    3.  **Dữ liệu huấn luyện không đại diện**: Dữ liệu bị sai lệch lấy mẫu (sampling bias), không bao quát hết các trường hợp thực tế sẽ gặp trong sản xuất.
+    4.  **Các đặc trưng không liên quan / không mang tính thông tin**: Đặc trưng đầu vào bị thừa thãi hoặc thiếu các thông tin cốt lõi (vấn đề "đầu vào rác, đầu ra rác").
+    5.  **Hiện tượng dưới khớp (underfitting)** do mô hình quá đơn giản.
+    6.  **Hiện tượng quá khớp (overfitting)** do mô hình quá phức tạp.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 15: Nếu mô hình của bạn hoạt động tốt trên dữ liệu huấn luyện nhưng tổng quát hóa kém cho các trường hợp mới, điều gì đang xảy ra? Bạn có thể kể tên ba giải pháp khả thi không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Điều đang xảy ra**: Mô hình của bạn đang bị **quá khớp (overfitting)** dữ liệu huấn luyện. Mô hình đã học quá chi tiết cả những nhiễu hoặc các mẫu ngẫu nhiên xuất hiện trong tập huấn luyện, dẫn đến việc không thể áp dụng đúng cho dữ liệu mới.
+    *   **Ba giải pháp khả thi**:
+        1.  **Lấy thêm nhiều dữ liệu huấn luyện hơn** để giúp mô hình nhận diện các mẫu thực sự thay vì học vẹt nhiễu.
+        2.  **Đơn giản hóa mô hình**: Có thể chọn một thuật toán ít tham số hơn, loại bỏ bớt các đặc trưng dư thừa, hoặc áp dụng kỹ thuật chính quy hóa (regularization) để ràng buộc và giảm bớt bậc tự do của mô hình.
+        3.  **Giảm nhiễu trong dữ liệu huấn luyện**: Thực hiện làm sạch dữ liệu bằng cách sửa các lỗi đo lường hoặc loại bỏ các giá trị ngoại lai.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 16: Tập kiểm thử là gì, và tại sao bạn muốn sử dụng nó?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Tập kiểm thử (test set)** là một phần dữ liệu được tách và gạt riêng ra ngay từ đầu, hoàn toàn độc lập và không tham gia vào bất kỳ bước huấn luyện nào của mô hình.
+    *   **Lý do sử dụng**: Tập kiểm thử được dùng để **ước tính lỗi khái quát hóa (generalization error)** mà mô hình sẽ mắc phải trên các trường hợp hoàn toàn mới trong thực tế. Nó đóng vai trò là thước đo khách quan cuối cùng trước khi đưa mô hình vào vận hành sản xuất.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 17: Mục đích của tập xác thực là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Tập xác thực (validation set hay tập giữ lại/tập dev) là phần dữ liệu được trích ra từ tập huấn luyện ban đầu.
+    *   **Mục đích**: Được sử dụng để **so sánh và đánh giá các mô hình ứng cử viên khác nhau** nhằm chọn ra mô hình tốt nhất. Nó cũng giúp người thiết kế **tinh chỉnh các siêu tham số (hyperparameters)** một cách an toàn mà không làm rò rỉ thông tin của tập kiểm thử.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 18: Tập train-dev là gì, khi nào bạn cần nó, và bạn sử dụng nó như thế nào?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Tập train-dev** là một tập dữ liệu được giữ lại từ tập huấn luyện (ví dụ như dữ liệu tải từ web) sau khi mô hình đã được huấn luyện.
+    *   **Khi nào cần**: Bạn cần tập này khi có sự nghi ngờ về **sự không khớp dữ liệu (data mismatch)** giữa dữ liệu dùng để huấn luyện (ví dụ: ảnh tải từ internet) và dữ liệu thực tế trong sản xuất (ví dụ: ảnh chụp từ camera điện thoại cấp cho tập xác thực/kiểm thử).
+    *   **Cách sử dụng**:
+        1.  Huấn luyện mô hình trên tập huấn luyện chính (không chứa tập train-dev).
+        2.  Đánh giá mô hình trên tập train-dev:
+            *   Nếu mô hình hoạt động kém trên train-dev, chứng tỏ mô hình đã bị **quá khớp tập huấn luyện** (cần chính quy hóa hoặc đơn giản hóa mô hình).
+            *   Nếu mô hình hoạt động tốt trên train-dev nhưng lại hoạt động kém trên tập xác thực (dev set), chứng tỏ có sự **không khớp dữ liệu** nghiêm trọng giữa dữ liệu huấn luyện và dữ liệu thực tế (cần tiền xử lý dữ liệu huấn luyện để đồng bộ hóa cấu trúc với dữ liệu thực tế).
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 19: Điều gì có thể sai nếu bạn điều chỉnh siêu tham số bằng cách sử dụng tập kiểm thử?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Nếu bạn sử dụng tập kiểm thử để liên tục đo hiệu suất và tinh chỉnh các siêu tham số, mô hình và các siêu tham số đó sẽ vô tình bị **quá khớp với tập kiểm thử**.
+    *   **Hậu quả**: Sai số khái quát hóa đo được trên tập kiểm thử lúc này sẽ trở nên **lạc quan quá mức** (thấp hơn thực tế). Khi bạn triển khai mô hình vào môi trường sản xuất thực tế với dữ liệu mới, mô hình sẽ hoạt động tệ hơn rất nhiều so với những gì bạn mong đợi.
+
+---
+
+    </div>
+  </div>
+</div>
+
+
 <!-- tabs:end -->

@@ -1694,4 +1694,458 @@ Bạn có thể sử dụng hàm shift() từ mô-đun scipy.ndimage.interpolati
   </div>
 </div>
 
+
+#### ** 📝 Bài Tập **
+
+<script>
+if (typeof checkPasswordAndShow !== 'function') {
+  window.checkPasswordAndShow = function(btn) {
+    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (pass === "1234@Abc") {
+      var content = btn.nextElementSibling;
+      content.style.display = "block";
+      btn.style.display = "none";
+    } else if (pass !== null) {
+      alert("Mật khẩu không đúng!");
+    }
+  }
+}
+</script>
+
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Bài 1: Đạt độ chính xác >97% trên tập dữ liệu MNIST</h4>
+  
+*   **Yêu cầu đề bài**:
+    Xây dựng một bộ phân loại cho tập dữ liệu MNIST sao cho độ chính xác đạt trên 97% trên tập kiểm thử [cite: 41, 938]. 
+    *   *Gợi ý*: Thuật toán **Láng giềng gần nhất (`KNeighborsClassifier`)** hoạt động rất tốt cho tác vụ này [cite: 41, 938]. Bạn cần áp dụng tìm kiếm lưới (`GridSearchCV`) để tìm ra các giá trị tối ưu cho hai siêu tham số: `weights` ('uniform' hoặc 'distance') và `n_neighbors` [cite: 41, 938].
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Phân tích & Lập luận giải thuật**:
+    1.  **Tại sao sử dụng KNN**: MNIST là tập dữ liệu nhận dạng chữ số viết tay [cite: 899]. Thuật toán KNN phân loại điểm dữ liệu mới bằng cách đo khoảng cách (thường là khoảng cách Euclid) tới tất cả các điểm trong tập huấn luyện và lấy biểu quyết đa số từ \\(k\\) láng giềng gần nhất [cite: 11, 766]. Do các chữ số cùng loại sẽ có cấu trúc phân bổ pixel tương tự nhau, đo khoảng cách trực tiếp trên pixel mang lại hiệu năng phân loại cực tốt [cite: 11, 41].
+    2.  **Siêu tham số tinh chỉnh**:
+        *   `n_neighbors`: Số lượng láng giềng (thử các giá trị xung quanh 3, 4, 5, 6) [cite: 2, 41].
+        *   `weights`: 
+            *   `'uniform'`: Tất cả các láng giềng có quyền quyết định ngang nhau [cite: 27].
+            *   `'distance'`: Láng giềng càng ở gần thì trọng số biểu quyết càng lớn (tỷ lệ nghịch với khoảng cách) [cite: 27, 41]. Điều này rất hữu ích vì nó ưu tiên những ảnh cực kỳ giống với ảnh cần dự đoán.
+
+*   **Đoạn mã giải pháp (Python)**:
+    ```python
+    import numpy as np
+    from sklearn.datasets import fetch_openml
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.model_selection import GridSearchCV
+    from sklearn.metrics import accuracy_score
+
+    # 1. Tải dữ liệu MNIST (70,000 ảnh 28x28)
+    mnist = fetch_openml('mnist_784', as_frame=False, parser='auto')
+    X, y = mnist.data, mnist.target
+
+    # 2. Phân chia tập Train/Test chuẩn (60,000 ảnh đầu để train, 10,000 ảnh cuối để test)
+    X_train, X_test = X[:60000], X[60000:]
+    y_train, y_test = y[:60000], y[60000:]
+
+    # 3. Khởi tạo bộ ước lượng KNN
+    knn_clf = KNeighborsClassifier()
+
+    # 4. Định nghĩa lưới tham số tinh chỉnh
+    param_grid = [
+        {
+            'weights': ["uniform", "distance"], 
+            'n_neighbors':
+        }
+    ]
+
+    # 5. Thiết lập tìm kiếm lưới với cross-validation (ví dụ cv=5)
+    # Lưu ý: Quá trình này có thể mất 15-30 phút tùy cấu hình phần cứng
+    grid_search = GridSearchCV(knn_clf, param_grid, cv=5, verbose=3)
+    grid_search.fit(X_train, y_train)
+
+    # In ra bộ siêu tham số tốt nhất thu được
+    print("Siêu tham số tốt nhất:", grid_search.best_params_)
+    print("Độ chính xác tốt nhất trên tập Validation:", grid_search.best_score_)
+
+    # 6. Đánh giá trên tập kiểm thử (Test Set) bằng mô hình tốt nhất
+    best_knn_clf = grid_search.best_estimator_
+    y_pred = best_knn_clf.predict(X_test)
+    test_accuracy = accuracy_score(y_test, y_pred)
+    print(f"Độ chính xác cuối cùng trên tập Test: {test_accuracy * 100:.2f}%")
+    ```
+
+*   **Kết quả thực nghiệm**:
+    *   Bộ siêu tham số tối ưu thường tìm thấy là: **`{'n_neighbors': 4, 'weights': 'distance'}`**.
+    *   Mô hình này giúp chúng ta dễ dàng vượt ngưỡng **97%** độ chính xác trên tập Test [cite: 41, 938].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Bài 2: Tăng cường dữ liệu (Data Augmentation / Shift MNIST)</h4>
+  
+*   **Yêu cầu đề bài**:
+    *   Viết một hàm có khả năng dịch chuyển ảnh MNIST đi 1 pixel theo bất kỳ hướng nào (lên, xuống, sang trái, hoặc sang phải) [cite: 931].
+    *   Với mỗi hình ảnh trong tập huấn luyện ban đầu, hãy tạo thêm 4 hình ảnh dịch chuyển tương ứng (mỗi hướng 1 ảnh) và thêm chúng cùng nhãn gốc vào tập huấn luyện [cite: 931].
+    *   Huấn luyện mô hình tốt nhất đã tìm thấy ở Bài 1 trên tập huấn luyện mở rộng này [cite: 931]. Đo lường độ chính xác trên tập kiểm thử và xem hiệu suất cải thiện như thế nào [cite: 931].
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Phân tích & Lập luận giải thuật**:
+    1.  **Vấn đề của mô hình tuyến tính và KNN**: Các mô hình phân loại thông thường rất nhạy cảm với việc định vị chữ số [cite: 931]. Nếu chữ số bị lệch hoặc xoay một chút, khoảng cách pixel sẽ thay đổi mạnh và mô hình dễ đoán sai [cite: 930, 931].
+    2.  **Nguyên lý Tăng cường dữ liệu (Data Augmentation)**: Bằng cách chủ động tạo ra các ảnh bị dịch chuyển nhẹ, ta dạy cho mô hình **tính bất biến dịch chuyển (translation invariance)** [cite: 931]. Mô hình sẽ hiểu rằng dù số "5" có lệch sang trái 1 pixel thì nó vẫn là số "5" [cite: 931].
+    3.  **Xử lý mảng**: Ảnh MNIST được lưu phẳng dưới dạng vector 1D dài 784 [cite: 128, 899]. Ta cần định hình lại (reshape) nó về dạng 2D (28x28) [cite: 128, 937], dùng hàm `shift` của thư viện `scipy.ndimage` để dịch chuyển, rồi làm phẳng (flatten) trở lại [cite: 128, 939].
+    4.  **Tăng quy mô dữ liệu**: Tập huấn luyện sẽ tăng từ **60,000** mẫu lên thành **300,000** mẫu (gồm 60,000 ảnh gốc + 240,000 ảnh dịch chuyển) [cite: 38].
+
+*   **Đoạn mã giải pháp (Python)**:
+    ```python
+    from scipy.ndimage import shift
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.metrics import accuracy_score
+
+    # 1. Định nghĩa hàm dịch chuyển ảnh 2D
+    def shift_image(image_vector, dx, dy):
+        # Biến đổi từ 1D (784,) về 2D (28, 28)
+        image_2d = image_vector.reshape(28, 28)
+        # Sử dụng hàm shift của Scipy (điền khuyết pixel trống bằng 0)
+        shifted_image_2d = shift(image_2d, [dy, dx], cval=0, mode="constant")
+        # Trả về dạng phẳng 1D
+        return shifted_image_2d.flatten()
+
+    # 2. Chuẩn bị tập huấn luyện mở rộng (Augmented Dataset)
+    # Sao chép tập huấn luyện gốc vào mảng mới
+    X_train_augmented = [image for image in X_train]
+    y_train_augmented = [label for label in y_train]
+
+    # Duyệt qua từng ảnh gốc để tạo 4 hướng dịch chuyển
+    for image, label in zip(X_train, y_train):
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)): # Phải, Trái, Dưới, Trên
+            X_train_augmented.append(shift_image(image, dx, dy))
+            y_train_augmented.append(label)
+
+    # Chuyển đổi về định dạng numpy array và xáo trộn lại dữ liệu
+    X_train_augmented = np.array(X_train_augmented)
+    y_train_augmented = np.array(y_train_augmented)
+
+    # Xáo trộn để tránh các mẫu tương tự đứng gần nhau liên tiếp
+    shuffle_idx = np.random.permutation(len(X_train_augmented))
+    X_train_augmented = X_train_augmented[shuffle_idx]
+    y_train_augmented = y_train_augmented[shuffle_idx]
+
+    # 3. Huấn luyện mô hình KNN tối ưu (đã tìm được ở Bài 1) trên dữ liệu khủng này
+    # Sử dụng weights='distance' và n_neighbors=4
+    augmented_knn_clf = KNeighborsClassifier(n_neighbors=4, weights='distance', n_jobs=-1)
+    augmented_knn_clf.fit(X_train_augmented, y_train_augmented)
+
+    # 4. Đánh giá trên tập kiểm thử
+    y_pred_augmented = augmented_knn_clf.predict(X_test)
+    augmented_accuracy = accuracy_score(y_test, y_pred_augmented)
+    print(f"Độ chính xác sau khi tăng cường dữ liệu: {augmented_accuracy * 100:.2f}%")
+    ```
+
+*   **Nhận xét thực nghiệm**:
+    *   Sau khi áp dụng kỹ thuật Data Augmentation, độ chính xác của mô hình KNN thường được đẩy vượt lên trên **98%** (thường đạt khoảng **98.2% - 98.4%**) [cite: 244]. 
+    *   Đây là một bước nhảy vọt vô cùng lớn trong Học sâu và Thị giác máy tính, chứng minh rằng: **Dữ liệu tốt và nhiều thường đánh bại cả các thuật toán phức tạp nhất** [cite: 768] (Định lý "Không có bữa ăn miễn phí" [cite: 1]).
+
+---
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để giải quyết trọn vẹn **Phần 2 (Bài 3: Dự án Titanic và Bài 4: Bộ phân loại thư rác Spam)** của Chương 3, tôi sẽ áp dụng phương pháp lập luận từng bước (Chain of Thought) nhằm phân tích cấu trúc dữ liệu, các rào cản kỹ thuật của từng bài toán và đưa ra giải pháp thiết kế pipeline tối ưu nhất từ các nguồn tài liệu có sẵn trong hệ thống [cite: 75, 87].
+
+---
+
+### PHẦN 2: Chi tiết bài tập và lời giải (Bài 3 & Bài 4)
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Bài 3: Dự đoán hành khách sống sót trên tàu Titanic</h4>
+  
+*   **Yêu cầu đề bài**:
+    Xây dựng một bộ phân loại nhị phân trên tập dữ liệu Titanic (tải từ `https://homl.info/titanic.tgz` hoặc Kaggle) để dự đoán xem một hành khách có sống sót hay không (cột mục tiêu `Survived`) dựa trên các thông tin như tuổi tác, giới tính, khoang vé, điểm xuất phát [cite: 75, 77, 78].
+
+*   **Phân tích dữ liệu & Rào cản kỹ thuật**:
+    1.  **Đánh giá thuộc tính**: 
+        *   *Thuộc tính số*: `Age`, `SibSp` (số anh chị em/vợ chồng), `Parch` (số cha mẹ/con cái), `Fare` (giá vé) [cite: 77].
+        *   *Thuộc tính phân loại*: `Pclass` (hạng khoang), `Sex` (giới tính), `Embarked` (cảng lên tàu: C, Q, S) [cite: 77, 82].
+        *   *Thuộc tính cần bỏ qua*: `Name`, `Ticket` (phức tạp, khó chuyển thành số dạng đơn giản) và `Cabin` (bị khuyết tới 77% dữ liệu) [cite: 79, 80].
+    2.  **Xử lý dữ liệu khuyết thiếu**:
+        *   `Age` bị khuyết khoảng 19% dữ liệu [cite: 79]. Giải pháp đơn giản và hiệu quả nhất là điền khuyết bằng tuổi trung vị (`median`) [cite: 79].
+        *   `Embarked` bị khuyết 2 mẫu, sẽ được điền bằng cảng xuất hiện nhiều nhất (như cảng S - Southampton) [cite: 82, 83].
+    3.  **Kỹ thuật đặc trưng (Feature Engineering)**: Để mô hình học tốt hơn, ta tạo thêm các thuộc tính mới [cite: 86]:
+        *   `AgeBucket`: Nhóm tuổi (ví dụ: chia tuổi cho 15 rồi nhân 15 để phân nhóm theo các mốc 15 tuổi) [cite: 86].
+        *   `RelativesOnboard`: Tổng số người thân đi cùng (`SibSp` + `Parch`) [cite: 86].
+
+*   **Đoạn mã giải pháp hoàn chỉnh (Python & Scikit-Learn)**:
+    ```python
+    import pandas as pd
+    import numpy as np
+    from sklearn.pipeline import Pipeline
+    from sklearn.impute import SimpleImputer
+    from sklearn.preprocessing import StandardScaler, OneHotEncoder
+    from sklearn.compose import ColumnTransformer
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.svm import SVC
+    from sklearn.model_selection import cross_val_score
+
+    # 1. Tải và chuẩn bị dữ liệu (Giả định đã tải file tgz)
+    train_data = pd.read_csv("datasets/titanic/train.csv").set_index("PassengerId")
+    test_data = pd.read_csv("datasets/titanic/test.csv").set_index("PassengerId")
+
+    # 2. Tạo thêm các đặc trưng bổ sung (Feature Engineering)
+    for data in (train_data, test_data):
+        data["AgeBucket"] = data["Age"] // 15 * 15
+        data["RelativesOnboard"] = data["SibSp"] + data["Parch"]
+
+    # Định nghĩa các danh mục đặc trưng để xử lý độc lập
+    num_attribs = ["Age", "SibSp", "Parch", "Fare", "AgeBucket", "RelativesOnboard"]
+    cat_attribs = ["Pclass", "Sex", "Embarked"]
+
+    # 3. Xây dựng đường ống (Pipeline) tiền xử lý dữ liệu
+    num_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")), # Điền khuyết bằng trung vị
+        ("scaler", StandardScaler())                  # Chuẩn hóa Z-score
+    ])
+
+    cat_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")), # Điền khuyết bằng cảng phổ biến nhất
+        ("cat_encoder", OneHotEncoder(handle_unknown="ignore")) # Mã hóa One-Hot
+    ])
+
+    # Gộp hai nhánh tiền xử lý bằng ColumnTransformer
+    preprocess_pipeline = ColumnTransformer([
+        ("num", num_pipeline, num_attribs),
+        ("cat", cat_pipeline, cat_attribs)
+    ])
+
+    # Tiền xử lý tập dữ liệu huấn luyện
+    X_train = preprocess_pipeline.fit_transform(train_data)
+    y_train = train_data["Survived"]
+
+    # 4. Huấn luyện thử nghiệm và đánh giá chéo (10-Fold CV)
+    # Thử nghiệm với mô hình SVC véc-tơ hỗ trợ
+    svm_clf = SVC(gamma="auto", random_state=42)
+    svm_scores = cross_val_score(svm_clf, X_train, y_train, cv=10)
+    print(f"Độ chính xác trung bình của SVM: {svm_scores.mean() * 100:.2f}%")
+
+    # Thử nghiệm với mô hình Rừng ngẫu nhiên (Random Forest)
+    forest_clf = RandomForestClassifier(n_estimators=100, random_state=42)
+    forest_scores = cross_val_score(forest_clf, X_train, y_train, cv=10)
+    print(f"Độ chính xác trung bình của Random Forest: {forest_scores.mean() * 100:.2f}%")
+    ```
+
+*   **Kết quả thực nghiệm**:
+    *   Mô hình `SVC` thường đạt độ chính xác trung bình khoảng **82% - 83%**, trong khi `RandomForestClassifier` đạt khoảng **81.4%** [cite: 85]. 
+    *   **Kết luận**: Kỹ thuật tạo thêm đặc trưng nhóm tuổi `AgeBucket` và số lượng người thân `RelativesOnboard` giúp cải thiện điểm số đáng kể so với việc chỉ huấn luyện trên dữ liệu thô [cite: 86].
+
+---
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+Chưa có lời giải chi tiết.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Bài 4: Xây dựng bộ phân loại thư rác (Spam Classifier)</h4>
+  
+*   **Yêu cầu đề bài**:
+    Sử dụng dữ liệu công khai của Apache SpamAssassin (gồm thư thường - ham và thư rác - spam) để xây dựng một đường ống biến đổi email thô thành các vector đặc trưng số học dựa trên tần suất từ, sau đó huấn luyện một bộ phân loại đạt cả độ chính xác (precision) và độ nhạy (recall) cao [cite: 87, 88].
+
+*   **Phân tích quy trình tiền xử lý Email thô**:
+    1.  **Cấu trúc Email**: Email có thể chứa tiêu đề phức tạp, là plain text hoặc mã HTML nặng nề, hoặc là multipart (chứa cả text, HTML và tệp đính kèm) [cite: 88, 91, 92].
+    2.  **Chuyển đổi HTML sang Plain Text**: Để tránh rườm rà và không cần thêm thư viện ngoài (như BeautifulSoup), ta dùng biểu thức chính quy (regular expressions) để bỏ thẻ `<head>`, chuyển đổi thẻ liên kết `<a>` thành từ `"HYPERLINK"`, xóa mọi thẻ HTML khác, thay thế nhiều dòng trống bằng một dòng và giải mã các thực thể HTML [cite: 96, 97].
+    3.  **Chuẩn hóa nội dung**:
+        *   Thay thế toàn bộ liên kết URL bằng từ khóa `"URL"` [cite: 88, 102].
+        *   Thay thế mọi chữ số bằng từ khóa `"NUMBER"` [cite: 88, 102].
+        *   Đưa toàn bộ chữ về chữ thường và loại bỏ các dấu câu [cite: 88, 101, 102].
+    4.  **Stemming (Đưa từ về gốc nguyên bản)**: Sử dụng thư viện `NLTK` để biến đổi các từ như "Computing", "Computers" thành "comput" [cite: 88, 99].
+
+*   **Đoạn mã giải pháp hoàn chỉnh (Python)**:
+
+    ```python
+    import re
+    from html import unescape
+    from collections import Counter
+    import numpy as np
+    import nltk
+    from sklearn.base import BaseEstimator, TransformerMixin
+    from sklearn.pipeline import Pipeline
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.model_selection import cross_val_score
+    from scipy.sparse import csr_matrix
+
+    # Cài đặt bộ trích xuất gốc từ của NLTK
+    stemmer = nltk.PorterStemmer()
+
+    # Thư viện hỗ trợ tìm kiếm URL thô trong văn bản
+    # %pip install urlextract (nếu chưa cài đặt)
+    try:
+        import urlextract
+        url_extractor = urlextract.URLExtract()
+    except ImportError:
+        url_extractor = None
+
+    # 1. Hàm chuyển đổi mã HTML thành văn bản thuần
+    def html_to_plain_text(html):
+        text = re.sub('<head.*?>.*?</head>', '', html, flags=re.M | re.S | re.I)
+        text = re.sub('<a\s.*?>', ' HYPERLINK ', text, flags=re.M | re.S | re.I)
+        text = re.sub('<.*?>', '', text, flags=re.M | re.S)
+        text = re.sub(r'(\s*\n)+', '\n', text, flags=re.M | re.S)
+        return unescape(text)
+
+    # 2. Hàm đọc email và trích xuất nội dung văn bản bất kể định dạng
+    def email_to_text(email):
+        html = None
+        for part in email.walk():
+            ctype = part.get_content_type()
+            if not ctype in ("text/plain", "text/html"):
+                continue
+            try:
+                content = part.get_content()
+            except:
+                content = str(part.get_payload())
+            if ctype == "text/plain":
+                return content
+            else:
+                html = content
+        if html:
+            return html_to_plain_text(html)
+        return ""
+
+    # 3. Lớp biến đổi Email thành Bộ đếm tần suất từ
+    class EmailToWordCounterTransformer(BaseEstimator, TransformerMixin):
+        def __init__(self, strip_headers=True, lower_case=True, remove_punctuation=True,
+                     replace_urls=True, replace_numbers=True, stemming=True):
+            self.strip_headers = strip_headers
+            self.lower_case = lower_case
+            self.remove_punctuation = remove_punctuation
+            self.replace_urls = replace_urls
+            self.replace_numbers = replace_numbers
+            self.stemming = stemming
+
+        def fit(self, X, y=None):
+            return self
+
+        def transform(self, X, y=None):
+            X_transformed = []
+            for email in X:
+                text = email_to_text(email) or ""
+                if self.lower_case:
+                    text = text.lower()
+                if self.replace_urls and url_extractor is not None:
+                    urls = list(set(url_extractor.find_urls(text)))
+                    urls.sort(key=lambda url: len(url), reverse=True)
+                    for url in urls:
+                        text = text.replace(url, " URL ")
+                if self.replace_numbers:
+                    text = re.sub(r'\d+(?:\.\d*)?(?:[eE][+-]?\d+)?', 'NUMBER', text)
+                if self.remove_punctuation:
+                    text = re.sub(r'\W+', ' ', text, flags=re.M)
+                word_counts = Counter(text.split())
+                if self.stemming and stemmer is not None:
+                    stemmed_word_counts = Counter()
+                    for word, count in word_counts.items():
+                        stemmed_word = stemmer.stem(word)
+                        stemmed_word_counts[stemmed_word] += count
+                    word_counts = stemmed_word_counts
+                X_transformed.append(word_counts)
+            return np.array(X_transformed)
+
+    # 4. Lớp chuyển đổi Bộ đếm từ sang Vector Thưa (Sparse Vector)
+    class WordCounterToVectorTransformer(BaseEstimator, TransformerMixin):
+        def __init__(self, vocabulary_size=1000):
+            self.vocabulary_size = vocabulary_size
+
+        def fit(self, X, y=None):
+            total_count = Counter()
+            for word_count in X:
+                for word, count in word_count.items():
+                    total_count[word] += min(count, 10)
+            most_common = total_count.most_common()[:self.vocabulary_size]
+            self.vocabulary_ = {word: index + 1 for index, (word, count) in enumerate(most_common)}
+            return self
+
+        def transform(self, X, y=None):
+            rows, cols, data = [], [], []
+            for row, word_count in enumerate(X):
+                for word, count in word_count.items():
+                    col = self.vocabulary_.get(word, 0)
+                    if col > 0:
+                        rows.append(row)
+                        cols.append(col)
+                        data.append(count)
+            return csr_matrix((data, (rows, cols)), shape=(len(X), self.vocabulary_size + 1))
+
+    # 5. Xây dựng Pipeline hoàn chỉnh và Huấn luyện
+    preprocess_pipeline = Pipeline([
+        ("email_to_wordcount", EmailToWordCounterTransformer()),
+        ("wordcount_to_vector", WordCounterToVectorTransformer(vocabulary_size=1000))
+    ])
+
+    # Biến đổi tập huấn luyện thô (X_train chứa đối tượng email thô)
+    X_train_transformed = preprocess_pipeline.fit_transform(X_train)
+
+    # Huấn luyện mô hình phân loại Logistic Regression
+    log_clf = LogisticRegression(max_iter=1000, random_state=42)
+    score = cross_val_score(log_clf, X_train_transformed, y_train, cv=3, scoring="accuracy")
+    print(f"Độ chính xác nhận diện Spam trung bình: {score.mean() * 100:.2f}%")
+    ```
+
+*   **Kết quả thực nghiệm**:
+    *   Mặc dù dữ liệu email thô cực kỳ hỗn tạp, nhờ bộ tiền xử lý được thiết kế chặt chẽ và mô hình `LogisticRegression`, hệ thống dễ dàng đạt được độ chính xác nhận diện spam trung bình cực cao, lên tới **98.5%** trên tập dữ liệu kiểm định chéo [cite: 105]!
+
+---
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+Chưa có lời giải chi tiết.
+
+    </div>
+  </div>
+</div>
+
+
 <!-- tabs:end -->

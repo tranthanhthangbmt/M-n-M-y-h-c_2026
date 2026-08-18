@@ -685,4 +685,377 @@ giải pháp cho các bài tập này có sẵn ở cuối sổ tay của chươ
   </div>
 </div>
 
+
+#### ** 📝 Bài Tập **
+
+<script>
+if (typeof checkPasswordAndShow !== 'function') {
+  window.checkPasswordAndShow = function(btn) {
+    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (pass === "1234@Abc") {
+      var content = btn.nextElementSibling;
+      content.style.display = "block";
+      btn.style.display = "none";
+    } else if (pass !== null) {
+      alert("Mật khẩu không đúng!");
+    }
+  }
+}
+</script>
+
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Độ sâu xấp xỉ của một cây quyết định được huấn luyện (không giới hạn) trên một tập huấn luyện với một triệu trường hợp là bao nhiêu?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Một cây nhị phân cân bằng tốt chứa \\(m\\) lá sẽ có độ sâu bằng **\\(\log_2(m)\\)**, làm tròn lên [cite: 65].
+    *   Khi cây quyết định được huấn luyện không giới hạn trên một tập dữ liệu gồm \\(1\\) triệu trường hợp (\\(m = 10^6\\)), mỗi mẫu cuối cùng sẽ nằm gọn ở một nút lá riêng biệt (nếu không có các mẫu trùng lặp có nhãn khác nhau) [cite: 65].
+    *   Áp dụng công thức:
+        \\[\log_2(10^6) = \frac{\ln(10^6)}{\ln(2)} \approx 19.93\\] [cite: 65]
+    *   **Kết luận**: Độ sâu xấp xỉ của cây sẽ vào khoảng **20** [cite: 65]. Trong thực tế, vì thuật toán CART của Scikit-Learn hiếm khi tạo ra một cây cân bằng hoàn hảo, độ sâu thực tế của cây thường sẽ **lớn hơn 20 một chút** [cite: 65].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Độ không tinh khiết Gini của một nút thường thấp hơn hay cao hơn so với nút cha của nó? Nó thường thấp hơn/cao hơn, hay luôn luôn thấp hơn/cao hơn?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Thường thấp hơn**: Độ không tinh khiết Gini của một nút con **thường thấp hơn** so với nút cha của nó [cite: 65]. Điều này là do hàm chi phí của thuật toán huấn luyện CART luôn tìm cách phân chia tập dữ liệu sao cho **tối thiểu hóa tổng có trọng số của độ không tinh khiết Gini của các nút con** [cite: 65].
+    *   **Không phải luôn luôn**: Tuy nhiên, độ không tinh khiết của một nút con **không phải luôn luôn thấp hơn** nút cha [cite: 65]. Một nút con hoàn toàn có thể có độ không tinh khiết Gini cao hơn nút cha, miễn là sự gia tăng này được bù đắp hoàn toàn bởi sự giảm mạnh độ không tinh khiết ở nút con còn lại [cite: 65].
+    *   **Ví dụ chứng minh thực tế**: 
+        Xét một nút cha chứa \\(5\\) thực thể: \\(4\\) thực thể thuộc lớp A và \\(1\\) thực thể thuộc lớp B [cite: 65]. 
+        *   Độ không tinh khiết Gini ban đầu của nút cha là [cite: 65]:
+            \\[G_{cha} = 1 - \left(\frac{1}{5}\right)^2 - \left(\frac{4}{5}\right)^2 = 0.32\\] [cite: 65]
+        *   Giả sử dữ liệu huấn luyện xếp theo thứ tự một chiều: `A, B, A, A, A` [cite: 65]. Thuật toán CART sẽ thực hiện phân chia sau thực thể thứ hai [cite: 65]:
+            *   **Nút con 1** nhận 2 thực thể: `[A, B]`. Độ không tinh khiết của nó là:
+                \\[G_{con1} = 1 - \left(\frac{1}{2}\right)^2 - \left(\frac{1}{2}\right)^2 = 0.5\\] [cite: 65]
+                *(Ta thấy \\(G_{con1} = 0.5 > G_{cha} = 0.32\\) - độ không tinh khiết của nút con đã tăng lên)* [cite: 65].
+            *   **Nút con 2** nhận 3 thực thể còn lại: `[A, A, A]` (nút thuần khiết). Độ không tinh khiết của nó là:
+                \\[G_{con2} = 0\\] [cite: 65]
+        *   Tổng Gini có trọng số của hai nút con sau phân chia là [cite: 65]:
+            \\[G_{weighted} = \left(\frac{2}{5} \times 0.5\right) + \left(\frac{3}{5} \times 0\right) = 0.2\\] [cite: 65]
+        *   Vì \\(0.2 < 0.32\\), phép chia này hoàn toàn hợp lệ và tối ưu đối với thuật toán CART, dù cho một nút con có độ không tinh khiết tăng lên vượt cả nút cha [cite: 65].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Nếu một cây quyết định đang quá khớp tập huấn luyện, có phải là một ý hay khi thử giảm `max_depth` không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Có**. Đây là một ý tưởng rất tốt và là kỹ thuật cơ bản nhất để xử lý quá khớp (overfitting) ở cây quyết định [cite: 65].
+    *   **Cơ chế**: Cây quyết định không giới hạn độ sâu là một mô hình phi tham số, có xu hướng tự do uốn lượn phân tách chi tiết từng nhiễu nhỏ trong dữ liệu [cite: 61, 813]. Việc **giảm `max_depth`** sẽ trực tiếp thắt chặt và giới hạn số lượng tầng của cây, đóng vai trò chính quy hóa (regularize) mô hình, giảm bớt bậc tự do và ép mô hình phải học các quy luật tổng quát hơn [cite: 65, 813].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Nếu một cây quyết định đang dưới khớp tập huấn luyện, có phải là một ý hay khi thử chuẩn hóa các đặc trưng đầu vào không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Không**. Việc chuẩn hóa đặc trưng hoàn toàn không có tác dụng gì trong trường hợp này và chỉ gây lãng phí thời gian [cite: 65].
+    *   **Lý do**: Một trong những đặc tính ưu việt nhất của Cây quyết định là chúng **hoàn toàn độc lập và không nhạy cảm với việc dữ liệu đầu vào có được chuẩn hóa tỷ lệ (scaled) hoặc căn tâm (centered) hay không** [cite: 65]. Bản chất ranh giới quyết định của cây chỉ dựa trên các phép so sánh ngưỡng dọc theo trục của từng đặc trưng độc lập [cite: 808, 821]. 
+    *   **Giải pháp đúng**: Nếu mô hình bị dưới khớp (underfitting), bạn cần nới lỏng các siêu tham số điều chuẩn (ví dụ: tăng `max_depth`, giảm `min_samples_leaf`, hoặc tăng `max_leaf_nodes`) [cite: 813].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Nếu mất một giờ để huấn luyện một cây quyết định trên một tập huấn luyện chứa một triệu trường hợp, thì sẽ mất khoảng bao nhiêu thời gian để huấn luyện một cây quyết định khác trên một tập huấn luyện chứa mười triệu trường hợp?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Công thức độ phức tạp**: Độ phức tạp tính toán khi huấn luyện một Cây quyết định bằng thuật toán CART là [cite: 65]:
+        \\[O(n \times m \log_2(m))\\] [cite: 65]
+        *(Trong đó \\(n\\) là số đặc trưng và \\(m\\) là số lượng mẫu dữ liệu)* [cite: 65].
+    *   **Lập luận toán học**: 
+        Khi kích thước tập dữ liệu huấn luyện tăng lên 10 lần (\\(m_2 = 10m_1\\)), thời gian huấn luyện mới \\(T_2\\) sẽ tăng lên theo hệ số nhân \\(K\\) so với thời gian cũ \\(T_1 = 1\\) giờ [cite: 65, 825]:
+        \\[K = \frac{n \times 10m \times \log_2(10m)}{n \times m \times \log_2(m)} = 10 \times \frac{\log_2(10m)}{\log_2(m)}\\] [cite: 65]
+    *   **Tính toán với \\(m = 10^6\\)**:
+        \\[K = 10 \times \frac{\log_2(10^7)}{\log_2(10^6)} = 10 \times \frac{\log_2(10) + \log_2(10^6)}{\log_2(10^6)}\\]
+        \\[K \approx 10 \times \frac{3.32 + 19.93}{19.93} \approx 10 \times \frac{23.25}{19.93} \approx 11.666 \approx 11.7\\] [cite: 65]
+    *   **Kết luận**: Bạn có thể kỳ vọng thời gian huấn luyện cho tập dữ liệu mười triệu trường hợp sẽ mất khoảng **11.7 giờ** (hoặc xấp xỉ **11 tiếng 42 phút**) [cite: 65].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Nếu mất một giờ để huấn luyện một cây quyết định trên một tập huấn luyện nhất định, thì sẽ mất khoảng bao nhiêu thời gian nếu bạn tăng gấp đôi số lượng đặc trưng?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Dựa trên công thức độ phức tạp tính toán của thuật toán CART: \\(O(n \times m \log_2(m))\\) [cite: 65]. 
+    *   Ta thấy thời gian huấn luyện có mối quan hệ **tỷ lệ thuận tuyến tính** với số lượng đặc trưng đầu vào \\(n\\) [cite: 65, 814]. 
+    *   **Kết luận**: Khi số lượng đặc trưng tăng gấp đôi, thời gian huấn luyện cây quyết định cũng sẽ **tăng lên gấp đôi**, tức là bạn sẽ mất khoảng **2 giờ** để hoàn thành việc huấn luyện [cite: 65].
+
+---
+
+### 🧠 Phân tích & Lập luận (Chain of Thought / Tree of Thought)
+
+Để giải quyết một cách tối ưu và chuyên sâu hai bài tập thực hành cuối cùng của **Chương 6: Cây quyết định (Decision Trees)**, chúng ta sẽ phân tích quy trình thiết kế và thực thi từng phần theo tư duy lập luận từng bước [cite: 79]:
+
+1.  **Bài 7 (Tối ưu hóa mô hình cây quyết định đơn lẻ)**:
+    *   **Thách thức**: Cây quyết định là một mô hình phi tham số, có mức độ tự do cực cao nên rất dễ rơi vào trạng thái "học vẹt" (quá khớp - overfitting) [cite: 631]. 
+    *   **Giải pháp**: Sử dụng `GridSearchCV` để kiểm soát các siêu tham số điều chuẩn cốt lõi nhằm hạn chế bậc tự do của cây [cite: 93, 631]. Các siêu tham số then chốt cần tinh chỉnh là `max_leaf_nodes` (số nút lá tối đa), `max_depth` (độ sâu tối đa), và `min_samples_split` (số lượng mẫu tối thiểu để phân tách một nút) [cite: 93, 629].
+    *   **Mục tiêu**: Đạt độ chính xác khoảng **85% - 87%** trên tập kiểm thử với tập dữ liệu Moons nhiều nhiễu (`noise=0.4`) [cite: 92, 641].
+
+2.  **Bài 8 (Tự tay xây dựng mô hình "Rừng ngẫu nhiên" từ đầu)**:
+    *   **Nguyên lý khoa học**: Rừng ngẫu nhiên thực chất là một tập hợp (Ensemble) áp dụng cơ chế **Bagging (Bootstrap Aggregating)** [cite: 647, 650]. Bằng cách huấn luyện nhiều cây quyết định yếu trên các tập con dữ liệu ngẫu nhiên độc lập, ta có được các bộ dự đoán có sai số ít tương quan [cite: 647, 649]. Khi lấy trung bình cộng hoặc biểu quyết số đông (majority vote) từ đám đông này, **phương sai (variance) của mô hình tổng thể sẽ giảm mạnh** mà không làm tăng độ chệch (bias) [cite: 649, 651].
+    *   **Thiết kế kỹ thuật**: 
+        *   Sử dụng `ShuffleSplit` để tạo ra 1.000 tập con ngẫu nhiên (mỗi tập chỉ chứa đúng 100 mẫu) từ tập huấn luyện chính [cite: 94, 642].
+        *   Tạo ra 1.000 bản sao cây quyết định tối ưu bằng hàm `clone` và huấn luyện độc lập trên 1.000 tập con này [cite: 95, 642].
+        *   Thu thập dự đoán từ toàn bộ 1.000 cây này cho mỗi mẫu kiểm thử và áp dụng hàm `mode` (yếu tố xuất hiện nhiều nhất) của thư viện SciPy để đưa ra biểu quyết đa số [cite: 96, 642].
+    *   **Mục tiêu**: Kỳ vọng độ chính xác của mô hình biểu quyết đa số sẽ tăng thêm từ **0.5% đến 1.5%** so với cây quyết định đơn lẻ tốt nhất ở Bài 7, cho thấy "sức mạnh đám đông" hoạt động hiệu quả [cite: 96, 642].
+
+---
+
+### PHẦN 2: Chi tiết bài tập và giải pháp lập trình Python tối ưu
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Bài 7: Huấn luyện và tinh chỉnh Cây quyết định (Moons Dataset)</h4>
+  
+*   **Đoạn mã Python tối ưu**:
+    ```python
+    import numpy as np
+    from sklearn.datasets import make_moons
+    from sklearn.model_selection import train_test_split, GridSearchCV
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.metrics import accuracy_score
+
+    # a. Sinh tập dữ liệu moons gồm 10,000 mẫu và độ nhiễu lớn (noise = 0.4) [cite: 92, 641]
+    X_moons, y_moons = make_moons(n_samples=10000, noise=0.4, random_state=42)
+
+    # b. Phân chia dữ liệu thành tập huấn luyện (80%) và tập kiểm thử (20%) [cite: 92, 93, 641]
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_moons, y_moons, test_size=0.2, random_state=42
+    )
+
+    # c. Thiết lập GridSearchCV với kiểm định chéo 3 lần (cv=3) để tìm siêu tham số [cite: 93, 641]
+    # Định nghĩa không gian siêu tham số cần tìm kiếm để điều chuẩn cây quyết định [cite: 93, 641]
+    param_grid = {
+        'max_leaf_nodes': list(range(2, 100)), # Giới hạn số nút lá tối đa [cite: 93, 641]
+        'max_depth': list(range(1, 7)),        # Kiểm soát độ sâu của cây [cite: 93]
+        'min_samples_split':         # Số lượng mẫu tối thiểu để chia tách [cite: 93]
+    }
+
+    grid_search_cv = GridSearchCV(
+        DecisionTreeClassifier(random_state=42),
+        param_grid,
+        cv=3,
+        n_jobs=-1, # Sử dụng tối đa số nhân CPU để tăng tốc độ quét lưới
+        verbose=1
+    )
+    grid_search_cv.fit(X_train, y_train)
+
+    # In ra cấu hình tối ưu nhất thu được
+    print("Cấu hình siêu tham số tốt nhất:", grid_search_cv.best_params_)
+
+    # d. Đánh giá hiệu suất của mô hình tối ưu nhất trên tập kiểm thử [cite: 93, 641]
+    best_tree_clf = grid_search_cv.best_estimator_
+    y_pred_single = best_tree_clf.predict(X_test)
+    single_tree_accuracy = accuracy_score(y_test, y_pred_single)
+    print(f"Độ chính xác của Cây quyết định đơn lẻ trên tập Test: {single_tree_accuracy * 100:.2f}%")
+    ```
+
+*   **Kết quả & Nhận xét thực nghiệm**:
+    *   **Tham số tối ưu thường gặp**: `max_leaf_nodes` thường đạt giá trị khoảng **17**, `max_depth` khoảng **5** hoặc **6** [cite: 93].
+    *   **Hiệu suất**: Mô hình Cây quyết định đơn lẻ được tinh chỉnh tốt sẽ đạt độ chính xác ổn định từ **85% đến 87%** trên tập dữ liệu kiểm thử [cite: 94, 641]. Đây là giới hạn lý thuyết tối đa của một đường ranh giới quyết định phân đoạn (orthogonal) khi đối mặt với dữ liệu phi tuyến tính có độ nhiễu cao [cite: 630, 638].
+
+---
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+Chưa có lời giải chi tiết.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Bài 8: Tự tay phát triển mô hình Rừng ngẫu nhiên (Grow a Forest)</h4>
+  
+*   **Đoạn mã Python tối ưu**:
+    ```python
+    from sklearn.model_selection import ShuffleSplit
+    from sklearn.base import clone
+    from scipy.stats import mode
+
+    # a. Khởi tạo 1,000 tập con huấn luyện ngẫu nhiên, mỗi tập chứa đúng 100 thực thể [cite: 94, 642]
+    n_trees = 1000
+    n_instances = 100
+    mini_sets = []
+
+    # Sử dụng ShuffleSplit của Scikit-Learn để lấy mẫu ngẫu nhiên không hoàn lại [cite: 94, 642]
+    shuffle_split = ShuffleSplit(
+        n_splits=n_trees, 
+        test_size=len(X_train) - n_instances, 
+        random_state=42
+    )
+
+    for mini_train_idx, _ in shuffle_split.split(X_train):
+        X_mini_train = X_train[mini_train_idx]
+        y_mini_train = y_train[mini_train_idx]
+        mini_sets.append((X_mini_train, y_mini_train))
+
+    # b. Nhân bản và huấn luyện 1,000 Cây quyết định độc lập trên các tập con nhỏ [cite: 95, 642]
+    # Sử dụng hàm clone để sao chép nguyên vẹn thiết lập siêu tham số tối ưu ở Bài 7 [cite: 95, 642]
+    forest = [clone(grid_search_cv.best_estimator_) for _ in range(n_trees)]
+
+    individual_accuracies = []
+    for tree, (X_mini_train, y_mini_train) in zip(forest, mini_sets):
+        tree.fit(X_mini_train, y_mini_train)
+        y_pred_temp = tree.predict(X_test)
+        individual_accuracies.append(accuracy_score(y_test, y_pred_temp))
+
+    # Đánh giá hiệu năng trung bình của các cây đơn lẻ yếu
+    print(f"Độ chính xác trung bình của 1,000 cây đơn lẻ (chỉ học trên 100 mẫu): {np.mean(individual_accuracies) * 100:.2f}%")
+
+    # c. Thực hiện phép toán "Biểu quyết đa số" (Majority-Vote) trên tập kiểm thử [cite: 96, 642]
+    # Khởi tạo ma trận chứa dự đoán của toàn bộ 1,000 cây [n_trees, len(X_test)] [cite: 96]
+    predictions_matrix = np.empty([n_trees, len(X_test)], dtype=np.uint8)
+
+    for tree_idx, tree in enumerate(forest):
+        predictions_matrix[tree_idx] = tree.predict(X_test)
+
+    # Sử dụng hàm mode() của SciPy để lấy giá trị dự đoán phổ biến nhất theo từng cột [cite: 96, 642]
+    majority_vote_predictions, vote_counts = mode(predictions_matrix, axis=0)
+    # Làm phẳng mảng dự đoán thu được
+    majority_vote_predictions = majority_vote_predictions.ravel()
+
+    # d. Đánh giá độ chính xác cuối cùng của mô hình Rừng ngẫu nhiên tự chế [cite: 96, 642]
+    forest_accuracy = accuracy_score(y_test, majority_vote_predictions)
+    print(f"Độ chính xác của mô hình Rừng ngẫu nhiên tự chế: {forest_accuracy * 100:.2f}%")
+    print(f"Độ cải thiện hiệu suất so với Cây đơn lẻ tốt nhất: {(forest_accuracy - single_tree_accuracy) * 100:+.2f}%")
+    ```
+
+*   **Kết quả & Nhận xét thực nghiệm**:
+    *   **Nghịch lý toán học**: Từng cây quyết định thành phần chỉ được học trên **100 mẫu** dữ liệu nên hiệu suất cực kỳ kém, độ chính xác trung bình chỉ đạt khoảng **80.5%** [cite: 95, 96, 642].
+    *   **Phép màu của sự tổng hợp**: Khi chúng ta gộp dự đoán của 1,000 cây yếu này lại thông qua cơ chế biểu quyết đa số, độ chính xác của hệ thống Rừng ngẫu nhiên nhảy vọt lên mức **87.2% - 88.0%** [cite: 96, 642]. 
+    *   **Kết luận**: Kết quả này không những đánh bại độ chính xác trung bình của các cây thành phần (~80%) mà còn **vượt qua cả mô hình Cây quyết định đơn lẻ tốt nhất** đã được tối ưu hóa sâu trên toàn bộ 8,000 mẫu ở Bài 7 [cite: 96, 641, 642]. Đây là minh chứng thực nghiệm hoàn hảo cho thấy việc kết hợp nhiều mô hình có phương sai cao nhưng ít tương quan sẽ tạo ra một bộ phân loại có độ ổn định cực kỳ vượt trội [cite: 639, 643, 649].
+
+---
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+Chưa có lời giải chi tiết.
+
+    </div>
+  </div>
+</div>
+
+
 <!-- tabs:end -->

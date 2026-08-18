@@ -2562,4 +2562,496 @@ sao cho
   </div>
 </div>
 
+
+#### ** 📝 Bài Tập **
+
+<script>
+if (typeof checkPasswordAndShow !== 'function') {
+  window.checkPasswordAndShow = function(btn) {
+    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (pass === "1234@Abc") {
+      var content = btn.nextElementSibling;
+      content.style.display = "block";
+      btn.style.display = "none";
+    } else if (pass !== null) {
+      alert("Mật khẩu không đúng!");
+    }
+  }
+}
+</script>
+
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Bạn có thể sử dụng thuật toán huấn luyện hồi quy tuyến tính nào nếu bạn có một tập huấn luyện với hàng triệu đặc trưng?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Nếu tập huấn luyện có **hàng triệu đặc trưng**, bạn **không thể** sử dụng **Phương trình chuẩn tắc (Normal Equation)** hoặc phương pháp **phân tách SVD** [cite: 45]. Lý do là độ phức tạp tính toán của việc nghịch đảo ma trận hoặc phân tách ma trận tăng rất nhanh theo số lượng đặc trưng \\(n\\) (khoảng \\(O(n^{2.4})\\) đến \\(O(n^3)\\)) [cite: 45, 940].
+    *   Thuật toán phù hợp nhất là **Stochastic Gradient Descent (SGD - Hạ độ dốc ngẫu nhiên)** hoặc **Mini-batch Gradient Descent** [cite: 45]. Bạn cũng có thể sử dụng **Batch Gradient Descent** nếu toàn bộ tập huấn luyện khổng lồ này vừa với bộ nhớ RAM của máy tính [cite: 45]. Độ phức tạp tính toán của các thuật toán Gradient Descent chỉ tăng tuyến tính \\(O(n)\\) theo số lượng đặc trưng, giúp chúng mở rộng cực tốt với dữ liệu nhiều chiều [cite: 956].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Giả sử các đặc trưng trong tập huấn luyện của bạn có các thang đo rất khác nhau. Thuật toán nào có thể bị ảnh hưởng bởi điều này, và như thế nào? Bạn có thể làm gì để khắc phục nó?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Thuật toán bị ảnh hưởng**: Các biến thể của **Gradient Descent (Batch GD, Stochastic GD, Mini-batch GD)** đều bị ảnh hưởng nghiêm trọng bởi sự không đồng đều về thang đo đặc trưng [cite: 946, 956].
+    *   **Ảnh hưởng như thế nào**: Khi các đặc trưng có thang đo khác nhau, hàm chi phí (MSE) sẽ có hình dạng giống như một **chiếc bát thuôn dài (elongated bowl)** [cite: 946]. Khi đó, Gradient Descent sẽ dao động qua lại rất mạnh trong thung lũng phẳng và mất một thời gian cực kỳ lâu để có thể mò xuống đáy (cực tiểu toàn cục) [cite: 946].
+    *   **Cách khắc phục**: Thực hiện **co giãn đặc trưng (feature scaling/normalization)** trước khi huấn luyện (ví dụ: dùng `StandardScaler` của Scikit-Learn để đưa dữ liệu về phân phối chuẩn có trung bình bằng 0 và độ lệch chuẩn bằng 1) [cite: 946, 968].
+    *   *Lưu ý*: Phương trình chuẩn tắc và phân tách SVD không yêu cầu co giãn đặc trưng vì chúng tính toán trực tiếp nghiệm giải tích chính xác [cite: 956].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Gradient descent có thể bị kẹt ở cực tiểu cục bộ khi huấn luyện mô hình hồi quy logistic không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Không**. Hàm chi phí của mô hình Hồi quy Logistic (hàm mất mát log loss) là một **hàm lồi (convex function)** [cite: 986]. 
+    *   Theo thuộc tính toán học của hàm lồi, nó không hề có bất kỳ cực tiểu cục bộ (local minima) nào, mà chỉ có một **cực tiểu toàn cục duy nhất** (global minimum) [cite: 945]. Do đó, Gradient Descent được đảm bảo sẽ luôn tiến gần một cách tùy ý đến cực tiểu toàn cục tốt nhất này (với điều kiện là tốc độ học không quá cao và bạn cho phép thuật toán chạy đủ lâu) [cite: 945, 986].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Tất cả các thuật toán gradient descent có dẫn đến cùng một mô hình không, miễn là bạn để chúng chạy đủ lâu?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Về mặt lý thuyết**: Nếu hàm chi phí là **lồi** (như hồi quy tuyến tính hoặc hồi quy logistic) [cite: 945, 986] và tốc độ học được đặt ở mức hợp lý [cite: 945], tất cả các thuật toán Gradient Descent cuối cùng sẽ tìm thấy cực tiểu toàn cục và tạo ra các mô hình rất giống nhau [cite: 945, 956].
+    *   **Tuy nhiên, thực tế có sự khác biệt quan trọng**:
+        1.  **Batch GD** thực sự hội tụ chính xác đến cực tiểu toàn cục và dừng lại ở đó [cite: 953].
+        2.  **Stochastic GD** và **Mini-batch GD** do tính ngẫu nhiên của việc lấy mẫu dữ liệu nên đường đi của chúng sẽ liên tục dao động (nhảy loạn xạ) xung quanh điểm tối ưu chứ không bao giờ đứng yên [cite: 953].
+        3.  Để chúng thực sự hội tụ về cùng một mô hình như Batch GD, bạn bắt buộc phải áp dụng một **lịch trình học tập (learning schedule)** để giảm dần tốc độ học theo thời gian huấn luyện, giúp các bước nhảy nhỏ lại và mô hình đứng yên tại điểm tối ưu [cite: 953].
+        4.  Đối với các hàm chi phí phức tạp phi tuyến (như mạng nơ-ron sâu), các thuật toán khác nhau có thể bị kẹt ở các cực tiểu cục bộ khác nhau [cite: 334, 944].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Giả sử bạn sử dụng gradient descent theo lô và bạn vẽ biểu đồ lỗi xác thực ở mỗi epoch. Nếu bạn nhận thấy rằng lỗi xác thực liên tục tăng lên, điều gì có thể đang xảy ra? Làm thế nào bạn có thể khắc phục này?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    Có hai nguyên nhân chính có thể dẫn đến hiện tượng này:
+    1.  **Tốc độ học (learning rate) bị đặt quá cao**: Đây là nguyên nhân phổ biến nhất nếu lỗi xác thực (và thường là cả lỗi huấn luyện) tăng vọt ngay từ đầu [cite: 952]. Thuật toán bị phân kỳ, nhảy qua nhảy lại qua thung lũng và ngày càng rời xa điểm tối ưu [cite: 943, 952]. **Cách khắc phục**: Giảm tốc độ học xuống và huấn luyện lại [cite: 952].
+    2.  **Mô hình đang bị quá khớp (overfitting)**: Nếu lỗi huấn luyện vẫn giảm đều đặn nhưng lỗi xác thực sau khi giảm một thời gian lại bắt đầu quay đầu tăng lên, mô hình của bạn đang quá khớp dữ liệu huấn luyện [cite: 979]. **Cách khắc phục**:
+        *   Áp dụng kỹ thuật **dừng sớm (early stopping)** để dừng huấn luyện ngay tại điểm lỗi xác thực thấp nhất [cite: 979].
+        *   Thêm các hình phạt **chính quy hóa** (Ridge, Lasso hoặc Elastic Net) để ràng buộc trọng số mô hình [cite: 968, 978].
+        *   **Đơn giản hóa mô hình** (ví dụ: giảm bậc của hồi quy đa thức) [cite: 968].
+        *   **Thu thập thêm dữ liệu huấn luyện** để giúp mô hình tổng quát hóa tốt hơn [cite: 5].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Có phải là một ý tưởng hay để dừng gradient descent theo mini-batch ngay lập tức khi lỗi xác thực tăng lên?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Không**. Đây là một ý tưởng không tốt đối với các thuật toán tối ưu hóa ngẫu nhiên như Stochastic GD và Mini-batch GD [cite: 953, 954]. 
+    *   Do tính chất ngẫu nhiên của việc lấy mẫu các lô nhỏ dữ liệu ở mỗi bước, đường cong lỗi của chúng không đi xuống mượt mà như Batch GD mà rất **nhiễu và dao động** [cite: 953, 954]. Lỗi xác thực hoàn toàn có thể tăng lên tạm thời trong một vài epoch trước khi tiếp tục đi xuống sâu hơn nữa [cite: 953].
+    *   **Giải pháp đúng đắn**: Thay vì dừng ngay lập tức, bạn nên thiết lập một khoảng "kiên nhẫn" (patience) [cite: 981]. Bạn sẽ tiếp tục chạy thêm một số epoch (ví dụ: 20-50 epoch) và chỉ thực sự dừng lại nếu lỗi xác thực không thể cải thiện thêm trong suốt khoảng thời gian này [cite: 981]. Đồng thời, bạn nên liên tục **sao chép và lưu trữ mô hình tốt nhất đạt được** (best model) để khôi phục lại khi kết thúc quá trình huấn luyện [cite: 981].
+
+---
+
+### 🧠 Phân tích & Lập luận (Chain of Thought / Tree of Thought)
+
+Để giải quyết trọn vẹn và chuyên sâu **Phần 2 (từ Câu 7 đến Câu 12)** của Chương 4, chúng ta sẽ đi qua các bước lập luận logic sau:
+
+1. **Phân tích yêu cầu**: Người dùng muốn nhận được danh sách câu hỏi và lời giải chi tiết cho các câu từ 7 đến 12 của Chương 4, đặc biệt chú trọng vào phần lập trình thủ công (không dùng Scikit-Learn) thuật toán hồi quy Softmax kết hợp chính quy hóa \\(L_2\\) và dừng sớm (Early Stopping) bằng thư viện NumPy [cite: 44].
+2. **Truy xuất thông tin nguồn**:
+   - Câu 7: So sánh tốc độ và sự hội tụ của các biến thể Gradient Descent [cite: 42, 43].
+   - Câu 8: Hiện tượng khoảng cách lớn giữa sai số huấn luyện và xác thực (Quá khớp) và cách khắc phục [cite: 43].
+   - Câu 9: Hiện tượng hai sai số xấp xỉ nhau và đều cao (Dưới khớp) và cách tinh chỉnh siêu tham số \\(\alpha\\) [cite: 43].
+   - Câu 10: So sánh mục đích sử dụng của các kỹ thuật chính quy hóa Ridge (\\(L_2\\)), Lasso (\\(L_1\\)) và Elastic Net [cite: 43, 833, 838, 841].
+   - Câu 11: Lựa chọn giữa nhiều bộ phân loại hồi quy Logistic độc lập và một bộ phân loại Softmax duy nhất cho tác vụ phân loại không loại trừ nhau [cite: 44].
+   - Câu 12: Phân tích cấu trúc toán học của hồi quy Softmax (Hàm Softmax, Hàm mất mát Cross Entropy, Công thức tính Gradient) [cite: 49, 50] và chuyển đổi chúng thành mã nguồn Python thuần túy bằng NumPy dựa trên lời giải mẫu của notebook thực hành [cite: 45, 46, 47, 48, 49, 50, 51, 52, 53].
+3. **Cấu trúc bài viết**: Trình bày rõ ràng câu hỏi lý thuyết kèm phân tích bản chất thuật toán, tiếp theo là phần hướng dẫn từng bước và mã nguồn lập trình hoàn chỉnh cho Câu 12 để người học có thể chạy được ngay.
+
+---
+
+### PHẦN 2: Chi tiết bài tập và lời giải (Từ Câu 7 đến Câu 12)
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Thuật toán gradient descent nào sẽ đạt đến vùng lân cận của giải pháp tối ưu nhanh nhất? Thuật toán nào sẽ thực sự hội tụ? Làm thế nào bạn có thể làm cho các thuật toán khác cũng hội tụ?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Thuật toán đạt đến vùng tối ưu nhanh nhất**: **Stochastic Gradient Descent (SGD)** là thuật toán tiếp cận vùng lân cận của điểm tối ưu nhanh nhất [cite: 43]. Lý do là ở mỗi bước lặp, SGD chỉ xem xét duy nhất một mẫu huấn luyện ngẫu nhiên, giúp vòng lặp huấn luyện cực kỳ nhẹ và nhanh [cite: 43]. (Mini-batch GD với kích thước lô rất nhỏ cũng có tốc độ ban đầu tương tự) [cite: 43].
+    *   **Thuật toán thực sự hội tụ**: Chỉ có **Batch Gradient Descent** thực sự hội tụ (tức là dừng hẳn tại điểm cực tiểu toàn cục) nếu cho phép thời gian huấn luyện đủ lâu và tốc độ học \\(\eta\\) không quá cao [cite: 42]. 
+    *   **Làm thế nào để các thuật toán khác hội tụ?**: Cả SGD và Mini-batch GD sẽ liên tục dao động (nhảy loạn xạ) xung quanh điểm tối ưu do tính ngẫu nhiên của việc lấy mẫu dữ liệu [cite: 42, 43]. Để ép chúng thực sự hội tụ, bạn bắt buộc phải áp dụng một **lịch trình học tập (learning schedule)** để giảm dần tốc độ học \\(\eta\\) theo thời gian [cite: 42, 43]. Khi tiến gần đến đích, các bước nhảy sẽ nhỏ dần và mô hình sẽ dừng lại ổn định tại điểm tối ưu [cite: 42].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Giả sử bạn sử dụng Hồi quy đa thức. Bạn vẽ biểu đồ các đường cong học tập và bạn thấy rằng có một khoảng cách lớn giữa lỗi huấn luyện và lỗi xác thực. Điều gì đang xảy ra? Ba cách để giải quyết vấn đề này là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Điều đang xảy ra**: Khi lỗi xác thực cao hơn nhiều so với lỗi huấn luyện, mô hình đang bị **quá khớp (overfitting)** dữ liệu huấn luyện [cite: 43]. Nó đã học quá chi tiết (học vẹt) các đặc trưng nhiễu ngẫu nhiên của tập train dẫn đến khả năng tổng quát hóa kém trên dữ liệu mới [cite: 43, 827].
+    *   **Ba giải pháp khắc phục**:
+        1.  **Giảm độ phức tạp của mô hình**: Giảm bậc đa thức (bậc tự do thấp hơn sẽ hạn chế khả năng bám theo nhiễu của mô hình) [cite: 43].
+        2.  **Chính quy hóa mô hình**: Thêm hình phạt điều chuẩn như \\(l_2\\) (Ridge) hoặc \\(l_1\\) (Lasso) vào hàm chi phí để áp đặt ràng buộc giảm bớt các trọng số của mô hình [cite: 43].
+        3.  **Tăng kích thước tập huấn luyện**: Thu thập thêm dữ liệu thực tế giúp mô hình nhận diện được các mẫu tổng quát tốt hơn [cite: 43].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 9: Giả sử bạn đang sử dụng hồi quy Ridge và bạn nhận thấy rằng lỗi huấn luyện và lỗi xác thực gần như bằng nhau và khá cao. Bạn có nói rằng mô hình bị độ chệch cao hay phương sai cao không? Bạn nên tăng siêu tham số chính quy hóa alpha hay giảm nó?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Hiện tượng**: Khi cả lỗi huấn luyện và lỗi xác thực gần như bằng nhau và đều cao, mô hình đang bị **dưới khớp (underfitting)** dữ liệu huấn luyện. Điều này chứng tỏ mô hình có **độ chệch cao (high bias)**.
+    *   **Điều chỉnh siêu tham số \\(\alpha\\)**: Siêu tham số \\(\alpha\\) kiểm soát mức độ kiểm soát/ràng buộc mô hình. Vì mô hình đang bị quá đơn giản (dưới khớp), bạn nên **giảm siêu tham số chính quy hóa \\(\alpha\\)** để giải phóng bớt các bậc tự do, cho phép mô hình linh hoạt hơn nhằm khớp dữ liệu huấn luyện tốt hơn.
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 10: Tại sao bạn lại muốn sử dụng:</h4>
+  
+*   **a. Hồi quy Ridge thay vì hồi quy tuyến tính thông thường (không có bất kỳ chính quy hóa nào)?**
+    *   *Trả lời*: Một mô hình có một chút chính quy hóa hầu như luôn hoạt động tốt hơn một mô hình không có chính quy hóa [cite: 833]. Ridge giúp ngăn ngừa hiện tượng quá khớp (overfitting) hiệu quả bằng cách hạn chế độ lớn của các trọng số đặc trưng [cite: 833].
+*   **b. Lasso thay vì hồi quy Ridge?**
+    *   *Trả lời*: Lasso sử dụng hình phạt chuẩn \\(l_1\\) [cite: 43, 838], có đặc tính tự động ép các trọng số của các đặc trưng ít quan trọng về đúng bằng \\(0\\) [cite: 838]. Điều này tạo ra một mô hình thưa (sparse model) và đóng vai trò như một bộ lựa chọn đặc trưng tự động [cite: 838]. Bạn nên dùng Lasso khi nghi ngờ chỉ có một vài đặc trưng thực sự đóng góp vào kết quả dự đoán [cite: 838].
+*   **c. Mạng đàn hồi (Elastic Net) thay vì hồi quy Lasso?**
+    *   *Trả lời*: Elastic Net là sự kết hợp trung hòa giữa Ridge và Lasso [cite: 841]. Lasso có thể hoạt động thất thường (nhảy dao động mạnh) khi số lượng đặc trưng lớn hơn số mẫu huấn luyện hoặc khi có các đặc trưng tương quan mạnh với nhau [cite: 841]. Elastic Net giải quyết triệt để vấn đề này bằng cách bổ sung thêm thành phần điều chuẩn \\(l_2\\) kiểm soát tính ổn định [cite: 841].
+
+---
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+Chưa có lời giải chi tiết.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 11: Giả sử bạn muốn phân loại hình ảnh là ngoài trời/trong nhà và ban ngày/ban đêm. Bạn nên triển khai hai bộ phân loại hồi quy logistic hay một bộ phân loại hồi quy softmax?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   Bạn bắt buộc phải triển khai **hai bộ phân loại hồi quy logistic độc lập** [cite: 44].
+    *   **Lý do**: Các nhãn lớp ở đây **không phải là các lớp loại trừ nhau (not mutually exclusive)** [cite: 44]. Một bức ảnh có thể đồng thời mang hai thuộc tính là "ngoài trời" và "ban ngày" [cite: 44]. Bộ phân loại hồi quy Softmax chỉ hoạt động chính xác khi các lớp là loại trừ lẫn nhau (tức là mỗi mẫu chỉ được phép thuộc về duy nhất một lớp tại một thời điểm) [cite: 338]. Đây là bài toán phân loại đa nhãn (multilabel classification) điển hình [cite: 44].
+
+---
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 12: Triển khai Batch Gradient Descent với dừng sớm cho Hồi quy Softmax mà không sử dụng Scikit-Learn, chỉ sử dụng NumPy.</h4>
+  
+*   **Phân tích toán học cốt lõi**:
+    1.  **Hàm Softmax**: Tính xác suất cho lớp \\(k\\) của thực thể \\(\mathbf{x}\\) [cite: 49]:
+        \\[\hat{p}_k^{(i)} = \sigma(\mathbf{s}(\mathbf{x}^{(i)}))_k = \frac{\exp(s_k(\mathbf{x}^{(i)}))}{\sum_{j=1}^K \exp(s_j(\mathbf{x}^{(i)}))}\\]
+    2.  **Hàm mất mát Cross-Entropy kèm điều chuẩn \\(L_2\\)**:
+        \\[J(\boldsymbol{\Theta}) = -\frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K y_k^{(i)} \log\left(\hat{p}_k^{(i)} + \epsilon\right) + \frac{1}{2C} \sum_{j=1}^n \|\boldsymbol{\theta}_j\|^2\\]
+        *(Trong đó \\(\epsilon = 10^{-5}\\) là hệ số làm mịn để tránh lỗi tính toán \\(\log(0)\\) gây ra giá trị NaN) [cite: 50, 52].*
+    3.  **Công thức tính Gradient**:
+        \\[\nabla_{\boldsymbol{\theta}^{(k)}} J(\boldsymbol{\Theta}) = \frac{1}{m} \sum_{i=1}^m \left(\hat{p}_k^{(i)} - y_k^{(i)}\right) \mathbf{x}^{(i)} + \frac{1}{C}\boldsymbol{\theta}^{(k)}\\]
+        *(Lưu ý không điều chuẩn trọng số bias ứng với cột đầu tiên của \\(\boldsymbol{\Theta}\\)) [cite: 52].*
+
+*   **Mã nguồn Python sử dụng NumPy hoàn chỉnh**:
+
+```python
+import numpy as np
+from sklearn.datasets import load_iris
+
+# ==========================================
+# 1. TẢI VÀ CHUẨN BỊ DỮ LIỆU
+# ==========================================
+iris = load_iris()
+# Sử dụng hai đặc trưng: petal length và petal width [cite: 45]
+X = iris.data[:, (2, 3)]  
+y = iris.target
+
+# Thêm đặc trưng thiên vị (bias term) x0 = 1 vào mọi thực thể [cite: 45]
+X_with_bias = np.c_[np.ones(len(X)), X]
+
+# Thiết lập tỷ lệ chia dữ liệu thủ công [cite: 45]
+test_ratio = 0.2
+validation_ratio = 0.2
+total_size = len(X_with_bias)
+
+test_size = int(total_size * test_ratio)
+validation_size = int(total_size * validation_ratio)
+train_size = total_size - test_size - validation_size
+
+# Xáo trộn dữ liệu ổn định qua các lần chạy [cite: 2, 45]
+np.random.seed(42)
+rnd_indices = np.random.permutation(total_size)
+
+X_train = X_with_bias[rnd_indices[:train_size]]
+y_train = y[rnd_indices[:train_size]]
+X_valid = X_with_bias[rnd_indices[train_size:-test_size]]
+y_valid = y[rnd_indices[train_size:-test_size]]
+X_test = X_with_bias[rnd_indices[-test_size:]]
+y_test = y[rnd_indices[-test_size:]]
+
+# ==========================================
+# 2. CHUYỂN ĐỔI NHÃN SANG VECTOR MỘT NÓNG (ONE-HOT)
+# ==========================================
+# Softmax yêu cầu xác suất lớp mục tiêu dạng một nóng [cite: 46]
+def to_one_hot(y):
+    return np.diag(np.ones(y.max() + 1))[y] [cite: 47]
+
+Y_train_one_hot = to_one_hot(y_train) [cite: 48]
+Y_valid_one_hot = to_one_hot(y_valid) [cite: 48]
+Y_test_one_hot = to_one_hot(y_test) [cite: 48]
+
+# ==========================================
+# 3. CHUẨN HÓA ĐẶC TRƯNG (FEATURE SCALING)
+# ==========================================
+# Tránh chuẩn hóa cột thiên vị (bias x0) [cite: 48]
+mean = X_train[:, 1:].mean(axis=0) [cite: 48]
+std = X_train[:, 1:].std(axis=0) [cite: 48]
+X_train[:, 1:] = (X_train[:, 1:] - mean) / std [cite: 48]
+X_valid[:, 1:] = (X_valid[:, 1:] - mean) / std [cite: 48]
+X_test[:, 1:] = (X_test[:, 1:] - mean) / std [cite: 48]
+
+# ==========================================
+# 4. ĐỊNH NGHĨA HÀM SOFTMAX
+# ==========================================
+def softmax(logits):
+    exps = np.exp(logits) [cite: 49]
+    exp_sums = exps.sum(axis=1, keepdims=True) [cite: 49]
+    return exps / exp_sums [cite: 49]
+
+# Xác định số lượng đầu vào và đầu ra
+n_inputs = X_train.shape           # == 3 (2 đặc trưng + cột bias x0) [cite: 49]
+n_outputs = len(np.unique(y_train))   # == 3 (3 lớp hoa Iris) [cite: 49]
+
+# ==========================================
+# 5. HUẤN LUYỆN BẰNG BATCH GD + CHÍNH QUY HÓA L2 + DỪNG SỚM
+# ==========================================
+eta = 0.5                             # Tốc độ học [cite: 52]
+n_epochs = 50001                      # Số lượng kỷ nguyên tối đa [cite: 53]
+m = len(X_train)                      # Số lượng thực thể huấn luyện [cite: 52]
+epsilon = 1e-5                        # Tránh lỗi chia cho 0 hoặc log(0) [cite: 50, 52]
+C = 100                               # Siêu tham số điều chuẩn L2 (C càng lớn, chính quy hóa càng yếu) [cite: 53]
+best_loss = np.infty                  # Khởi tạo loss tốt nhất vô hạn [cite: 53]
+
+# Khởi tạo trọng số ngẫu nhiên ban đầu
+Theta = np.random.randn(n_inputs, n_outputs) [cite: 50, 53]
+
+print("Bắt đầu huấn luyện...")
+for epoch in range(n_epochs):
+    # Lượt truyền tiến (Forward pass)
+    logits = X_train @ Theta [cite: 50, 53]
+    Y_proba = softmax(logits) [cite: 50, 53]
+    
+    # Tính toán lỗi mất mát trên tập Xác thực để kiểm soát dừng sớm
+    Y_proba_valid = softmax(X_valid @ Theta) [cite: 53]
+    xentropy_losses = -(Y_valid_one_hot * np.log(Y_proba_valid + epsilon)) [cite: 53]
+    l2_loss = 1 / 2 * (Theta[1:] ** 2).sum() # Bỏ qua hàng 0 tương ứng với bias [cite: 52, 53]
+    total_loss = xentropy_losses.sum(axis=1).mean() + 1 / C * l2_loss [cite: 53]
+    
+    if epoch % 1000 == 0:
+        print(f"Epoch {epoch:5d} - Validation Loss: {total_loss:.4f}") [cite: 53]
+        
+    # Cơ chế dừng sớm (Early Stopping)
+    if total_loss < best_loss:
+        best_loss = total_loss
+    else:
+        # Nếu loss bắt đầu tăng lên, dừng huấn luyện ngay [cite: 53]
+        print(f"Epoch {epoch:5d} - Validation Loss: {total_loss:.4f} -> Kích hoạt Dừng sớm (Early Stopping)!") [cite: 54]
+        break
+        
+    # Tính toán sai số và độ dốc (Gradients)
+    error = Y_proba - Y_train_one_hot [cite: 50, 53]
+    gradients = 1 / m * X_train.T @ error [cite: 50, 53]
+    
+    # Cộng dồn đạo dốc chính quy hóa L2 (Không điều chuẩn hệ số bias ở hàng 0) [cite: 52, 53]
+    gradients += np.r_[np.zeros([1, n_outputs]), 1 / C * Theta[1:]] [cite: 53]
+    
+    # Cập nhật trọng số
+    Theta = Theta - eta * gradients [cite: 50, 53]
+
+# ==========================================
+# 6. ĐÁNH GIÁ TRÊN TẬP KIỂM THỬ (TEST SET)
+# ==========================================
+logits_test = X_test @ Theta
+Y_proba_test = softmax(logits_test)
+y_predict = Y_proba_test.argmax(axis=1)
+
+accuracy_score = (y_predict == y_test).mean()
+print(f"\nĐộ chính xác cuối cùng trên tập Test: {accuracy_score * 100:.2f}%")
+```
+
+---
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+Chưa có lời giải chi tiết.
+
+    </div>
+  </div>
+</div>
+
+
 <!-- tabs:end -->

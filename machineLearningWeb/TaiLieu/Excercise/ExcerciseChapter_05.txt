@@ -1,0 +1,295 @@
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để đáp ứng yêu cầu của bạn về các bài tập thuộc **Chương 5: Máy vectơ hỗ trợ (Support Vector Machines - SVM)**, tôi tiến hành tra cứu dữ liệu gốc và lập luận từng bước như sau:
+
+1. **Xác định danh mục bài tập**: 
+   - Dựa trên tài liệu lý thuyết `"chương 5.docx"` [cite: 840] và notebook thực hành `"05_support_vector_machines_VN.ipynb - Colab.pdf"` [cite: 86], Chương 5 kết thúc bằng danh sách **11 bài tập** [cite: 870, 871, 872].
+   - **Các câu từ 1 đến 8**: Là các câu hỏi lý thuyết và phân tích cốt lõi về SVM (ý nghĩa của biên, vectơ hỗ trợ, vai trò của chuẩn hóa tỷ lệ, điểm số tin cậy so với xác suất, cách chọn thuật toán, xử lý underfitting, độ không nhạy \\(\epsilon\\), và thủ thuật hạt nhân - kernel trick) [cite: 97, 98, 99].
+   - **Các câu từ 9 đến 11**: Là các bài tập lập trình thực hành nâng cao (huấn luyện và so sánh mô hình tuyến tính, phân loại đa lớp trên tập Wine, và hồi quy giá nhà California bằng SVM) [cite: 100, 102, 107].
+
+2. **Kế hoạch phân chia nội dung**:
+   - Do các bài tập thực hành (câu 9, 10, 11) đòi hỏi phân tích cấu trúc dữ liệu và cung cấp mã nguồn Python chi tiết, nội dung tổng thể sẽ rất dài. 
+   - Vì thế, tôi sẽ thực hiện đúng chỉ dẫn của bạn: **Chia làm 2 phần**.
+     - **Phần 1 (Lượt này)**: Cung cấp **danh sách đầy đủ của 11 câu hỏi**, sau đó phân tích và trình bày lời giải lý thuyết chi tiết, sâu sắc nhất cho **từ Câu 1 đến Câu 8** [cite: 870].
+     - **Phần 2 (Lượt sau)**: Tập trung giải quyết trọn vẹn phần thực hành lập trình từ **Câu 9 đến Câu 11** [cite: 100, 102, 107].
+
+---
+
+### Danh sách 11 bài tập Chương 5
+
+1. Ý tưởng cơ bản đằng sau máy học véc-tơ hỗ trợ là gì? [cite: 870]
+2. Véc-tơ hỗ trợ là gì? [cite: 870]
+3. Tại sao việc chuẩn hóa đầu vào lại quan trọng khi sử dụng SVM? [cite: 870]
+4. Một bộ phân loại SVM có thể đưa ra điểm tin cậy khi phân loại một trường hợp không? Còn xác suất thì sao? [cite: 870]
+5. Làm thế nào để bạn chọn giữa LinearSVC, SVC và SGDClassifier? [cite: 870]
+6. Giả sử bạn đã huấn luyện một bộ phân loại SVM với kernel RBF, nhưng nó dường như bị dưới khớp trên tập huấn luyện. Bạn nên tăng hay giảm \\(\gamma\\) (gamma)? Còn C thì sao? [cite: 870]
+7. Một mô hình được gọi là không nhạy cảm với \\(\epsilon\\) (epsilon-insensitive) có nghĩa là gì? [cite: 870]
+8. Mục đích của việc sử dụng kernel trick là gì? [cite: 871]
+9. Huấn luyện một LinearSVC trên một tập dữ liệu có thể phân tách tuyến tính. Sau đó huấn luyện một SVC và một SGDClassifier trên cùng tập dữ liệu đó. Xem liệu bạn có thể làm cho chúng tạo ra cùng một mô hình hay không. [cite: 871]
+10. Huấn luyện một bộ phân loại SVM trên tập dữ liệu wine để dự đoán nhà sản xuất rượu dựa trên phân tích hóa học (áp dụng chiến lược một đối tất cả - OvR). [cite: 871]
+11. Huấn luyện và tinh chỉnh một hồi quy SVM (SVM Regressor) trên tập dữ liệu California housing. [cite: 872]
+
+---
+
+### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 8)
+
+#### **Câu 1: Ý tưởng cơ bản đằng sau máy học véc-tơ hỗ trợ là gì?**
+*   **Lời giải chi tiết**: 
+    *   Ý tưởng cốt lõi của SVM là khớp với một **"con đường" rộng nhất có thể** ngăn cách giữa các lớp dữ liệu [cite: 97, 841]. Mục tiêu là tìm được **biên quyết định (decision boundary)** có khoảng cách (margin) lớn nhất tới các thực thể huấn luyện gần nhất của mỗi lớp [cite: 97, 841]. Đây được gọi là **phân loại biên lớn (large margin classification)** [cite: 841].
+    *   Trong bài toán phân loại biên mềm (Soft Margin Classification), SVM cố gắng tìm kiếm **sự cân bằng tối ưu** giữa hai mục tiêu xung đột: phân loại đúng hoàn hảo các mẫu huấn luyện và giữ cho biên quyết định càng rộng càng tốt để hạn chế vi phạm biên (tức là các mẫu lọt vào giữa con đường hoặc nằm sai phía) [cite: 97, 843, 862].
+    *   Một ý tưởng quan trọng khác là sử dụng các **hạt nhân (kernel)** để ánh xạ dữ liệu phi tuyến vào không gian nhiều chiều hơn nhằm tìm ra ranh giới phân tách tuyến tính một cách hiệu quả [cite: 97, 99].
+
+#### **Câu 2: Véc-tơ hỗ trợ là gì?**
+*   **Lời giải chi tiết**: 
+    *   **Véc-tơ hỗ trợ (support vectors)** là các thực thể huấn luyện **nằm ngay trên đường biên đường chạy (margin boundary)** (bao gồm cả các điểm nằm sâu bên trong con đường phân tách hoặc bị phân loại sai trong biên mềm) [cite: 98, 842].
+    *   Đường ranh giới quyết định cuối cùng của SVM được **xác định hoàn toàn bởi các véc-tơ này** [cite: 98]. Mọi thực thể huấn luyện khác không phải là véc-tơ hỗ trợ (nằm an toàn ngoài biên) hoàn toàn không có bất kỳ ảnh hưởng nào đến mô hình [cite: 98]. Nếu bạn thêm, bớt hay dịch chuyển các điểm ngoài biên này, đường quyết định của SVM vẫn sẽ giữ nguyên không đổi [cite: 842].
+
+#### **Câu 3: Tại sao việc chuẩn hóa đầu vào lại quan trọng khi sử dụng SVM?**
+*   **Lời giải chi tiết**: 
+    *   SVM tìm cách tối đa hóa khoảng cách hình học (biên) giữa ranh giới quyết định và các điểm dữ liệu lân cận [cite: 97, 98, 841].
+    *   Nếu dữ liệu không được chuẩn hóa tỷ lệ (unscaled), thuật toán sẽ bị ảnh hưởng mạnh bởi các thuộc tính có phạm vi giá trị lớn [cite: 98, 842]. Hệ quả là SVM có xu hướng **bỏ qua hoặc xem nhẹ các đặc trưng có thang đo nhỏ**, dẫn đến việc con đường quyết định bị uốn lệch và méo mó (ép sát các đặc trưng thang đo nhỏ), làm suy giảm đáng kể hiệu suất tổng quát hóa của mô hình [cite: 98, 842].
+
+#### **Câu 4: Một bộ phân loại SVM có thể đưa ra điểm tin cậy khi phân loại một trường hợp không? Còn xác suất thì sao?**
+*   **Lời giải chi tiết**: 
+    *   **Điểm tin cậy**: Có. Một bộ phân loại SVM có thể đưa ra điểm tin cậy thông qua phương thức `decision_function()` [cite: 846]. Điểm số này đại diện cho khoảng cách có dấu từ thực thể cần dự đoán đến ranh giới quyết định (khoảng cách càng xa ranh giới về phía đúng thì độ tin cậy càng cao) [cite: 845, 846].
+    *   **Xác suất**: Không trực tiếp hỗ trợ [cite: 846]. Tuy nhiên, bạn có thể thiết lập siêu tham số `probability=True` khi khởi tạo lớp `SVC` của Scikit-Learn [cite: 98, 846]. Khi đó, hệ thống sẽ sử dụng kỹ thuật xác thực chéo 5 lần để thu thập các dự đoán ngoài mẫu (out-of-sample) và huấn luyện thêm một mô hình hồi quy Logistic phụ trợ (Platt scaling) để ánh xạ điểm quyết định thành xác suất [cite: 846]. Việc này sẽ **làm chậm tốc độ huấn luyện mô hình một cách đáng kể** [cite: 846].
+
+#### **Câu 5: Làm thế nào để bạn chọn giữa LinearSVC, SVC và SGDClassifier?**
+*   **Lời giải chi tiết**: 
+    *   **`LinearSVC`**: Được tối ưu hóa chuyên biệt cho phân loại tuyến tính [cite: 98]. Thuật toán của nó mở rộng quy mô tuyến tính \\(O(m \times n)\\) với số lượng mẫu \\(m\\) và đặc trưng \\(n\\) [cite: 855]. Nó chạy rất nhanh trên tập dữ liệu lớn tuyến tính nhưng **không hỗ trợ** các hạt nhân phi tuyến (kernel trick) [cite: 855].
+    *   **`SVC`**: Hỗ trợ đầy đủ các **hạt nhân phi tuyến** (như RBF, Polynomial) nhờ thuật toán dựa trên thư viện `libsvm` [cite: 98, 855]. Tuy nhiên, độ phức tạp tính toán của nó rất cao, dao động từ \\(O(m^2 \times n)\\) đến \\(O(m^3 \times n)\\), nên nó **không mở rộng tốt trên các tập dữ liệu lớn** (> hàng chục nghìn mẫu) [cite: 45, 98, 855]. Nó hoạt động tốt nhất cho tập dữ liệu phi tuyến tính quy mô nhỏ hoặc trung bình [cite: 840, 855].
+    *   **`SGDClassifier`**: Sử dụng thuật toán hạ dốc ngẫu nhiên (SGD) để huấn luyện [cite: 855]. Nó cực kỳ linh hoạt, hỗ trợ **học trực tuyến (online learning)** và **học ngoài bộ nhớ (out-of-core learning)** cho các tập dữ liệu khổng lồ không vừa RAM với độ phức tạp tính toán tối ưu \\(O(m \times n)\\) [cite: 855]. Bạn có thể tinh chỉnh các tham số chính quy hóa của nó để đạt kết quả tương đương với SVM tuyến tính [cite: 855].
+
+#### **Câu 6: Giả sử bạn đã huấn luyện một bộ phân loại SVM với kernel RBF, nhưng nó dường như bị dưới khớp trên tập huấn luyện. Bạn nên tăng hay giảm \\(\gamma\\) (gamma)? Còn C thì sao?**
+*   **Lời giải chi tiết**: 
+    *   Khi mô hình bị dưới khớp (underfitting), nguyên nhân là do mô hình đang bị ràng buộc quá mạnh (quá nhiều chính quy hóa) hoặc quá đơn giản [cite: 99]. Để khắc phục và làm cho mô hình linh hoạt hơn, bạn cần **giảm chính quy hóa** [cite: 99].
+    *   **Đối với \\(\gamma\\) (gamma)**: Bạn nên **tăng \\(\gamma\\)** [cite: 99]. Việc tăng gamma sẽ làm cho đường cong hình chuông hẹp hơn, khiến tầm ảnh hưởng của mỗi mẫu huấn luyện thu hẹp lại, giúp ranh giới quyết định uốn lượn chi tiết hơn quanh các điểm dữ liệu.
+    *   **Đối với C**: Bạn nên **tăng C** [cite: 99]. Tăng C sẽ làm giảm lượng chính quy hóa, buộc mô hình phải ưu tiên phân loại đúng các điểm dữ liệu huấn luyện hơn, chấp nhận biên hẹp hơn để tránh vi phạm biên [cite: 843, 862].
+
+#### **Câu 7: Một mô hình được gọi là không nhạy cảm với \\(\epsilon\\) (epsilon-insensitive) có nghĩa là gì?**
+*   **Lời giải chi tiết**: 
+    *   Khái niệm này xuất hiện trong bài toán **Hồi quy SVM (SVM Regression)** [cite: 99, 856]. Mục tiêu của hồi quy SVM là khớp nhiều thực thể nhất có thể nằm bên trong một con đường (biên) bao quanh đường dự đoán [cite: 99, 856].
+    *   Chiều rộng của con đường này được kiểm soát bởi siêu tham số \\(\epsilon\\) [cite: 856]. Mô hình được gọi là **không nhạy cảm với \\(\epsilon\\)** vì bất kỳ điểm dữ liệu huấn luyện nào nằm hoàn toàn bên trong biên này (tức là có sai số dự đoán nhỏ hơn \\(\epsilon\\)) sẽ **hoàn toàn không ảnh hưởng gì** đến việc xác định các tham số hay đường dự đoán cuối cùng của mô hình [cite: 99, 856, 857].
+
+#### **Câu 8: Mục đích của việc sử dụng kernel trick là gì?**
+*   **Lời giải chi tiết**: 
+    *   Mục đích cốt lõi của **thủ thuật hạt nhân (kernel trick)** là cho phép các mô hình SVM huấn luyện các ranh giới phân tách phi tuyến phức tạp tương đương với việc **chiếu dữ liệu lên không gian có số chiều cao hơn rất nhiều** (nơi dữ liệu trở nên có thể phân tách tuyến tính) [cite: 99, 850, 867].
+    *   Phép toán kỳ diệu này được thực hiện bằng cách thay thế tích vô hướng của các vectơ đã biến đổi bằng một hàm hạt nhân trực tiếp trên các vectơ gốc, giúp chúng ta **không cần phải tính toán các phép chiếu tọa độ cụ thể một cách tường minh** [cite: 99, 850, 867]. Điều này ngăn chặn hoàn toàn hiện tượng bùng nổ tổ hợp số lượng đặc trưng đầu vào, giúp tiết kiệm tối đa RAM và tài nguyên tính toán [cite: 850].
+
+---
+
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để giải quyết trọn vẹn và sâu sắc **Phần 2 (từ Bài 9 đến Bài 11)** của Chương 5, chúng ta cần phân tích kỹ lưỡng các yêu cầu thực hành nâng cao liên quan đến **Máy vectơ hỗ trợ (SVM)** [cite: 840, 871]. Các bài tập này chuyển dịch từ việc hiểu sâu bản chất các lớp ước lượng trong Scikit-Learn sang xây dựng hệ thống phân loại đa lớp thực tế và giải quyết bài toán hồi quy phi tuyến quy mô lớn [cite: 44, 45, 47]:
+
+1.  **Bài 9 (Đồng bộ hóa mô hình tuyến tính)**: Yêu cầu huấn luyện `LinearSVC`, `SVC(kernel="linear")`, và `SGDClassifier` trên tập dữ liệu Iris phân tách tuyến tính sao cho kết quả trả về gần như trùng khớp hoàn toàn [cite: 44]. Ta cần phân tích công thức toán học để đồng bộ hóa mức độ điều chuẩn (Regularization) thông qua mối liên hệ giữa siêu tham số \\(C\\) của SVM và hệ số phạt \\(\alpha\\) của SGD [cite: 855].
+2.  **Bài 10 (Phân loại đa lớp thực tế trên tập Wine)**: Sử dụng các thuộc tính hóa học của rượu vang để dự đoán nhà sản xuất [cite: 45]. Đây là bài toán đa lớp [cite: 45]. Chúng ta cần thảo luận tầm quan trọng của việc chuẩn hóa dữ liệu (Z-score Scaling) [cite: 98, 870], chiến lược One-vs-Rest (OvR) [cite: 45], và áp dụng `GridSearchCV` để tối ưu hóa mô hình phi tuyến [cite: 690].
+3.  **Bài 11 (Hồi quy SVM quy mô lớn)**: Dự đoán giá nhà California bằng `SVR` [cite: 47, 706]. Do kích thước tập dữ liệu lớn (>20,000 mẫu), việc huấn luyện SVR phi tuyến trên toàn bộ tập dữ liệu sẽ cực kỳ chậm (độ phức tạp \\(O(m^2)\\) đến \\(O(m^3)\\)) [cite: 45, 47, 855]. Ta cần áp dụng chiến lược tinh chỉnh siêu tham số nhanh bằng **tập con 2,000 mẫu** thông qua `RandomizedSearchCV`, sau đó mới huấn luyện mô hình tốt nhất trên toàn bộ dữ liệu [cite: 13, 16, 47].
+
+---
+
+### PHẦN 2: Chi tiết bài tập và lời giải thực hành (Bài 9 đến Bài 11)
+
+#### **Bài 9: So sánh và đồng bộ hóa các bộ phân loại SVM tuyến tính**
+
+*   **Yêu cầu đề bài**:
+    Huấn luyện một `LinearSVC`, một `SVC(kernel="linear")` và một `SGDClassifier(loss="hinge")` trên cùng một tập dữ liệu phân tách tuyến tính (như hai lớp Iris Setosa và Iris Versicolor) [cite: 44]. Hãy điều chỉnh các tham số của chúng để tạo ra các mô hình có ranh giới quyết định gần như trùng khớp hoàn toàn [cite: 44].
+
+*   **Phân tích cốt lõi & Lập luận toán học**:
+    1.  **Hàm mất mát (Loss Function)**: `SVC(kernel="linear")` sử dụng hàm mất mát bản lề (hinge loss) [cite: 1075]. Tuy nhiên, theo mặc định, `LinearSVC` lại sử dụng hàm mất mát bản lề bình phương (`loss="squared_hinge"`) [cite: 1075]. Do đó, ta bắt buộc phải đặt `loss="hinge"` cho `LinearSVC` để đồng bộ [cite: 1075].
+    2.  **Mức độ chính quy hóa (Regularization)**: 
+        *   `LinearSVC` và `SVC` sử dụng siêu tham số phạt \\(C\\) [cite: 706].
+        *   `SGDClassifier` sử dụng hệ số phạt \\(\alpha\\) với số hạng phạt \\(L_2\\) (`penalty="l2"`) [cite: 855].
+        *   Mối liên hệ toán học giữa hai thế giới này để đồng bộ hóa lực ràng buộc là [cite: 855]:
+            \\[\alpha = \frac{1}{m \cdot C}\\]
+            *(Trong đó \\(m\\) là số lượng mẫu của tập huấn luyện)* [cite: 855].
+    3.  **Chuẩn hóa**: SVM tuyến tính rất nhạy cảm với thang đo, do đó dữ liệu cần được chuẩn hóa bằng `StandardScaler` trước khi huấn luyện [cite: 98, 1074].
+
+*   **Đoạn mã giải pháp (Python)**:
+    ```python
+    import numpy as np
+    from sklearn import datasets
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.svm import LinearSVC, SVC
+    from sklearn.linear_model import SGDClassifier
+
+    # 1. Tải tập dữ liệu Iris và lọc 2 lớp Setosa & Versicolor (phân tách tuyến tính)
+    iris = datasets.load_iris()
+    X = iris.data[:, (2, 3)]  # Chiều dài và chiều rộng cánh hoa
+    y = iris.target
+    setosa_or_versicolor = (y == 0) | (y == 1)
+    X = X[setosa_or_versicolor]
+    y = y[setosa_or_versicolor]
+
+    # 2. Chuẩn hóa dữ liệu (Z-score)
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # 3. Đồng bộ hóa siêu tham số
+    C = 2.0
+    m = len(X_scaled)
+    alpha = 1 / (m * C)
+
+    # 4. Huấn luyện 3 mô hình tuyến tính
+    lin_clf = LinearSVC(loss="hinge", C=C, dual=True, random_state=42)
+    svm_clf = SVC(kernel="linear", C=C, random_state=42)
+    sgd_clf = SGDClassifier(loss="hinge", penalty="l2", alpha=alpha,
+                            max_iter=10000, tol=1e-4, random_state=42)
+
+    lin_clf.fit(X_scaled, y)
+    svm_clf.fit(X_scaled, y)
+    sgd_clf.fit(X_scaled, y)
+
+    # 5. So sánh các tham số mô hình tìm được (Trọng số w và Hệ số thiên vị b)
+    print("LinearSVC Bias/Weights: ", lin_clf.intercept_, lin_clf.coef_)
+    print("SVC Bias/Weights:       ", svm_clf.intercept_, svm_clf.coef_)
+    print("SGDClassifier Bias/w:   ", sgd_clf.intercept_, sgd_clf.coef_)
+    ```
+
+*   **Kết quả thực nghiệm**:
+    Độ lệch ranh giới quyết định giữa ba mô hình là không đáng kể. Đường biên phân loại gần như trùng khớp hoàn toàn trên biểu đồ trực quan hóa [cite: 45].
+
+---
+
+#### **Bài 10: Phân loại đa lớp trên tập dữ liệu Wine (Rượu vang)**
+
+*   **Yêu cầu đề bài**:
+    Huấn luyện một bộ phân loại SVM trên tập dữ liệu `Wine` để dự đoán nhà sản xuất rượu dựa trên các thuộc tính phân tích hóa học [cite: 45]. Vì SVM là thuật toán phân loại nhị phân gốc, bạn cần áp dụng chiến lược một đối tất cả (One-vs-Rest - OvR) để xử lý tác vụ đa lớp này [cite: 45, 1028].
+
+*   **Phân tích & Lập luận giải thuật**:
+    1.  **Đặc trưng**: Tập dữ liệu Wine gồm 13 đặc trưng hóa học (như nồng độ cồn, axit malic, proline,...) có đơn vị đo lường và thang đo cực kỳ chênh lệch [cite: 46]. Nếu không co giãn đặc trưng, các thuộc tính lớn như Proline sẽ áp đảo hoàn toàn mô hình [cite: 98]. Việc sử dụng `StandardScaler` là bắt buộc [cite: 98, 870].
+    2.  **Chiến lược Đa lớp**: 
+        *   `LinearSVC` của Scikit-Learn tự động áp dụng chiến lược OvR theo mặc định [cite: 46].
+        *   `SVC` sử dụng chiến lược một đối một (One-vs-One - OvO) [cite: 1030]. Tuy nhiên, Scikit-Learn sẽ tự động quản lý việc này một cách mượt mà dưới nền [cite: 1030].
+    3.  **Lập lưới tham số**: Chúng ta sử dụng `GridSearchCV` để tinh chỉnh siêu tham số hạt nhân (tuyến tính, đa thức, RBF), cùng các hệ số phạt \\(C\\) và độ rộng chuông \\(\gamma\\) [cite: 16, 690].
+
+*   **Đoạn mã giải pháp (Python)**:
+    ```python
+    from sklearn.datasets import load_wine
+    from sklearn.model_selection import train_test_split, GridSearchCV
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.svm import SVC, LinearSVC
+    from sklearn.pipeline import Pipeline
+    from sklearn.metrics import accuracy_score
+
+    # 1. Tải và phân chia tập dữ liệu
+    wine = load_wine()
+    X_train, X_test, y_train, y_test = train_test_split(
+        wine.data, wine.target, test_size=0.2, random_state=42
+    )
+
+    # 2. Bước 1: Thử nghiệm nhanh với LinearSVC (Tuyến tính - OvR mặc định)
+    linear_pipeline = Pipeline([
+        ("scaler", StandardScaler()),
+        ("linear_svc", LinearSVC(dual=True, random_state=42))
+    ])
+    linear_pipeline.fit(X_train, y_train)
+    y_pred_linear = linear_pipeline.predict(X_test)
+    print(f"Độ chính xác của LinearSVC: {accuracy_score(y_test, y_pred_linear) * 100:.2f}%")
+
+    # 3. Bước 2: Tinh chỉnh tối ưu hóa bằng SVC phi tuyến qua GridSearchCV
+    nonlinear_pipeline = Pipeline([
+        ("scaler", StandardScaler()),
+        ("svc", SVC(random_state=42))
+    ])
+
+    # Thiết lập không gian tìm kiếm
+    param_grid = {
+        "svc__kernel": ["linear", "rbf", "poly"],
+        "svc__C": [0.1, 1, 10, 100],
+        "svc__gamma": ["scale", "auto", 0.01, 0.1, 1]
+    }
+
+    grid_search = GridSearchCV(nonlinear_pipeline, param_grid, cv=5, verbose=1, n_jobs=-1)
+    grid_search.fit(X_train, y_train)
+
+    print("Cấu hình siêu tham số tối ưu nhất:", grid_search.best_params_)
+    
+    # 4. Đánh giá mô hình tối ưu nhất trên tập kiểm thử độc lập
+    best_model = grid_search.best_estimator_
+    y_pred_best = best_model.predict(X_test)
+    print(f"Độ chính xác tối ưu trên tập kiểm thử: {accuracy_score(y_test, y_pred_best) * 100:.2f}%")
+    ```
+
+---
+
+#### **Bài 11: Huấn luyện và tinh chỉnh SVM Regressor trên tập dữ liệu California Housing**
+
+*   **Yêu cầu đề bài**:
+    Xây dựng mô hình hồi quy để dự đoán giá nhà trung bình tại California bằng SVM Regressor [cite: 8, 47]. Do tập dữ liệu gốc rất lớn (>20,000 mẫu), việc huấn luyện trực tiếp hạt nhân phi tuyến sẽ tốn rất nhiều thời gian [cite: 45, 47, 855]. Hãy sử dụng tập con gồm 2,000 mẫu để tìm kiếm siêu tham số nhanh chóng, sau đó huấn luyện mô hình tốt nhất thu được [cite: 47].
+
+*   **Phân tích & Lập luận giải thuật**:
+    1.  **Tránh thảm họa hiệu năng**: Thuật toán SVM phi tuyến dựa trên nền tảng `SVR` có độ phức tạp tính toán lên tới bậc hai hoặc bậc ba số lượng mẫu dữ liệu (\\(O(m^2)\\) đến \\(O(m^3)\\)) [cite: 45, 1074]. Do đó, việc trích xuất ngẫu nhiên một tập con nhỏ (\\(m=2000\\)) để dò tìm phân phối tham số tối ưu là chiến thuật thông minh và bắt buộc [cite: 47].
+    2.  **Tìm kiếm ngẫu nhiên**: Siêu tham số của `SVR` như \\(C\\) và \\(\gamma\\) trải rộng trên nhiều bậc độ lớn khác nhau [cite: 133]. Chúng ta sử dụng phân phối đều logarit (`loguniform`) trong `RandomizedSearchCV` để dò quét hiệu quả các bậc giá trị tiềm năng [cite: 14, 18].
+    3.  **Tái huấn luyện**: Sau khi đã dò quét được bộ tham số tốt nhất trên tập dữ liệu nhỏ, ta tiến hành nạp bộ tham số này để huấn luyện trên **toàn bộ tập dữ liệu huấn luyện lớn** nhằm tối đa hóa độ chính xác và khả năng tổng quát hóa của mô hình [cite: 13, 19].
+
+*   **Đoạn mã giải pháp (Python)**:
+    ```python
+    from sklearn.datasets import fetch_california_housing
+    from sklearn.model_selection import train_test_split, RandomizedSearchCV
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.svm import SVR
+    from sklearn.pipeline import Pipeline
+    from scipy.stats import loguniform, expon
+    from sklearn.metrics import mean_squared_error
+    import numpy as np
+
+    # 1. Tải và chia tập dữ liệu
+    housing = fetch_california_housing()
+    X_train, X_test, y_train, y_test = train_test_split(
+        housing.data, housing.target, test_size=0.2, random_state=42
+    )
+
+    # 2. Tạo tập con nhỏ (2,000 thực thể đầu tiên) để tìm siêu tham số nhanh
+    X_train_mini = X_train[:2000]
+    y_train_mini = y_train[:2000]
+
+    # 3. Tạo Pipeline chuẩn hóa và hồi quy SVR
+    svr_pipeline = Pipeline([
+        ("scaler", StandardScaler()),
+        ("svr", SVR())
+    ])
+
+    # 4. Định nghĩa không gian phân phối siêu tham số liên tục
+    param_distributions = {
+        "svr__C": loguniform(10, 100_000),       # Quét rộng trên thang đo log
+        "svr__gamma": expon(scale=0.1),          # Phân phối mũ cho gamma
+        "svr__kernel": ["rbf"]                   # Hạt nhân RBF tối ưu nhất cho hồi quy phi tuyến
+    }
+
+    # 5. Thực hiện tìm kiếm ngẫu nhiên với kiểm định chéo 3 lần
+    rnd_search = RandomizedSearchCV(
+        svr_pipeline,
+        param_distributions=param_distributions,
+        n_iter=30,
+        cv=3,
+        scoring="neg_root_mean_squared_error",
+        random_state=42,
+        verbose=2,
+        n_jobs=-1
+    )
+
+    rnd_search.fit(X_train_mini, y_train_mini)
+    print("Bộ tham số tối ưu tìm được trên tập con:", rnd_search.best_params_)
+
+    # 6. Huấn luyện lại trên TOÀN BỘ tập huấn luyện lớn bằng bộ siêu tham số tốt nhất
+    best_svr_model = SVR(
+        C=rnd_search.best_params_["svr__C"],
+        gamma=rnd_search.best_params_["svr__gamma"],
+        kernel="rbf"
+    )
+    
+    final_pipeline = Pipeline([
+        ("scaler", StandardScaler()),
+        ("svr", best_svr_model)
+    ])
+
+    final_pipeline.fit(X_train, y_train)
+
+    # 7. Đánh giá lỗi RMSE cuối cùng trên tập kiểm thử độc lập
+    y_pred_test = final_pipeline.predict(X_test)
+    final_rmse = np.sqrt(mean_squared_error(y_test, y_pred_test))
+    print(f"Lỗi RMSE cuối cùng trên tập Test: {final_rmse:.4f}")
+    ```
+
+---
