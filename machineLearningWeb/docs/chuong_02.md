@@ -3981,418 +3981,401 @@ Between Learning Algorithms”, Neural Computation 8, no. 7 (1996): 1341–1390.
 </div>
 
 
+
+
+
+
+
+
+
 #### ** 📝 Bài Tập **
+
 
 <script>
 if (typeof checkPasswordAndShow !== 'function') {
   window.checkPasswordAndShow = function(btn) {
-    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
-    if (pass === "1234@Abc") {
-      var content = btn.nextElementSibling;
-      content.style.display = "block";
-      btn.style.display = "none";
-    } else if (pass !== null) {
+    let password = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (password === "donga2026") {
+      let content = btn.nextElementSibling;
+      if (content && content.classList.contains("solution-content")) {
+        content.style.display = "block";
+        btn.style.display = "none";
+      }
+    } else {
       alert("Mật khẩu không đúng!");
     }
-  }
+  };
 }
 </script>
 
-
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 1: Thử nghiệm bộ hồi quy Support Vector Machine (SVR)</h4>
-  
-*   **Yêu cầu đề bài**:
-    Huấn luyện một mô hình `SVR` với các siêu tham số khác nhau: 
-    *   Thử hạt nhân tuyến tính (`kernel="linear"`) với các giá trị khác nhau của siêu tham số `C`.
-    *   Thử hạt nhân RBF (`kernel="rbf"`) với các giá trị khác nhau cho `C` và `gamma`.
-    *   *Lưu ý*: SVM không mở rộng tốt với các tập dữ liệu lớn, vì vậy chỉ nên huấn luyện mô hình trên **5.000 thực thể đầu tiên** của tập huấn luyện và sử dụng **kiểm định chéo 3 lần (3-fold cross-validation)** để tránh tốn hàng giờ chạy máy. Đánh giá hiệu suất của bộ dự đoán `SVR` tốt nhất thu được.
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 1: Thử nghiệm bộ hồi quy Support Vector Machine (SVR)</h4>
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+Huấn luyện một mô hình `SVR` với các siêu tham số khác nhau: 
+*   Thử hạt nhân tuyến tính (`kernel="linear"`) với các giá trị khác nhau của siêu tham số `C`.
+*   Thử hạt nhân RBF (`kernel="rbf"`) với các giá trị khác nhau cho `C` và `gamma`.
+*   *Lưu ý*: SVM không mở rộng tốt với các tập dữ liệu lớn, vì vậy chỉ nên huấn luyện mô hình trên **5.000 thực thể đầu tiên** của tập huấn luyện và sử dụng **kiểm định chéo 3 lần (3-fold cross-validation)** để tránh tốn hàng giờ chạy máy. Đánh giá hiệu suất của bộ dự đoán `SVR` tốt nhất thu được.
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Phân tích & Lập luận giải thuật**:
-    1.  **Ràng buộc tài nguyên**: Do SVM có độ phức tạp tính toán tăng phi tuyến theo số lượng mẫu dữ liệu (quy mô dữ liệu gốc >20.000 thực thể), việc giới hạn 5.000 mẫu và dùng k-fold nhỏ (k=3) là bắt buộc để tối ưu thời gian phản hồi.
-    2.  **Thiết lập không gian tham số**: Chúng ta sử dụng `GridSearchCV` để quét qua một lưới các giá trị của `C` và `gamma`.
+1.  **Ràng buộc tài nguyên**: Do SVM có độ phức tạp tính toán tăng phi tuyến theo số lượng mẫu dữ liệu (quy mô dữ liệu gốc >20.000 thực thể), việc giới hạn 5.000 mẫu và dùng k-fold nhỏ (k=3) là bắt buộc để tối ưu thời gian phản hồi.
+2.  **Thiết lập không gian tham số**: Chúng ta sử dụng `GridSearchCV` để quét qua một lưới các giá trị của `C` và `gamma`.
 
 *   **Đoạn mã giải pháp mẫu (Python)**:
-    ```python
-    from sklearn.model_selection import GridSearchCV
-    from sklearn.svm import SVR
+```python
+from sklearn.model_selection import GridSearchCV
+from sklearn.svm import SVR
 
-    # Thiết lập không gian tìm kiếm lưới (Grid Search)
-    param_grid = [
-        {'svr__kernel': ['linear'], 'svr__C': [10.0, 30.0, 100.0, 300.0, 1000.0, 3000.0, 10000.0, 30000.0]},
-        {'svr__kernel': ['rbf'], 'svr__C': [1.0, 3.0, 10.0, 30.0, 100.0, 300.0, 1000.0],
-         'svr__gamma': [0.01, 0.03, 0.1, 0.3, 1.0, 3.0]},
-    ]
+# Thiết lập không gian tìm kiếm lưới (Grid Search)
+param_grid = [
+{'svr__kernel': ['linear'], 'svr__C': [10.0, 30.0, 100.0, 300.0, 1000.0, 3000.0, 10000.0, 30000.0]},
+{'svr__kernel': ['rbf'], 'svr__C': [1.0, 3.0, 10.0, 30.0, 100.0, 300.0, 1000.0],
+'svr__gamma': [0.01, 0.03, 0.1, 0.3, 1.0, 3.0]},
+]
 
-    # Khởi tạo mô hình SVR trong pipeline (giả định pipeline tiền xử lý đã được định nghĩa là 'preprocessing')
-    # Ở đây chúng ta bọc mô hình SVR vào một pipeline hoàn chỉnh
-    from sklearn.pipeline import Pipeline
-    svr_pipeline = Pipeline([
-        ('preprocessing', preprocessing),
-        ('svr', SVR())
-    ])
+# Khởi tạo mô hình SVR trong pipeline (giả định pipeline tiền xử lý đã được định nghĩa là 'preprocessing')
+# Ở đây chúng ta bọc mô hình SVR vào một pipeline hoàn chỉnh
+from sklearn.pipeline import Pipeline
+svr_pipeline = Pipeline([
+('preprocessing', preprocessing),
+('svr', SVR())
+])
 
-    # Chỉ sử dụng 5.000 mẫu đầu tiên của tập huấn luyện để tăng tốc
-    X_train_mini = housing.iloc[:5000]
-    y_train_mini = housing_labels.iloc[:5000]
+# Chỉ sử dụng 5.000 mẫu đầu tiên của tập huấn luyện để tăng tốc
+X_train_mini = housing.iloc[:5000]
+y_train_mini = housing_labels.iloc[:5000]
 
-    grid_search = GridSearchCV(svr_pipeline, param_grid, cv=3, scoring='neg_mean_squared_error', verbose=2)
-    grid_search.fit(X_train_mini, y_train_mini)
-    ```
+grid_search = GridSearchCV(svr_pipeline, param_grid, cv=3, scoring='neg_mean_squared_error', verbose=2)
+grid_search.fit(X_train_mini, y_train_mini)
+```
 
 *   **Kết quả & Nhận xét thực nghiệm**:
-    *   Hạt nhân tuyến tính (`kernel="linear"`) cho hiệu suất tốt hơn hạt nhân RBF (`kernel="rbf"`) trên tập dữ liệu này.
-    *   Giá trị tối ưu của `C` tìm thấy thường rơi vào **giá trị lớn nhất được thử nghiệm** (ví dụ: 30.000). 
-    *   **Khuyến nghị cải tiến**: Khi siêu tham số tối ưu đạt giá trị cực đại của lưới, bạn cần phải thiết lập và chạy lại tìm kiếm lưới với các giá trị `C` cao hơn nữa (loại bỏ các giá trị nhỏ) để tìm được điểm tối ưu thực sự.
+*   Hạt nhân tuyến tính (`kernel="linear"`) cho hiệu suất tốt hơn hạt nhân RBF (`kernel="rbf"`) trên tập dữ liệu này.
+*   Giá trị tối ưu của `C` tìm thấy thường rơi vào **giá trị lớn nhất được thử nghiệm** (ví dụ: 30.000). 
+*   **Khuyến nghị cải tiến**: Khi siêu tham số tối ưu đạt giá trị cực đại của lưới, bạn cần phải thiết lập và chạy lại tìm kiếm lưới với các giá trị `C` cao hơn nữa (loại bỏ các giá trị nhỏ) để tìm được điểm tối ưu thực sự.
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 2: Thay thế GridSearchCV bằng RandomizedSearchCV</h4>
-  
-*   **Yêu cầu đề bài**:
-    Hãy thử thay thế việc tìm kiếm theo lưới (`GridSearchCV`) bằng tìm kiếm ngẫu nhiên (`RandomizedSearchCV`) trên cùng một không gian siêu tham số của mô hình `SVR`.
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 2: Thay thế GridSearchCV bằng RandomizedSearchCV</h4>
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+Hãy thử thay thế việc tìm kiếm theo lưới (`GridSearchCV`) bằng tìm kiếm ngẫu nhiên (`RandomizedSearchCV`) trên cùng một không gian siêu tham số của mô hình `SVR`.
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Phân tích & Lập luận giải thuật**:
-    1.  **Tại sao chọn RandomizedSearchCV**: Đối với các siêu tham số dạng liên tục (như `C` và `gamma` trong SVR), tìm kiếm theo lưới buộc chúng ta phải chỉ định các mốc rời rạc một cách khiên cưỡng. `RandomizedSearchCV` cho phép chúng ta định nghĩa các phân phối xác suất liên tục (như phân phối mũ - `exponential` hay phân phối đều logarit - `loguniform`).
-    2.  **Hiệu quả**: Nếu chúng ta cho phép tìm kiếm ngẫu nhiên chạy qua một số lượng vòng lặp nhất định (ví dụ: 100 lần), nó sẽ thử nghiệm 100 giá trị hoàn toàn khác nhau cho mỗi siêu tham số. Cách này giúp tiết kiệm thời gian huấn luyện và tăng khả năng tìm thấy cấu hình vượt trội hơn hẳn.
+1.  **Tại sao chọn RandomizedSearchCV**: Đối với các siêu tham số dạng liên tục (như `C` và `gamma` trong SVR), tìm kiếm theo lưới buộc chúng ta phải chỉ định các mốc rời rạc một cách khiên cưỡng. `RandomizedSearchCV` cho phép chúng ta định nghĩa các phân phối xác suất liên tục (như phân phối mũ - `exponential` hay phân phối đều logarit - `loguniform`).
+2.  **Hiệu quả**: Nếu chúng ta cho phép tìm kiếm ngẫu nhiên chạy qua một số lượng vòng lặp nhất định (ví dụ: 100 lần), nó sẽ thử nghiệm 100 giá trị hoàn toàn khác nhau cho mỗi siêu tham số. Cách này giúp tiết kiệm thời gian huấn luyện và tăng khả năng tìm thấy cấu hình vượt trội hơn hẳn.
 
 *   **Đoạn mã giải pháp mẫu (Python)**:
-    ```python
-    from sklearn.model_selection import RandomizedSearchCV
-    from scipy.stats import expon, loguniform
+```python
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import expon, loguniform
 
-    # Định nghĩa phân phối cho các siêu tham số liên tục
-    # expon(scale=1.0) có nghĩa là trung bình của phân phối mũ là 1.0
-    # loguniform(20, 200000) giúp lấy mẫu đồng đều trên thang đo logarit (rất hữu ích cho siêu tham số C)
-    param_distribs = {
-        'svr__kernel': ['linear', 'rbf'],
-        'svr__C': loguniform(20, 200000),
-        'svr__gamma': expon(scale=1.0),
-    }
+# Định nghĩa phân phối cho các siêu tham số liên tục
+# expon(scale=1.0) có nghĩa là trung bình của phân phối mũ là 1.0
+# loguniform(20, 200000) giúp lấy mẫu đồng đều trên thang đo logarit (rất hữu ích cho siêu tham số C)
+param_distribs = {
+'svr__kernel': ['linear', 'rbf'],
+'svr__C': loguniform(20, 200000),
+'svr__gamma': expon(scale=1.0),
+}
 
-    # Thiết lập tìm kiếm ngẫu nhiên
-    rnd_search = RandomizedSearchCV(
-        svr_pipeline, 
-        param_distributions=param_distribs,
-        n_iter=50, # số lần lấy mẫu ngẫu nhiên
-        cv=3, 
-        scoring='neg_mean_squared_error', 
-        verbose=2, 
-        random_state=42
-    )
+# Thiết lập tìm kiếm ngẫu nhiên
+rnd_search = RandomizedSearchCV(
+svr_pipeline, 
+param_distributions=param_distribs,
+n_iter=50, # số lần lấy mẫu ngẫu nhiên
+cv=3, 
+scoring='neg_mean_squared_error', 
+verbose=2, 
+random_state=42
+)
 
-    rnd_search.fit(X_train_mini, y_train_mini)
-    ```
+rnd_search.fit(X_train_mini, y_train_mini)
+```
 
 *   **Kết quả & Nhận xét thực nghiệm**:
-    *   Sử dụng `RandomizedSearchCV` giúp tìm ra bộ siêu tham số tốt hơn nhiều so với `GridSearchCV` trong cùng một khoảng thời gian chạy máy. 
-    *   Phân phối `loguniform` cực kỳ phù hợp cho siêu tham số `C` vì chúng ta không biết tầm ảnh hưởng của `C` tối ưu nằm ở bậc độ lớn nào (hàng chục, hàng trăm hay hàng chục nghìn).
+*   Sử dụng `RandomizedSearchCV` giúp tìm ra bộ siêu tham số tốt hơn nhiều so với `GridSearchCV` trong cùng một khoảng thời gian chạy máy. 
+*   Phân phối `loguniform` cực kỳ phù hợp cho siêu tham số `C` vì chúng ta không biết tầm ảnh hưởng của `C` tối ưu nằm ở bậc độ lớn nào (hàng chục, hàng trăm hay hàng chục nghìn).
 
----
-
-### 🧠 Phân tích & Lập luận (Chain of Thought)
-
-Để tiếp tục phân tích chi tiết **Phần 2 (từ Bài 3 đến Bài 6)** của chương 2, chúng ta sẽ đi sâu vào các kỹ thuật thiết kế đường ống dữ liệu (Pipeline) và bộ ước lượng tùy chỉnh (Custom Estimator) của Scikit-Learn. Đây là phần kiến trúc nâng cao giúp tự động hóa hoàn toàn quy trình từ chuẩn bị dữ liệu, lựa chọn đặc trưng cho đến dự đoán cuối cùng.
-
----
-
-### PHẦN 2: Chi tiết bài tập và lời giải (Bài 3 đến Bài 6)
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 3: Tích hợp bộ lựa chọn đặc trưng `SelectFromModel` vào Pipeline</h4>
-  
-*   **Yêu cầu đề bài**:
-    Hãy thêm bộ biến đổi `SelectFromModel` vào pipeline chuẩn bị dữ liệu để chỉ giữ lại những đặc trưng (features) quan trọng nhất. Xây dựng một pipeline hoàn chỉnh kết hợp:
-    1.  Pipeline tiền xử lý dữ liệu gốc (`preprocessing`).
-    2.  Bộ lựa chọn đặc trưng `SelectFromModel` sử dụng mô hình `RandomForestRegressor` làm nền tảng với ngưỡng độ quan trọng tối thiểu là `0.005`.
-    3.  Bộ hồi quy cuối cùng là `SVR` với các siêu tham số tối ưu đã tìm được ở Bài 2.
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 3: Tích hợp bộ lựa chọn đặc trưng `SelectFromModel` vào Pipeline</h4>
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+Hãy thêm bộ biến đổi `SelectFromModel` vào pipeline chuẩn bị dữ liệu để chỉ giữ lại những đặc trưng (features) quan trọng nhất. Xây dựng một pipeline hoàn chỉnh kết hợp:
+1.  Pipeline tiền xử lý dữ liệu gốc (`preprocessing`).
+2.  Bộ lựa chọn đặc trưng `SelectFromModel` sử dụng mô hình `RandomForestRegressor` làm nền tảng với ngưỡng độ quan trọng tối thiểu là `0.005`.
+3.  Bộ hồi quy cuối cùng là `SVR` với các siêu tham số tối ưu đã tìm được ở Bài 2.
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Phân tích & Lập luận giải thuật**:
-    1.  **Mục tiêu**: Giảm chiều dữ liệu bằng cách loại bỏ các đặc trưng ít đóng góp (nhiễu hoặc dư thừa) nhằm tăng tốc độ huấn luyện của mô hình `SVR` vốn cực kỳ nhạy cảm với số lượng đặc trưng lớn.
-    2.  **Cơ chế hoạt động**: `SelectFromModel` sẽ chạy một mô hình `RandomForestRegressor` trên dữ liệu đã tiền xử lý để tính toán `feature_importances_`. Chỉ những đặc trưng có điểm quan trọng lớn hơn hoặc bằng `threshold=0.005` mới được giữ lại để đưa vào bước huấn luyện `SVR` tiếp theo.
+1.  **Mục tiêu**: Giảm chiều dữ liệu bằng cách loại bỏ các đặc trưng ít đóng góp (nhiễu hoặc dư thừa) nhằm tăng tốc độ huấn luyện của mô hình `SVR` vốn cực kỳ nhạy cảm với số lượng đặc trưng lớn.
+2.  **Cơ chế hoạt động**: `SelectFromModel` sẽ chạy một mô hình `RandomForestRegressor` trên dữ liệu đã tiền xử lý để tính toán `feature_importances_`. Chỉ những đặc trưng có điểm quan trọng lớn hơn hoặc bằng `threshold=0.005` mới được giữ lại để đưa vào bước huấn luyện `SVR` tiếp theo.
 
 *   **Đoạn mã giải pháp mẫu (Python)**:
-    ```python
-    from sklearn.feature_selection import SelectFromModel
-    from sklearn.pipeline import Pipeline
-    from sklearn.ensemble import RandomForestRegressor
-    from sklearn.svm import SVR
+```python
+from sklearn.feature_selection import SelectFromModel
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
 
-    # Thiết lập pipeline tích hợp bộ chọn đặc trưng
-    selector_pipeline = Pipeline([
-        ('preprocessing', preprocessing), # Bước tiền xử lý dữ liệu gốc
-        ('selector', SelectFromModel(
-            RandomForestRegressor(random_state=42), 
-            threshold=0.005) # Chỉ giữ đặc trưng có độ quan trọng >= 0.5%
-        ),
-        ('svr', SVR(
-            C=rnd_search.best_params_["svr__C"], # Siêu tham số tối ưu từ Bài 2
-            gamma=rnd_search.best_params_["svr__gamma"],
-            kernel=rnd_search.best_params_["svr__kernel"])
-        ),
-    ])
+# Thiết lập pipeline tích hợp bộ chọn đặc trưng
+selector_pipeline = Pipeline([
+('preprocessing', preprocessing), # Bước tiền xử lý dữ liệu gốc
+('selector', SelectFromModel(
+RandomForestRegressor(random_state=42), 
+threshold=0.005) # Chỉ giữ đặc trưng có độ quan trọng >= 0.5%
+),
+('svr', SVR(
+C=rnd_search.best_params_["svr__C"], # Siêu tham số tối ưu từ Bài 2
+gamma=rnd_search.best_params_["svr__gamma"],
+kernel=rnd_search.best_params_["svr__kernel"])
+),
+])
 
-    # Huấn luyện thử nghiệm trên tập dữ liệu nhỏ
-    selector_pipeline.fit(X_train_mini, y_train_mini)
-    ```
+# Huấn luyện thử nghiệm trên tập dữ liệu nhỏ
+selector_pipeline.fit(X_train_mini, y_train_mini)
+```
 
 *   **Nhận xét thực nghiệm**:
-    *   Việc loại bỏ các đặc trưng ít quan trọng giúp mô hình **SVR chạy nhanh hơn đáng kể**. Tuy nhiên, cần lưu ý chọn ngưỡng `threshold` cẩn thận để tránh loại bỏ nhầm các đặc trưng tuy có độ quan trọng thấp khi đứng riêng lẻ nhưng lại mang tính tương tác mạnh mẽ khi kết hợp với các đặc trưng khác.
+*   Việc loại bỏ các đặc trưng ít quan trọng giúp mô hình **SVR chạy nhanh hơn đáng kể**. Tuy nhiên, cần lưu ý chọn ngưỡng `threshold` cẩn thận để tránh loại bỏ nhầm các đặc trưng tuy có độ quan trọng thấp khi đứng riêng lẻ nhưng lại mang tính tương tác mạnh mẽ khi kết hợp với các đặc trưng khác.
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 4: Xây dựng bộ biến đổi tùy chỉnh tích hợp thuật toán láng giềng gần nhất (KNN)</h4>
-  
-*   **Yêu cầu đề bài**:
-    Tạo một bộ biến đổi tùy chỉnh (custom transformer) có khả năng:
-    *   Huấn luyện một bộ hồi quy láng giềng gần nhất (`KNeighborsRegressor`) trong phương thức `fit()`.
-    *   Trả về kết quả dự đoán của mô hình KNN trong phương thức `transform()`.
-    *   Tích hợp bộ biến đổi này vào pipeline tiền xử lý dữ liệu, sử dụng tọa độ địa lý (Vĩ độ - `latitude` và Kinh độ - `longitude`) làm đầu vào. Đặc trưng mới tạo ra này sẽ là **giá nhà trung bình của các khu vực lân cận nhất**.
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 4: Xây dựng bộ biến đổi tùy chỉnh tích hợp thuật toán láng giềng gần nhất (KNN)</h4>
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+Tạo một bộ biến đổi tùy chỉnh (custom transformer) có khả năng:
+*   Huấn luyện một bộ hồi quy láng giềng gần nhất (`KNeighborsRegressor`) trong phương thức `fit()`.
+*   Trả về kết quả dự đoán của mô hình KNN trong phương thức `transform()`.
+*   Tích hợp bộ biến đổi này vào pipeline tiền xử lý dữ liệu, sử dụng tọa độ địa lý (Vĩ độ - `latitude` và Kinh độ - `longitude`) làm đầu vào. Đặc trưng mới tạo ra này sẽ là **giá nhà trung bình của các khu vực lân cận nhất**.
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Phân tích & Lập luận giải thuật**:
-    1.  **Thiết kế Class nâng cao**: Thay vì chỉ giới hạn trong `KNeighborsRegressor`, chúng ta sẽ thiết kế một bộ biến đổi tổng quát kế thừa từ `MetaEstimatorMixin`, `BaseEstimator` và `TransformerMixin`. Bộ biến đổi này nhận một đối số `estimator` tùy ý trong hàm khởi tạo `__init__`.
-    2.  **Cơ chế hoạt động**:
-        *   Trong `fit()`, bộ biến đổi sao chép bộ ước lượng (estimator) được cung cấp, huấn luyện nó để học cách ánh xạ từ tọa độ địa lý \\((X)\\) sang nhãn giá nhà \\((y)\\).
-        *   Trong `transform()`, bộ ước lượng đã huấn luyện sẽ đưa ra dự đoán giá nhà cho các tọa độ tương ứng.
+1.  **Thiết kế Class nâng cao**: Thay vì chỉ giới hạn trong `KNeighborsRegressor`, chúng ta sẽ thiết kế một bộ biến đổi tổng quát kế thừa từ `MetaEstimatorMixin`, `BaseEstimator` và `TransformerMixin`. Bộ biến đổi này nhận một đối số `estimator` tùy ý trong hàm khởi tạo `__init__`.
+2.  **Cơ chế hoạt động**:
+*   Trong `fit()`, bộ biến đổi sao chép bộ ước lượng (estimator) được cung cấp, huấn luyện nó để học cách ánh xạ từ tọa độ địa lý \\((X)\\) sang nhãn giá nhà \\((y)\\).
+*   Trong `transform()`, bộ ước lượng đã huấn luyện sẽ đưa ra dự đoán giá nhà cho các tọa độ tương ứng.
 
 *   **Đoạn mã giải pháp mẫu (Python)**:
-    ```python
-    from sklearn.base import BaseEstimator, TransformerMixin, MetaEstimatorMixin, clone
-    from sklearn.neighbors import KNeighborsRegressor
-    from sklearn.utils.validation import check_is_fitted
+```python
+from sklearn.base import BaseEstimator, TransformerMixin, MetaEstimatorMixin, clone
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.utils.validation import check_is_fitted
 
-    class LocationToValueTransformer(BaseEstimator, TransformerMixin, MetaEstimatorMixin):
-        def __init__(self, estimator):
-            self.estimator = estimator
+class LocationToValueTransformer(BaseEstimator, TransformerMixin, MetaEstimatorMixin):
+def __init__(self, estimator):
+self.estimator = estimator
 
-        def fit(self, X, y):
-            # Sao chép bộ ước lượng gốc để đảm bảo tính độc lập
-            self.estimator_ = clone(self.estimator)
-            self.estimator_.fit(X, y)
-            
-            # Lưu trữ tên đặc trưng đầu vào nếu X là DataFrame
-            if hasattr(X, "columns"):
-                self.feature_names_in_ = np.array(X.columns, dtype=object)
-            else:
-                self.feature_names_in_ = np.array([f"x{i}" for i in range(X.shape)], dtype=object)
-            self.n_features_in_ = X.shape
-            return self
+def fit(self, X, y):
+# Sao chép bộ ước lượng gốc để đảm bảo tính độc lập
+self.estimator_ = clone(self.estimator)
+self.estimator_.fit(X, y)
 
-        def transform(self, X):
-            check_is_fitted(self)
-            # Trả về dự đoán dưới dạng mảng 2D (cần thiết cho các pipeline tiếp theo)
-            predictions = self.estimator_.predict(X)
-            return predictions.reshape(-1, 1)
+# Lưu trữ tên đặc trưng đầu vào nếu X là DataFrame
+if hasattr(X, "columns"):
+self.feature_names_in_ = np.array(X.columns, dtype=object)
+else:
+self.feature_names_in_ = np.array([f"x{i}" for i in range(X.shape)], dtype=object)
+self.n_features_in_ = X.shape
+return self
 
-        def get_feature_names_out(self, input_features=None):
-            # Định nghĩa tên đặc trưng đầu ra duy nhất cho đặc trưng dự đoán mới
-            return np.array(["location_knn_prediction"], dtype=object)
-    ```
+def transform(self, X):
+check_is_fitted(self)
+# Trả về dự đoán dưới dạng mảng 2D (cần thiết cho các pipeline tiếp theo)
+predictions = self.estimator_.predict(X)
+return predictions.reshape(-1, 1)
+
+def get_feature_names_out(self, input_features=None):
+# Định nghĩa tên đặc trưng đầu ra duy nhất cho đặc trưng dự đoán mới
+return np.array(["location_knn_prediction"], dtype=object)
+```
 
 *   **Nhận xét thực nghiệm**:
-    *   Khi huấn luyện thử nghiệm, đặc trưng giá nhà lân cận từ KNN mang lại cải tiến tốt, tuy nhiên thực tế cho thấy **các đặc trưng tương đồng cụm (Cluster Similarity) dựa trên hàm RBF Gaussian** (được giới thiệu trong sách) hoạt động tốt hơn và có độ trơn tru cao hơn so với ranh giới quyết định phân mảnh của KNN.
+*   Khi huấn luyện thử nghiệm, đặc trưng giá nhà lân cận từ KNN mang lại cải tiến tốt, tuy nhiên thực tế cho thấy **các đặc trưng tương đồng cụm (Cluster Similarity) dựa trên hàm RBF Gaussian** (được giới thiệu trong sách) hoạt động tốt hơn và có độ trơn tru cao hơn so với ranh giới quyết định phân mảnh của KNN.
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 5: Tự động khám phá các lựa chọn tiền xử lý bằng `RandomizedSearchCV`</h4>
-  
-*   **Yêu cầu đề bài**:
-    Sử dụng `RandomizedSearchCV` để đồng thời tinh chỉnh các siêu tham số của **cả bước chuẩn bị dữ liệu (tiền xử lý)** và **bộ hồi quy cuối cùng**. Hãy cấu hình không gian tìm kiếm để tinh chỉnh:
-    *   Số lượng láng giềng `n_neighbors` của bộ hồi quy địa lý KNN nằm trong khoảng ``.
-    *   Trọng số khoảng cách `weights` của KNN (`"distance"` hoặc `"uniform"`).
-    *   Các siêu tham số `C` và `gamma` của mô hình hồi quy `SVR` cuối cùng.
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 5: Tự động khám phá các lựa chọn tiền xử lý bằng `RandomizedSearchCV`</h4>
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+Sử dụng `RandomizedSearchCV` để đồng thời tinh chỉnh các siêu tham số của **cả bước chuẩn bị dữ liệu (tiền xử lý)** và **bộ hồi quy cuối cùng**. Hãy cấu hình không gian tìm kiếm để tinh chỉnh:
+*   Số lượng láng giềng `n_neighbors` của bộ hồi quy địa lý KNN nằm trong khoảng ``.
+*   Trọng số khoảng cách `weights` của KNN (`"distance"` hoặc `"uniform"`).
+*   Các siêu tham số `C` và `gamma` của mô hình hồi quy `SVR` cuối cùng.
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Phân tích & Lập luận giải thuật**:
-    1.  **Truy cập siêu tham số lồng nhau**: Scikit-Learn cho phép chúng ta thay đổi các siêu tham số của các bước nằm sâu trong pipeline bằng cách sử dụng cú pháp dấu gạch dưới kép `__` liên tiếp.
-    2.  Ví dụ: `"preprocessing__geo__estimator__n_neighbors"` biểu thị siêu tham số `n_neighbors` của bộ ước lượng nằm trong bước `"geo"` thuộc phân đoạn `"preprocessing"` của pipeline.
+1.  **Truy cập siêu tham số lồng nhau**: Scikit-Learn cho phép chúng ta thay đổi các siêu tham số của các bước nằm sâu trong pipeline bằng cách sử dụng cú pháp dấu gạch dưới kép `__` liên tiếp.
+2.  Ví dụ: `"preprocessing__geo__estimator__n_neighbors"` biểu thị siêu tham số `n_neighbors` của bộ ước lượng nằm trong bước `"geo"` thuộc phân đoạn `"preprocessing"` của pipeline.
 
 *   **Đoạn mã giải pháp mẫu (Python)**:
-    ```python
-    from sklearn.model_selection import RandomizedSearchCV
-    from scipy.stats import expon, loguniform
+```python
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import expon, loguniform
 
-    # Định nghĩa không gian phân phối siêu tham số cần tìm kiếm
-    param_distribs = {
-        "preprocessing__geo__estimator__n_neighbors": range(1, 30), # Tinh chỉnh bước tiền xử lý
-        "preprocessing__geo__estimator__weights": ["distance", "uniform"], # Tinh chỉnh bước tiền xử lý
-        "svr__C": loguniform(20, 200_000), # Tinh chỉnh siêu tham số mô hình SVR
-        "svr__gamma": expon(scale=1.0), # Tinh chỉnh siêu tham số mô hình SVR
-    }
+# Định nghĩa không gian phân phối siêu tham số cần tìm kiếm
+param_distribs = {
+"preprocessing__geo__estimator__n_neighbors": range(1, 30), # Tinh chỉnh bước tiền xử lý
+"preprocessing__geo__estimator__weights": ["distance", "uniform"], # Tinh chỉnh bước tiền xử lý
+"svr__C": loguniform(20, 200_000), # Tinh chỉnh siêu tham số mô hình SVR
+"svr__gamma": expon(scale=1.0), # Tinh chỉnh siêu tham số mô hình SVR
+}
 
-    # Khởi tạo và thực hiện tìm kiếm ngẫu nhiên trên tập dữ liệu nhỏ
-    geo_rnd_search = RandomizedSearchCV(
-        svr_pipeline_with_knn, # Pipeline có tích hợp bộ biến đổi KNN địa lý ở Bài 4
-        param_distributions=param_distribs,
-        n_iter=20,
-        cv=3,
-        scoring='neg_mean_squared_error',
-        random_state=42,
-        verbose=2
-    )
+# Khởi tạo và thực hiện tìm kiếm ngẫu nhiên trên tập dữ liệu nhỏ
+geo_rnd_search = RandomizedSearchCV(
+svr_pipeline_with_knn, # Pipeline có tích hợp bộ biến đổi KNN địa lý ở Bài 4
+param_distributions=param_distribs,
+n_iter=20,
+cv=3,
+scoring='neg_mean_squared_error',
+random_state=42,
+verbose=2
+)
 
-    geo_rnd_search.fit(X_train_mini, y_train_mini)
-    ```
+geo_rnd_search.fit(X_train_mini, y_train_mini)
+```
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 6: Triển khai lớp sao chép chuẩn hóa tùy chỉnh `StandardScalerClone`</h4>
-  
-*   **Yêu cầu đề bài**:
-    Hãy viết lại thuật toán chuẩn hóa `StandardScaler` từ đầu, bổ sung đầy đủ các đặc tính chuẩn của Scikit-Learn:
-    1.  Hỗ trợ phương thức `inverse_transform()` để khôi phục dữ liệu về thang đo ban đầu.
-    2.  Hỗ trợ lưu trữ tên đặc trưng đầu vào `feature_names_in_` trong phương thức `fit()` nếu đầu vào là một `DataFrame`.
-    3.  Triển khai phương thức `get_feature_names_out()` để quản lý đầu ra tên đặc trưng một cách chuyên nghiệp.
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 6: Triển khai lớp sao chép chuẩn hóa tùy chỉnh `StandardScalerClone`</h4>
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+Hãy viết lại thuật toán chuẩn hóa `StandardScaler` từ đầu, bổ sung đầy đủ các đặc tính chuẩn của Scikit-Learn:
+1.  Hỗ trợ phương thức `inverse_transform()` để khôi phục dữ liệu về thang đo ban đầu.
+2.  Hỗ trợ lưu trữ tên đặc trưng đầu vào `feature_names_in_` trong phương thức `fit()` nếu đầu vào là một `DataFrame`.
+3.  Triển khai phương thức `get_feature_names_out()` để quản lý đầu ra tên đặc trưng một cách chuyên nghiệp.
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Phân tích & Lập luận giải thuật**:
-    1.  **Công thức chuẩn hóa**: 
-        \\[X_{scaled} = \frac{X - \mu}{\sigma}\\]
-    2.  **Công thức khôi phục (Inverse)**:
-        \\[X = (X_{scaled} \times \sigma) + \mu\\]
-    3.  **Xử lý lỗi chia cho 0**: Cần thêm một hệ số làm mịn cực nhỏ \\(\epsilon\\) (ví dụ: `1e-7`) vào mẫu số để tránh lỗi tính toán khi độ lệch chuẩn bằng 0.
+1.  **Công thức chuẩn hóa**: 
+\\[X_{scaled} = \frac{X - \mu}{\sigma}\\]
+2.  **Công thức khôi phục (Inverse)**:
+\\[X = (X_{scaled} \times \sigma) + \mu\\]
+3.  **Xử lý lỗi chia cho 0**: Cần thêm một hệ số làm mịn cực nhỏ \\(\epsilon\\) (ví dụ: `1e-7`) vào mẫu số để tránh lỗi tính toán khi độ lệch chuẩn bằng 0.
 
 *   **Đoạn mã giải pháp mẫu (Python)**:
-    ```python
-    import numpy as np
-    from sklearn.base import BaseEstimator, TransformerMixin
-    from sklearn.utils.validation import check_is_fitted, check_array
+```python
+import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.utils.validation import check_is_fitted, check_array
 
-    class StandardScalerClone(BaseEstimator, TransformerMixin):
-        def fit(self, X, y=None):
-            # Kiểm tra định dạng dữ liệu đầu vào
-            X = check_array(X, accept_sparse=False)
-            
-            # Tính toán trung bình và độ lệch chuẩn theo từng cột
-            self.mean_ = X.mean(axis=0)
-            self.scale_ = X.std(axis=0)
-            self.n_features_in_ = X.shape
-            
-            # Nếu đầu vào là một DataFrame, ghi nhận tên cột
-            if hasattr(X, "columns"):
-                self.feature_names_in_ = np.array(X.columns, dtype=object)
-                
-            return self
+class StandardScalerClone(BaseEstimator, TransformerMixin):
+def fit(self, X, y=None):
+# Kiểm tra định dạng dữ liệu đầu vào
+X = check_array(X, accept_sparse=False)
 
-        def transform(self, X):
-            check_is_fitted(self)
-            X = check_array(X, accept_sparse=False)
-            
-            # Tránh chia cho 0 bằng cách thêm epsilon rất nhỏ vào scale
-            return (X - self.mean_) / (self.scale_ + 1e-7)
+# Tính toán trung bình và độ lệch chuẩn theo từng cột
+self.mean_ = X.mean(axis=0)
+self.scale_ = X.std(axis=0)
+self.n_features_in_ = X.shape
 
-        def inverse_transform(self, X):
-            check_is_fitted(self)
-            X = check_array(X, accept_sparse=False)
-            
-            # Thực hiện phép toán ngược để khôi phục giá trị gốc
-            return (X * (self.scale_ + 1e-7)) + self.mean_
+# Nếu đầu vào là một DataFrame, ghi nhận tên cột
+if hasattr(X, "columns"):
+self.feature_names_in_ = np.array(X.columns, dtype=object)
 
-        def get_feature_names_out(self, input_features=None):
-            # Quản lý tên đặc trưng đầu ra đúng chuẩn Scikit-Learn
-            if input_features is None:
-                if hasattr(self, "feature_names_in_"):
-                    return self.feature_names_in_
-                else:
-                    return np.array([f"x{i}" for i in range(self.n_features_in_)], dtype=object)
-            
-            # Đảm bảo độ dài đầu vào khớp với số đặc trưng học được
-            assert len(input_features) == self.n_features_in_
-            return np.array(input_features, dtype=object)
-    ```
+return self
 
----
+def transform(self, X):
+check_is_fitted(self)
+X = check_array(X, accept_sparse=False)
 
-    </div>
-  </div>
+# Tránh chia cho 0 bằng cách thêm epsilon rất nhỏ vào scale
+return (X - self.mean_) / (self.scale_ + 1e-7)
+
+def inverse_transform(self, X):
+check_is_fitted(self)
+X = check_array(X, accept_sparse=False)
+
+# Thực hiện phép toán ngược để khôi phục giá trị gốc
+return (X * (self.scale_ + 1e-7)) + self.mean_
+
+def get_feature_names_out(self, input_features=None):
+# Quản lý tên đặc trưng đầu ra đúng chuẩn Scikit-Learn
+if input_features is None:
+if hasattr(self, "feature_names_in_"):
+return self.feature_names_in_
+else:
+return np.array([f"x{i}" for i in range(self.n_features_in_)], dtype=object)
+
+# Đảm bảo độ dài đầu vào khớp với số đặc trưng học được
+assert len(input_features) == self.n_features_in_
+return np.array(input_features, dtype=object)
+```
+
+</div>
+</div>
 </div>
 
 

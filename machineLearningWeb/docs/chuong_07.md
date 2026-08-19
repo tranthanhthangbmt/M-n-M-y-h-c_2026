@@ -1184,229 +1184,212 @@ tay của chương này, tại https://homl.info/colab3 .
 </div>
 
 
+
+
+
+
+
+
+
 #### ** 📝 Bài Tập **
+
 
 <script>
 if (typeof checkPasswordAndShow !== 'function') {
   window.checkPasswordAndShow = function(btn) {
-    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
-    if (pass === "1234@Abc") {
-      var content = btn.nextElementSibling;
-      content.style.display = "block";
-      btn.style.display = "none";
-    } else if (pass !== null) {
+    let password = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (password === "donga2026") {
+      let content = btn.nextElementSibling;
+      if (content && content.classList.contains("solution-content")) {
+        content.style.display = "block";
+        btn.style.display = "none";
+      }
+    } else {
       alert("Mật khẩu không đúng!");
     }
-  }
+  };
 }
 </script>
 
-
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Nếu bạn đã huấn luyện năm mô hình khác nhau trên cùng một dữ liệu huấn luyện, và tất cả đều đạt độ chính xác 95%, liệu có cơ hội nào bạn có thể kết hợp các mô hình này để có được kết quả tốt hơn không? Nếu có, bằng cách nào? Nếu không, tại sao?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Nếu bạn đã huấn luyện năm mô hình khác nhau trên cùng một dữ liệu huấn luyện, và tất cả đều đạt độ chính xác 95%, liệu có cơ hội nào bạn có thể kết hợp các mô hình này để có được kết quả tốt hơn không? Nếu có, bằng cách nào? Nếu không, tại sao?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Có cơ hội lớn để đạt kết quả tốt hơn** bằng cách kết hợp chúng thành một **bộ phân loại bỏ phiếu (Voting Classifier)** [cite: 823].
-    *   **Điều kiện cốt lõi**: Sự kết hợp này chỉ thực sự hiệu quả nếu 5 mô hình này **đủ đa dạng** (tức là chúng sử dụng các thuật toán huấn luyện rất khác nhau hoặc học trên các khía cạnh khác nhau của dữ liệu) [cite: 823, 825]. Khi đó, chúng sẽ mắc các sai số không tương quan (mô hình này đoán sai mẫu này nhưng mô hình khác lại đoán đúng) [cite: 824].
-    *   **Tại sao không hiệu quả nếu tương quan**: Nếu cả 5 mô hình đều rất giống nhau (ví dụ: huấn luyện cùng một thuật toán với các hạt giống ngẫu nhiên khác nhau một chút), chúng sẽ có xu hướng **mắc cùng một loại sai lầm trên cùng một mẫu dữ liệu** [cite: 824]. Khi đó, việc bỏ phiếu đa số sẽ chỉ củng cố thêm dự đoán sai và không giúp cải thiện hiệu suất [cite: 824].
+*   **Có cơ hội lớn để đạt kết quả tốt hơn** bằng cách kết hợp chúng thành một **bộ phân loại bỏ phiếu (Voting Classifier)** [cite: 823].
+*   **Điều kiện cốt lõi**: Sự kết hợp này chỉ thực sự hiệu quả nếu 5 mô hình này **đủ đa dạng** (tức là chúng sử dụng các thuật toán huấn luyện rất khác nhau hoặc học trên các khía cạnh khác nhau của dữ liệu) [cite: 823, 825]. Khi đó, chúng sẽ mắc các sai số không tương quan (mô hình này đoán sai mẫu này nhưng mô hình khác lại đoán đúng) [cite: 824].
+*   **Tại sao không hiệu quả nếu tương quan**: Nếu cả 5 mô hình đều rất giống nhau (ví dụ: huấn luyện cùng một thuật toán với các hạt giống ngẫu nhiên khác nhau một chút), chúng sẽ có xu hướng **mắc cùng một loại sai lầm trên cùng một mẫu dữ liệu** [cite: 824]. Khi đó, việc bỏ phiếu đa số sẽ chỉ củng cố thêm dự đoán sai và không giúp cải thiện hiệu suất [cite: 824].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Sự khác biệt giữa bộ phân loại bỏ phiếu cứng và bỏ phiếu mềm là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Sự khác biệt giữa bộ phân loại bỏ phiếu cứng và bỏ phiếu mềm là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Bỏ phiếu cứng (Hard Voting)**: Hệ thống thu thập dự đoán lớp (nhãn rời rạc) từ tất cả các bộ phân loại thành phần, và **lớp nào nhận được số phiếu bầu nhiều nhất** sẽ là dự đoán cuối cùng của tập hợp [cite: 823].
-    *   **Bỏ phiếu mềm (Soft Voting)**: Hệ thống sẽ **tính giá trị trung bình của xác suất lớp được dự đoán** từ tất cả các bộ phân loại, sau đó chọn lớp có xác suất trung bình cao nhất [cite: 825]. 
-    *   **So sánh hiệu suất**: Bỏ phiếu mềm thường mang lại hiệu suất vượt trội hơn bỏ phiếu cứng vì nó cho phép các mô hình có độ tự tin cao (xác suất gần 1 hoặc 0) đóng góp trọng số lớn hơn vào quyết định chung [cite: 825]. Tuy nhiên, bỏ phiếu mềm chỉ hoạt động khi tất cả các mô hình thành phần đều có khả năng ước lượng xác suất lớp (ví dụ: có phương thức `predict_proba()`) [cite: 825].
+*   **Bỏ phiếu cứng (Hard Voting)**: Hệ thống thu thập dự đoán lớp (nhãn rời rạc) từ tất cả các bộ phân loại thành phần, và **lớp nào nhận được số phiếu bầu nhiều nhất** sẽ là dự đoán cuối cùng của tập hợp [cite: 823].
+*   **Bỏ phiếu mềm (Soft Voting)**: Hệ thống sẽ **tính giá trị trung bình của xác suất lớp được dự đoán** từ tất cả các bộ phân loại, sau đó chọn lớp có xác suất trung bình cao nhất [cite: 825]. 
+*   **So sánh hiệu suất**: Bỏ phiếu mềm thường mang lại hiệu suất vượt trội hơn bỏ phiếu cứng vì nó cho phép các mô hình có độ tự tin cao (xác suất gần 1 hoặc 0) đóng góp trọng số lớn hơn vào quyết định chung [cite: 825]. Tuy nhiên, bỏ phiếu mềm chỉ hoạt động khi tất cả các mô hình thành phần đều có khả năng ước lượng xác suất lớp (ví dụ: có phương thức `predict_proba()`) [cite: 825].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Có thể tăng tốc quá trình huấn luyện của một tập hợp bagging bằng cách phân tán nó trên nhiều máy chủ không? Còn các tập hợp pasting, boosting, random forests, hay stacking thì sao?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Có thể tăng tốc quá trình huấn luyện của một tập hợp bagging bằng cách phân tán nó trên nhiều máy chủ không? Còn các tập hợp pasting, boosting, random forests, hay stacking thì sao?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Bagging, Pasting và Random Forests**: Hoàn toàn **có thể chạy song song và phân tán rất hiệu quả** trên nhiều CPU hoặc máy chủ khác nhau [cite: 825, 828]. Lý do là các bộ dự đoán thành phần trong các tập hợp này được huấn luyện hoàn toàn độc lập với nhau (mẫu dữ liệu của cây này không liên quan đến cây kia) [cite: 825, 826].
-    *   **Boosting (như AdaBoost, Gradient Boosting)**: **Không thể** song song hóa dễ dàng [cite: 830]. Bản chất của các thuật toán boosting là huấn luyện tuần tự (mô hình sau được xây dựng dựa trên sai số của mô hình đi trước để sửa sai), nghĩa là mô hình tiếp theo bắt buộc phải đợi mô hình trước đó hoàn thành quá trình huấn luyện [cite: 830, 831].
-    *   **Stacking**: Có thể song song hóa **một phần** [cite: 840, 841]. Các mô hình cơ sở ở cùng một tầng (layer) có thể được huấn luyện song song một cách độc lập [cite: 840, 841]. Tuy nhiên, bộ trộn (blender/meta-learner) ở tầng tiếp theo bắt buộc phải đợi cho đến khi tất cả các mô hình cơ sở ở tầng trước đó huấn luyện xong và đưa ra dự đoán để làm dữ liệu đầu vào cho nó [cite: 840, 841].
+*   **Bagging, Pasting và Random Forests**: Hoàn toàn **có thể chạy song song và phân tán rất hiệu quả** trên nhiều CPU hoặc máy chủ khác nhau [cite: 825, 828]. Lý do là các bộ dự đoán thành phần trong các tập hợp này được huấn luyện hoàn toàn độc lập với nhau (mẫu dữ liệu của cây này không liên quan đến cây kia) [cite: 825, 826].
+*   **Boosting (như AdaBoost, Gradient Boosting)**: **Không thể** song song hóa dễ dàng [cite: 830]. Bản chất của các thuật toán boosting là huấn luyện tuần tự (mô hình sau được xây dựng dựa trên sai số của mô hình đi trước để sửa sai), nghĩa là mô hình tiếp theo bắt buộc phải đợi mô hình trước đó hoàn thành quá trình huấn luyện [cite: 830, 831].
+*   **Stacking**: Có thể song song hóa **một phần** [cite: 840, 841]. Các mô hình cơ sở ở cùng một tầng (layer) có thể được huấn luyện song song một cách độc lập [cite: 840, 841]. Tuy nhiên, bộ trộn (blender/meta-learner) ở tầng tiếp theo bắt buộc phải đợi cho đến khi tất cả các mô hình cơ sở ở tầng trước đó huấn luyện xong và đưa ra dự đoán để làm dữ liệu đầu vào cho nó [cite: 840, 841].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Lợi ích của đánh giá out-of-bag (OOB) là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Lợi ích của đánh giá out-of-bag (OOB) là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Trong phương pháp Bagging (lấy mẫu có thay thế), trung bình chỉ có khoảng 63% các trường hợp huấn luyện được chọn cho mỗi bộ dự đoán, còn lại **37% trường hợp không được chọn** (được gọi là các thực thể out-of-bag - OOB).
-    *   **Lợi ích lớn nhất**: Bạn có thể sử dụng các thực thể OOB này để đánh giá hiệu suất của từng bộ dự đoán mà **không cần một tập xác thực (validation set) riêng biệt** [cite: 79]. Điều này cực kỳ có lợi khi dữ liệu khan hiếm, giúp bạn giữ lại được 100% dữ liệu gốc cho việc huấn luyện tập hợp mà vẫn có được thước đo đánh giá khách quan, không thiên vị về sai số khái quát hóa của mô hình [cite: 79].
+*   Trong phương pháp Bagging (lấy mẫu có thay thế), trung bình chỉ có khoảng 63% các trường hợp huấn luyện được chọn cho mỗi bộ dự đoán, còn lại **37% trường hợp không được chọn** (được gọi là các thực thể out-of-bag - OOB).
+*   **Lợi ích lớn nhất**: Bạn có thể sử dụng các thực thể OOB này để đánh giá hiệu suất của từng bộ dự đoán mà **không cần một tập xác thực (validation set) riêng biệt** [cite: 79]. Điều này cực kỳ có lợi khi dữ liệu khan hiếm, giúp bạn giữ lại được 100% dữ liệu gốc cho việc huấn luyện tập hợp mà vẫn có được thước đo đánh giá khách quan, không thiên vị về sai số khái quát hóa của mô hình [cite: 79].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Điều gì làm cho các tập hợp extra-trees ngẫu nhiên hơn rừng ngẫu nhiên thông thường? Sự ngẫu nhiên bổ sung này có thể giúp ích như thế nào? Bộ phân loại extra-trees chậm hơn hay nhanh hơn rừng ngẫu nhiên thông thường?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Điều gì làm cho các tập hợp extra-trees ngẫu nhiên hơn rừng ngẫu nhiên thông thường? Sự ngẫu nhiên bổ sung này có thể giúp ích như thế nào? Bộ phân loại extra-trees chậm hơn hay nhanh hơn rừng ngẫu nhiên thông thường?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Nguyên nhân ngẫu nhiên hơn**: Rừng ngẫu nhiên thông thường tìm kiếm ngưỡng phân tách tối ưu nhất cho từng đặc trưng tại mỗi nút của cây quyết định. Ngược lại, **Extra-Trees (Extremely Randomized Trees)** sẽ tự động chọn các ngưỡng phân tách hoàn toàn **ngẫu nhiên** cho mỗi đặc trưng, rồi chọn ngưỡng tốt nhất trong số các ngưỡng ngẫu nhiên đó.
-    *   **Sự ngẫu nhiên này giúp ích thế nào**: Nó hoạt động giống như một bộ điều chuẩn (chính quy hóa), giúp **giảm phương sai (variance)** của mô hình tổng thể, mặc dù có thể làm tăng nhẹ độ chệch (bias).
-    *   **Tốc độ**: Extra-Trees **huấn luyện nhanh hơn nhiều** so với Rừng ngẫu nhiên thông thường. Việc tính toán và tìm kiếm ngưỡng tối ưu tại mỗi nút là bước tốn tài nguyên nhất của cây quyết định; việc chọn ngưỡng ngẫu nhiên giúp loại bỏ hoàn toàn gánh nặng tính toán này.
+*   **Nguyên nhân ngẫu nhiên hơn**: Rừng ngẫu nhiên thông thường tìm kiếm ngưỡng phân tách tối ưu nhất cho từng đặc trưng tại mỗi nút của cây quyết định. Ngược lại, **Extra-Trees (Extremely Randomized Trees)** sẽ tự động chọn các ngưỡng phân tách hoàn toàn **ngẫu nhiên** cho mỗi đặc trưng, rồi chọn ngưỡng tốt nhất trong số các ngưỡng ngẫu nhiên đó.
+*   **Sự ngẫu nhiên này giúp ích thế nào**: Nó hoạt động giống như một bộ điều chuẩn (chính quy hóa), giúp **giảm phương sai (variance)** của mô hình tổng thể, mặc dù có thể làm tăng nhẹ độ chệch (bias).
+*   **Tốc độ**: Extra-Trees **huấn luyện nhanh hơn nhiều** so với Rừng ngẫu nhiên thông thường. Việc tính toán và tìm kiếm ngưỡng tối ưu tại mỗi nút là bước tốn tài nguyên nhất của cây quyết định; việc chọn ngưỡng ngẫu nhiên giúp loại bỏ hoàn toàn gánh nặng tính toán này.
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Nếu tập hợp AdaBoost của bạn dưới khớp dữ liệu huấn luyện, bạn nên điều chỉnh siêu tham số nào và như thế nào?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Nếu tập hợp AdaBoost của bạn dưới khớp dữ liệu huấn luyện, bạn nên điều chỉnh siêu tham số nào và như thế nào?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    Khi tập hợp AdaBoost bị dưới khớp (underfitting), bạn cần **giảm bớt lượng chính quy hóa hoặc tăng sức mạnh cho mô hình** bằng cách [cite: 73]:
-    1.  **Tăng số lượng bộ ước lượng (`n_estimators`)**: Cho phép tập hợp có thêm nhiều bước sửa sai tuần tự hơn [cite: 73].
-    2.  **Giảm bớt chính quy hóa của bộ phân loại cơ sở**: Cho phép mô hình nền tảng (thường là cây quyết định nông - decision stump) có độ phức tạp cao hơn (ví dụ: tăng `max_depth` hoặc giảm `min_samples_leaf`) [cite: 73].
-    3.  **Tăng nhẹ tốc độ học (`learning_rate`)** [cite: 73].
+Khi tập hợp AdaBoost bị dưới khớp (underfitting), bạn cần **giảm bớt lượng chính quy hóa hoặc tăng sức mạnh cho mô hình** bằng cách [cite: 73]:
+1.  **Tăng số lượng bộ ước lượng (`n_estimators`)**: Cho phép tập hợp có thêm nhiều bước sửa sai tuần tự hơn [cite: 73].
+2.  **Giảm bớt chính quy hóa của bộ phân loại cơ sở**: Cho phép mô hình nền tảng (thường là cây quyết định nông - decision stump) có độ phức tạp cao hơn (ví dụ: tăng `max_depth` hoặc giảm `min_samples_leaf`) [cite: 73].
+3.  **Tăng nhẹ tốc độ học (`learning_rate`)** [cite: 73].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Nếu tập hợp gradient boosting của bạn quá khớp tập huấn luyện, bạn nên tăng hay giảm tốc độ học?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Nếu tập hợp gradient boosting của bạn quá khớp tập huấn luyện, bạn nên tăng hay giảm tốc độ học?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Nếu tập hợp Gradient Boosting bị quá khớp (overfitting), bạn nên **giảm tốc độ học (`learning_rate`)** [cite: 73].
-    *   **Tại sao**: Việc giảm tốc độ học (áp dụng kỹ thuật gọi là *shrinkage*) buộc mô hình phải sử dụng nhiều cây quyết định hơn để khớp dữ liệu [cite: 838]. Mỗi cây chỉ đóng góp một phần nhỏ vào kết quả dự đoán, giúp làm mượt ranh giới quyết định và cải thiện đáng kể khả năng tổng quát hóa [cite: 838].
-    *   *Mẹo bổ sung*: Khi giảm tốc độ học, bạn cũng nên áp dụng kỹ thuật **dừng sớm (early stopping)** để tìm ra số lượng cây (`n_estimators`) tối ưu nhất, ngăn không cho thuật toán tiếp tục thêm các cây dư thừa gây quá khớp [cite: 73, 839].
+*   Nếu tập hợp Gradient Boosting bị quá khớp (overfitting), bạn nên **giảm tốc độ học (`learning_rate`)** [cite: 73].
+*   **Tại sao**: Việc giảm tốc độ học (áp dụng kỹ thuật gọi là *shrinkage*) buộc mô hình phải sử dụng nhiều cây quyết định hơn để khớp dữ liệu [cite: 838]. Mỗi cây chỉ đóng góp một phần nhỏ vào kết quả dự đoán, giúp làm mượt ranh giới quyết định và cải thiện đáng kể khả năng tổng quát hóa [cite: 838].
+*   *Mẹo bổ sung*: Khi giảm tốc độ học, bạn cũng nên áp dụng kỹ thuật **dừng sớm (early stopping)** để tìm ra số lượng cây (`n_estimators`) tối ưu nhất, ngăn không cho thuật toán tiếp tục thêm các cây dư thừa gây quá khớp [cite: 73, 839].
 
----
-
-Để tìm ra lời giải tối ưu và thấu đáo nhất cho hai bài tập thực hành lớn cuối cùng của **Chương 7: Học tập tập hợp và Rừng ngẫu nhiên**, chúng ta sẽ áp dụng phương pháp lập luận **Tree of Thought (Cây tư duy)**. Phương pháp này giúp phân nhánh các hướng tiếp cận kỹ thuật khác nhau, đánh giá ưu/nhược điểm thực nghiệm và lựa chọn giải pháp xuất sắc nhất dựa trên dữ liệu thực tế của tập MNIST [cite: 68, 80, 89].
-
----
-
-### 🌳 Sơ đồ phân nhánh lập luận (Tree of Thought)
-
-```
-                            [Tập dữ liệu MNIST (70,000 mẫu)] [cite: 80, 81]
-                                           |
-                +--------------------------+--------------------------+
-                |                                                     |
-     [Bài 8: Bỏ phiếu - Voting] [cite: 80]              [Bài 9: Xếp chồng - Stacking] [cite: 89]
-                |                                                     |
-        +-------+-------+                                     +-------+-------+
-        |               |                                     |               |
-   [Hard Voting]   [Soft Voting] [cite: 80]              [Custom Blender]  [StackingClassifier] [cite: 89, 91]
-   [97.69% - Tốt]  [97.24% - Tệ] [cite: 88]              [97.05% - Trung bình] [cite: 91]  [97.84% - Xuất sắc] [cite: 93]
-```
-
----
-
-### PHẦN 2: Lời giải chi tiết Bài tập 8 và Bài tập 9 (MNIST)
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 8: Bộ phân loại bỏ phiếu (Voting Classifier) trên MNIST</h4>
-  
-*   **Yêu cầu đề bài**:
-    Tải dữ liệu MNIST, chia thành tập huấn luyện (50,000 mẫu), tập xác thực (10,000 mẫu) và tập kiểm thử (10,000 mẫu) [cite: 80]. Huấn luyện nhiều bộ phân loại khác nhau (Random Forest, Extra-Trees, SVM, MLP) [cite: 82], sau đó kết hợp chúng thành một bộ phân loại bỏ phiếu (Voting Classifier) đạt hiệu suất cao hơn tất cả các mô hình đơn lẻ trên tập xác thực [cite: 83].
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 8: Bộ phân loại bỏ phiếu (Voting Classifier) trên MNIST</h4>
+
+Tải dữ liệu MNIST, chia thành tập huấn luyện (50,000 mẫu), tập xác thực (10,000 mẫu) và tập kiểm thử (10,000 mẫu) [cite: 80]. Huấn luyện nhiều bộ phân loại khác nhau (Random Forest, Extra-Trees, SVM, MLP) [cite: 82], sau đó kết hợp chúng thành một bộ phân loại bỏ phiếu (Voting Classifier) đạt hiệu suất cao hơn tất cả các mô hình đơn lẻ trên tập xác thực [cite: 83].
 
 ##### **Bước 1: Phân tích & Đánh giá hiệu suất độc lập (Train 50k, Valid 10k)**
 Chúng ta huấn luyện độc lập 4 mô hình cơ sở trên 50,000 mẫu đầu tiên và đo điểm số trên tập xác thực [cite: 81, 82]:
@@ -1416,12 +1399,24 @@ Chúng ta huấn luyện độc lập 4 mô hình cơ sở trên 50,000 mẫu đ
 4.  **MLP Classifier (Mạng nơ-ron đa lớp)**: Đạt **96.60%** [cite: 83].
 
 ##### **Bước 2: Phân nhánh tư duy tổ hợp (Bỏ phiếu cứng vs Bỏ phiếu mềm)**
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
 *   **Nhánh 1 - Bỏ phiếu cứng (Hard Voting) với cả 4 mô hình**: Đạt **97.58%** trên tập xác thực [cite: 84]. Điểm số này tuy tốt hơn phần lớn các mô hình nhưng vẫn bị kéo tụt bởi mô hình SVM rất yếu (86.62%) [cite: 83, 85].
 *   **Nhánh 2 - Loại bỏ mắt xích yếu (SVM) ra khỏi tổ hợp**:
-    Bằng cách sử dụng phương thức `set_params(svm_clf="drop")` để loại bỏ bộ phân loại SVM [cite: 85], tổ hợp bỏ phiếu cứng lúc này chỉ còn 3 mô hình mạnh (Random Forest, Extra-Trees, MLP) [cite: 85, 86].
-    *   **Kết quả Bỏ phiếu cứng (không SVM)**: Độ chính xác trên tập xác thực tăng lên **97.69%** [cite: 88].
-    *   **Kết quả Bỏ phiếu mềm (không SVM)**: Đặt `voting_clf.voting = "soft"` chỉ đạt **97.24%** [cite: 88].
-    *   *Lập luận*: Trong trường hợp này, **bỏ phiếu cứng chiến thắng** [cite: 88]. Một số mô hình (như MLP) có thể đưa ra các ước lượng xác suất cực đoan nhưng sai lệch, làm nhiễu kết quả tính trung bình xác suất của bỏ phiếu mềm [cite: 77].
+Bằng cách sử dụng phương thức `set_params(svm_clf="drop")` để loại bỏ bộ phân loại SVM [cite: 85], tổ hợp bỏ phiếu cứng lúc này chỉ còn 3 mô hình mạnh (Random Forest, Extra-Trees, MLP) [cite: 85, 86].
+*   **Kết quả Bỏ phiếu cứng (không SVM)**: Độ chính xác trên tập xác thực tăng lên **97.69%** [cite: 88].
+*   **Kết quả Bỏ phiếu mềm (không SVM)**: Đặt `voting_clf.voting = "soft"` chỉ đạt **97.24%** [cite: 88].
+*   *Lập luận*: Trong trường hợp này, **bỏ phiếu cứng chiến thắng** [cite: 88]. Một số mô hình (như MLP) có thể đưa ra các ước lượng xác suất cực đoan nhưng sai lệch, làm nhiễu kết quả tính trung bình xác suất của bỏ phiếu mềm [cite: 77].
 
 ##### **Bước 3: Đánh giá cuối cùng trên tập kiểm thử (Test Set 10k)**
 Sử dụng mô hình tốt nhất (Bỏ phiếu cứng không có SVM) để dự đoán trên tập kiểm thử độc lập [cite: 88, 89]:
@@ -1429,37 +1424,33 @@ Sử dụng mô hình tốt nhất (Bỏ phiếu cứng không có SVM) để d�
 *   **So sánh với các mô hình đơn lẻ**: Random Forest đạt 96.8%, Extra-Trees đạt 97.03%, MLP đạt 96.5% [cite: 89].
 *   *Nhận xét*: Bộ phân loại bỏ phiếu đã giúp **giảm tỉ lệ lỗi của mô hình đơn lẻ tốt nhất từ khoảng 3% xuống còn 2.7%** (tương đương với việc giảm được **10% số lỗi** thực tế) [cite: 89].
 
----
-
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
-
-Chưa có lời giải chi tiết.
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 9: Tổ hợp xếp chồng (Stacking Ensemble) trên MNIST</h4>
-  
-*   **Yêu cầu đề bài**:
-    Chạy các bộ phân loại riêng lẻ từ Bài 8 để đưa ra dự đoán trên tập xác thực, tạo một tập huấn luyện mới từ các dự đoán này làm đầu vào để huấn luyện một bộ trộn (blender) [cite: 89]. Đánh giá hệ thống stacking này trên tập kiểm thử [cite: 90]. Sau đó, so sánh với việc sử dụng lớp `StackingClassifier` chính thức của Scikit-Learn [cite: 91, 92].
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 9: Tổ hợp xếp chồng (Stacking Ensemble) trên MNIST</h4>
+
+Chạy các bộ phân loại riêng lẻ từ Bài 8 để đưa ra dự đoán trên tập xác thực, tạo một tập huấn luyện mới từ các dự đoán này làm đầu vào để huấn luyện một bộ trộn (blender) [cite: 89]. Đánh giá hệ thống stacking này trên tập kiểm thử [cite: 90]. Sau đó, so sánh với việc sử dụng lớp `StackingClassifier` chính thức của Scikit-Learn [cite: 91, 92].
 
 ##### **Nhánh tư duy 1: Tự triển khai bộ trộn thủ công (Custom Blender)**
 1.  **Xây dựng tập huấn luyện mới**: Ta cho 3 mô hình cơ sở đã huấn luyện ở Bài 8 dự đoán trên 10,000 mẫu của tập xác thực [cite: 89]. Mỗi mẫu dữ liệu mới lúc này là một vector 3 chiều chứa nhãn dự đoán của 3 mô hình [cite: 89].
 2.  **Huấn luyện bộ siêu học (Meta-Learner)**: Huấn luyện một `RandomForestClassifier` với 200 cây làm bộ trộn trên tập dữ liệu dự đoán này [cite: 90]. Bộ trộn đạt điểm OOB rất cao: 97.22% [cite: 90].
 3.  **Đánh giá trên tập kiểm thử**: Cho 3 mô hình cơ sở dự đoán trên tập kiểm thử để tạo ra dữ liệu đầu vào cho bộ trộn, sau đó dùng bộ trộn để đưa ra dự đoán cuối cùng [cite: 90, 91].
-    *   **Độ chính xác đạt được**: **97.05%** [cite: 91].
-    *   *Nhận xét*: **Thất bại nhẹ**. Tổ hợp xếp chồng tự chế này hoạt động kém hơn bộ phân loại bỏ phiếu cứng đã huấn luyện ở Bài 8 (97.27%) [cite: 89, 91].
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Độ chính xác đạt được**: **97.05%** [cite: 91].
+*   *Nhận xét*: **Thất bại nhẹ**. Tổ hợp xếp chồng tự chế này hoạt động kém hơn bộ phân loại bỏ phiếu cứng đã huấn luyện ở Bài 8 (97.27%) [cite: 89, 91].
 
 ##### **Nhánh tư duy 2: Triển khai bằng `StackingClassifier` của Scikit-Learn**
 Thay vì chia tách thủ công tập xác thực khiến mô hình bị thiếu hụt dữ liệu huấn luyện, ta sử dụng `StackingClassifier` tích hợp sẵn [cite: 91, 92].
@@ -1467,36 +1458,15 @@ Thay vì chia tách thủ công tập xác thực khiến mô hình bị thiếu
 1.  **Gộp dữ liệu**: Vì `StackingClassifier` sử dụng kiểm định chéo K-Fold (mặc định 5-folds) để tự động sinh dự đoán ngoài mẫu [cite: 92], chúng ta không cần giữ riêng tập xác thực nữa [cite: 92]. Ta gộp tập Train (50k) và Valid (10k) thành tập huấn luyện đầy đủ **60,000 mẫu** [cite: 92].
 2.  **Huấn luyện**: Mô hình sẽ chạy kiểm định chéo để huấn luyện tổng cộng 25 mô hình thành phần dưới nền (mất khoảng 15-30 phút) [cite: 92].
 3.  **Đánh giá trên tập kiểm thử**:
-    *   **Độ chính xác đạt được**: **97.84%** [cite: 93].
+*   **Độ chính xác đạt được**: **97.84%** [cite: 93].
 
 ##### **Tại sao `StackingClassifier` hoạt động vượt trội vượt bậc?**
 Sự cải thiện hiệu suất mạnh mẽ này (từ 97.05% lên 97.84%) đến từ hai nguyên nhân cốt lõi [cite: 91, 93]:
 1.  **Quy mô dữ liệu lớn hơn**: Mô hình được huấn luyện trên toàn bộ **60,000 mẫu** thay vì bị giới hạn ở 50,000 mẫu như phiên bản tự chế [cite: 92, 93].
 2.  **Đầu vào chất lượng cao (Nuanced Inputs)**: Thay vì nhận đầu vào là các nhãn lớp số nguyên thô (ví dụ: ``) từ phương thức `predict()`, `StackingClassifier` tự động trích xuất các giá trị xác suất liên tục từ `predict_proba()` hoặc điểm quyết định từ `decision_function()` của các mô hình thành phần [cite: 93]. Điều này cung cấp cho bộ trộn (blender) lượng thông tin phong phú và chi tiết hơn rất nhiều để đưa ra quyết định tối ưu [cite: 93].
 
----
-
-### 💡 Bài học kinh nghiệm từ thực nghiệm Chương 7
-*   **Bỏ phiếu cứng** đôi khi hoạt động tốt hơn bỏ phiếu mềm nếu các mô hình thành phần không đồng đều về độ tin cậy của xác suất dự đoán [cite: 88].
-*   Khi thiết kế mô hình **Stacking**, hãy luôn ưu tiên sử dụng `StackingClassifier` chính thức của Scikit-Learn thay vì tự viết thủ công, vì cơ chế kiểm định chéo tích hợp giúp tận dụng tối đa lượng dữ liệu huấn luyện và cung cấp đầu vào xác suất chất lượng cao cho bộ trộn [cite: 92, 93].
-
----
-
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
-
-Chưa có lời giải chi tiết.
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 

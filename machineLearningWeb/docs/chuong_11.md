@@ -2659,6 +2659,12 @@ tay của chương này, tại https://homl.info/colab3 .
 
 
 
+
+
+
+
+
+
 #### ** 📝 Bài Tập **
 
 
@@ -2678,519 +2684,186 @@ if (typeof checkPasswordAndShow !== 'function') {
   };
 }
 </script>
-### 🧠 Phân tích & Lập luận (Chain of Thought)
-
-Để đáp ứng yêu cầu phân tích sâu sắc các bài tập của **Chương 11: Huấn luyện mạng nơ-ron sâu (Training Deep Neural Networks)**, tôi tiến hành đối chiếu và kiểm chứng nội dung từ các tài liệu nguồn chính thức trong hệ thống (`CHƯƠNG 11.docx` và `11_training_deep_neural_networks_VN.ipynb`) [cite: 121, 285]. 
-
-Chương 11 kết thúc bằng **8 bài tập lớn** bao quát từ các khía cạnh toán học lý thuyết (vấn đề độ dốc, tính đối xứng, các hàm kích hoạt, tối ưu hóa động lượng và chính quy hóa thưa/dropout) cho đến một bài thực hành lập trình xây dựng mạng thần kinh sâu 20 lớp trên tập dữ liệu ảnh màu CIFAR10 [cite: 325, 326, 327].
-
-Để giúp bạn tiếp thu nội dung một cách tối ưu và không bị quá tải bởi dung lượng mã nguồn thực hành khổng lồ, tôi sẽ **chia bài viết làm 2 phần**:
-*   **Phần 1 (Lượt này)**: Cung cấp danh mục đầy đủ của cả 8 bài tập, đồng thời phân tích sâu sắc và trình bày lời giải chi tiết cho **từ Câu 1 đến Câu 7** [cite: 325, 326].
-*   **Phần 2 (Lượt sau)**: Dành riêng để giải quyết trọn vẹn dự án lập trình thực hành **Câu 8 (CIFAR10)** từ bước thiết kế mạng DNN 20 lớp, Batch Normalization, mạng tự chuẩn hóa SELU, Alpha Dropout cho đến việc tự lập lịch học siêu hội tụ 1cycle [cite: 131, 134, 135, 136, 139, 327].
-
----
-
-### Danh sách 8 bài tập Chương 11
-
-1. Vấn đề mà khởi tạo Glorot và khởi tạo He nhằm mục đích khắc phục là gì? [cite: 325]
-2. Có ổn không khi khởi tạo tất cả các trọng số với cùng một giá trị miễn là giá trị đó được chọn ngẫu nhiên bằng cách sử dụng khởi tạo He? [cite: 326]
-3. Có ổn không khi khởi tạo các số hạng bias về 0? [cite: 326]
-4. Trong những trường hợp nào bạn sẽ muốn sử dụng từng hàm kích hoạt chúng ta đã thảo luận trong chương này? [cite: 326]
-5. Điều gì có thể xảy ra nếu bạn đặt siêu tham số momentum quá gần 1 (ví dụ: 0.99999) khi sử dụng bộ tối ưu hóa SGD? [cite: 326]
-6. Kể tên ba cách bạn có thể tạo một mô hình thưa thớt. [cite: 326]
-7. Dropout có làm chậm quá trình huấn luyện không? Nó có làm chậm quá trình suy luận (tức là đưa ra dự đoán trên các thể hiện mới) không? Còn MC dropout thì sao? [cite: 326]
-8. **Bài tập thực hành**: Huấn luyện một mạng nơ-ron sâu 20 lớp ẩn trên tập dữ liệu hình ảnh CIFAR10 sử dụng các kỹ thuật He initialization, Swish, Nadam, Batch Normalization, SELU, Alpha Dropout, MC Dropout và Lập lịch 1 chu kỳ [cite: 327].
-
----
-
-### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 7)
-
-
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Vấn đề mà khởi tạo Glorot và khởi tạo He nhằm mục đích khắc phục là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Vấn đề mà khởi tạo Glorot và khởi tạo He nhằm mục đích khắc phục là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Hai phương pháp khởi tạo này được thiết kế để khắc phục **vấn đề gradient không ổn định (gồm gradient biến mất - vanishing gradients và gradient bùng nổ - exploding gradients)** trong quá trình lan truyền ngược của mạng nơ-ron sâu [cite: 129, 287].
-    *   **Cơ chế hoạt động**: Chúng tính toán toán học để khởi tạo các trọng số sao cho **phương sai của đầu ra của mỗi lớp xấp xỉ bằng phương sai của đầu vào của nó**, đồng thời phương sai của gradient không đổi trước và sau khi truyền ngược qua một lớp [cite: 289]. Nhờ giữ tín hiệu ổn định ở mức trung hòa dọc theo cả hai chiều truyền xuôi và truyền ngược, mô hình tránh được hiện tượng tín hiệu bị triệt tiêu về 0 hoặc phóng đại lên vô cực, giúp các lớp thấp hơn gần đầu vào được huấn luyện hiệu quả [cite: 287, 289].
+*   Hai phương pháp khởi tạo này được thiết kế để khắc phục **vấn đề gradient không ổn định (gồm gradient biến mất - vanishing gradients và gradient bùng nổ - exploding gradients)** trong quá trình lan truyền ngược của mạng nơ-ron sâu [cite: 129, 287].
+*   **Cơ chế hoạt động**: Chúng tính toán toán học để khởi tạo các trọng số sao cho **phương sai của đầu ra của mỗi lớp xấp xỉ bằng phương sai của đầu vào của nó**, đồng thời phương sai của gradient không đổi trước và sau khi truyền ngược qua một lớp [cite: 289]. Nhờ giữ tín hiệu ổn định ở mức trung hòa dọc theo cả hai chiều truyền xuôi và truyền ngược, mô hình tránh được hiện tượng tín hiệu bị triệt tiêu về 0 hoặc phóng đại lên vô cực, giúp các lớp thấp hơn gần đầu vào được huấn luyện hiệu quả [cite: 287, 289].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Có ổn không khi khởi tạo tất cả các trọng số với cùng một giá trị miễn là giá trị đó được chọn ngẫu nhiên bằng cách sử dụng khởi tạo He?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Có ổn không khi khởi tạo tất cả các trọng số với cùng một giá trị miễn là giá trị đó được chọn ngẫu nhiên bằng cách sử dụng khởi tạo He?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Hoàn toàn không ổn** [cite: 129]. Việc chọn ngẫu nhiên một giá trị đơn lẻ rồi gán chung cho mọi trọng số kết nối sẽ hủy hoại hoàn toàn khả năng học tập của mạng [cite: 129].
-    *   **Lý do khoa học**: Mục tiêu cốt lõi của việc gán các giá trị ngẫu nhiên độc lập cho từng trọng số là để **phá vỡ tính đối xứng (break symmetry)** [cite: 129]. Nếu tất cả các trọng số có chung một giá trị khởi tạo, tính đối xứng sẽ không bị phá vỡ [cite: 129]. Khi đó, mọi nơ-ron trong cùng một lớp ẩn sẽ nhận tín hiệu giống hệt nhau, tính toán ra cùng một giá trị đầu ra, nhận cùng một lượng gradient lỗi và thực hiện các bước cập nhật trọng số y hệt nhau [cite: 129]. Hệ quả là cả lớp ẩn đó hoạt động nông cạn như thể **chỉ có duy nhất một nơ-ron hoạt động**, khiến mạng cực kỳ chậm và hầu như không thể hội tụ về một giải pháp tốt [cite: 129].
+*   **Hoàn toàn không ổn** [cite: 129]. Việc chọn ngẫu nhiên một giá trị đơn lẻ rồi gán chung cho mọi trọng số kết nối sẽ hủy hoại hoàn toàn khả năng học tập của mạng [cite: 129].
+*   **Lý do khoa học**: Mục tiêu cốt lõi của việc gán các giá trị ngẫu nhiên độc lập cho từng trọng số là để **phá vỡ tính đối xứng (break symmetry)** [cite: 129]. Nếu tất cả các trọng số có chung một giá trị khởi tạo, tính đối xứng sẽ không bị phá vỡ [cite: 129]. Khi đó, mọi nơ-ron trong cùng một lớp ẩn sẽ nhận tín hiệu giống hệt nhau, tính toán ra cùng một giá trị đầu ra, nhận cùng một lượng gradient lỗi và thực hiện các bước cập nhật trọng số y hệt nhau [cite: 129]. Hệ quả là cả lớp ẩn đó hoạt động nông cạn như thể **chỉ có duy nhất một nơ-ron hoạt động**, khiến mạng cực kỳ chậm và hầu như không thể hội tụ về một giải pháp tốt [cite: 129].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Có ổn không khi khởi tạo các số hạng bias về 0?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Có ổn không khi khởi tạo các số hạng bias về 0?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Hoàn toàn ổn và đây là thực hành tiêu chuẩn** trong hầu hết các cấu trúc mạng sâu ngày nay [cite: 129, 326].
-    *   **Lý do khoa học**: Nhiệm vụ phá vỡ tính đối xứng của mạng đã được hoàn thành xuất sắc bởi việc **khởi tạo ngẫu nhiên và độc lập các trọng số kết nối (weights)** [cite: 129]. Do đó, các hệ số thiên vị (bias) không cần phải gán giá trị ngẫu nhiên nữa [cite: 129]; việc đặt chúng ban đầu bằng đúng 0 là hoàn toàn an toàn và giúp đơn giản hóa quá trình thiết lập mô hình [cite: 129, 326].
+*   **Hoàn toàn ổn và đây là thực hành tiêu chuẩn** trong hầu hết các cấu trúc mạng sâu ngày nay [cite: 129, 326].
+*   **Lý do khoa học**: Nhiệm vụ phá vỡ tính đối xứng của mạng đã được hoàn thành xuất sắc bởi việc **khởi tạo ngẫu nhiên và độc lập các trọng số kết nối (weights)** [cite: 129]. Do đó, các hệ số thiên vị (bias) không cần phải gán giá trị ngẫu nhiên nữa [cite: 129]; việc đặt chúng ban đầu bằng đúng 0 là hoàn toàn an toàn và giúp đơn giản hóa quá trình thiết lập mô hình [cite: 129, 326].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Trong những trường hợp nào bạn sẽ muốn sử dụng từng hàm kích hoạt chúng ta đã thảo luận trong chương này?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Trong những trường hợp nào bạn sẽ muốn sử dụng từng hàm kích hoạt chúng ta đã thảo luận trong chương này?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    Sự lựa chọn hàm kích hoạt phụ thuộc chặt chẽ vào cấu trúc mạng và mục tiêu huấn luyện cụ thể [cite: 293, 297, 323]:
-    *   **ReLU**: Là **lựa chọn mặc định tốt nhất và an toàn nhất** cho các lớp ẩn của hầu hết các mạng nơ-ron [cite: 293, 322]. Nó tính toán cực kỳ nhanh và không bị bão hòa ở vùng dương, giúp giảm thiểu triệt tiêu gradient [cite: 293, 322].
-    *   **Leaky ReLU / PReLU**: Nên dùng khi mạng bị mắc phải hiện tượng **nơ-ron chết (dying ReLUs)** (lỗi khiến một lượng lớn nơ-ron chỉ xuất ra giá trị 0 và không bao giờ cập nhật nữa) [cite: 294]. PReLU cực kỳ mạnh mẽ khi bạn sở hữu một tập dữ liệu huấn luyện khổng lồ [cite: 294].
-    *   **ELU**: Thích hợp khi bạn ưu tiên độ chính xác hội tụ cao và chấp nhận tốc độ tính toán chậm hơn ReLU một chút [cite: 294]. ELU mượt mà ở mọi điểm (tránh các bước chuyển đột ngột tại điểm 0) giúp giảm thiểu hiện tượng gradient bị dao động quanh cực tiểu [cite: 294].
-    *   **SELU**: Là lựa chọn bắt buộc khi bạn muốn xây dựng một **mạng nơ-ron tự chuẩn hóa (Self-Normalizing Neural Network)** [cite: 135, 323]. Để SELU hoạt động hoàn hảo, mạng chỉ được gồm một chuỗi các lớp Dense dày đặc xếp chồng, kết hợp khởi tạo `lecun_normal` và chuẩn hóa đặc trưng đầu vào [cite: 135, 323].
-    *   **GELU, Swish, Mish**: Là các hàm kích hoạt trơn phi tuyến tính phi đơn điệu nâng cao [cite: 295, 296]. Chúng là lựa chọn hàng đầu cho các kiến trúc sâu phức tạp như **Transformers** hoặc các mạng thị giác máy tính hiện đại vì độ cong mượt giúp tối ưu hóa gradient mượt mà qua các vùng lỗi phức tạp [cite: 295, 323].
-    *   **Sigmoid**: Thích hợp cho **lớp đầu ra của tác vụ phân loại nhị phân** [cite: 247, 283]. Tránh dùng ở lớp ẩn vì tính chất bão hòa ở hai đầu biên của nó sẽ trực tiếp giết chết tín hiệu gradient [cite: 288].
-    *   **Softmax**: Thích hợp cho **lớp đầu ra của tác vụ phân loại đa lớp loại trừ nhau** [cite: 249, 283].
-    *   **tanh**: Thích hợp cho các lớp ẩn của mạng nông hoặc RNN [cite: 442, 456]. Nhờ đặc tính căn tâm tại 0 (zero-centered), nó giúp các lớp phía sau hội tụ nhanh hơn sigmoid [cite: 115].
+Sự lựa chọn hàm kích hoạt phụ thuộc chặt chẽ vào cấu trúc mạng và mục tiêu huấn luyện cụ thể [cite: 293, 297, 323]:
+*   **ReLU**: Là **lựa chọn mặc định tốt nhất và an toàn nhất** cho các lớp ẩn của hầu hết các mạng nơ-ron [cite: 293, 322]. Nó tính toán cực kỳ nhanh và không bị bão hòa ở vùng dương, giúp giảm thiểu triệt tiêu gradient [cite: 293, 322].
+*   **Leaky ReLU / PReLU**: Nên dùng khi mạng bị mắc phải hiện tượng **nơ-ron chết (dying ReLUs)** (lỗi khiến một lượng lớn nơ-ron chỉ xuất ra giá trị 0 và không bao giờ cập nhật nữa) [cite: 294]. PReLU cực kỳ mạnh mẽ khi bạn sở hữu một tập dữ liệu huấn luyện khổng lồ [cite: 294].
+*   **ELU**: Thích hợp khi bạn ưu tiên độ chính xác hội tụ cao và chấp nhận tốc độ tính toán chậm hơn ReLU một chút [cite: 294]. ELU mượt mà ở mọi điểm (tránh các bước chuyển đột ngột tại điểm 0) giúp giảm thiểu hiện tượng gradient bị dao động quanh cực tiểu [cite: 294].
+*   **SELU**: Là lựa chọn bắt buộc khi bạn muốn xây dựng một **mạng nơ-ron tự chuẩn hóa (Self-Normalizing Neural Network)** [cite: 135, 323]. Để SELU hoạt động hoàn hảo, mạng chỉ được gồm một chuỗi các lớp Dense dày đặc xếp chồng, kết hợp khởi tạo `lecun_normal` và chuẩn hóa đặc trưng đầu vào [cite: 135, 323].
+*   **GELU, Swish, Mish**: Là các hàm kích hoạt trơn phi tuyến tính phi đơn điệu nâng cao [cite: 295, 296]. Chúng là lựa chọn hàng đầu cho các kiến trúc sâu phức tạp như **Transformers** hoặc các mạng thị giác máy tính hiện đại vì độ cong mượt giúp tối ưu hóa gradient mượt mà qua các vùng lỗi phức tạp [cite: 295, 323].
+*   **Sigmoid**: Thích hợp cho **lớp đầu ra của tác vụ phân loại nhị phân** [cite: 247, 283]. Tránh dùng ở lớp ẩn vì tính chất bão hòa ở hai đầu biên của nó sẽ trực tiếp giết chết tín hiệu gradient [cite: 288].
+*   **Softmax**: Thích hợp cho **lớp đầu ra của tác vụ phân loại đa lớp loại trừ nhau** [cite: 249, 283].
+*   **tanh**: Thích hợp cho các lớp ẩn của mạng nông hoặc RNN [cite: 442, 456]. Nhờ đặc tính căn tâm tại 0 (zero-centered), nó giúp các lớp phía sau hội tụ nhanh hơn sigmoid [cite: 115].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Điều gì có thể xảy ra nếu bạn đặt siêu tham số momentum quá gần 1 (ví dụ: 0.99999) khi sử dụng bộ tối ưu hóa SGD?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Điều gì có thể xảy ra nếu bạn đặt siêu tham số momentum quá gần 1 (ví dụ: 0.99999) khi sử dụng bộ tối ưu hóa SGD?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Khi bạn đặt siêu tham số động lượng \\(\beta\\) quá gần 1, hệ số ma sát của thung lũng mất mát gần như biến mất [cite: 309]. 
-    *   **Hậu quả**: Trình tối ưu hóa sẽ hoạt động giống như một chiếc xe lu cực nặng lao xuống dốc mà không có phanh [cite: 309]. Nó sẽ tích lũy một vận tốc khổng lồ, **liên tục chạy vượt quá đà (overshoot) và nhảy vọt qua điểm tối ưu toàn cục nhiều lần** [cite: 309, 313]. Mô hình sẽ phải dao động qua lại vô vọng trong thung lũng rất lâu trước khi có thể dừng lại ổn định [cite: 313]. Trong trường hợp xấu nhất, năng lượng cập nhật tích lũy quá lớn sẽ đẩy các bước nhảy vọt ra ngoài vùng hội tụ, khiến quá trình huấn luyện bị **phân kỳ và sụp đổ hoàn toàn** [cite: 313].
+*   Khi bạn đặt siêu tham số động lượng \\(\beta\\) quá gần 1, hệ số ma sát của thung lũng mất mát gần như biến mất [cite: 309]. 
+*   **Hậu quả**: Trình tối ưu hóa sẽ hoạt động giống như một chiếc xe lu cực nặng lao xuống dốc mà không có phanh [cite: 309]. Nó sẽ tích lũy một vận tốc khổng lồ, **liên tục chạy vượt quá đà (overshoot) và nhảy vọt qua điểm tối ưu toàn cục nhiều lần** [cite: 309, 313]. Mô hình sẽ phải dao động qua lại vô vọng trong thung lũng rất lâu trước khi có thể dừng lại ổn định [cite: 313]. Trong trường hợp xấu nhất, năng lượng cập nhật tích lũy quá lớn sẽ đẩy các bước nhảy vọt ra ngoài vùng hội tụ, khiến quá trình huấn luyện bị **phân kỳ và sụp đổ hoàn toàn** [cite: 313].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Kể tên ba cách bạn có thể tạo một mô hình thưa thớt.</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Kể tên ba cách bạn có thể tạo một mô hình thưa thớt.</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    Một mô hình thưa thớt (sparse model) chứa phần lớn các trọng số kết nối mang giá trị bằng đúng 0, giúp tiết kiệm bộ nhớ và tăng tốc độ suy luận [cite: 130]. Ba cách để tạo ra nó bao gồm:
-    1.  Huấn luyện mô hình một cách bình thường, sau đó thực hiện **cắt tỉa (pruning) thủ công** bằng cách đặt tất cả các trọng số có giá trị tuyệt đối nhỏ hơn một ngưỡng nhất định về bằng 0 [cite: 130].
-    2.  Áp dụng hình phạt **chính quy hóa \\(L_1\\) (Lasso regularizer)** trực tiếp vào các lớp Dense trong quá trình huấn luyện [cite: 130, 317]. Cơ chế toán học của \\(L_1\\) sẽ tự động ép các trọng số ít quan trọng về chính xác bằng 0 [cite: 32, 130].
-    3.  Sử dụng bộ công cụ tối ưu hóa chuyên sâu **TensorFlow Model Optimization Toolkit** để tự động hóa quy trình cắt tỉa thông minh trong lúc mạng đang học [cite: 130].
+Một mô hình thưa thớt (sparse model) chứa phần lớn các trọng số kết nối mang giá trị bằng đúng 0, giúp tiết kiệm bộ nhớ và tăng tốc độ suy luận [cite: 130]. Ba cách để tạo ra nó bao gồm:
+1.  Huấn luyện mô hình một cách bình thường, sau đó thực hiện **cắt tỉa (pruning) thủ công** bằng cách đặt tất cả các trọng số có giá trị tuyệt đối nhỏ hơn một ngưỡng nhất định về bằng 0 [cite: 130].
+2.  Áp dụng hình phạt **chính quy hóa \\(L_1\\) (Lasso regularizer)** trực tiếp vào các lớp Dense trong quá trình huấn luyện [cite: 130, 317]. Cơ chế toán học của \\(L_1\\) sẽ tự động ép các trọng số ít quan trọng về chính xác bằng 0 [cite: 32, 130].
+3.  Sử dụng bộ công cụ tối ưu hóa chuyên sâu **TensorFlow Model Optimization Toolkit** để tự động hóa quy trình cắt tỉa thông minh trong lúc mạng đang học [cite: 130].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Dropout có làm chậm quá trình huấn luyện không? Nó có làm chậm quá trình suy luận (tức là đưa ra dự đoán trên các thể hiện mới) không? Còn MC dropout thì sao?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Dropout có làm chậm quá trình huấn luyện không? Nó có làm chậm quá trình suy luận (tức là đưa ra dự đoán trên các thể hiện mới) không? Còn MC dropout thì sao?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    Chúng ta cần phân biệt rõ ranh giới hoạt động của các cơ chế này giữa hai pha Huấn luyện (Training) và Suy luận (Inference) [cite: 130]:
-    *   **Dropout thông thường**:
-        *   *Trong quá trình huấn luyện*: **Có làm chậm**. Nó làm chậm tốc độ huấn luyện xuống khoảng gấp đôi vì mô hình phải tắt ngẫu nhiên các nơ-ron và tính toán tỷ lệ bù trừ trọng số [cite: 130].
-        *   *Trong quá trình suy luận*: **Không làm chậm**. Khi suy luận, các lớp dropout sẽ tự động được tắt hoàn toàn, do đó tốc độ dự đoán trên các mẫu mới được giữ nguyên ở mức tối đa [cite: 130].
-    *   **MC Dropout (Monte Carlo Dropout)**:
-        *   **Làm chậm cả hai quá trình** [cite: 130]. Khác với dropout thường, MC Dropout bắt buộc các lớp dropout phải tiếp tục hoạt động trong quá trình suy luận để giữ tính ngẫu nhiên [cite: 130, 137]. Để thu được một dự đoán chất lượng và ước lượng được độ không chắc chắn, ta phải cho mô hình chạy dự đoán lặp lại nhiều lần (thường từ 10 lần trở lên) rồi tính trung bình xác suất [cite: 130, 138]. Việc này khiến tốc độ suy luận bị **chậm đi ít nhất gấp 10 lần hoặc nhiều hơn** [cite: 130].
+Chúng ta cần phân biệt rõ ranh giới hoạt động của các cơ chế này giữa hai pha Huấn luyện (Training) và Suy luận (Inference) [cite: 130]:
+*   **Dropout thông thường**:
+*   *Trong quá trình huấn luyện*: **Có làm chậm**. Nó làm chậm tốc độ huấn luyện xuống khoảng gấp đôi vì mô hình phải tắt ngẫu nhiên các nơ-ron và tính toán tỷ lệ bù trừ trọng số [cite: 130].
+*   *Trong quá trình suy luận*: **Không làm chậm**. Khi suy luận, các lớp dropout sẽ tự động được tắt hoàn toàn, do đó tốc độ dự đoán trên các mẫu mới được giữ nguyên ở mức tối đa [cite: 130].
+*   **MC Dropout (Monte Carlo Dropout)**:
+*   **Làm chậm cả hai quá trình** [cite: 130]. Khác với dropout thường, MC Dropout bắt buộc các lớp dropout phải tiếp tục hoạt động trong quá trình suy luận để giữ tính ngẫu nhiên [cite: 130, 137]. Để thu được một dự đoán chất lượng và ước lượng được độ không chắc chắn, ta phải cho mô hình chạy dự đoán lặp lại nhiều lần (thường từ 10 lần trở lên) rồi tính trung bình xác suất [cite: 130, 138]. Việc này khiến tốc độ suy luận bị **chậm đi ít nhất gấp 10 lần hoặc nhiều hơn** [cite: 130].
 
----
-
-### 🌳 Phân tích & Lập luận (Tree of Thought)
-
-Để xây dựng giải pháp tối ưu cho bài tập lớn **Học Sâu trên tập dữ liệu ảnh màu CIFAR10** (Bài tập 8 của Chương 11), chúng ta sử dụng sơ đồ tư duy phân nhánh để đánh giá các phương án tối ưu hóa mạng nơ-ron sâu 20 lớp ẩn [cite: 134, 366]:
-
-```
-                                          [CIFAR10: 60,000 ảnh màu 32x32] [cite: 135, 136]
-                                                        |
-         +----------------------+-----------------------+----------------------+----------------------+
-         |                      |                       |                      |                      |
-   [Nhánh A: Baseline]    [Nhánh B: Batch Norm]    [Nhánh C: SELU]        [Nhánh D: Dropout]     [Nhánh E: 1cycle]
-     - Swish + He [cite: 134]   - Dense + BN + Swish    - lecun_normal + SELU  - Alpha Dropout [cite: 142] - Siêu hội tụ [cite: 145]
-     - LR = 5e-5 [cite: 136]    - LR = 5e-4 [cite: 139]   - Chuẩn hóa đầu vào    - MC Dropout [cite: 142, 143]  - Đạt kết quả nhanh
-     - Acc ~46.8% [cite: 138]   - Acc ~50.7% (Tốt) [cite: 138, 145] - Acc ~50.3% [cite: 145]  - Acc ~50.3% [cite: 145]    - Tiết kiệm Epoch
-```
-
-*   **Lập luận thiết kế mạng**: 
-    1.  **Nhánh A (Baseline)**: Mạng sâu 20 lớp, 100 nơ-ron mỗi lớp [cite: 134, 366]. Swish và He Normal là bộ đôi cứu rỗi giúp giảm thiểu bùng nổ/triệt tiêu gradient ở mạng rất sâu [cite: 113, 114, 134]. Tốc độ học được chọn là `5e-5` qua thực nghiệm dò quét [cite: 135, 136].
-    2.  **Nhánh B (Batch Normalization - BN)**: Thêm BN sau mỗi lớp Dense giúp ổn định phân phối kích hoạt [cite: 116, 139]. Chúng ta sử dụng `use_bias=False` trước BN để tránh lãng phí tham số (vì BN có hệ số dịch chuyển riêng) [cite: 116]. Do BN làm mượt cảnh quan mất mát, ta có thể tăng tốc độ học lên 10 lần (`5e-4`) để hội tụ nhanh hơn [cite: 139, 140].
-    3.  **Nhánh C (Mạng tự chuẩn hóa - SELU)**: Thay thế BN bằng SELU và khởi tạo `lecun_normal` để biến mạng thành một DNN tự chuẩn hóa [cite: 131, 141]. Điều kiện tiên quyết là **phải chuẩn hóa dữ liệu đầu vào** (Z-score scaling) [cite: 112, 141].
-    4.  **Nhánh D (Alpha Dropout & MC Dropout)**: Dropout thông thường sẽ phá vỡ tính tự chuẩn hóa của SELU [cite: 131]. Do đó, ta bắt buộc phải dùng **Alpha Dropout** (giữ nguyên trung bình và phương sai của các lớp) [cite: 131, 142]. Sau đó, ta chuyển đổi sang **MC Alpha Dropout** tại thời điểm suy luận để lấy mẫu 10 lần, giúp tăng tính ổn định của dự đoán mà không cần huấn luyện lại [cite: 133, 143, 144].
-    5.  **Nhánh E (Lập lịch 1cycle)**: Cho phép tốc độ học tăng nhanh đến cực đại rồi giảm dần về cực tiểu, giúp mạng đạt hiệu ứng "siêu hội tụ" (superconvergence), rút ngắn số epoch cần thiết [cite: 125, 130, 145].
-
----
-
-### PHẦN 2: Lời giải lập trình Python tối ưu bằng Keras cho Bài tập 8 (CIFAR10)
-
-Dưới đây là mã nguồn Python hoàn chỉnh, được chia tách thành các giai đoạn thực nghiệm tương ứng với các câu hỏi từ **a đến f** của bài tập [cite: 366].
-
-##### **Giai đoạn 1: Chuẩn bị dữ liệu và huấn luyện mô hình Baseline (8.a & 8.b)**
-
-```python
-import numpy as np
-import tensorflow as tf
-from pathlib import Path
-
-# 1. Tải và phân chia tập dữ liệu CIFAR10 [cite: 136]
-cifar10 = tf.keras.datasets.cifar10.load_data() [cite: 136]
-(X_train_full, y_train_full), (X_test, y_test) = cifar10 [cite: 136]
-
-# Trích xuất 5,000 ảnh đầu tiên của tập train làm tập validation [cite: 136, 137]
-X_train = X_train_full[5000:] [cite: 137]
-y_train = y_train_full[5000:] [cite: 137]
-X_valid = X_train_full[:5000] [cite: 137]
-y_valid = y_train_full[:5000] [cite: 137]
-
-# 2. Xây dựng DNN Baseline: 20 lớp ẩn, khởi tạo He, kích hoạt Swish [cite: 134]
-tf.keras.backend.clear_session()
-tf.random.set_seed(42)
-
-model_baseline = tf.keras.Sequential()
-model_baseline.add(tf.keras.layers.Flatten(input_shape=)) [cite: 134]
-
-for _ in range(20): [cite: 134]
-    model_baseline.add(tf.keras.layers.Dense(100,
-                                             activation="swish",
-                                             kernel_initializer="he_normal")) [cite: 134]
-
-# Lớp đầu ra Softmax 10 lớp [cite: 135]
-model_baseline.add(tf.keras.layers.Dense(10, activation="softmax")) [cite: 135]
-
-# 3. Biên dịch mô hình với Nadam (Tốc độ học tối ưu qua thực nghiệm: 5e-5) [cite: 135, 136]
-optimizer = tf.keras.optimizers.Nadam(learning_rate=5e-5) [cite: 136]
-model_baseline.compile(loss="sparse_categorical_crossentropy",
-                       optimizer=optimizer,
-                       metrics=["accuracy"]) [cite: 136]
-
-# Thiết lập Callbacks (Dừng sớm với patience=20) [cite: 137]
-early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=20, restore_best_weights=True) [cite: 137]
-checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("my_cifar10_baseline.keras", save_best_only=True) [cite: 137]
-
-# Tiến hành huấn luyện [cite: 138]
-print("--- Đang huấn luyện mô hình Baseline (Swish + He) ---")
-history_baseline = model_baseline.fit(
-    X_train, y_train, 
-    epochs=100, [cite: 138]
-    validation_data=(X_valid, y_valid), [cite: 138]
-    callbacks=[early_stopping_cb, checkpoint_cb] [cite: 137]
-)
-
-# Đánh giá trên tập validation [cite: 138]
-val_loss, val_acc = model_baseline.evaluate(X_valid, y_valid) [cite: 138]
-print(f"Baseline Validation Accuracy: {val_acc * 100:.2f}% (Kỳ vọng ~46.8%)\n") [cite: 138]
-```
-
----
-
-##### **Giai đoạn 2: Tối ưu hóa bằng Batch Normalization (8.c)**
-
-```python
-# 1. Thiết lập mô hình tích hợp Batch Normalization trước hàm kích hoạt [cite: 139]
-tf.keras.backend.clear_session()
-tf.random.set_seed(42)
-
-model_bn = tf.keras.Sequential()
-model_bn.add(tf.keras.layers.Flatten(input_shape=))
-
-for _ in range(20):
-    # Dùng use_bias=False khi đứng trước lớp Batch Normalization [cite: 116, 139]
-    model_bn.add(tf.keras.layers.Dense(100, kernel_initializer="he_normal", use_bias=False)) [cite: 116, 140]
-    model_bn.add(tf.keras.layers.BatchNormalization()) [cite: 140]
-    model_bn.add(tf.keras.layers.Activation("swish")) [cite: 140]
-
-model_bn.add(tf.keras.layers.Dense(10, activation="softmax")) [cite: 140]
-
-# BN giúp làm mượt gradient, cho phép tăng tốc độ học lên 10 lần (5e-4) [cite: 139, 140]
-optimizer_bn = tf.keras.optimizers.Nadam(learning_rate=5e-4) [cite: 140]
-model_bn.compile(loss="sparse_categorical_crossentropy",
-                 optimizer=optimizer_bn,
-                 metrics=["accuracy"]) [cite: 140]
-
-checkpoint_bn_cb = tf.keras.callbacks.ModelCheckpoint("my_cifar10_bn.keras", save_best_only=True)
-
-print("--- Đang huấn luyện mô hình tích hợp Batch Normalization ---")
-history_bn = model_bn.fit(
-    X_train, y_train, 
-    epochs=100,
-    validation_data=(X_valid, y_valid),
-    callbacks=[early_stopping_cb, checkpoint_bn_cb]
-)
-
-val_loss_bn, val_acc_bn = model_bn.evaluate(X_valid, y_valid)
-print(f"Batch Normalization Validation Accuracy: {val_acc_bn * 100:.2f}% (Kỳ vọng ~50.7%)\n") [cite: 138, 145]
-```
-
----
-
-##### **Giai đoạn 3: Tự chuẩn hóa với SELU và Alpha Dropout (8.d & 8.e)**
-
-```python
-# 1. SELU yêu cầu bắt buộc đầu vào phải được chuẩn hóa chuẩn (mean=0, std=1) [cite: 112, 141]
-X_means = X_train.mean(axis=0) [cite: 142]
-X_stds = X_train.std(axis=0) [cite: 142]
-
-X_train_scaled = (X_train - X_means) / X_stds [cite: 142]
-X_valid_scaled = (X_valid - X_means) / X_stds [cite: 142]
-X_test_scaled = (X_test - X_means) / X_stds [cite: 142]
-
-# 2. Xây dựng mạng tự chuẩn hóa (SELU + LeCun Normal) kết hợp Alpha Dropout [cite: 131, 141, 142]
-tf.keras.backend.clear_session()
-tf.random.set_seed(42)
-
-model_selu = tf.keras.Sequential()
-model_selu.add(tf.keras.layers.Flatten(input_shape=))
-
-for _ in range(20):
-    # Khởi tạo LeCun Normal và kích hoạt SELU để tự chuẩn hóa [cite: 141, 142]
-    model_selu.add(tf.keras.layers.Dense(100,
-                                         kernel_initializer="lecun_normal",
-                                         activation="selu")) [cite: 141, 142]
-
-# Alpha Dropout bảo toàn đặc tính chuẩn hóa của mạng [cite: 131, 142]
-model_selu.add(tf.keras.layers.AlphaDropout(rate=0.1)) [cite: 142]
-model_selu.add(tf.keras.layers.Dense(10, activation="softmax")) [cite: 142]
-
-# Dùng tốc độ học trung hòa cho mạng tự chuẩn hóa qua thực nghiệm (5e-5) [cite: 135]
-optimizer_selu = tf.keras.optimizers.Nadam(learning_rate=5e-5)
-model_selu.compile(loss="sparse_categorical_crossentropy",
-                   optimizer=optimizer_selu,
-                   metrics=["accuracy"])
-
-checkpoint_selu_cb = tf.keras.callbacks.ModelCheckpoint("my_cifar10_selu.keras", save_best_only=True)
-
-print("--- Đang huấn luyện mô hình tự chuẩn hóa SELU ---")
-history_selu = model_selu.fit(
-    X_train_scaled, y_train, 
-    epochs=100,
-    validation_data=(X_valid_scaled, y_valid),
-    callbacks=[early_stopping_cb, checkpoint_selu_cb]
-)
-
-val_loss_selu, val_acc_selu = model_selu.evaluate(X_valid_scaled, y_valid)
-print(f"SELU Validation Accuracy: {val_acc_selu * 100:.2f}% (Kỳ vọng ~48% - 50%)\n") [cite: 145]
-```
-
----
-
-##### **Giai đoạn 4: Đánh giá mô hình bằng MC Dropout (8.e)**
-
-```python
-# 1. Định nghĩa lớp MCAlphaDropout kế thừa từ AlphaDropout, ép chế độ training=True [cite: 143]
-class MCAlphaDropout(tf.keras.layers.AlphaDropout): [cite: 143]
-    def call(self, inputs):
-        return super().call(inputs, training=True) [cite: 143]
-
-# 2. Tạo bản sao mô hình mới và thay thế lớp AlphaDropout bằng MCAlphaDropout [cite: 143]
-mc_model = tf.keras.Sequential([ [cite: 143]
-    (
-        MCAlphaDropout(layer.rate) [cite: 143]
-        if isinstance(layer, tf.keras.layers.AlphaDropout) [cite: 143]
-        else layer [cite: 143]
-    )
-    for layer in model_selu.layers [cite: 143]
-])
-
-# 3. Định nghĩa các hàm suy luận Monte Carlo lấy trung bình dự đoán [cite: 144]
-def mc_dropout_predict_probas(mc_model, X, n_samples=10): [cite: 144]
-    # Dự đoán n_samples lần và tính trung bình [cite: 133, 144]
-    Y_probas = [mc_model.predict(X) for sample in range(n_samples)] [cite: 144]
-    return np.mean(Y_probas, axis=0) [cite: 144]
-
-def mc_dropout_predict_classes(mc_model, X, n_samples=10): [cite: 144]
-    Y_probas = mc_dropout_predict_probas(mc_model, X, n_samples) [cite: 144]
-    return Y_probas.argmax(axis=1) [cite: 144]
-
-# 4. Đo lường hiệu suất thực tế trên tập validation đã chuẩn hóa
-print("--- Đang suy luận bằng MC Dropout (10 mẫu/thực thể) ---")
-y_pred_mc = mc_dropout_predict_classes(mc_model, X_valid_scaled) [cite: 145]
-accuracy_mc = (y_pred_mc == y_valid[:, 0]).mean() [cite: 145]
-print(f"MC Dropout Validation Accuracy: {accuracy_mc * 100:.2f}% (Kỳ vọng ~50.3%)\n") [cite: 145]
-```
-
----
-
-##### **Giai đoạn 5: Tăng tốc cực đại với Lập lịch 1cycle (8.f)**
-
-Để thực hiện lập lịch **1cycle**, chúng ta tự xây dựng một `Callback` trong Keras điều chỉnh tuyến tính tốc độ học tăng dần từ cực tiểu lên cực đại trong nửa chặng đường đầu, sau đó giảm dần về cực tiểu trong nửa chặng đường còn lại [cite: 130].
-
-```python
-class OneCycleScheduler(tf.keras.callbacks.Callback): [cite: 130]
-    def __init__(self, iterations, max_lr, start_lr=None, last_iterations=None, last_lr=None):
-        self.iterations = iterations
-        self.max_lr = max_lr
-        self.start_lr = start_lr or max_lr / 10
-        self.last_iterations = last_iterations or iterations // 10 + 1
-        self.half_iteration = (iterations - self.last_iterations) // 2
-        self.last_lr = last_lr or self.start_lr / 1000
-        self.iteration = 0
-        self.rates = []
-        self.losses = []
-        
-    def _interpolate(self, iter1, iter2, lr1, lr2):
-        return (lr2 - lr1) * (self.iteration - iter1) / (iter2 - iter1) + lr1
-        
-    def on_batch_end(self, batch, logs=None):
-        self.iteration += 1
-        # Giai đoạn 1: Tăng dần tốc độ học lên cực đại
-        if self.iteration < self.half_iteration:
-            lr = self._interpolate(0, self.half_iteration, self.start_lr, self.max_lr)
-        # Giai đoạn 2: Giảm dần tốc độ học về mức xuất phát
-        elif self.iteration < 2 * self.half_iteration:
-            lr = self._interpolate(self.half_iteration, 2 * self.half_iteration, self.max_lr, self.start_lr)
-        # Giai đoạn 3: Giảm cực nhỏ ở những epoch cuối
-        else:
-            lr = self._interpolate(2 * self.half_iteration, self.iterations, self.start_lr, self.last_lr)
-            
-        self.model.optimizer.learning_rate.assign(lr) # Cập nhật lr cho Optimizer [cite: 124]
-        self.rates.append(lr)
-        if logs:
-            self.losses.append(logs.get("loss"))
-
-# Tiến hành huấn luyện 15 epoch với Lập lịch 1cycle
-tf.keras.backend.clear_session()
-tf.random.set_seed(42)
-
-model_1cycle = tf.keras.Sequential()
-model_1cycle.add(tf.keras.layers.Flatten(input_shape=))
-for _ in range(20):
-    model_1cycle.add(tf.keras.layers.Dense(100, kernel_initializer="lecun_normal", activation="selu"))
-model_1cycle.add(tf.keras.layers.AlphaDropout(rate=0.1))
-model_1cycle.add(tf.keras.layers.Dense(10, activation="softmax"))
-
-# Dùng SGD làm động cơ cho 1cycle [cite: 130]
-model_1cycle.compile(loss="sparse_categorical_crossentropy",
-                     optimizer=tf.keras.optimizers.SGD(),
-                     metrics=["accuracy"])
-
-n_epochs = 15
-batch_size = 128
-n_iterations = int(np.ceil(len(X_train_scaled) / batch_size)) * n_epochs
-onecycle = OneCycleScheduler(n_iterations, max_lr=0.05) # max_lr tối ưu [cite: 145]
-
-print("--- Đang huấn luyện siêu hội tụ bằng Lập lịch 1cycle ---")
-history_1cycle = model_1cycle.fit(
-    X_train_scaled, y_train,
-    epochs=n_epochs,
-    batch_size=batch_size,
-    validation_data=(X_valid_scaled, y_valid),
-    callbacks=[onecycle]
-)
-```
-
----
-
-### 📊 Đánh giá & Kết luận thực nghiệm
-*   **Mô hình Baseline (Swish + He)** bị giới hạn ở tốc độ học rất nhỏ (`5e-5`), dẫn đến hội tụ chậm và đạt độ chính xác **~46.8%** [cite: 135, 138].
-*   **Batch Normalization** là ngôi sao sáng nhất của chương này khi cho phép đẩy tốc độ học lên gấp 10 lần, kéo độ chính xác nhảy vọt lên **~50.7%** một cách bền bỉ [cite: 139, 145].
-*   **Mạng tự chuẩn hóa (SELU)** có tốc độ tính toán cực nhanh, đạt hiệu suất **~50.3%** mà không cần tới tài nguyên BN đắt đỏ [cite: 145].
-*   **1cycle Scheduling** chứng minh sức mạnh khi chỉ cần **15 epoch** huấn luyện ngắn ngủi để chạm tới điểm tối ưu của mạng mà các mô hình khác phải mất tới 40-50 epoch để mò mẫm [cite: 145].
-
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 

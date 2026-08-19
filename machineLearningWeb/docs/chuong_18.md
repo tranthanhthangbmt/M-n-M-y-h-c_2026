@@ -2649,6 +2649,12 @@ cho các bài tập này có sẵn ở cuối sổ ghi chép của chương này
 
 
 
+
+
+
+
+
+
 #### ** 📝 Bài Tập **
 
 
@@ -2668,261 +2674,225 @@ if (typeof checkPasswordAndShow !== 'function') {
   };
 }
 </script>
-##### 🧠 Phân tích & Lập luận (Chain of Thought)
-
-1.  **Xác định yêu cầu**: Bạn muốn nhận danh sách và nội dung chi tiết bài tập của **Chương 18: Học tăng cường (Reinforcement Learning)** [cite: 795]. Tương tự các lượt trước, do nội dung chương này rất dài và chứa nhiều khái niệm phức tạp (như bài toán phân bổ tín nhiệm, quá trình quyết định Markov, mạng Q sâu, thuật toán REINFORCE) [cite: 796, 808, 818, 822], tôi sẽ tiến hành chia thành **2 phần** và thực hiện **Phần 1 trước** (bao gồm danh mục toàn bộ 10 bài tập và lời giải chi tiết từ **Câu 1 đến Câu 5**), tham khảo đúng cấu trúc chuẩn hóa của file mẫu `ExcerciseChapter_01.txt` [cite: 629].
-2.  **Khớp nối nguồn tài liệu**:
-    *   **Danh sách câu hỏi**: Nằm ở phần cuối của chương lý thuyết `"chương 18.docx"` (Mục **18.5. Bài tập**) [cite: 845, 846, 847]. Có tất cả **10 câu hỏi/bài tập**.
-    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành `"18_reinforcement_learning_VN.ipynb - Colab.pdf"` [cite: 149, 150].
-3.  **Lên kế hoạch phân chia chi tiết**:
-    *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của 10 câu hỏi/bài tập** của Chương 18 [cite: 845, 846, 847]. Sau đó, trình bày lời giải chi tiết, sâu sắc nhất cho **từ Câu 1 đến Câu 5** (tập trung vào định nghĩa học tăng cường, so sánh với học có giám sát/không giám sát, thiết kế ứng dụng thực tế, vai trò hệ số chiết khấu, đo lường hiệu suất tác nhân, và bài toán phân bổ tín nhiệm) [cite: 797, 805, 808, 809, 810, 845].
-    *   **Phần 2 (Lượt sau)**: Giải quyết trọn vẹn từ **Câu 6 đến Câu 10** (bao gồm cơ chế hoạt động của bộ đệm phát lại, thuật toán off-policy, và viết mã nguồn Python hoàn chỉnh cho mô hình LunarLander-v2 bằng Policy Gradients và Deep Q-Network cho game Atari) [cite: 846, 847].
-
----
-
-##### Danh sách 10 bài tập Chương 18
-
-1. **Câu 1**: Bạn sẽ định nghĩa học tăng cường (Reinforcement Learning) như thế nào? Nó khác gì so với học có giám sát hoặc không giám sát thông thường? [cite: 845]
-2. **Câu 2**: Bạn có thể nghĩ ra ba ứng dụng khả thi của học tăng cường (RL) mà không được đề cập trong chương này không? Đối với mỗi ứng dụng, hãy chỉ rõ: Môi trường là gì? Tác nhân là gì? Một số hành động có thể là gì? Phần thưởng là gì? [cite: 845]
-3. **Câu 3**: Hệ số chiết khấu (discount factor) là gì? Chính sách tối ưu (optimal policy) có thể thay đổi nếu bạn sửa đổi hệ số chiết khấu không? [cite: 845]
-4. **Câu 4**: Làm thế nào để bạn đo lường hiệu suất của một tác nhân học tăng cường? [cite: 845]
-5. **Câu 5**: Bài toán phân bổ tín nhiệm (credit assignment problem) là gì? Khi nào nó xảy ra? Làm thế nào bạn có thể giảm thiểu nó? [cite: 845]
-6. **Câu 6**: Mục đích của việc sử dụng bộ đệm phát lại (replay buffer) là gì? [cite: 846]
-7. **Câu 7**: Thuật toán RL off-policy là gì? [cite: 846]
-8. **Câu 8 (Thực hành)**: Sử dụng độ dốc chính sách (Policy Gradients) để giải quyết môi trường `LunarLander-v2` của OpenAI Gym [cite: 846].
-9. **Câu 9 (Thực hành)**: Sử dụng mạng Q sâu kép đấu (Double Dueling DQN) để huấn luyện một tác nhân đạt cấp độ siêu nhân trong trò chơi Atari Breakout (`ALE/Breakout-v5`) [cite: 846].
-10. **Câu 10 (Thực hành)**: Thiết kế dự án phần cứng thực tế sử dụng Raspberry Pi kết hợp TensorFlow và Học tăng cường để điều khiển robot tự học di chuyển [cite: 847].
-
----
-
-##### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 5)
-
-
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Bạn sẽ định nghĩa học tăng cường (Reinforcement Learning) như thế nào? Nó khác gì so với học có giám sát hoặc không giám sát thông thường?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Bạn sẽ định nghĩa học tăng cường (Reinforcement Learning) như thế nào? Nó khác gì so với học có giám sát hoặc không giám sát thông thường?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Định nghĩa Học tăng cường (RL)**: Là một nhánh của học máy, trong đó một tác nhân phần mềm (agent) tự thực hiện các quan sát và đưa ra các hành động trong một môi trường (environment) động để nhận lại các phần thưởng (rewards) hoặc hình phạt từ môi trường [cite: 797]. Mục tiêu cốt lõi của tác nhân là thông qua cơ chế thử và sai (trial and error) để học được một chính sách hành động tối ưu giúp tối đa hóa tổng phần thưởng mong đợi tích lũy theo thời gian [cite: 797].
-    *   **Sự khác biệt với các phương pháp khác**:
-        1.  **So với Học có giám sát (Supervised Learning)**: Học có giám sát huấn luyện mô hình dựa trên một tập dữ liệu có nhãn sẵn do con người gán (chứa câu trả lời đúng cho từng mẫu dữ liệu) [cite: 2, 577]. Ngược lại, Học tăng cường **không hề có nhãn hay giải pháp đúng được chỉ ra một cách rõ ràng** [cite: 808]. Tác nhân chỉ có thể tự mò mẫm thử nghiệm hành động và đánh giá mức độ tốt/xấu dựa trên tín hiệu phần thưởng thưa thớt nhận được từ môi trường [cite: 797, 808].
-        2.  **So với Học không giám sát (Unsupervised Learning)**: Học không giám sát cố gắng khám phá các cấu trúc hoặc mẫu ẩn nằm sâu bên trong một tập dữ liệu không có nhãn (như phân cụm, giảm chiều) mà không cần bất kỳ sự hướng dẫn hay mục tiêu cụ thể nào [cite: 2, 516, 579]. Trong khi đó, Học tăng cường có một **mục tiêu tối ưu hóa cực kỳ rõ ràng** (tối đa hóa kỳ vọng phần thưởng tích lũy) [cite: 797] và tác nhân phải liên tục tương tác chủ động để thay đổi trạng thái của môi trường [cite: 797, 800].
+*   **Định nghĩa Học tăng cường (RL)**: Là một nhánh của học máy, trong đó một tác nhân phần mềm (agent) tự thực hiện các quan sát và đưa ra các hành động trong một môi trường (environment) động để nhận lại các phần thưởng (rewards) hoặc hình phạt từ môi trường [cite: 797]. Mục tiêu cốt lõi của tác nhân là thông qua cơ chế thử và sai (trial and error) để học được một chính sách hành động tối ưu giúp tối đa hóa tổng phần thưởng mong đợi tích lũy theo thời gian [cite: 797].
+*   **Sự khác biệt với các phương pháp khác**:
+1.  **So với Học có giám sát (Supervised Learning)**: Học có giám sát huấn luyện mô hình dựa trên một tập dữ liệu có nhãn sẵn do con người gán (chứa câu trả lời đúng cho từng mẫu dữ liệu) [cite: 2, 577]. Ngược lại, Học tăng cường **không hề có nhãn hay giải pháp đúng được chỉ ra một cách rõ ràng** [cite: 808]. Tác nhân chỉ có thể tự mò mẫm thử nghiệm hành động và đánh giá mức độ tốt/xấu dựa trên tín hiệu phần thưởng thưa thớt nhận được từ môi trường [cite: 797, 808].
+2.  **So với Học không giám sát (Unsupervised Learning)**: Học không giám sát cố gắng khám phá các cấu trúc hoặc mẫu ẩn nằm sâu bên trong một tập dữ liệu không có nhãn (như phân cụm, giảm chiều) mà không cần bất kỳ sự hướng dẫn hay mục tiêu cụ thể nào [cite: 2, 516, 579]. Trong khi đó, Học tăng cường có một **mục tiêu tối ưu hóa cực kỳ rõ ràng** (tối đa hóa kỳ vọng phần thưởng tích lũy) [cite: 797] và tác nhân phải liên tục tương tác chủ động để thay đổi trạng thái của môi trường [cite: 797, 800].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Bạn có thể nghĩ ra ba ứng dụng khả thi của học tăng cường (RL) mà không được đề cập trong chương này không? *(Lưu ý: Chương này đã đề cập đến robot điều khiển, trò chơi Ms. Pac-Man/Cờ vây, bộ điều nhiệt, giao dịch chứng khoán tự động, xe tự lái, hệ thống đề xuất, đặt quảng cáo website, robot hút bụi) [cite: 798, 799, 800].*</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Bạn có thể nghĩ ra ba ứng dụng khả thi của học tăng cường (RL) mà không được đề cập trong chương này không? *(Lưu ý: Chương này đã đề cập đến robot điều khiển, trò chơi Ms. Pac-Man/Cờ vây, bộ điều nhiệt, giao dịch chứng khoán tự động, xe tự lái, hệ thống đề xuất, đặt quảng cáo website, robot hút bụi) [cite: 798, 799, 800].*</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**: Dưới đây là 3 ứng dụng đột phá khác được mô tả có hệ thống theo mô hình tác nhân và môi trường của RL [cite: 797]:
-    1.  **Ứng dụng 1: Quản lý và phân phối năng lượng lưới điện thông minh (Smart Grid Energy Management)**
-        *   *Môi trường*: Lưới điện khu vực kết hợp nhiều nguồn phát (năng lượng mặt trời, gió, nhiệt điện) và nhu cầu tiêu thụ thay đổi liên tục của các hộ gia đình.
-        *   *Tác nhân*: Hệ thống phần mềm điều phối năng lượng tự động tại trung tâm điều khiển.
-        *   *Hành động*: Nạp điện tích trữ vào các trạm pin dự phòng, phân phối dòng điện từ các nguồn phát, hoặc tự động điều chỉnh giá điện giờ cao điểm để giảm tải lưới.
-        *   *Phần thưởng*: Doanh thu kinh tế thu được từ việc bán điện, cộng phần thưởng lớn vì duy trì lưới điện ổn định, trừ đi điểm phạt nặng nếu xảy ra sự cố quá tải đường truyền hoặc mất điện cục bộ.
-    2.  **Ứng dụng 2: Điều hướng thiết bị bay không người lái cứu hộ (Autonomous Search & Rescue Drone Navigation)**
-        *   *Môi trường*: Khu vực rừng núi hiểm trở hoặc đống đổ nát sau thiên tai bão lũ, kèm theo sức gió lốc biến động mạnh.
-        *   *Tác nhân*: Bộ vi xử lý điều khiển chuyến bay tích hợp trên Drone.
-        *   *Hành động*: Điều chỉnh tốc độ quay độc lập của các động cơ cánh quạt (quay trái, quay phải, nghiêng hướng bay, tăng/giảm độ cao).
-        *   *Phần thưởng*: Nhận phần thưởng dương lớn khi camera phát hiện và định vị chính xác vị trí của người gặp nạn, nhận hình phạt âm cực nặng nếu đâm vào chướng ngại vật (va chạm đĩa đệm) hoặc tiêu hao năng lượng pin quá nhanh.
-    3.  **Ứng dụng 3: Tối ưu hóa điều trị y khoa cá nhân hóa (Personalized Medical Treatment Optimization)**
-        *   *Môi trường*: Trạng thái sinh học phức tạp của bệnh nhân nặng trong phòng chăm sóc đặc biệt (ICU), được đo lường qua các chỉ số sinh hóa thời gian thực (nhịp tim, huyết áp, nồng độ oxy).
-        *   *Tác nhân*: Hệ thống hỗ trợ quyết định y khoa thông minh.
-        *   *Hành động*: Đưa ra quyết định điều chỉnh liều lượng thuốc truyền dịch (như insulin hoặc thuốc trợ tim) tại mỗi bước thời gian.
-        *   *Phần thưởng*: Phần thưởng dương khi các chỉ số sinh tồn của bệnh nhân quay trở lại dải an toàn ổn định, hình phạt âm cực nặng nếu chỉ số sinh tồn vượt quá ngưỡng nguy hiểm hoặc gây ra tác dụng phụ suy kiệt cơ thể.
+1.  **Ứng dụng 1: Quản lý và phân phối năng lượng lưới điện thông minh (Smart Grid Energy Management)**
+*   *Môi trường*: Lưới điện khu vực kết hợp nhiều nguồn phát (năng lượng mặt trời, gió, nhiệt điện) và nhu cầu tiêu thụ thay đổi liên tục của các hộ gia đình.
+*   *Tác nhân*: Hệ thống phần mềm điều phối năng lượng tự động tại trung tâm điều khiển.
+*   *Hành động*: Nạp điện tích trữ vào các trạm pin dự phòng, phân phối dòng điện từ các nguồn phát, hoặc tự động điều chỉnh giá điện giờ cao điểm để giảm tải lưới.
+*   *Phần thưởng*: Doanh thu kinh tế thu được từ việc bán điện, cộng phần thưởng lớn vì duy trì lưới điện ổn định, trừ đi điểm phạt nặng nếu xảy ra sự cố quá tải đường truyền hoặc mất điện cục bộ.
+2.  **Ứng dụng 2: Điều hướng thiết bị bay không người lái cứu hộ (Autonomous Search & Rescue Drone Navigation)**
+*   *Môi trường*: Khu vực rừng núi hiểm trở hoặc đống đổ nát sau thiên tai bão lũ, kèm theo sức gió lốc biến động mạnh.
+*   *Tác nhân*: Bộ vi xử lý điều khiển chuyến bay tích hợp trên Drone.
+*   *Hành động*: Điều chỉnh tốc độ quay độc lập của các động cơ cánh quạt (quay trái, quay phải, nghiêng hướng bay, tăng/giảm độ cao).
+*   *Phần thưởng*: Nhận phần thưởng dương lớn khi camera phát hiện và định vị chính xác vị trí của người gặp nạn, nhận hình phạt âm cực nặng nếu đâm vào chướng ngại vật (va chạm đĩa đệm) hoặc tiêu hao năng lượng pin quá nhanh.
+3.  **Ứng dụng 3: Tối ưu hóa điều trị y khoa cá nhân hóa (Personalized Medical Treatment Optimization)**
+*   *Môi trường*: Trạng thái sinh học phức tạp của bệnh nhân nặng trong phòng chăm sóc đặc biệt (ICU), được đo lường qua các chỉ số sinh hóa thời gian thực (nhịp tim, huyết áp, nồng độ oxy).
+*   *Tác nhân*: Hệ thống hỗ trợ quyết định y khoa thông minh.
+*   *Hành động*: Đưa ra quyết định điều chỉnh liều lượng thuốc truyền dịch (như insulin hoặc thuốc trợ tim) tại mỗi bước thời gian.
+*   *Phần thưởng*: Phần thưởng dương khi các chỉ số sinh tồn của bệnh nhân quay trở lại dải an toàn ổn định, hình phạt âm cực nặng nếu chỉ số sinh tồn vượt quá ngưỡng nguy hiểm hoặc gây ra tác dụng phụ suy kiệt cơ thể.
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Hệ số chiết khấu (discount factor) là gì? Chính sách tối ưu (optimal policy) có thể thay đổi nếu bạn sửa đổi hệ số chiết khấu không?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Hệ số chiết khấu (discount factor) là gì? Chính sách tối ưu (optimal policy) có thể thay đổi nếu bạn sửa đổi hệ số chiết khấu không?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Khái niệm**: Hệ số chiết khấu (ký hiệu là \\(\gamma\\) - gamma) là một siêu tham số nằm trong khoảng từ 0 đến 1, được sử dụng để **đo lường tầm quan trọng tương đối của các phần thưởng nhận được trong tương lai đối với hành động hiện tại** [cite: 809]. Lợi tức (return) của một hành động được tính bằng tổng của tất cả các phần thưởng tương lai được nhân giảm dần với lũy thừa của hệ số chiết khấu ở mỗi bước thời gian [cite: 809, 810]:
-        \\[G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots\\] [cite: 809, 810]
-    *   **Tính chất**:
-        *   Nếu \\(\gamma\\) **tiến gần về 0**: Tác nhân sẽ trở nên **cực kỳ ngắn hạn (cận thị)**, nó chỉ quan tâm đến phần thưởng tức thời trước mắt mà bỏ qua hoàn toàn các hệ quả tốt/xấu dài hạn [cite: 809].
-        *   Nếu \\(\gamma\\) **tiến gần về 1**: Tác nhân trở nên **cực kỳ dài hạn (viễn thị)**, coi trọng các phần thưởng nhận được ở tương lai xa gần như tương đương với phần thưởng nhận được ngay lập tức [cite: 809].
-    *   **Sự thay đổi của chính sách tối ưu**: **Chính sách tối ưu chắc chắn sẽ thay đổi** khi ta sửa đổi hệ số chiết khấu [cite: 845]. 
-        *   *Ví dụ minh họa*: Xét một mê cung nơi tác nhân đi qua một lối đi hẹp có một phần thưởng nhỏ \\(+1\\) ngay lập tức, nhưng dẫn đến ngõ cụt hiểm họa bị phạt \\(-100\\) ở cuối đường [cite: 799]. 
-        *   Nếu ta đặt \\(\gamma \approx 0\\), tác nhân sẽ chọn đi vào lối đi hẹp này vì nó chỉ nhìn thấy phần thưởng \\(+1\\) tức thời [cite: 809]. 
-        *   Nếu ta đặt \\(\gamma \approx 0.99\\), tác nhân sẽ nhận diện được khoản phạt khổng lồ phía sau (đã nhân chiết khấu nhẹ) và quyết định né tránh lối đi này [cite: 809]. Do đó, ranh giới quyết định toán học thay đổi hoàn toàn làm xoay chuyển chính sách tối ưu [cite: 809, 833, 835].
+*   **Khái niệm**: Hệ số chiết khấu (ký hiệu là \\(\gamma\\) - gamma) là một siêu tham số nằm trong khoảng từ 0 đến 1, được sử dụng để **đo lường tầm quan trọng tương đối của các phần thưởng nhận được trong tương lai đối với hành động hiện tại** [cite: 809]. Lợi tức (return) của một hành động được tính bằng tổng của tất cả các phần thưởng tương lai được nhân giảm dần với lũy thừa của hệ số chiết khấu ở mỗi bước thời gian [cite: 809, 810]:
+\\[G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots\\] [cite: 809, 810]
+*   **Tính chất**:
+*   Nếu \\(\gamma\\) **tiến gần về 0**: Tác nhân sẽ trở nên **cực kỳ ngắn hạn (cận thị)**, nó chỉ quan tâm đến phần thưởng tức thời trước mắt mà bỏ qua hoàn toàn các hệ quả tốt/xấu dài hạn [cite: 809].
+*   Nếu \\(\gamma\\) **tiến gần về 1**: Tác nhân trở nên **cực kỳ dài hạn (viễn thị)**, coi trọng các phần thưởng nhận được ở tương lai xa gần như tương đương với phần thưởng nhận được ngay lập tức [cite: 809].
+*   **Sự thay đổi của chính sách tối ưu**: **Chính sách tối ưu chắc chắn sẽ thay đổi** khi ta sửa đổi hệ số chiết khấu [cite: 845]. 
+*   *Ví dụ minh họa*: Xét một mê cung nơi tác nhân đi qua một lối đi hẹp có một phần thưởng nhỏ \\(+1\\) ngay lập tức, nhưng dẫn đến ngõ cụt hiểm họa bị phạt \\(-100\\) ở cuối đường [cite: 799]. 
+*   Nếu ta đặt \\(\gamma \approx 0\\), tác nhân sẽ chọn đi vào lối đi hẹp này vì nó chỉ nhìn thấy phần thưởng \\(+1\\) tức thời [cite: 809]. 
+*   Nếu ta đặt \\(\gamma \approx 0.99\\), tác nhân sẽ nhận diện được khoản phạt khổng lồ phía sau (đã nhân chiết khấu nhẹ) và quyết định né tránh lối đi này [cite: 809]. Do đó, ranh giới quyết định toán học thay đổi hoàn toàn làm xoay chuyển chính sách tối ưu [cite: 809, 833, 835].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Làm thế nào để bạn đo lường hiệu suất của một tác nhân học tăng cường?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Làm thế nào để bạn đo lường hiệu suất của một tác nhân học tăng cường?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**: Hiệu suất của một tác nhân học tăng cường được đánh giá thực nghiệm một cách nghiêm ngặt thông qua các thước đo thống kê sau [cite: 805, 825, 826]:
-    1.  **Tổng phần thưởng trung bình trên mỗi tập (Mean Total Reward/Return per Episode)**: Cho tác nhân chơi thử nghiệm mô phỏng qua nhiều tập độc lập (ví dụ: 100 đến 500 lần thử) và tính giá trị trung bình cộng của tổng phần thưởng tích lũy được [cite: 805, 825, 826]. Đây là chỉ số chính đại diện cho năng lực của tác nhân [cite: 803, 805].
-    2.  **Độ lệch chuẩn, giá trị tối thiểu và tối đa (Standard Deviation, Min, Max)**: Đo lường mức độ biến động và tính ổn định của chính sách [cite: 805]. Một tác nhân xuất sắc không chỉ có điểm trung bình cao mà còn phải có độ lệch chuẩn thấp (ít hành vi thất thường) và giá trị tối thiểu không quá tệ [cite: 805].
-    3.  **Độ dốc của đường cong học tập (Learning Curve Slope)**: Vẽ biểu đồ biểu diễn tổng phần thưởng thu được dọc theo tiến trình của các kỷ nguyên/vòng lặp huấn luyện [cite: 820]. Đường cong học tập giúp ta đánh giá **hiệu quả sử dụng mẫu (sample efficiency)**: tác nhân có thể học nhanh đến mức nào và có đạt được siêu hội tụ hay bị rơi vào trạng thái bão hòa trì trệ không [cite: 814, 820, 829].
+1.  **Tổng phần thưởng trung bình trên mỗi tập (Mean Total Reward/Return per Episode)**: Cho tác nhân chơi thử nghiệm mô phỏng qua nhiều tập độc lập (ví dụ: 100 đến 500 lần thử) và tính giá trị trung bình cộng của tổng phần thưởng tích lũy được [cite: 805, 825, 826]. Đây là chỉ số chính đại diện cho năng lực của tác nhân [cite: 803, 805].
+2.  **Độ lệch chuẩn, giá trị tối thiểu và tối đa (Standard Deviation, Min, Max)**: Đo lường mức độ biến động và tính ổn định của chính sách [cite: 805]. Một tác nhân xuất sắc không chỉ có điểm trung bình cao mà còn phải có độ lệch chuẩn thấp (ít hành vi thất thường) và giá trị tối thiểu không quá tệ [cite: 805].
+3.  **Độ dốc của đường cong học tập (Learning Curve Slope)**: Vẽ biểu đồ biểu diễn tổng phần thưởng thu được dọc theo tiến trình của các kỷ nguyên/vòng lặp huấn luyện [cite: 820]. Đường cong học tập giúp ta đánh giá **hiệu quả sử dụng mẫu (sample efficiency)**: tác nhân có thể học nhanh đến mức nào và có đạt được siêu hội tụ hay bị rơi vào trạng thái bão hòa trì trệ không [cite: 814, 820, 829].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Bài toán phân bổ tín nhiệm (credit assignment problem) là gì? Khi nào nó xảy ra? Làm thế nào bạn có thể giảm thiểu nó?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Bài toán phân bổ tín nhiệm (credit assignment problem) là gì? Khi nào nó xảy ra? Làm thế nào bạn có thể giảm thiểu nó?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Khái niệm**: Là khó khăn kỹ thuật cốt lõi trong học tăng cường, xảy ra khi tác nhân nhận được một tín hiệu phần thưởng từ môi trường nhưng **rất khó để xác định chính xác hành động cụ thể nào trong chuỗi hàng trăm hành động đã thực hiện trong quá khứ thực sự chịu trách nhiệm (được ghi công hoặc đổ lỗi) cho phần thưởng đó** [cite: 808].
-        *   *Ví dụ*: Tác nhân giữ thăng bằng cây cột thành công trong 100 bước liên tiếp, nhưng cây cột bị rơi ở bước 101 [cite: 808]. Chắc chắn hành động ở bước 100 không phải là nguyên nhân duy nhất làm đổ cột, mà có thể là do một chuỗi các quyết định sai lệch từ bước 80 gây ra sự dao động tích lũy [cite: 805, 808].
-    *   **Khi nào xảy ra**: Bài toán này phát sinh bất cứ khi nào **phần thưởng của môi trường bị trì hoãn (delayed) và cực kỳ thưa thớt (sparse)** (tức là tác nhân phải thực hiện một chuỗi dài các hành động trung gian không có phần thưởng trước khi chạm tới kết quả cuối cùng) [cite: 808].
-    *   **Các giải pháp giảm thiểu**:
-        1.  **Tính toán lợi tức chiết khấu (Discounted Return)**: Sử dụng hệ số chiết khấu \\(\gamma\\) để liên kết toán học: các hành động ở gần thời điểm nhận phần thưởng sẽ nhận được tỷ lệ đóng góp lớn hơn, giảm dần theo khoảng cách thời gian [cite: 809, 810].
-        2.  **Chuẩn hóa lợi thế hành động (Action Advantage)**: Chạy huấn luyện qua nhiều tập dữ liệu, tính toán giá trị trung bình và chia cho độ lệch chuẩn của lợi tức [cite: 810, 826]. Kỹ thuật này giúp chuyển đổi lợi tức thô thành điểm lợi thế chuẩn hóa, lọc sạch nhiễu ngẫu nhiên và chỉ giữ lại tín hiệu thực sự của các hành động tốt (mang lợi thế dương) và hành động xấu (mang lợi thế âm) [cite: 810, 827, 828].
-        3.  **Tích hợp cơ chế khám phá dựa trên sự tò mò (Curiosity-based exploration)**: Tự tạo ra các phần thưởng nội tại (intrinsic rewards) cho tác nhân dựa trên mức độ bất ngờ khi khám phá các trạng thái mới, giúp giải quyết triệt để vấn đề "đói phần thưởng" của môi trường [cite: 841].
+*   **Khái niệm**: Là khó khăn kỹ thuật cốt lõi trong học tăng cường, xảy ra khi tác nhân nhận được một tín hiệu phần thưởng từ môi trường nhưng **rất khó để xác định chính xác hành động cụ thể nào trong chuỗi hàng trăm hành động đã thực hiện trong quá khứ thực sự chịu trách nhiệm (được ghi công hoặc đổ lỗi) cho phần thưởng đó** [cite: 808].
+*   *Ví dụ*: Tác nhân giữ thăng bằng cây cột thành công trong 100 bước liên tiếp, nhưng cây cột bị rơi ở bước 101 [cite: 808]. Chắc chắn hành động ở bước 100 không phải là nguyên nhân duy nhất làm đổ cột, mà có thể là do một chuỗi các quyết định sai lệch từ bước 80 gây ra sự dao động tích lũy [cite: 805, 808].
+*   **Khi nào xảy ra**: Bài toán này phát sinh bất cứ khi nào **phần thưởng của môi trường bị trì hoãn (delayed) và cực kỳ thưa thớt (sparse)** (tức là tác nhân phải thực hiện một chuỗi dài các hành động trung gian không có phần thưởng trước khi chạm tới kết quả cuối cùng) [cite: 808].
+*   **Các giải pháp giảm thiểu**:
+1.  **Tính toán lợi tức chiết khấu (Discounted Return)**: Sử dụng hệ số chiết khấu \\(\gamma\\) để liên kết toán học: các hành động ở gần thời điểm nhận phần thưởng sẽ nhận được tỷ lệ đóng góp lớn hơn, giảm dần theo khoảng cách thời gian [cite: 809, 810].
+2.  **Chuẩn hóa lợi thế hành động (Action Advantage)**: Chạy huấn luyện qua nhiều tập dữ liệu, tính toán giá trị trung bình và chia cho độ lệch chuẩn của lợi tức [cite: 810, 826]. Kỹ thuật này giúp chuyển đổi lợi tức thô thành điểm lợi thế chuẩn hóa, lọc sạch nhiễu ngẫu nhiên và chỉ giữ lại tín hiệu thực sự của các hành động tốt (mang lợi thế dương) và hành động xấu (mang lợi thế âm) [cite: 810, 827, 828].
+3.  **Tích hợp cơ chế khám phá dựa trên sự tò mò (Curiosity-based exploration)**: Tự tạo ra các phần thưởng nội tại (intrinsic rewards) cho tác nhân dựa trên mức độ bất ngờ khi khám phá các trạng thái mới, giúp giải quyết triệt để vấn đề "đói phần thưởng" của môi trường [cite: 841].
 
----
-
-##### 🧠 Phân tích & Lập luận (Chain of Thought / Tree of Thought)
-
-Để giải quyết trọn vẹn và sâu sắc nhất **Phần 2 (từ Câu 6 đến Câu 10)** của **Chương 18: Học tăng cường (Reinforcement Learning)**, chúng ta sẽ đi sâu vào cơ chế tối ưu hóa của các thuật toán trị số và độ dốc chính sách [cite: 643], phân tích cấu trúc mạng Q sâu nâng cao và cung cấp toàn bộ mã nguồn Python thực hành hoàn chỉnh cho các dự án thực tế [cite: 149, 150].
-
-Dưới đây là sơ đồ phân tích các nhánh giải thuật cốt lõi:
-1.  **Câu 6 (Bộ đệm phát lại - Replay Buffer)**: Phân tích cách phá vỡ sự tương quan chuỗi thời gian (temporal correlation) và chuyển đổi luồng dữ liệu phi I.I.D thành phân phối I.I.D ổn định [cite: 219, 223].
-2.  **Câu 7 (Thuật toán Off-policy)**: Định nghĩa toán học sự khác biệt giữa chính sách hành vi (behavior policy) và chính sách mục tiêu (target policy) [cite: 224].
-3.  **Câu 8 (LunarLander-v3 với Policy Gradients)**: Thiết kế giải thuật REINFORCE hoàn chỉnh, tích hợp tính toán lợi thế hành động đã chuẩn hóa để giải quyết môi trường hạ cánh phi thuyền [cite: 217, 224, 227].
-4.  **Câu 9 (Atari Breakout với Double Dueling DQN)**: Xây dựng kiến trúc tích chập sâu kết hợp phân tách dòng Giá trị trạng thái \\(V(s)\\) và Lợi thế hành động \\(A(s, a)\\), kết hợp cơ chế chọn hành động của mạng trực tuyến và đánh giá của mạng mục tiêu [cite: 222, 228, 672, 674].
-5.  **Câu 10 (Học tăng cường trên Phần cứng Raspberry Pi)**: Phân tích quy trình dịch chuyển Sim-to-Real, lượng tử hóa mô hình sang TFLite 8-bit và thiết lập vòng lặp điều khiển PWM thực tế trên robot [cite: 229].
-
----
-
-##### PHẦN 2: Chi tiết bài tập và giải pháp lập trình Python (Từ Câu 6 đến Câu 10)
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Mục đích của việc sử dụng bộ đệm phát lại (replay buffer) là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Mục đích của việc sử dụng bộ đệm phát lại (replay buffer) là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Bản chất rào cản**: Trong học tăng cường, các trải nghiệm liên tiếp của tác nhân `(state, action, reward, next_state, done)` có **sự tương quan cực kỳ mạnh mẽ theo thời gian** (không thỏa mãn giả định phân phối độc lập và đồng nhất - I.I.D) [cite: 223]. Nếu ta huấn luyện mạng nơ-ron trực tiếp trên các mẫu dữ liệu tuần tự này, mạng sẽ ngay lập tức bị quá khớp cục bộ vào phân đoạn không gian trạng thái hiện tại, dẫn đến hiện tượng **quên thảm khốc (catastrophic forgetting)** và làm đồ thị lỗi bị phân kỳ [cite: 223].
-    *   **Mục đích của Replay Buffer**:
-        1.  **Phá vỡ sự tương quan**: Bằng cách lưu trữ hàng trăm nghìn trải nghiệm cũ vào một bộ đệm vòng (`deque` hoặc mảng tròn) và lấy mẫu ngẫu nhiên một mini-batch để huấn luyện [cite: 223], ta tái tạo lại một phân phối dữ liệu dạng I.I.D giúp ổn định hóa tối đa quá trình cập nhật trọng số [cite: 223].
-        2.  **Tăng hiệu quả sử dụng mẫu (Sample efficiency)**: Cho phép tác nhân tái sử dụng một trải nghiệm tốt nhiều lần ở các bước huấn luyện khác nhau, thay vì chỉ sử dụng một lần rồi vứt bỏ [cite: 219, 223].
+*   **Bản chất rào cản**: Trong học tăng cường, các trải nghiệm liên tiếp của tác nhân `(state, action, reward, next_state, done)` có **sự tương quan cực kỳ mạnh mẽ theo thời gian** (không thỏa mãn giả định phân phối độc lập và đồng nhất - I.I.D) [cite: 223]. Nếu ta huấn luyện mạng nơ-ron trực tiếp trên các mẫu dữ liệu tuần tự này, mạng sẽ ngay lập tức bị quá khớp cục bộ vào phân đoạn không gian trạng thái hiện tại, dẫn đến hiện tượng **quên thảm khốc (catastrophic forgetting)** và làm đồ thị lỗi bị phân kỳ [cite: 223].
+*   **Mục đích của Replay Buffer**:
+1.  **Phá vỡ sự tương quan**: Bằng cách lưu trữ hàng trăm nghìn trải nghiệm cũ vào một bộ đệm vòng (`deque` hoặc mảng tròn) và lấy mẫu ngẫu nhiên một mini-batch để huấn luyện [cite: 223], ta tái tạo lại một phân phối dữ liệu dạng I.I.D giúp ổn định hóa tối đa quá trình cập nhật trọng số [cite: 223].
+2.  **Tăng hiệu quả sử dụng mẫu (Sample efficiency)**: Cho phép tác nhân tái sử dụng một trải nghiệm tốt nhiều lần ở các bước huấn luyện khác nhau, thay vì chỉ sử dụng một lần rồi vứt bỏ [cite: 219, 223].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Thuật toán RL off-policy là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Thuật toán RL off-policy là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Một thuật toán học tăng cường được gọi là **Off-policy** khi nó **học được giá trị của chính sách tối ưu** (hoặc chính sách mục tiêu mong muốn) trong khi tác nhân lại đang **thực thi và tương tác với môi trường bằng một chính sách hoàn toàn khác** (được gọi là chính sách hành vi / chính sách khám phá - behavior policy) [cite: 224].
-    *   *Ví dụ điển hình*: Thuật toán **Q-Learning và DQN** [cite: 224]. Trong quá trình huấn luyện, tác nhân chọn hành động dựa trên chính sách khám phá \\(\epsilon\\)-greedy (có xác suất chọn hành động ngẫu nhiên để mở rộng hiểu biết) [cite: 223], nhưng công thức cập nhật Bellman của nó lại luôn giả định bước tiếp theo sẽ chọn hành động tham lam tối ưu nhất [cite: 656, 664]:
-        \\[Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right]\\] [cite: 656]
-    *   *Ngược lại (On-policy)*: Các thuật toán như SARSA hoặc REINFORCE (Policy Gradients) bắt buộc phải học trực tiếp từ chính sách mà tác nhân đang thực sự thực thi tại thời điểm đó (bao gồm cả các bước đi ngẫu nhiên khám phá) [cite: 224].
+*   Một thuật toán học tăng cường được gọi là **Off-policy** khi nó **học được giá trị của chính sách tối ưu** (hoặc chính sách mục tiêu mong muốn) trong khi tác nhân lại đang **thực thi và tương tác với môi trường bằng một chính sách hoàn toàn khác** (được gọi là chính sách hành vi / chính sách khám phá - behavior policy) [cite: 224].
+*   *Ví dụ điển hình*: Thuật toán **Q-Learning và DQN** [cite: 224]. Trong quá trình huấn luyện, tác nhân chọn hành động dựa trên chính sách khám phá \\(\epsilon\\)-greedy (có xác suất chọn hành động ngẫu nhiên để mở rộng hiểu biết) [cite: 223], nhưng công thức cập nhật Bellman của nó lại luôn giả định bước tiếp theo sẽ chọn hành động tham lam tối ưu nhất [cite: 656, 664]:
+\\[Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right]\\] [cite: 656]
+*   *Ngược lại (On-policy)*: Các thuật toán như SARSA hoặc REINFORCE (Policy Gradients) bắt buộc phải học trực tiếp từ chính sách mà tác nhân đang thực sự thực thi tại thời điểm đó (bao gồm cả các bước đi ngẫu nhiên khám phá) [cite: 224].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Sử dụng độ dốc chính sách (Policy Gradients - REINFORCE) để giải quyết môi trường `LunarLander-v3` [cite: 224]</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Sử dụng độ dốc chính sách (Policy Gradients - REINFORCE) để giải quyết môi trường `LunarLander-v3` [cite: 224]</h4>
+
+
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
 *   **Mã nguồn Python hoàn chỉnh và tối ưu hóa**:
-    *   *Lưu ý*: Môi trường `LunarLander-v3` có không gian quan sát 8 chiều liên tục và không gian hành động rời rạc gồm 4 nhánh quyết định [cite: 225, 226]. Chúng ta sử dụng hàm kích hoạt `softmax` ở lớp đầu ra để biểu diễn phân phối xác suất [cite: 227].
+*   *Lưu ý*: Môi trường `LunarLander-v3` có không gian quan sát 8 chiều liên tục và không gian hành động rời rạc gồm 4 nhánh quyết định [cite: 225, 226]. Chúng ta sử dụng hàm kích hoạt `softmax` ở lớp đầu ra để biểu diễn phân phối xác suất [cite: 227].
 
 ```python
 import gymnasium as gym
@@ -2940,9 +2910,9 @@ tf.random.set_seed(42)
 np.random.seed(42)
 
 model_pg = tf.keras.Sequential([
-    tf.keras.layers.Dense(32, activation="relu", input_shape=[n_inputs]),
-    tf.keras.layers.Dense(32, activation="relu"),
-    tf.keras.layers.Dense(n_outputs, activation="softmax") # Đầu ra Softmax cho phân phối xác suất
+tf.keras.layers.Dense(32, activation="relu", input_shape=[n_inputs]),
+tf.keras.layers.Dense(32, activation="relu"),
+tf.keras.layers.Dense(n_outputs, activation="softmax") # Đầu ra Softmax cho phân phối xác suất
 ])
 
 optimizer = tf.keras.optimizers.Nadam(learning_rate=0.005)
@@ -2950,39 +2920,39 @@ loss_fn = tf.keras.losses.sparse_categorical_crossentropy
 
 # 3. Các hàm bổ trợ thuật toán REINFORCE
 def play_one_step(env, obs, model, loss_fn):
-    with tf.GradientTape() as tape:
-        # Dự đoán phân phối xác suất hành động
-        probas = model(obs[np.newaxis])
-        # Lấy mẫu hành động ngẫu nhiên dựa trên xác suất dự đoán
-        action = tf.random.categorical(tf.math.log(probas), num_samples=1)
-        # Tính toán loss giả định để thu về gradient
-        loss = tf.reduce_mean(loss_fn(tf.expand_dims(action, axis=0), probas))
-        
-    grads = tape.gradient(loss, model.trainable_variables)
-    next_obs, reward, done, truncated, info = env.step(int(action))
-    
-    # Phạt nặng nếu phi thuyền bị rơi tự do hoặc bay lệch quá xa mục tiêu
-    if done and reward < -100:
-        reward = -100
-        
-    return next_obs, reward, done, truncated, grads
+with tf.GradientTape() as tape:
+# Dự đoán phân phối xác suất hành động
+probas = model(obs[np.newaxis])
+# Lấy mẫu hành động ngẫu nhiên dựa trên xác suất dự đoán
+action = tf.random.categorical(tf.math.log(probas), num_samples=1)
+# Tính toán loss giả định để thu về gradient
+loss = tf.reduce_mean(loss_fn(tf.expand_dims(action, axis=0), probas))
+
+grads = tape.gradient(loss, model.trainable_variables)
+next_obs, reward, done, truncated, info = env.step(int(action))
+
+# Phạt nặng nếu phi thuyền bị rơi tự do hoặc bay lệch quá xa mục tiêu
+if done and reward < -100:
+reward = -100
+
+return next_obs, reward, done, truncated, grads
 
 def discount_and_normalize_rewards(all_rewards, discount_factor=0.99):
-    # Tính toán tổng lợi tức chiết khấu tương lai G_t
-    all_discounted_rewards = []
-    for rewards in all_rewards:
-        discounted_rewards = []
-        cumulative_reward = 0
-        for r in reversed(rewards):
-            cumulative_reward = r + cumulative_reward * discount_factor
-            discounted_rewards.append(cumulative_reward)
-        all_discounted_rewards.append(list(reversed(discounted_rewards)))
-        
-    # Chuẩn hóa lợi thế hành động trên toàn bộ các tập phim
-    flat_rewards = np.concatenate(all_discounted_rewards)
-    mean = flat_rewards.mean()
-    std = flat_rewards.std() if flat_rewards.std() > 0 else 1e-9
-    return [(rewards - mean) / std for rewards in all_discounted_rewards]
+# Tính toán tổng lợi tức chiết khấu tương lai G_t
+all_discounted_rewards = []
+for rewards in all_rewards:
+discounted_rewards = []
+cumulative_reward = 0
+for r in reversed(rewards):
+cumulative_reward = r + cumulative_reward * discount_factor
+discounted_rewards.append(cumulative_reward)
+all_discounted_rewards.append(list(reversed(discounted_rewards)))
+
+# Chuẩn hóa lợi thế hành động trên toàn bộ các tập phim
+flat_rewards = np.concatenate(all_discounted_rewards)
+mean = flat_rewards.mean()
+std = flat_rewards.std() if flat_rewards.std() > 0 else 1e-9
+return [(rewards - mean) / std for rewards in all_discounted_rewards]
 
 # 4. Vòng lặp huấn luyện Policy Gradients chính thức
 n_iterations = 50
@@ -2991,75 +2961,73 @@ n_max_steps = 1000
 
 print("--- BẮT ĐẦU HUÂN LUYỆN LUNARLANDER VỚI POLICY GRADIENTS ---")
 for iteration in range(1, n_iterations + 1):
-    all_rewards = []
-    all_grads = []
-    
-    for episode in range(n_episodes_per_update):
-        current_rewards = []
-        current_grads = []
-        obs, info = env.reset()
-        
-        for step in range(n_max_steps):
-            obs, reward, done, truncated, grads = play_one_step(env, obs, model_pg, loss_fn)
-            current_rewards.append(reward)
-            current_grads.append(grads)
-            if done or truncated:
-                break
-                
-        all_rewards.append(current_rewards)
-        all_grads.append(current_grads)
-        
-    # Tính toán lợi thế hành động đã chuẩn hóa
-    normalized_rewards = discount_and_normalize_rewards(all_rewards)
-    
-    # Cập nhật trọng số bằng cách nhân gradient với lợi thế tương ứng
-    all_mean_grads = []
-    for var_index in range(len(model_pg.trainable_variables)):
-        weighted_grads = []
-        for ep_index, custom_grads in enumerate(all_grads):
-            for step_index, grads_step in enumerate(custom_grads):
-                # Nhân trực tiếp gradient lỗi với lợi thế hành động chuẩn hóa
-                weighted_grads.append(grads_step[var_index] * normalized_rewards[ep_index][step_index])
-        mean_grads = tf.reduce_mean(weighted_grads, axis=0)
-        all_mean_grads.append(mean_grads)
-        
-    optimizer.apply_gradients(zip(all_mean_grads, model_pg.trainable_variables))
-    
-    # In ra tiến trình
-    total_rewards = [sum(ep) for ep in all_rewards]
-    print(f"Vòng lặp {iteration}/{n_iterations} - Điểm trung bình: {np.mean(total_rewards):.2f} - Điểm cao nhất: {np.max(total_rewards):.2f}")
+all_rewards = []
+all_grads = []
+
+for episode in range(n_episodes_per_update):
+current_rewards = []
+current_grads = []
+obs, info = env.reset()
+
+for step in range(n_max_steps):
+obs, reward, done, truncated, grads = play_one_step(env, obs, model_pg, loss_fn)
+current_rewards.append(reward)
+current_grads.append(grads)
+if done or truncated:
+break
+
+all_rewards.append(current_rewards)
+all_grads.append(current_grads)
+
+# Tính toán lợi thế hành động đã chuẩn hóa
+normalized_rewards = discount_and_normalize_rewards(all_rewards)
+
+# Cập nhật trọng số bằng cách nhân gradient với lợi thế tương ứng
+all_mean_grads = []
+for var_index in range(len(model_pg.trainable_variables)):
+weighted_grads = []
+for ep_index, custom_grads in enumerate(all_grads):
+for step_index, grads_step in enumerate(custom_grads):
+# Nhân trực tiếp gradient lỗi với lợi thế hành động chuẩn hóa
+weighted_grads.append(grads_step[var_index] * normalized_rewards[ep_index][step_index])
+mean_grads = tf.reduce_mean(weighted_grads, axis=0)
+all_mean_grads.append(mean_grads)
+
+optimizer.apply_gradients(zip(all_mean_grads, model_pg.trainable_variables))
+
+# In ra tiến trình
+total_rewards = [sum(ep) for ep in all_rewards]
+print(f"Vòng lặp {iteration}/{n_iterations} - Điểm trung bình: {np.mean(total_rewards):.2f} - Điểm cao nhất: {np.max(total_rewards):.2f}")
 
 env.close()
 ``` [cite: 217, 218, 224, 227]
 
----
-
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
-
-
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 9: Sử dụng mạng Q sâu kép đấu (Dueling Double DQN) để huấn luyện một tác nhân đạt cấp độ siêu nhân trong trò chơi Atari Breakout [cite: 228]</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 9: Sử dụng mạng Q sâu kép đấu (Dueling Double DQN) để huấn luyện một tác nhân đạt cấp độ siêu nhân trong trò chơi Atari Breakout [cite: 228]</h4>
+
+
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
 *   **Phân tích kiến trúc kỹ thuật tối tân** [cite: 228, 669, 672, 674]:
-    1.  **Xử lý đầu vào (Preprocessing)**: Ảnh thô của game Atari Breakout có kích thước lớn và chứa nhiều chi tiết thừa [cite: 228]. Ta chuyển ảnh về mức xám (grayscale), cắt bỏ phần viền trên/dưới và nén kích thước về \\(84 \times 84\\) [cite: 228]. Do một ảnh tĩnh đơn lẻ không thể thể hiện được vận tốc và hướng chuyển động của quả bóng, ta bắt buộc phải **nối ghép 4 khung hình liên tiếp** lại để tạo thành một trạng thái đầu vào tích chập có shape `(84, 84, 4)` [cite: 228].
-    2.  **Cơ chế Kép (Double DQN)**: Ngăn chặn hiện tượng đánh giá quá cao giá trị Q (overestimation bias) [cite: 672]. Ta sử dụng mạng trực tuyến (Online Model) để chọn hành động có giá trị tốt nhất cho trạng thái tiếp theo, nhưng lại sử dụng mạng mục tiêu (Target Model) để tính toán điểm số Q thực tế cho hành động đó [cite: 672, 673]:
-        \\[y = r + \gamma Q_{\text{target}}\left(s', \text{argmax}_{a'} Q_{\text{online}}(s', a')\right)\\] [cite: 672]
-    3.  **Cơ chế Đấu (Dueling DQN)**: Tách ma trận Q thành 2 dòng tính toán song song: dòng giá trị trạng thái \\(V(s)\\) (đo mức độ tốt của việc đứng ở trạng thái hiện tại) và dòng lợi thế hành động \\(A(s, a)\\) (đo mức độ ưu việt của từng hành động so với mặt bằng chung) [cite: 674]. Chúng gộp lại thông qua công thức trừ trung bình lợi thế để ổn định toán học [cite: 222, 674]:
-        \\[Q(s, a) = V(s) + \left( A(s, a) - \frac{1}{|A|} \sum_{a'} A(s, a') \right)\\] [cite: 222, 674]
+1.  **Xử lý đầu vào (Preprocessing)**: Ảnh thô của game Atari Breakout có kích thước lớn và chứa nhiều chi tiết thừa [cite: 228]. Ta chuyển ảnh về mức xám (grayscale), cắt bỏ phần viền trên/dưới và nén kích thước về \\(84 \times 84\\) [cite: 228]. Do một ảnh tĩnh đơn lẻ không thể thể hiện được vận tốc và hướng chuyển động của quả bóng, ta bắt buộc phải **nối ghép 4 khung hình liên tiếp** lại để tạo thành một trạng thái đầu vào tích chập có shape `(84, 84, 4)` [cite: 228].
+2.  **Cơ chế Kép (Double DQN)**: Ngăn chặn hiện tượng đánh giá quá cao giá trị Q (overestimation bias) [cite: 672]. Ta sử dụng mạng trực tuyến (Online Model) để chọn hành động có giá trị tốt nhất cho trạng thái tiếp theo, nhưng lại sử dụng mạng mục tiêu (Target Model) để tính toán điểm số Q thực tế cho hành động đó [cite: 672, 673]:
+\\[y = r + \gamma Q_{\text{target}}\left(s', \text{argmax}_{a'} Q_{\text{online}}(s', a')\right)\\] [cite: 672]
+3.  **Cơ chế Đấu (Dueling DQN)**: Tách ma trận Q thành 2 dòng tính toán song song: dòng giá trị trạng thái \\(V(s)\\) (đo mức độ tốt của việc đứng ở trạng thái hiện tại) và dòng lợi thế hành động \\(A(s, a)\\) (đo mức độ ưu việt của từng hành động so với mặt bằng chung) [cite: 674]. Chúng gộp lại thông qua công thức trừ trung bình lợi thế để ổn định toán học [cite: 222, 674]:
+\\[Q(s, a) = V(s) + \left( A(s, a) - \frac{1}{|A|} \sum_{a'} A(s, a') \right)\\] [cite: 222, 674]
 
 *   **Mã nguồn Python thiết kế mô hình hoàn chỉnh**:
 
@@ -3106,86 +3074,69 @@ loss_fn = tf.keras.losses.Huber() # Dùng Huber loss để giảm độ nhạy v
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.00025)
 
 def train_double_dqn_step(states, actions, rewards, next_states, dones, discount_factor=0.99):
-    # 1. Sử dụng mạng Online để chọn hành động tốt nhất ở trạng thái tiếp theo
-    next_Q_online = online_model.predict(next_states, verbose=0)
-    best_next_actions = np.argmax(next_Q_online, axis=1)
-    
-    # 2. Sử dụng mạng Target để đánh giá giá trị Q của hành động tốt nhất đó
-    next_Q_target = target_model.predict(next_states, verbose=0)
-    max_next_Q_values = next_Q_target[range(len(best_next_actions)), best_next_actions]
-    
-    # 3. Tính toán Q mục tiêu theo phương trình Bellman
-    target_Q_values = rewards + (1.0 - dones) * discount_factor * max_next_Q_values
-    target_Q_values = target_Q_values.reshape(-1, 1)
-    
-    # Mặt nạ một nóng để chỉ tính lỗi trên các hành động thực tế đã chọn
-    mask = tf.one_hot(actions, n_actions)
-    
-    with tf.GradientTape() as tape:
-        all_Q_values = online_model(states)
-        # Chỉ lấy ra giá trị Q ứng với hành động đã thực hiện
-        Q_values = tf.reduce_sum(all_Q_values * mask, axis=1, keepdims=True)
-        loss = tf.reduce_mean(loss_fn(target_Q_values, Q_values))
-        
-    # Tính gradient và cập nhật trọng số cho mạng Online
-    grads = tape.gradient(loss, online_model.trainable_variables)
-    optimizer.apply_gradients(zip(grads, online_model.trainable_variables))
-    return loss
+# 1. Sử dụng mạng Online để chọn hành động tốt nhất ở trạng thái tiếp theo
+next_Q_online = online_model.predict(next_states, verbose=0)
+best_next_actions = np.argmax(next_Q_online, axis=1)
+
+# 2. Sử dụng mạng Target để đánh giá giá trị Q của hành động tốt nhất đó
+next_Q_target = target_model.predict(next_states, verbose=0)
+max_next_Q_values = next_Q_target[range(len(best_next_actions)), best_next_actions]
+
+# 3. Tính toán Q mục tiêu theo phương trình Bellman
+target_Q_values = rewards + (1.0 - dones) * discount_factor * max_next_Q_values
+target_Q_values = target_Q_values.reshape(-1, 1)
+
+# Mặt nạ một nóng để chỉ tính lỗi trên các hành động thực tế đã chọn
+mask = tf.one_hot(actions, n_actions)
+
+with tf.GradientTape() as tape:
+all_Q_values = online_model(states)
+# Chỉ lấy ra giá trị Q ứng với hành động đã thực hiện
+Q_values = tf.reduce_sum(all_Q_values * mask, axis=1, keepdims=True)
+loss = tf.reduce_mean(loss_fn(target_Q_values, Q_values))
+
+# Tính gradient và cập nhật trọng số cho mạng Online
+grads = tape.gradient(loss, online_model.trainable_variables)
+optimizer.apply_gradients(zip(grads, online_model.trainable_variables))
+return loss
 ``` [cite: 222, 223, 228, 664, 669, 672, 674]
 
----
-
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
-
-
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 10: Thiết kế dự án phần cứng thực tế sử dụng Raspberry Pi kết hợp TensorFlow và Học tăng cường [cite: 229]</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 10: Thiết kế dự án phần cứng thực tế sử dụng Raspberry Pi kết hợp TensorFlow và Học tăng cường [cite: 229]</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**: Để triển khai thành công một tác nhân học tăng cường điều khiển robot di động tự học ngoài đời thực bằng Raspberry Pi, bạn cần thiết kế một hệ thống tích hợp 3 giai đoạn mượt mà sau [cite: 229]:
-    1.  **Giai đoạn 1: Huấn luyện mô phỏng (Sim-to-Real Transfer)**: 
-        *   Do học tăng cường yêu cầu hàng triệu lần thử và sai (va chạm, đổ ngã) để học được chính sách tốt [cite: 797, 808], việc huấn luyện trực tiếp trên robot vật lý ngay từ đầu sẽ gây hỏng hóc động cơ và khung vỏ [cite: 229].
-        *   Giải pháp là xây dựng một môi trường giả lập 3D có độ trung thực cao tương đương robot thật bằng các công cụ vật lý như PyBullet hoặc MuJoCo [cite: 344], thực hiện huấn luyện tác nhân DQN đạt điểm số tối ưu trong môi trường ảo trước [cite: 660, 669].
-    2.  **Giai đoạn 2: Lượng tử hóa và tối ưu hóa mô hình (TFLite Quantization)**:
-        *   Mạng nơ-ron tích chập sâu thường quá nặng để chạy thời gian thực trên chip xử lý SoC ARM của Raspberry Pi [cite: 229, 484].
-        *   Ta chuyển đổi mô hình Keras đã huấn luyện sang định dạng **TensorFlow Lite FlatBuffer (`.tflite`)** [cite: 484].
-        *   Áp dụng kỹ thuật **lượng tử hóa sau huấn luyện (post-training quantization)** để nén toàn bộ trọng số từ số thực dấu phẩy động 32-bit (float32) sang số nguyên 8-bit (int8) [cite: 484]. Bước này giúp thu nhỏ mô hình đi 4 lần và tăng tốc độ suy luận trực tiếp trên CPU của Pi lên gấp nhiều lần [cite: 484].
-    3.  **Giai đoạn 3: Thiết lập vòng lặp điều khiển PWM trên thiết bị (Hardware Control Loop)**:
-        *   Viết một vòng lặp Python chạy liên tục trên Raspberry Pi sử dụng thư viện `RPi.GPIO` hoặc `pigpio` để giao tiếp phần cứng [cite: 229]:
-            *   *Bước 1*: Đọc dữ liệu khoảng cách từ cảm biến siêu âm (sonar) hoặc trích xuất khung hình từ camera gắn trên robot [cite: 229].
-            *   *Bước 2*: Đưa dữ liệu quan sát này làm đầu vào suy luận cho mô hình TFLite Interpreter để dự đoán hành động tốt nhất [cite: 229, 484].
-            *   *Bước 3*: Dịch chuyển hành động dự đoán được thành các tín hiệu xung điều rộng **PWM** truyền xuống mạch cầu H (như L298N) để điều khiển hướng quay và tốc độ của các bánh xe robot [cite: 229].
+1.  **Giai đoạn 1: Huấn luyện mô phỏng (Sim-to-Real Transfer)**: 
+*   Do học tăng cường yêu cầu hàng triệu lần thử và sai (va chạm, đổ ngã) để học được chính sách tốt [cite: 797, 808], việc huấn luyện trực tiếp trên robot vật lý ngay từ đầu sẽ gây hỏng hóc động cơ và khung vỏ [cite: 229].
+*   Giải pháp là xây dựng một môi trường giả lập 3D có độ trung thực cao tương đương robot thật bằng các công cụ vật lý như PyBullet hoặc MuJoCo [cite: 344], thực hiện huấn luyện tác nhân DQN đạt điểm số tối ưu trong môi trường ảo trước [cite: 660, 669].
+2.  **Giai đoạn 2: Lượng tử hóa và tối ưu hóa mô hình (TFLite Quantization)**:
+*   Mạng nơ-ron tích chập sâu thường quá nặng để chạy thời gian thực trên chip xử lý SoC ARM của Raspberry Pi [cite: 229, 484].
+*   Ta chuyển đổi mô hình Keras đã huấn luyện sang định dạng **TensorFlow Lite FlatBuffer (`.tflite`)** [cite: 484].
+*   Áp dụng kỹ thuật **lượng tử hóa sau huấn luyện (post-training quantization)** để nén toàn bộ trọng số từ số thực dấu phẩy động 32-bit (float32) sang số nguyên 8-bit (int8) [cite: 484]. Bước này giúp thu nhỏ mô hình đi 4 lần và tăng tốc độ suy luận trực tiếp trên CPU của Pi lên gấp nhiều lần [cite: 484].
+3.  **Giai đoạn 3: Thiết lập vòng lặp điều khiển PWM trên thiết bị (Hardware Control Loop)**:
+*   Viết một vòng lặp Python chạy liên tục trên Raspberry Pi sử dụng thư viện `RPi.GPIO` hoặc `pigpio` để giao tiếp phần cứng [cite: 229]:
+*   *Bước 1*: Đọc dữ liệu khoảng cách từ cảm biến siêu âm (sonar) hoặc trích xuất khung hình từ camera gắn trên robot [cite: 229].
+*   *Bước 2*: Đưa dữ liệu quan sát này làm đầu vào suy luận cho mô hình TFLite Interpreter để dự đoán hành động tốt nhất [cite: 229, 484].
+*   *Bước 3*: Dịch chuyển hành động dự đoán được thành các tín hiệu xung điều rộng **PWM** truyền xuống mạch cầu H (như L298N) để điều khiển hướng quay và tốc độ của các bánh xe robot [cite: 229].
 
----
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 

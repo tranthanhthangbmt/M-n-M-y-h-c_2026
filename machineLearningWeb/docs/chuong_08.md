@@ -1206,267 +1206,261 @@ so sánh các hình ảnh trực quan thu được. Các giải pháp cho các b
 </div>
 
 
+
+
+
+
+
+
+
 #### ** 📝 Bài Tập **
+
 
 <script>
 if (typeof checkPasswordAndShow !== 'function') {
   window.checkPasswordAndShow = function(btn) {
-    var pass = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
-    if (pass === "1234@Abc") {
-      var content = btn.nextElementSibling;
-      content.style.display = "block";
-      btn.style.display = "none";
-    } else if (pass !== null) {
+    let password = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (password === "donga2026") {
+      let content = btn.nextElementSibling;
+      if (content && content.classList.contains("solution-content")) {
+        content.style.display = "block";
+        btn.style.display = "none";
+      }
+    } else {
       alert("Mật khẩu không đúng!");
     }
-  }
+  };
 }
 </script>
 
-
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Động lực chính để giảm chiều dữ liệu là gì? Những hạn chế chính là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Động lực chính để giảm chiều dữ liệu là gì? Những hạn chế chính là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Động lực chính**:
-        1.  **Tăng tốc thuật toán huấn luyện tiếp theo** (trong một số trường hợp, nó thậm chí có thể loại bỏ các đặc trưng dư thừa, giúp thuật toán hoạt động tốt hơn) [cite: 672].
-        2.  **Để trực quan hóa dữ liệu** và hiểu rõ hơn về các đặc trưng quan trọng nhất [cite: 672].
-        3.  **Để tiết kiệm không gian** lưu trữ (nén) [cite: 672].
-    *   **Các nhược điểm chính**:
-        1.  **Một số thông tin bị mất**, có khả năng làm giảm hiệu suất của các thuật toán huấn luyện tiếp theo [cite: 672].
-        2.  Nó có thể **tốn nhiều thời gian và tài nguyên tính toán** [cite: 672].
-        3.  Nó làm tăng thêm một chút **độ phức tạp** cho các quy trình học máy của bạn [cite: 672].
-        4.  Các đặc trưng được chuyển đổi thường **rất khó diễn giải** (mất đi ý nghĩa vật lý trực tiếp ban đầu) [cite: 672].
+*   **Động lực chính**:
+1.  **Tăng tốc thuật toán huấn luyện tiếp theo** (trong một số trường hợp, nó thậm chí có thể loại bỏ các đặc trưng dư thừa, giúp thuật toán hoạt động tốt hơn) [cite: 672].
+2.  **Để trực quan hóa dữ liệu** và hiểu rõ hơn về các đặc trưng quan trọng nhất [cite: 672].
+3.  **Để tiết kiệm không gian** lưu trữ (nén) [cite: 672].
+*   **Các nhược điểm chính**:
+1.  **Một số thông tin bị mất**, có khả năng làm giảm hiệu suất của các thuật toán huấn luyện tiếp theo [cite: 672].
+2.  Nó có thể **tốn nhiều thời gian và tài nguyên tính toán** [cite: 672].
+3.  Nó làm tăng thêm một chút **độ phức tạp** cho các quy trình học máy của bạn [cite: 672].
+4.  Các đặc trưng được chuyển đổi thường **rất khó diễn giải** (mất đi ý nghĩa vật lý trực tiếp ban đầu) [cite: 672].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Lời nguyền của số chiều là gì?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Lời nguyền của số chiều là gì?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Lời nguyền của số chiều (The curse of dimensionality)** đề cập đến thực tế là nhiều vấn đề không tồn tại trong không gian chiều thấp lại nảy sinh trong không gian chiều cao [cite: 672]. 
-    *   Trong học máy, một biểu hiện phổ biến là thực tế **các vectơ chiều cao được lấy mẫu ngẫu nhiên thường rất cách xa nhau** [cite: 672]. Điều này làm cho dữ liệu trong không gian nhiều chiều trở nên cực kỳ thưa thớt, **làm tăng mạnh nguy cơ quá khớp (overfitting)** và khiến việc xác định các mẫu/ranh giới quyết định trở nên rất khó khăn nếu không có một lượng lớn dữ liệu huấn luyện khổng lồ hỗ trợ [cite: 653, 672].
+*   **Lời nguyền của số chiều (The curse of dimensionality)** đề cập đến thực tế là nhiều vấn đề không tồn tại trong không gian chiều thấp lại nảy sinh trong không gian chiều cao [cite: 672]. 
+*   Trong học máy, một biểu hiện phổ biến là thực tế **các vectơ chiều cao được lấy mẫu ngẫu nhiên thường rất cách xa nhau** [cite: 672]. Điều này làm cho dữ liệu trong không gian nhiều chiều trở nên cực kỳ thưa thớt, **làm tăng mạnh nguy cơ quá khớp (overfitting)** và khiến việc xác định các mẫu/ranh giới quyết định trở nên rất khó khăn nếu không có một lượng lớn dữ liệu huấn luyện khổng lồ hỗ trợ [cite: 653, 672].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Một khi chiều của tập dữ liệu đã được giảm, có thể đảo ngược thao tác không? Nếu có, bằng cách nào? Nếu không, tại sao?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Một khi chiều của tập dữ liệu đã được giảm, có thể đảo ngược thao tác không? Nếu có, bằng cách nào? Nếu không, tại sao?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Khi chiều của một tập dữ liệu đã được giảm, **hầu như luôn là không thể đảo ngược hoàn toàn hoạt động** (tức là khôi phục 100% dữ liệu gốc ban đầu) vì một phần thông tin hữu ích đã bị loại bỏ và mất đi vĩnh viễn trong quá trình giảm chiều [cite: 672].
-    *   Tuy nhiên, một số thuật toán (chẳng hạn như **PCA**) có một **quy trình biến đổi ngược đơn giản (Inverse PCA)** cho phép chiếu dữ liệu đã giảm trở lại không gian ban đầu để tái tạo lại một tập dữ liệu tương đối giống với bản gốc [cite: 664, 672]. Đối với các thuật toán dựa trên học đa tạp phi tuyến khác (chẳng hạn như **t-SNE**), việc biến đổi ngược này là hoàn toàn bất khả thi [cite: 672].
+*   Khi chiều của một tập dữ liệu đã được giảm, **hầu như luôn là không thể đảo ngược hoàn toàn hoạt động** (tức là khôi phục 100% dữ liệu gốc ban đầu) vì một phần thông tin hữu ích đã bị loại bỏ và mất đi vĩnh viễn trong quá trình giảm chiều [cite: 672].
+*   Tuy nhiên, một số thuật toán (chẳng hạn như **PCA**) có một **quy trình biến đổi ngược đơn giản (Inverse PCA)** cho phép chiếu dữ liệu đã giảm trở lại không gian ban đầu để tái tạo lại một tập dữ liệu tương đối giống với bản gốc [cite: 664, 672]. Đối với các thuật toán dựa trên học đa tạp phi tuyến khác (chẳng hạn như **t-SNE**), việc biến đổi ngược này là hoàn toàn bất khả thi [cite: 672].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: PCA có thể được sử dụng để giảm chiều của một tập dữ liệu phi tuyến tính cao không?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 4: PCA có thể được sử dụng để giảm chiều của một tập dữ liệu phi tuyến tính cao không?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Có**, PCA hoàn toàn có thể được sử dụng để giảm chiều dữ liệu của hầu hết các tập dữ liệu, ngay cả khi chúng là phi tuyến tính cao, bởi vì nó **ít nhất có thể loại bỏ được các chiều vô dụng (nhiễu)** [cite: 672].
-    *   **Tuy nhiên**, nếu tập dữ liệu phi tuyến tính cao và không chứa các chiều vô dụng (ví dụ điển hình như tập dữ liệu cuộn Thụy Sĩ - **Swiss roll**), thì việc cố tình sử dụng PCA tuyến tính để chiếu dẹt dữ liệu lên một mặt phẳng sẽ làm mất mát quá nhiều thông tin cốt lõi (gộp các lớp dữ liệu uốn lượn lại với nhau) [cite: 658, 672]. Trong trường hợp này, bạn muốn **mở cuộn Thụy Sĩ ra** (dùng các thuật toán phi tuyến như LLE, Isomap) chứ không phải là dùng PCA để **làm bẹp nó** [cite: 658, 672].
+*   **Có**, PCA hoàn toàn có thể được sử dụng để giảm chiều dữ liệu của hầu hết các tập dữ liệu, ngay cả khi chúng là phi tuyến tính cao, bởi vì nó **ít nhất có thể loại bỏ được các chiều vô dụng (nhiễu)** [cite: 672].
+*   **Tuy nhiên**, nếu tập dữ liệu phi tuyến tính cao và không chứa các chiều vô dụng (ví dụ điển hình như tập dữ liệu cuộn Thụy Sĩ - **Swiss roll**), thì việc cố tình sử dụng PCA tuyến tính để chiếu dẹt dữ liệu lên một mặt phẳng sẽ làm mất mát quá nhiều thông tin cốt lõi (gộp các lớp dữ liệu uốn lượn lại với nhau) [cite: 658, 672]. Trong trường hợp này, bạn muốn **mở cuộn Thụy Sĩ ra** (dùng các thuật toán phi tuyến như LLE, Isomap) chứ không phải là dùng PCA để **làm bẹp nó** [cite: 658, 672].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Giả sử bạn thực hiện PCA trên một tập dữ liệu 1.000 chiều, đặt tỷ lệ phương sai giải thích là 95%. Tập dữ liệu kết quả sẽ có bao nhiêu chiều?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Giả sử bạn thực hiện PCA trên một tập dữ liệu 1.000 chiều, đặt tỷ lệ phương sai giải thích là 95%. Tập dữ liệu kết quả sẽ có bao nhiêu chiều?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   Đây là một **câu hỏi mẹo**: số lượng chiều thực tế hoàn toàn **phụ thuộc vào tập dữ liệu** cụ thể của bạn [cite: 78]. Hãy xem xét hai ví dụ cực đoan:
-        *   *Ví dụ 1*: Nếu tập dữ liệu bao gồm các điểm gần như **thẳng hàng hoàn hảo** trong không gian, PCA có thể giảm tập dữ liệu xuống **chỉ còn đúng 1 chiều** duy nhất mà vẫn giữ được >95% phương sai giải thích [cite: 78].
-        *   *Ví dụ 2*: Nếu tập dữ liệu bao gồm các điểm **hoàn toàn ngẫu nhiên** và phân tán đều khắp 1.000 chiều, bạn sẽ cần khoảng **950 chiều** để giữ lại 95% phương sai giải thích [cite: 78].
-    *   Vì vậy, câu trả lời có thể là **bất kỳ số nào nằm trong khoảng từ 1 đến 950** [cite: 78]. Để ước tính số chiều thực tế, việc vẽ đồ thị phương sai giải thích tích lũy theo số chiều là phương pháp trực quan giúp bạn nhận diện chiều nội tại (intrinsic dimensionality) của tập dữ liệu [cite: 78].
+*   Đây là một **câu hỏi mẹo**: số lượng chiều thực tế hoàn toàn **phụ thuộc vào tập dữ liệu** cụ thể của bạn [cite: 78]. Hãy xem xét hai ví dụ cực đoan:
+*   *Ví dụ 1*: Nếu tập dữ liệu bao gồm các điểm gần như **thẳng hàng hoàn hảo** trong không gian, PCA có thể giảm tập dữ liệu xuống **chỉ còn đúng 1 chiều** duy nhất mà vẫn giữ được >95% phương sai giải thích [cite: 78].
+*   *Ví dụ 2*: Nếu tập dữ liệu bao gồm các điểm **hoàn toàn ngẫu nhiên** và phân tán đều khắp 1.000 chiều, bạn sẽ cần khoảng **950 chiều** để giữ lại 95% phương sai giải thích [cite: 78].
+*   Vì vậy, câu trả lời có thể là **bất kỳ số nào nằm trong khoảng từ 1 đến 950** [cite: 78]. Để ước tính số chiều thực tế, việc vẽ đồ thị phương sai giải thích tích lũy theo số chiều là phương pháp trực quan giúp bạn nhận diện chiều nội tại (intrinsic dimensionality) của tập dữ liệu [cite: 78].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Trong những trường hợp nào bạn sẽ sử dụng PCA thông thường, PCA tăng dần, PCA ngẫu nhiên, hoặc phép chiếu ngẫu nhiên?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Trong những trường hợp nào bạn sẽ sử dụng PCA thông thường, PCA tăng dần, PCA ngẫu nhiên, hoặc phép chiếu ngẫu nhiên?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **PCA thông thường (Regular PCA)**: Là mặc định, nên sử dụng khi tập dữ liệu **nằm gọn trong bộ nhớ RAM** của máy tính [cite: 672].
-    *   **PCA tăng dần (Incremental PCA)**: Hữu ích cho các **tập dữ liệu lớn không nằm gọn trong bộ nhớ**, cho phép bạn tải dữ liệu và huấn luyện theo từng lô nhỏ (mini-batches) [cite: 672]. Nó cũng đặc biệt thích hợp cho các **tác vụ trực tuyến (online tasks)**, nơi bạn phải xử lý giảm chiều ngay lập tức mỗi khi có một trường hợp dữ liệu mới xuất hiện [cite: 672].
-    *   **PCA ngẫu nhiên (Randomized PCA)**: Hữu ích khi bạn muốn **giảm đáng kể số chiều** dữ liệu (xuống một số chiều \\(d\\) nhỏ hơn nhiều so với số chiều gốc \\(n\\)) và dữ liệu của bạn nằm gọn trong RAM [cite: 672]. Thuật toán này sử dụng một xấp xỉ ngẫu nhiên để tìm nhanh các thành phần chính đầu tiên nên **nhanh hơn nhiều so với PCA thông thường** [cite: 672].
-    *   **Phép chiếu ngẫu nhiên (Random Projection)**: Thích hợp cho các tập dữ liệu có **chiều dữ liệu siêu cao** (ví dụ: hàng trăm nghìn hoặc hàng triệu chiều) [cite: 672]. Thuật toán này giảm chiều cực kỳ nhanh, tối ưu hóa bộ nhớ hiệu quả và rất mạnh mẽ nhờ bảo toàn tốt khoảng cách giữa các điểm dữ liệu [cite: 666, 672].
+*   **PCA thông thường (Regular PCA)**: Là mặc định, nên sử dụng khi tập dữ liệu **nằm gọn trong bộ nhớ RAM** của máy tính [cite: 672].
+*   **PCA tăng dần (Incremental PCA)**: Hữu ích cho các **tập dữ liệu lớn không nằm gọn trong bộ nhớ**, cho phép bạn tải dữ liệu và huấn luyện theo từng lô nhỏ (mini-batches) [cite: 672]. Nó cũng đặc biệt thích hợp cho các **tác vụ trực tuyến (online tasks)**, nơi bạn phải xử lý giảm chiều ngay lập tức mỗi khi có một trường hợp dữ liệu mới xuất hiện [cite: 672].
+*   **PCA ngẫu nhiên (Randomized PCA)**: Hữu ích khi bạn muốn **giảm đáng kể số chiều** dữ liệu (xuống một số chiều \\(d\\) nhỏ hơn nhiều so với số chiều gốc \\(n\\)) và dữ liệu của bạn nằm gọn trong RAM [cite: 672]. Thuật toán này sử dụng một xấp xỉ ngẫu nhiên để tìm nhanh các thành phần chính đầu tiên nên **nhanh hơn nhiều so với PCA thông thường** [cite: 672].
+*   **Phép chiếu ngẫu nhiên (Random Projection)**: Thích hợp cho các tập dữ liệu có **chiều dữ liệu siêu cao** (ví dụ: hàng trăm nghìn hoặc hàng triệu chiều) [cite: 672]. Thuật toán này giảm chiều cực kỳ nhanh, tối ưu hóa bộ nhớ hiệu quả và rất mạnh mẽ nhờ bảo toàn tốt khoảng cách giữa các điểm dữ liệu [cite: 666, 672].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Làm thế nào bạn có thể đánh giá hiệu suất của một thuật toán giảm chiều trên tập dữ liệu của bạn?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Làm thế nào bạn có thể đánh giá hiệu suất của một thuật toán giảm chiều trên tập dữ liệu của bạn?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    Có hai cách tiếp cận chính để đánh giá:
-    1.  **Đánh giá trực tiếp (Lỗi tái tạo)**: Áp dụng phép biến đổi ngược để đưa dữ liệu đã giảm chiều về không gian ban đầu, sau đó tính toán khoảng cách sai số giữa dữ liệu tái tạo và dữ liệu gốc (đo lường **lỗi tái tạo - reconstruction error**) [cite: 672]. Lỗi tái tạo càng nhỏ thì thuật toán giảm chiều hoạt động càng tốt [cite: 672].
-    2.  **Đánh giá gián tiếp (Tác vụ hạ nguồn)**: Nếu bạn sử dụng giảm chiều dữ liệu làm bước tiền xử lý trước khi chạy một thuật toán học máy khác (như bộ phân loại hay hồi quy), thì **hiệu suất đầu ra của thuật toán thứ hai** (ví dụ: độ chính xác phân loại) chính là thước đo thực tế nhất để đánh giá xem việc giảm chiều dữ liệu có giúp ích hay không [cite: 672].
+Có hai cách tiếp cận chính để đánh giá:
+1.  **Đánh giá trực tiếp (Lỗi tái tạo)**: Áp dụng phép biến đổi ngược để đưa dữ liệu đã giảm chiều về không gian ban đầu, sau đó tính toán khoảng cách sai số giữa dữ liệu tái tạo và dữ liệu gốc (đo lường **lỗi tái tạo - reconstruction error**) [cite: 672]. Lỗi tái tạo càng nhỏ thì thuật toán giảm chiều hoạt động càng tốt [cite: 672].
+2.  **Đánh giá gián tiếp (Tác vụ hạ nguồn)**: Nếu bạn sử dụng giảm chiều dữ liệu làm bước tiền xử lý trước khi chạy một thuật toán học máy khác (như bộ phân loại hay hồi quy), thì **hiệu suất đầu ra của thuật toán thứ hai** (ví dụ: độ chính xác phân loại) chính là thước đo thực tế nhất để đánh giá xem việc giảm chiều dữ liệu có giúp ích hay không [cite: 672].
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Có ý nghĩa gì khi nối chuỗi hai thuật toán giảm chiều khác nhau không?</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Có ý nghĩa gì khi nối chuỗi hai thuật toán giảm chiều khác nhau không?</h4>
 
 
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
 
 *   **Lời giải chi tiết**:
-    *   **Hoàn toàn có ý nghĩa** [cite: 78]. Một quy trình thiết kế đường ống dữ liệu vô cùng phổ biến là **sử dụng PCA hoặc Phép chiếu ngẫu nhiên** để nhanh chóng loại bỏ một số lượng khổng lồ các chiều dữ liệu vô dụng/nhiễu lúc đầu [cite: 78].
-    *   Sau đó, bạn tiếp tục áp dụng một thuật toán giảm chiều phi tuyến phức tạp nhưng chạy rất chậm khác (như **LLE hoặc t-SNE**) trên tập dữ liệu đã nén này [cite: 78]. Cách tiếp cận hai bước này sẽ mang lại hiệu suất chất lượng tương đương như khi bạn chỉ sử dụng thuật toán phi tuyến trực tiếp ngay từ đầu, nhưng giúp **tiết kiệm một khoảng thời gian tính toán khổng lồ** [cite: 78].
+*   **Hoàn toàn có ý nghĩa** [cite: 78]. Một quy trình thiết kế đường ống dữ liệu vô cùng phổ biến là **sử dụng PCA hoặc Phép chiếu ngẫu nhiên** để nhanh chóng loại bỏ một số lượng khổng lồ các chiều dữ liệu vô dụng/nhiễu lúc đầu [cite: 78].
+*   Sau đó, bạn tiếp tục áp dụng một thuật toán giảm chiều phi tuyến phức tạp nhưng chạy rất chậm khác (như **LLE hoặc t-SNE**) trên tập dữ liệu đã nén này [cite: 78]. Cách tiếp cận hai bước này sẽ mang lại hiệu suất chất lượng tương đương như khi bạn chỉ sử dụng thuật toán phi tuyến trực tiếp ngay từ đầu, nhưng giúp **tiết kiệm một khoảng thời gian tính toán khổng lồ** [cite: 78].
 
----
-### 🌳 Sơ đồ Phân nhánh Lập luận (Tree of Thought)
-
-Để giải quyết trọn vẹn và tối ưu nhất hai bài tập thực hành lớn cuối cùng của **Chương 8: Giảm chiều dữ liệu**, chúng ta sử dụng sơ đồ tư duy phân nhánh dưới đây để phân tích các khía cạnh thực nghiệm quan trọng:
-
-```
-                                      [Tập dữ liệu MNIST (70,000 mẫu)] [cite: 100]
-                                                     |
-                +------------------------------------+------------------------------------+
-                |                                                                         |
-      [BÀI 9: Đánh giá PCA] [cite: 102]                                        [BÀI 10: Trực quan hóa 2D] [cite: 107]
-                |                                                                         |
-      +---------+---------+                                                     +---------+---------+
-      |                   |                                                     |                   |
- [Random Forest]    [SGDClassifier] [cite: 101, 105]                         [t-SNE (2D)]       [Các thuật toán khác] [cite: 108, 114]
-      |                   |                                                     |                   |
-- Không PCA: 38.4s   - Không PCA: 2m35s                                   - Thời gian: 29.4s  - PCA: 157ms (Chồng lấn mạnh) [cite: 108, 114]
-  (Acc: 97.05%)       (Acc: 87.4%) [cite: 101, 102, 105]                   (Tách cụm rất đẹp   - LLE: 8.86s (Rất tệ) [cite: 114]
-- Có PCA: 1m28s      - Có PCA: 27.9s                                        nhưng chồng lấn    - MDS: 12m12s (Rất tệ) [cite: 116]
-  (Acc: 94.81%)       (Acc: 89.59%) [cite: 103, 104, 106]                   3 vs 5, 4 vs 9) [cite: 109]
-  👉 CHẬM ĐI 2 LẦN!    👉 NHANH GẤP 5 LẦN! [cite: 103, 106]
-```
-
----
-
-### PHẦN 2: Lời giải chi tiết và mã nguồn tối ưu cho Bài 9 và Bài 10
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 9: Đánh giá tác động của PCA đối với Rừng ngẫu nhiên và SGDClassifier</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 9: Đánh giá tác động của PCA đối với Rừng ngẫu nhiên và SGDClassifier</h4>
+
 ##### **1. Phân tích kết quả thực nghiệm từ tài liệu gốc**
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
 *   **Mô hình Rừng ngẫu nhiên (Random Forest)**:
-    *   Khi huấn luyện trên dữ liệu gốc (784 chiều), mô hình mất khoảng **38.4 giây** và đạt độ chính xác **97.05%** [cite: 101, 102].
-    *   Sau khi dùng PCA để giữ lại 95% phương sai (giảm xuống còn 154 chiều) [cite: 92, 102], thời gian huấn luyện tăng lên đáng kể, mất **1 phút 28 giây** (chậm hơn khoảng **2 lần**) và độ chính xác bị giảm mạnh xuống còn **94.81%** [cite: 103, 104].
-    *   **Giải thích nguyên nhân**: Giảm chiều dữ liệu không phải lúc nào cũng giúp tăng tốc độ huấn luyện [cite: 103]. Ảnh MNIST gốc rất thưa (sparse) vì hầu hết các pixel nền có giá trị bằng 0 [cite: 413]. Khi áp dụng PCA, các thành phần chính mới thu được là các tổ hợp tuyến tính của toàn bộ pixel gốc, biến dữ liệu thưa thành dữ liệu dày đặc (dense) không còn các giá trị 0 [cite: 413]. Thuật toán xây dựng cây quyết định của Rừng ngẫu nhiên phải duyệt qua các giá trị liên tục phức tạp hơn rất nhiều để tìm điểm chia tối ưu, dẫn đến việc huấn luyện bị chậm đi đáng kể [cite: 103].
+*   Khi huấn luyện trên dữ liệu gốc (784 chiều), mô hình mất khoảng **38.4 giây** và đạt độ chính xác **97.05%** [cite: 101, 102].
+*   Sau khi dùng PCA để giữ lại 95% phương sai (giảm xuống còn 154 chiều) [cite: 92, 102], thời gian huấn luyện tăng lên đáng kể, mất **1 phút 28 giây** (chậm hơn khoảng **2 lần**) và độ chính xác bị giảm mạnh xuống còn **94.81%** [cite: 103, 104].
+*   **Giải thích nguyên nhân**: Giảm chiều dữ liệu không phải lúc nào cũng giúp tăng tốc độ huấn luyện [cite: 103]. Ảnh MNIST gốc rất thưa (sparse) vì hầu hết các pixel nền có giá trị bằng 0 [cite: 413]. Khi áp dụng PCA, các thành phần chính mới thu được là các tổ hợp tuyến tính của toàn bộ pixel gốc, biến dữ liệu thưa thành dữ liệu dày đặc (dense) không còn các giá trị 0 [cite: 413]. Thuật toán xây dựng cây quyết định của Rừng ngẫu nhiên phải duyệt qua các giá trị liên tục phức tạp hơn rất nhiều để tìm điểm chia tối ưu, dẫn đến việc huấn luyện bị chậm đi đáng kể [cite: 103].
 *   **Mô hình SGDClassifier**:
-    *   Trên dữ liệu gốc, `SGDClassifier` mất tới **2 phút 35 giây** để huấn luyện và chỉ đạt độ chính xác **87.4%** [cite: 105].
-    *   Khi áp dụng trên dữ liệu đã giảm chiều bằng PCA, thời gian huấn luyện giảm cực nhanh chỉ còn **27.9 giây** (nhanh hơn **5 lần**) và độ chính xác được cải thiện đáng kể lên **89.59%** [cite: 106].
-    *   **Giải thích nguyên nhân**: Vì `SGDClassifier` là một mô hình tuyến tính, việc giảm số lượng đặc trưng đầu vào từ 784 xuống 154 giúp giảm số lượng phép tính nhân ma trận một cách trực tiếp [cite: 34, 413], giúp mô hình hội tụ nhanh hơn nhiều và đồng thời PCA đã lọc bớt các nhiễu ngẫu nhiên giúp tăng nhẹ độ chính xác [cite: 99, 106].
+*   Trên dữ liệu gốc, `SGDClassifier` mất tới **2 phút 35 giây** để huấn luyện và chỉ đạt độ chính xác **87.4%** [cite: 105].
+*   Khi áp dụng trên dữ liệu đã giảm chiều bằng PCA, thời gian huấn luyện giảm cực nhanh chỉ còn **27.9 giây** (nhanh hơn **5 lần**) và độ chính xác được cải thiện đáng kể lên **89.59%** [cite: 106].
+*   **Giải thích nguyên nhân**: Vì `SGDClassifier` là một mô hình tuyến tính, việc giảm số lượng đặc trưng đầu vào từ 784 xuống 154 giúp giảm số lượng phép tính nhân ma trận một cách trực tiếp [cite: 34, 413], giúp mô hình hội tụ nhanh hơn nhiều và đồng thời PCA đã lọc bớt các nhiễu ngẫu nhiên giúp tăng nhẹ độ chính xác [cite: 99, 106].
 
 ##### **2. Đoạn mã Python tối ưu**
 ```python
@@ -1534,34 +1528,31 @@ print(f"Thời gian huấn luyện: {t1 - t0:.2f}s")
 print(f"Độ chính xác: {accuracy_score(y_test, y_pred_sgd_pca) * 100:.2f}%\n")
 ```
 
----
-
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
-
-Chưa có lời giải chi tiết.
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-  <h4 style="color: #1a73e8; margin-top: 0;">Bài 10: Trực quan hóa tập dữ liệu MNIST bằng t-SNE và So sánh thuật toán</h4>
-  
+<h4 style="color: #1a73e8; margin-top: 0;">Bài 10: Trực quan hóa tập dữ liệu MNIST bằng t-SNE và So sánh thuật toán</h4>
+
 ##### **1. Phân tích kết quả thực nghiệm từ tài liệu gốc**
+
+<details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+<summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+<div style="margin-top: 10px;">
+Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+</div>
+</details>
+
+<div class="solution-section">
+<button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+<div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
 *   **t-SNE**: Khi chạy trên 5.000 ảnh đầu tiên, thuật toán t-SNE mất khoảng **29.4 giây** [cite: 108]. Kết quả trực quan hóa vô cùng ấn tượng: hầu hết các chữ số được phân tách thành các cụm màu rất rõ ràng [cite: 109]. Dẫu vậy, vẫn có một số vùng chồng lấn phản ánh sự tương đồng thực tế: số **3 và 5** chồng lấn nhiều ở phía bên phải, và số **4 và 9** chồng lấn nhiều ở góc trên bên phải [cite: 109].
 *   **So sánh với các thuật toán khác**:
-    *   **PCA**: Cực kỳ nhanh (chỉ mất **157 ms**) nhưng các cụm dữ liệu bị chồng chéo hỗn loạn lên nhau do đây là phép chiếu tuyến tính đơn giản không bảo toàn được cấu trúc đa tạp phi tuyến phức tạp của ảnh [cite: 114].
-    *   **LLE (Locally Linear Embedding)**: Mất khoảng **8.86 giây** nhưng cho kết quả rất tệ, dữ liệu bị dồn nén thắt nút không phân cụm rõ ràng [cite: 114, 115].
-    *   **MDS (Multidimensional Scaling)**: Cực kỳ chậm, mất tới **12 phút 12 giây** và các cụm chồng lấn nghiêm trọng, không mang lại giá trị trực quan tốt [cite: 116].
+*   **PCA**: Cực kỳ nhanh (chỉ mất **157 ms**) nhưng các cụm dữ liệu bị chồng chéo hỗn loạn lên nhau do đây là phép chiếu tuyến tính đơn giản không bảo toàn được cấu trúc đa tạp phi tuyến phức tạp của ảnh [cite: 114].
+*   **LLE (Locally Linear Embedding)**: Mất khoảng **8.86 giây** nhưng cho kết quả rất tệ, dữ liệu bị dồn nén thắt nút không phân cụm rõ ràng [cite: 114, 115].
+*   **MDS (Multidimensional Scaling)**: Cực kỳ chậm, mất tới **12 phút 12 giây** và các cụm chồng lấn nghiêm trọng, không mang lại giá trị trực quan tốt [cite: 116].
 
 ##### **2. Đoạn mã Python tối ưu**
 Mã nguồn dưới đây bao gồm cả hàm bổ trợ nâng cao `plot_digits` để vẽ các hình ảnh thu nhỏ trực tiếp lên biểu đồ thay thế các chấm màu đơn điệu, lấy cảm hứng từ tài liệu thực hành Scikit-Learn [cite: 112].
@@ -1583,44 +1574,44 @@ X_reduced = tsne.fit_transform(X_sample) [cite: 108]
 
 # 3. Hàm vẽ biểu đồ nâng cao hiển thị ảnh chữ số thu nhỏ [cite: 112]
 def plot_digits(X, y, images=None, figsize=(13, 10), min_distance=0.04): [cite: 112]
-    # Chuẩn hóa dữ liệu về khoảng để hiển thị đều trên đồ thị [cite: 112]
-    X_normalized = MinMaxScaler().fit_transform(X) [cite: 112]
-    
-    plt.figure(figsize=figsize)
-    ax = plt.gca() [cite: 112]
-    
-    # Sử dụng colormap jet để tạo 10 màu cho 10 chữ số [cite: 109, 112]
-    cmap = plt.cm.jet [cite: 112]
-    digits = np.unique(y) [cite: 112]
-    
-    for digit in digits:
-        # Vẽ các điểm chấm đại diện cho từng lớp trước [cite: 112]
-        plt.scatter(X_normalized[y == digit, 0], X_normalized[y == digit, 1], 
-                    c=[cmap(float(digit) / 9)], alpha=0.5) [cite: 112]
-        
-    plt.axis("off") [cite: 112]
-    
-    # Thiết lập cơ chế vẽ hình ảnh thu nhỏ nếu có tham số images [cite: 112]
-    if images is not None:
-        shown_images = np.array([[10., 10.]]) # Tránh vẽ các ảnh đè lên nhau [cite: 112]
-        for i in range(len(X)):
-            # Tính toán khoảng cách tối thiểu giữa ảnh hiện tại và các ảnh đã vẽ [cite: 112]
-            dist = np.sum((X_normalized[i] - shown_images) ** 2, axis=1) [cite: 112]
-            if np.min(dist) < min_distance:
-                continue # Nếu quá gần thì bỏ qua không vẽ để tránh lộn xộn [cite: 112]
-                
-            shown_images = np.r_[shown_images, [X_normalized[i]]] [cite: 112]
-            
-            # Định hình lại ảnh 1D thành 2D 28x28 [cite: 112]
-            image_2d = images[i].reshape(28, 28)
-            imagebox = AnnotationBbox(
-                OffsetImage(image_2d, cmap="binary", zoom=0.6), # Ảnh mức xám thu nhỏ [cite: 112]
-                X_normalized[i],
-                bboxprops=dict(edgecolor=cmap(float(y[i].astype(np.int8)) / 9), lw=2) # Viền trùng màu cụm [cite: 112]
-            )
-            ax.add_artist(imagebox) [cite: 112]
-            
-    plt.show()
+# Chuẩn hóa dữ liệu về khoảng để hiển thị đều trên đồ thị [cite: 112]
+X_normalized = MinMaxScaler().fit_transform(X) [cite: 112]
+
+plt.figure(figsize=figsize)
+ax = plt.gca() [cite: 112]
+
+# Sử dụng colormap jet để tạo 10 màu cho 10 chữ số [cite: 109, 112]
+cmap = plt.cm.jet [cite: 112]
+digits = np.unique(y) [cite: 112]
+
+for digit in digits:
+# Vẽ các điểm chấm đại diện cho từng lớp trước [cite: 112]
+plt.scatter(X_normalized[y == digit, 0], X_normalized[y == digit, 1], 
+c=[cmap(float(digit) / 9)], alpha=0.5) [cite: 112]
+
+plt.axis("off") [cite: 112]
+
+# Thiết lập cơ chế vẽ hình ảnh thu nhỏ nếu có tham số images [cite: 112]
+if images is not None:
+shown_images = np.array([[10., 10.]]) # Tránh vẽ các ảnh đè lên nhau [cite: 112]
+for i in range(len(X)):
+# Tính toán khoảng cách tối thiểu giữa ảnh hiện tại và các ảnh đã vẽ [cite: 112]
+dist = np.sum((X_normalized[i] - shown_images) ** 2, axis=1) [cite: 112]
+if np.min(dist) < min_distance:
+continue # Nếu quá gần thì bỏ qua không vẽ để tránh lộn xộn [cite: 112]
+
+shown_images = np.r_[shown_images, [X_normalized[i]]] [cite: 112]
+
+# Định hình lại ảnh 1D thành 2D 28x28 [cite: 112]
+image_2d = images[i].reshape(28, 28)
+imagebox = AnnotationBbox(
+OffsetImage(image_2d, cmap="binary", zoom=0.6), # Ảnh mức xám thu nhỏ [cite: 112]
+X_normalized[i],
+bboxprops=dict(edgecolor=cmap(float(y[i].astype(np.int8)) / 9), lw=2) # Viền trùng màu cụm [cite: 112]
+)
+ax.add_artist(imagebox) [cite: 112]
+
+plt.show()
 
 # 4. Thực thi vẽ biểu đồ phân tán thông thường [cite: 109]
 print("--- Đang trực quan hóa biểu đồ phân tán t-SNE tiêu chuẩn ---")
@@ -1635,23 +1626,8 @@ print("--- Đang trực quan hóa biểu đồ t-SNE kết hợp hình ảnh thu
 plot_digits(X_reduced, y_sample, images=X_sample, figsize=(25, 20), min_distance=0.03) [cite: 113]
 ```
 
----
-
-  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
-    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
-    <div style="margin-top: 10px;">
-      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
-    </div>
-  </details>
-  
-  <div class="solution-section">
-    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
-    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
-
-Chưa có lời giải chi tiết.
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 
