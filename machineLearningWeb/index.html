@@ -167,6 +167,16 @@
       }
     }
 
+    /* Hide solution buttons by default */
+    .solution-section > button {
+      display: none !important;
+    }
+
+    /* Show solution buttons if teacher mode is active */
+    body.teacher-mode .solution-section > button {
+      display: inline-block !important;
+    }
+
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 </head>
@@ -296,8 +306,31 @@
       }
     };
 
+    window.teacherLogin = function() {
+      if (sessionStorage.getItem('isTeacher') === 'true') {
+        if (confirm("Bạn đang ở chế độ Giảng viên. Đăng xuất?")) {
+          sessionStorage.removeItem('isTeacher');
+          document.body.classList.remove('teacher-mode');
+        }
+        return;
+      }
+      var pass = prompt("Dành cho Giảng viên. Vui lòng nhập mật khẩu:");
+      if (pass === "1234@Abc") {
+        sessionStorage.setItem('isTeacher', 'true');
+        document.body.classList.add('teacher-mode');
+        alert("Đăng nhập thành công! Các nút xem lời giải đã được hiển thị.");
+      } else if (pass !== null) {
+        alert("Mật khẩu không đúng!");
+      }
+    };
+
+    // Apply teacher mode on load if previously logged in
+    if (sessionStorage.getItem('isTeacher') === 'true') {
+      document.body.classList.add('teacher-mode');
+    }
+
     window.checkPasswordAndShow = function(btn) {
-      if (sessionStorage.getItem('solutionVerified') === 'true') {
+      if (sessionStorage.getItem('isTeacher') === 'true' || sessionStorage.getItem('solutionVerified') === 'true') {
         var content = btn.nextElementSibling;
         if (content) content.style.display = "block";
         btn.style.display = "none";
@@ -315,6 +348,9 @@
       }
     };
   </script>
+
+  <!-- Teacher Login Button (Discreet) -->
+  <button onclick="teacherLogin()" style="position: fixed; top: 15px; right: 20px; background: transparent; border: none; cursor: pointer; opacity: 0.15; font-size: 24px; z-index: 1000; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='0.15'" title="Teacher Login">🎓</button>
 </body>
 
 </html>
