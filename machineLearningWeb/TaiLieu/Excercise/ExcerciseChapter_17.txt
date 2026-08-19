@@ -1,0 +1,471 @@
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định mục tiêu**: Người dùng yêu cầu cung cấp danh sách đầy đủ và nội dung chi tiết bài tập của **Chương 17: Autoencoders, GANs và Mô hình Khuếch tán (Diffusion Models)** [cite: 170]. Do nội dung chương này chứa các khái niệm toán học rất sâu và phức tạp (từ cấu trúc nén tiềm ẩn, ràng buộc thưa KL, VAE, cơ chế trò chơi Nash của GAN đến các phương trình tiến/ngược của mô hình khuếch tán) [cite: 460, 480, 483, 493, 499], tôi sẽ tiến hành chia thành **2 phần** và thực hiện **Phần 1 trước**, tham khảo cấu trúc chuẩn hóa của các file bài tập mẫu [cite: 676].
+2.  **Khớp nối nguồn tài liệu**:
+    *   **Danh sách câu hỏi**: Nằm ở cuối chương lý thuyết **CHƯƠNG 17.docx** (Mục **17.5. Bài tập**) [cite: 507, 508, 509, 510]. Có tất cả **13 câu hỏi/bài tập**.
+    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành **17_autoencoders_gans_and_diffusion_models.ipynb - Colab.pdf** [cite: 170].
+3.  **Lên kế hoạch phân chia chi tiết**:
+    *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của cả 13 bài tập Chương 17** [cite: 507, 508, 509, 510]. Sau đó, phân tích sâu sắc bản chất toán học và trình bày lời giải chi tiết cho **từ Câu 1 đến Câu 8** (tập trung vào các mô hình Autoencoder thiếu hoàn chỉnh, thừa hoàn chỉnh, ràng buộc trọng số, VAE, và nền tảng lý thuyết đối kháng GAN) [cite: 460, 464, 471, 475, 482, 488].
+    *   **Phần 2 (Lượt sau)**: Giải quyết trọn vẹn từ **Câu 9 đến Câu 13** (bao gồm lý thuyết nâng cao của mô hình khuếch tán DDPM [cite: 509], cùng toàn bộ mã nguồn Python thực hành chất lượng cao cho mạng tiền huấn luyện khử nhiễu Denoising Autoencoder [cite: 509], Variational Autoencoder tạo ảnh mới [cite: 510], và huấn luyện DCGAN có điều kiện với kỹ thuật phát lại kinh nghiệm [cite: 510]).
+
+---
+
+##### Danh sách 13 bài tập Chương 17
+
+1. **Câu 1**: Các nhiệm vụ chính mà autoencoder được sử dụng là gì? [cite: 507]
+2. **Câu 2**: Giả sử bạn muốn huấn luyện một bộ phân loại, và bạn có rất nhiều dữ liệu huấn luyện không được gán nhãn nhưng chỉ có vài nghìn trường hợp được gán nhãn. Autoencoder có thể giúp ích như thế nào? Bạn sẽ tiến hành như thế nào? [cite: 507]
+3. **Câu 3**: Nếu một autoencoder tái tạo hoàn hảo đầu vào, nó có nhất thiết là một autoencoder tốt không? Làm thế nào bạn có thể đánh giá hiệu suất của một autoencoder? [cite: 507]
+4. **Câu 4**: Autoencoder thiếu hoàn chỉnh (undercomplete) và thừa hoàn chỉnh (overcomplete) là gì? Rủi ro chính của một autoencoder thiếu hoàn chỉnh quá mức là gì? Còn rủi ro chính của một autoencoder thừa hoàn chỉnh thì sao? [cite: 508]
+5. **Câu 5**: Bạn làm thế nào để ràng buộc trọng số (tied weights) trong một autoencoder xếp chồng? Mục đích của việc làm như vậy là gì? [cite: 508]
+6. **Câu 6**: Mô hình sinh (generative model) là gì? Bạn có thể kể tên một loại autoencoder sinh không? [cite: 508]
+7. **Câu 7**: GAN là gì? Bạn có thể kể tên một vài nhiệm vụ mà GAN có thể phát huy tác dụng không? [cite: 508]
+8. **Câu 8**: Những khó khăn chính khi huấn luyện GAN là gì? [cite: 508]
+9. **Câu 9**: Mô hình khuếch tán (diffusion models) giỏi điều gì? Hạn chế chính của chúng là gì? [cite: 509]
+10. **Câu 10 (Thực hành)**: Sử dụng autoencoder khử nhiễu (Denoising Autoencoder) để tiền huấn luyện một bộ phân loại hình ảnh trên tập dữ liệu MNIST hoặc CIFAR10 [cite: 509].
+11. **Câu 11 (Thực hành)**: Huấn luyện một mô hình tự mã hóa biến phân (Variational Autoencoder - VAE) trên tập dữ liệu tự chọn và sử dụng nó để sinh ảnh mới [cite: 510].
+12. **Câu 12 (Thực hành)**: Huấn luyện một DCGAN để tạo hình ảnh, tích hợp cơ chế phát lại kinh nghiệm (experience replay) và biến nó thành một GAN có điều kiện (conditional GAN) [cite: 510].
+13. **Câu 13 (Thực hành)**: Trải nghiệm Stable Diffusion của KerasCV để tạo tranh vẽ nghệ thuật [cite: 510].
+
+---
+
+##### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 8)
+
+###### **Câu 1: Các nhiệm vụ chính mà autoencoder được sử dụng là gì?**
+*   **Lời giải chi tiết**: Autoencoder là mạng nơ-ron học không giám sát [cite: 460], được sử dụng rộng rãi cho 4 nhiệm vụ cốt lõi sau:
+    1.  **Giảm chiều dữ liệu (Dimensionality reduction)**: Ánh xạ dữ liệu từ không gian nhiều chiều ban đầu về biểu diễn tiềm ẩn (mã hóa - codings) có số chiều thấp hơn nhiều để lưu trữ tối ưu hoặc trực quan hóa dữ liệu (kết hợp với t-SNE) [cite: 460].
+    2.  **Tiền huấn luyện không giám sát (Unsupervised pretraining)**: Học các đặc trưng cấp thấp tổng quát từ nguồn dữ liệu không gán nhãn khổng lồ trước khi chuyển giao sang mô hình có giám sát [cite: 460].
+    3.  **Bộ phát hiện đặc trưng và làm sạch dữ liệu**: Sử dụng làm công cụ trích xuất đặc trưng hoặc lọc nhiễu dữ liệu (như Autoencoder khử nhiễu) [cite: 460, 475].
+    4.  **Mô hình sinh (Generative models)**: Tạo ra các mẫu dữ liệu mới hoàn toàn ngẫu nhiên nhưng mang đặc trưng chân thực tương đồng với dữ liệu huấn luyện (như Variational Autoencoders) [cite: 460, 482].
+
+###### **Câu 2: Giả sử bạn muốn huấn luyện một bộ phân loại, và bạn có rất nhiều dữ liệu huấn luyện không được gán nhãn nhưng chỉ có vài nghìn trường hợp được gán nhãn. Autoencoder có thể giúp ích như thế nào? Bạn sẽ tiến hành như thế nào?**
+*   **Lời giải chi tiết**:
+    *   **Autoencoder giúp ích như thế nào**: Giúp mô hình không phải học lại các đặc trưng hình học cấp thấp từ đầu trên tập dữ liệu có nhãn ít ỏi (tránh quá khớp hệ thống), nhờ tận dụng các bộ phát hiện đặc trưng tổng quát đã được học trước từ tập dữ liệu không nhãn khổng lồ [cite: 469].
+    *   **Quy trình tiến hành chuẩn mực** [cite: 470]:
+        1.  **Giai đoạn 1**: Gom toàn bộ dữ liệu (cả tập có nhãn và không nhãn) để huấn luyện một mạng Autoencoder xếp chồng (hoặc tích chập) sâu [cite: 470, 471]. Mô hình sẽ tự học cách tái tạo ảnh và trích xuất các đặc trưng tiềm ẩn [cite: 470].
+        2.  **Giai đoạn 2**: Tách lấy **phần bộ mã hóa (encoder)** của Autoencoder đã huấn luyện [cite: 471]. Nhúng thêm một lớp đầu ra phân loại phù hợp (ví dụ: lớp Dense với hàm kích hoạt Softmax) lên trên cùng để tạo thành mạng phân loại mới [cite: 470].
+        3.  **Giai đoạn 3**: Huấn luyện mạng mới này trên vài nghìn mẫu dữ liệu đã gán nhãn [cite: 470]. Do tập dữ liệu nhỏ, ban đầu bạn nên **đóng băng các lớp thấp hơn của bộ mã hóa** để bảo toàn trọng số đặc trưng tốt [cite: 470], sau đó có thể bỏ đóng băng dần các lớp phía trên để tinh chỉnh (fine-tuning) tinh tế với một tốc độ học cực kỳ thấp [cite: 236].
+
+###### **Câu 3: Nếu một autoencoder tái tạo hoàn hảo đầu vào, nó có nhất thiết là một autoencoder tốt không? Làm thế nào bạn có thể đánh giá hiệu suất của một autoencoder?**
+*   **Lời giải chi tiết**:
+    *   **Không nhất thiết là một autoencoder tốt** [cite: 464]. Một mô hình có bộ mã hóa quá mạnh (nhiều tham số thừa thãi) hoàn toàn có thể tìm ra một ánh xạ tầm thường – chẳng hạn như **học thuộc lòng (vẹt) dữ liệu huấn luyện** hoặc thực hiện phép toán đồng nhất (identity mapping) đơn giản là sao chép nguyên vẹn đầu vào ra đầu ra – mà không hề nén dữ liệu hay trích xuất được bất kỳ đặc trưng cấu trúc hữu ích nào dọc theo quá trình [cite: 464].
+    *   **Cách đánh giá hiệu suất** [cite: 466, 470]:
+        1.  **Đo lường sai số tái tạo trên tập dữ liệu chưa từng thấy (unseen data)**: Đánh giá sai số MSE hoặc MAE giữa ảnh gốc và ảnh tái tạo trên tập xác thực hoặc tập kiểm tra để đảm bảo mô hình có khả năng khái quát hóa tốt chứ không học vẹt [cite: 464, 466].
+        2.  **Đánh giá trực quan**: Vẽ biểu đồ trực quan hóa đối chiếu ảnh gốc và ảnh tái tạo để kiểm tra xem mô hình có giữ lại đúng các đặc trưng ngữ nghĩa quan trọng và triệt tiêu thành công nhiễu hay không [cite: 466, 467].
+        3.  **Kiểm định qua tác vụ hạ nguồn (Downstream task)**: Sử dụng vector nhúng tiềm ẩn của Autoencoder làm đầu vào cho một mô hình phân loại phụ [cite: 470]. Điểm số độ chính xác của bộ phân loại này trên dữ liệu kiểm thử chính là thước đo thực tế nhất đánh giá chất lượng đặc trưng mà Autoencoder trích xuất [cite: 470].
+
+###### **Câu 4: Autoencoder thiếu hoàn chỉnh (undercomplete) và thừa hoàn chỉnh (overcomplete) là gì? Rủi ro chính của một autoencoder thiếu hoàn chỉnh quá mức là gì? Còn rủi ro chính của một autoencoder thừa hoàn chỉnh thì sao?**
+*   **Lời giải chi tiết**:
+    *   **Autoencoder thiếu hoàn chỉnh (Undercomplete)**: Là mạng có lớp ẩn trung tâm (lớp tiềm ẩn/mã hóa) sở hữu **số lượng nơ-ron ít hơn đáng kể** so với số chiều (số nơ-ron) của lớp đầu vào [cite: 460]. Ràng buộc thắt cổ chai này ép mạng phải tìm cách nén dữ liệu và chỉ giữ lại các đặc trưng quan trọng nhất [cite: 461].
+    *   **Autoencoder thừa hoàn chỉnh (Overcomplete)**: Là mạng có lớp ẩn trung tâm sở hữu **số lượng nơ-ron bằng hoặc lớn hơn** số chiều của dữ liệu đầu vào [cite: 475].
+    *   **Rủi ro của thiếu hoàn chỉnh quá mức (Extremely Undercomplete)**: Lớp ẩn trung tâm bị thu hẹp quá hẹp, khiến mô hình **bị mất mát thông tin trầm trọng**, không thể tái tạo lại được dữ liệu đầu vào một cách hợp lý (dẫn đến hiện tượng dưới khớp - underfitting) [cite: 467].
+    *   **Rủi ro của thừa hoàn chỉnh**: Do không gian tiềm ẩn quá rộng lớn, mô hình dễ dàng rơi vào cái bẫy **sao chép nguyên vẹn đầu vào sang đầu ra** (identity mapping) mà không chịu học bất kỳ quy luật hay đặc trưng cấu trúc hữu ích nào [cite: 464, 475]. Để khắc phục, khi thiết kế mạng thừa hoàn chỉnh, ta bắt buộc phải áp đặt thêm các ràng buộc thông minh như thêm nhiễu (Denoising AE) [cite: 475] hoặc phạt tính thưa thớt (Sparse AE) [cite: 478].
+
+###### **Câu 5: Bạn làm thế nào để ràng buộc trọng số (tied weights) trong một autoencoder xếp chồng? Mục đích của việc làm như vậy là gì?**
+*   **Lời giải chi tiết**:
+    *   **Cách ràng buộc**: Đối với một Autoencoder đối xứng gồm \\(N\\) lớp (không tính lớp đầu vào) [cite: 471], ta thiết lập ma trận trọng số của lớp giải mã thứ \\(L\\) chính bằng **ma trận chuyển vị** của ma trận trọng số của lớp mã hóa đối xứng tương ứng thứ \\(N-L+1\\) [cite: 471]:
+        \\[\mathbf{W}_L = \mathbf{W}_{N-L+1}^T \quad (\text{với } L = \frac{N}{2} + 1, \dots, N)\\] [cite: 471]
+    *   **Mục đích**:
+        1.  **Cắt giảm một nửa** số lượng tham số/trọng số kết nối cần phải huấn luyện trong toàn bộ mô hình [cite: 471].
+        2.  **Tăng tốc độ huấn luyện** và tiết kiệm bộ nhớ RAM đáng kể [cite: 471].
+        3.  Đóng vai trò như một bộ chính quy hóa mạnh mẽ, **hạn chế tối đa rủi ro quá khớp (overfitting)** [cite: 471].
+
+###### **Câu 6: Mô hình sinh (generative model) là gì? Bạn có thể kể tên một loại autoencoder sinh không?**
+*   **Lời giải chi tiết**:
+    *   **Mô hình sinh**: Là mô hình học máy học cách xấp xỉ phân phối xác suất thực tế của dữ liệu huấn luyện [cite: 482], từ đó có khả năng **tạo ra các mẫu dữ liệu mới hoàn chỉnh** (như ảnh, âm thanh, văn bản) mang các đặc trưng chân thực và cấu trúc tương đồng với dữ liệu gốc [cite: 460].
+    *   **Autoencoder sinh điển hình**: **Autoencoder biến phân (Variational Autoencoder - VAE)** [cite: 482]. Khác với Autoencoder thông thường xuất ra các điểm mã hóa cố định [cite: 482], bộ mã hóa của VAE xuất ra các tham số của một phân phối xác suất (trung bình \\(\mu\\) và phương sai \\(\sigma^2\\)) [cite: 484]. Sau khi huấn luyện, ta chỉ cần lấy mẫu ngẫu nhiên một vector từ phân phối Gaussian tiêu chuẩn, đưa qua bộ giải mã để sinh ra mẫu ảnh mới hoàn toàn chân thực [cite: 482, 484].
+
+###### **Câu 7: GAN là gì? Bạn có thể kể tên một vài nhiệm vụ mà GAN có thể phát huy tác dụng không?**
+*   **Lời giải chi tiết**:
+    *   **GAN (Generative Adversarial Network)**: Là kiến trúc mạng sinh gồm hai mạng nơ-ron sâu cạnh tranh đối kháng nhau trực tiếp trong một trò chơi tổng bằng không [cite: 488]: **Bộ tạo (Generator)** cố gắng tạo ra ảnh giả giống thật để đánh lừa [cite: 489, 490], còn **Bộ phân biệt (Discriminator)** cố gắng nhận diện chính xác đâu là ảnh thật từ tập huấn luyện và đâu là ảnh giả [cite: 489].
+    *   **Các nhiệm vụ GAN phát huy tác dụng xuất sắc**:
+        1.  Sinh ảnh độ phân giải siêu cao (Super-resolution) và tạo khuôn mặt người giả lập chân thực (như StyleGAN) [cite: 494, 497].
+        2.  Thực hiện phép toán vector trên không gian ảnh ngữ nghĩa (ví dụ: ảnh *"Nam đeo kính"* \\(-\\) *"Nam không kính"* \\(+\\) *"Nữ không kính"* \\(=\\) *"Nữ đeo kính"*) [cite: 494].
+        3.  Chuyển đổi phong cách hình ảnh (Image-to-Image translation, ví dụ biến ảnh chụp ban ngày thành ban đêm, tranh vẽ thành ảnh thật).
+
+###### **Câu 8: Những khó khăn chính khi huấn luyện GAN là gì?**
+*   **Lời giải chi tiết**: Huấn luyện GAN cực kỳ khó khăn và bất ổn do bản chất của việc tối ưu hóa một trò chơi đối kháng [cite: 488, 493]:
+    1.  **Sập chế độ (Mode Collapse)**: Xảy ra khi Bộ tạo phát hiện ra một vài mẫu ảnh giả cụ thể luôn đánh lừa được Bộ phân biệt một cách dễ dàng [cite: 490]. Khi đó, Bộ tạo lười biếng sẽ **chỉ tập trung sản sinh ra duy nhất mẫu ảnh đó** và đánh mất hoàn toàn tính đa dạng của dữ liệu (ví dụ: chỉ tạo ra duy nhất ảnh số 8 trong khi tập dữ liệu có đủ từ 0 đến 9).
+    2.  **Sự mất cân bằng và biến mất gradient**: Nếu Bộ phân biệt quá mạnh ngay từ đầu, nó dễ dàng phát hiện mọi ảnh giả với độ tin cậy tuyệt đối [cite: 490]. Điều này khiến hàm lỗi của Bộ tạo bị bão hòa, gradient lỗi biến mất hoàn toàn khiến Bộ tạo không thể học thêm được gì.
+    3.  **Trò chơi không hội tụ (Non-convergence)**: Do hai mạng liên tục đuổi bắt và tối ưu hóa các mục tiêu đối lập [cite: 489], quá trình huấn luyện dễ rơi vào các vòng lặp dao động mạnh xung quanh không gian tham số mà không thể đạt được trạng thái cân bằng Nash ổn định [cite: 493]. Mô hình thậm chí có thể đột ngột quên sạch các đặc trưng tốt đã học được ở các epoch trước [cite: 493].
+
+---
+
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để giải quyết trọn vẹn và sâu sắc nhất **Phần 2 (từ Câu 9 đến Câu 13)** của hệ thống bài tập **Chương 17: Autoencoders, GANs và Mô hình Khuếch tán**, chúng ta sẽ đi sâu phân tích bản chất toán học của mô hình khuếch tán tiến/ngược, đồng thời xây dựng toàn bộ mã nguồn Python thực thi tối ưu nhất cho các dự án thực hành lớn [cite: 169].
+
+Dưới đây là sơ đồ phân tích các nhánh kỹ thuật cốt lõi:
+1. **Câu 9 (Toán học của Mô hình Khuếch tán)**:
+   * *Bản chất*: Lấy cảm hứng từ nhiệt động lực học, quá trình khuếch tán tiến (Forward process) phá hủy cấu trúc hình ảnh bằng cách thêm nhiễu Gaussian tăng dần qua \\(T\\) bước thời gian theo lịch trình phương sai \\(\beta_t\\) [cite: 175, 432]. Quá trình ngược (Reverse process) huấn luyện mạng U-Net để dự đoán lượng nhiễu đã thêm, từ đó lặp đi lặp lại việc loại bỏ nhiễu để khôi phục ảnh sạch [cite: 175, 434, 438, 441].
+2. **Câu 10 (Thực hành Tiền huấn luyện Khử nhiễu - Denoising Autoencoder)**:
+   * *Chiến thuật*: Huấn luyện một autoencoder xếp chồng có lớp `GaussianNoise` hoặc `Dropout` ở đầu vào trên toàn bộ tập dữ liệu CIFAR-10 để học cách tái tạo ảnh sạch [cite: 177, 396]. Sau đó, tách lấy phần bộ mã hóa (encoder), đóng băng các lớp thấp, và huấn luyện một lớp phân loại dày đặc trên một tập dữ liệu nhỏ (500 mẫu) để chứng minh sức mạnh của tiền huấn luyện không giám sát [cite: 177, 445].
+3. **Câu 11 (Thực hành Tự mã hóa Biến phân - VAE)**:
+   * *Chiến thuật*: Triển khai lớp tùy chỉnh `Sampling` để lấy mẫu từ không gian tiềm ẩn Gaussian sử dụng thủ thuật tái tham số hóa (Reparameterization Trick) [cite: 406]. Tính toán kết hợp sai số tái tạo và độ phân kỳ Kullback-Leibler (Latent loss) để mô hình hóa phân phối tiềm ẩn mượt mà, hỗ trợ nội suy ngữ nghĩa và sinh ảnh mới [cite: 405, 410, 413].
+4. **Câu 12 (Thực hành Conditional DCGAN & Experience Replay)**:
+   * *Chiến thuật*: Chúng ta sẽ lập trình một mạng tích chập đối kháng sâu (DCGAN) có điều kiện [cite: 422, 446]. Nhãn lớp sẽ được mã hóa nhúng (Embedding) và nối trực tiếp vào vector nhiễu \\(z\\) của Generator cũng như các bản đồ đặc trưng của Discriminator [cite: 446]. Ta cũng thiết kế một bộ đệm **Experience Replay** để lưu trữ các ảnh giả được tạo ra ở các bước trước, buộc Discriminator phải duy trì khả năng phân biệt lâu dài, chống lại hiện tượng sụp chế độ (mode collapse) và mất cân bằng gradient [cite: 429, 446].
+
+---
+
+##### PHẦN 2: Chi tiết bài tập và lời giải thực hành (Từ Câu 9 đến Câu 13)
+
+###### **Câu 9: Mô hình khuếch tán (diffusion models) giỏi điều gì? Hạn chế chính của chúng là gì?**
+*   **Lời giải chi tiết**:
+    *   **Điểm mạnh vượt trội**:
+        1.  **Chất lượng ảnh siêu việt**: Tạo ra các mẫu hình ảnh có độ chân thực cao, sắc nét đến từng chi tiết và độ đa dạng vượt trội, vượt qua cả các mạng đối kháng tạo sinh GANs [cite: 175, 433, 444].
+        2.  **Huấn luyện ổn định**: Quá trình huấn luyện mô hình khuếch tán thực chất là một tác vụ học có giám sát đơn giản (hồi quy dự đoán nhiễu bằng hàm mất mát MSE/MAE hoặc Huber loss) [cite: 175, 176, 440]. Nó loại bỏ hoàn toàn sự bất ổn định đặc hữu, sự mất cân bằng gradient và nguy cơ sập chế độ (mode collapse) của GANs [cite: 175, 433, 444].
+    *   **Hạn chế cốt lõi**:
+        *   **Tốc độ suy luận cực kỳ chậm**: Do quá trình ngược (Reverse/Generation process) không có lối tắt toán học [cite: 440]. Để tạo ra một bức ảnh từ nhiễu ngẫu nhiên, mô hình bắt buộc phải chạy tuần tự qua hàng trăm đến hàng nghìn bước khử nhiễu liên tiếp [cite: 175, 440], đòi hỏi tài nguyên tính toán và thời gian phản hồi rất lớn so với phép toán một lượt (one-shot pass) của Generator trong GANs hay Decoder trong VAEs [cite: 433].
+
+---
+
+###### **Câu 10: Sử dụng autoencoder khử nhiễu (Denoising Autoencoder) để tiền huấn luyện một bộ phân loại hình ảnh trên tập dữ liệu CIFAR-10** [cite: 445]
+*   **Mã nguồn Python hoàn chỉnh và so sánh hiệu năng thực tế** [cite: 177, 445]:
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# 1. Tải và tiền xử lý tập dữ liệu CIFAR-10
+(X_train_full, y_train_full), (X_test, y_test) = tf.keras.datasets.cifar10.load_data()
+X_train_full = X_train_full.astype(np.float32) / 255.0
+X_test = X_test.astype(np.float32) / 255.0
+
+# Phân tách tập xác thực và tập huấn luyện
+X_valid, X_train = X_train_full[:5000], X_train_full[5000:]
+y_valid, y_train = y_train_full[:5000], y_train_full[5000:]
+
+# 2. Xây dựng cấu trúc Autoencoder khử nhiễu (Denoising Autoencoder)
+tf.random.set_seed(42)
+
+# Bộ mã hóa tích chập tích hợp nhiễu Gaussian đầu vào để ép mạng học đặc trưng mạnh mẽ
+denoising_encoder = tf.keras.Sequential([
+    tf.keras.layers.GaussianNoise(0.1, input_shape=),
+    tf.keras.layers.Conv2D(32, kernel_size=3, padding="same", activation="relu"),
+    tf.keras.layers.MaxPool2D(),
+    tf.keras.layers.Conv2D(64, kernel_size=3, padding="same", activation="relu"),
+    tf.keras.layers.MaxPool2D(),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation="relu"),
+])
+
+# Bộ giải mã sử dụng lớp tích chập chuyển vị để khôi phục không gian ảnh 32x32x3
+denoising_decoder = tf.keras.Sequential([
+    tf.keras.layers.Dense(8 * 8 * 64, activation="relu", input_shape=),
+    tf.keras.layers.Reshape(),
+    tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides=2, padding="same", activation="relu"),
+    tf.keras.layers.Conv2DTranspose(filters=3, kernel_size=3, strides=2, padding="same", activation="sigmoid")
+])
+
+denoising_ae = tf.keras.Sequential([denoising_encoder, denoising_decoder])
+denoising_ae.compile(loss="mse", optimizer=tf.keras.optimizers.Nadam())
+
+print("--- GIAI ĐOẠN 1: HUÂN LUYỆN AUTOENCODER KHỬ NHIỄU TRÊN TOÀN BỘ DỮ LIỆU ---")
+# Huấn luyện mô hình tự tái tạo ảnh sạch từ ảnh bị thêm nhiễu
+denoising_ae.fit(X_train, X_train, epochs=10, batch_size=128, validation_data=(X_valid, X_valid))
+
+# 3. Trích xuất một tập dữ liệu gán nhãn cực nhỏ (chỉ gồm 500 mẫu) để kiểm chứng sức mạnh của Transfer Learning
+n_labeled_samples = 500
+X_labeled = X_train[:n_labeled_samples]
+y_labeled = y_train[:n_labeled_samples]
+
+# 4. Xây dựng Bộ phân loại tái sử dụng Encoder đã được tiền huấn luyện không giám sát
+classifier_with_pretraining = tf.keras.Sequential([
+    denoising_encoder,
+    tf.keras.layers.Dropout(0.5), # Thêm chính quy hóa để chống quá khớp trên tập nhỏ
+    tf.keras.layers.Dense(10, activation="softmax")
+])
+
+# Đóng băng các lớp của bộ mã hóa để bảo toàn đặc trưng tốt đã học
+for layer in denoising_encoder.layers:
+    layer.trainable = False
+
+classifier_with_pretraining.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+print("\n--- GIAI ĐOẠN 2: HUÂN LUYỆN BỘ PHÂN LOẠI CÓ TIỀN HUÂN LUYỆN KHÔNG GIÁM SÁT (TẬP 500 ẢNH) ---")
+classifier_with_pretraining.fit(X_labeled, y_labeled, epochs=15, validation_data=(X_valid, y_valid))
+pretrain_loss, pretrain_acc = classifier_with_pretraining.evaluate(X_test, y_test, verbose=0)
+
+# 5. Đối chứng: Xây dựng và huấn luyện một mô hình tương tự hoàn toàn từ đầu (Scratch) không có tiền huấn luyện
+scratch_encoder = tf.keras.Sequential([
+    tf.keras.layers.GaussianNoise(0.1, input_shape=),
+    tf.keras.layers.Conv2D(32, kernel_size=3, padding="same", activation="relu"),
+    tf.keras.layers.MaxPool2D(),
+    tf.keras.layers.Conv2D(64, kernel_size=3, padding="same", activation="relu"),
+    tf.keras.layers.MaxPool2D(),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation="relu"),
+])
+classifier_from_scratch = tf.keras.Sequential([
+    scratch_encoder,
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(10, activation="softmax")
+])
+classifier_from_scratch.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+print("\n--- GIAI ĐOẠN 3: HUÂN LUYỆN BỘ PHÂN LOẠI HOÀN TOÀN TỪ ĐẦU (TẬP 500 ẢNH) ---")
+classifier_from_scratch.fit(X_labeled, y_labeled, epochs=15, validation_data=(X_valid, y_valid))
+scratch_loss, scratch_acc = classifier_from_scratch.evaluate(X_test, y_test, verbose=0)
+
+print("\n=== KẾT QUẢ ĐỐI CHIẾU HIỆU NĂNG TRÊN TẬP KIỂM THỬ ===")
+print(f"Mô hình CÓ tiền huấn luyện không giám sát  => Accuracy: **{pretrain_acc:.2%}** | Loss: {pretrain_loss:.4f}")
+print(f"Mô hình KHÔNG CÓ tiền huấn luyện (từ đầu) => Accuracy: **{scratch_acc:.2%}** | Loss: {scratch_loss:.4f}")
+``` [cite: 177, 445]
+
+---
+
+###### **Câu 11: Huấn luyện một mô hình tự mã hóa biến phân (Variational Autoencoder - VAE) trên tập dữ liệu Fashion MNIST và sử dụng nó để sinh ảnh mới** [cite: 446]
+*   **Mã nguồn Python hoàn chỉnh sử dụng Keras Custom Sampling** [cite: 406, 407, 408, 409, 410]:
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# 1. Tải và chuẩn bị dữ liệu Fashion MNIST
+(X_train, _), (X_valid, _) = tf.keras.datasets.fashion_mnist.load_data()
+X_train = X_train.astype(np.float32) / 255.0
+X_valid = X_valid.astype(np.float32) / 255.0
+
+# 2. Định nghĩa lớp lấy mẫu tiềm ẩn Gaussian tùy chỉnh (Reparameterization Trick)
+class Sampling(tf.keras.layers.Layer):
+    def call(self, inputs):
+        mean, log_var = inputs
+        # Lấy mẫu nhiễu epsilon từ phân phối chuẩn tiêu chuẩn N(0, 1)
+        epsilon = tf.random.normal(shape=tf.shape(log_var))
+        # Khôi phục vector mã hóa tiềm ẩn z
+        return mean + tf.exp(log_var / 2.0) * epsilon
+
+# 3. Thiết lập mạng VAE
+codings_size = 10 # Số chiều không gian tiềm ẩn
+
+# BỘ MÃ HÓA (ENCODER)
+inputs = tf.keras.layers.Input(shape=)
+z = tf.keras.layers.Flatten()(inputs)
+z = tf.keras.layers.Dense(150, activation="relu")(z)
+z = tf.keras.layers.Dense(100, activation="relu")(z)
+codings_mean = tf.keras.layers.Dense(codings_size)(z)    # Vectơ trung bình mu
+codings_log_var = tf.keras.layers.Dense(codings_size)(z) # Vectơ log-variance gamma
+codings = Sampling()([codings_mean, codings_log_var])
+variational_encoder = tf.keras.Model(inputs=[inputs], outputs=[codings_mean, codings_log_var, codings])
+
+# BỘ GIẢI MÃ (DECODER)
+decoder_inputs = tf.keras.layers.Input(shape=[codings_size])
+x = tf.keras.layers.Dense(100, activation="relu")(decoder_inputs)
+x = tf.keras.layers.Dense(150, activation="relu")(x)
+x = tf.keras.layers.Dense(28 * 28, activation="sigmoid")(x) # Ép cường độ pixel về dải 0-1
+outputs = tf.keras.layers.Reshape()(x)
+variational_decoder = tf.keras.Model(inputs=[decoder_inputs], outputs=[outputs])
+
+# LÊN KHUNG MÔ HÌNH VAE
+reconstructions = variational_decoder(codings)
+variational_ae = tf.keras.Model(inputs=[inputs], outputs=[reconstructions])
+
+# 4. Thiết lập hàm mất mát tiềm ẩn tự tạo (KL Divergence Loss)
+latent_loss = -0.5 * tf.reduce_sum(
+    1.0 + codings_log_var - tf.exp(codings_log_var) - tf.square(codings_mean),
+    axis=-1
+)
+# Chia cho 784 để cân bằng tỷ lệ tối ưu với sai số MSE ở pixel đầu ra
+variational_ae.add_loss(tf.reduce_mean(latent_loss) / 784.0)
+
+variational_ae.compile(loss="mse", optimizer="nadam")
+
+print("--- HUÂN LUYỆN MÔ HÌNH VARIATIONAL AUTOENCODER ---")
+variational_ae.fit(X_train, X_train, epochs=10, batch_size=128, validation_data=(X_valid, X_valid))
+
+# 5. Sinh ra các tác phẩm thời trang mới hoàn toàn ngẫu nhiên
+print("\n--- TIẾN HÀNH SINH ẢNH MỚI BẰNG CÁCH LẤY MẪU GAUSSIAN ---")
+random_codings = tf.random.normal(shape=[10, codings_size])
+generated_images = variational_decoder(random_codings).numpy()
+print(f"Đã sinh thành công {len(generated_images)} bức ảnh thời trang mới! Kích thước mảng ảnh:", generated_images.shape)
+``` [cite: 406, 407, 408, 409, 410, 411, 412]
+
+---
+
+###### **Câu 12: Huấn luyện một DCGAN để tạo hình ảnh, tích hợp cơ chế phát lại kinh nghiệm (experience replay) và biến nó thành một GAN có điều kiện (conditional GAN)** [cite: 446]
+*   **Mã nguồn Python hoàn chỉnh thiết kế vòng lặp huấn luyện nâng cao**:
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# 1. Tải và tiền xử lý dữ liệu Fashion MNIST phục vụ DCGAN
+(X_train, y_train), _ = tf.keras.datasets.fashion_mnist.load_data()
+# Đưa ảnh về dải [-1, 1] phù hợp với hàm kích hoạt tanh của Generator
+X_train = X_train.reshape(-1, 28, 28, 1).astype(np.float32) * 2.0 - 1.0
+y_train = y_train.astype(np.int32)
+
+# Định nghĩa các siêu tham số
+codings_size = 30
+n_classes = 10
+batch_size = 32
+
+# 2. Xây dựng lớp Lưu trữ và Phát lại Kinh nghiệm (Experience Replay Buffer)
+# Giúp duy trì một kho ảnh giả từ lịch sử để huấn luyện Discriminator, chống lại mode collapse
+class ExperienceReplayBuffer:
+    def __init__(self, max_size=500):
+        self.max_size = max_size
+        self.image_buffer = []
+        self.label_buffer = []
+
+    def add(self, images, labels):
+        for img, lbl in zip(images, labels):
+            if len(self.image_buffer) < self.max_size:
+                self.image_buffer.append(img)
+                self.label_buffer.append(lbl)
+            else:
+                # Nếu đầy, thay thế ngẫu nhiên một mẫu cũ
+                idx = np.random.randint(0, self.max_size)
+                self.image_buffer[idx] = img
+                self.label_buffer[idx] = lbl
+
+    def sample(self, num_samples):
+        if len(self.image_buffer) < num_samples:
+            return None, None
+        indices = np.random.choice(len(self.image_buffer), num_samples, replace=False)
+        sampled_imgs = np.array([self.image_buffer[i] for i in indices])
+        sampled_lbls = np.array([self.label_buffer[i] for i in indices])
+        return sampled_imgs, sampled_lbls
+
+replay_buffer = ExperienceReplayBuffer(max_size=1000)
+
+# 3. Xây dựng Mô hình DCGAN Có Điều Kiện (Conditional DCGAN)
+# BỘ TẠO CÓ ĐIỀU KIỆN (CONDITIONAL GENERATOR)
+noise_input = tf.keras.layers.Input(shape=[codings_size], name="noise")
+label_input_gen = tf.keras.layers.Input(shape=[], dtype=tf.int32, name="label")
+
+# Nhúng nhãn lớp thành vectơ đặc trưng
+label_embedding_gen = tf.keras.layers.Embedding(n_classes, 30)(label_input_gen)
+# Nối nhãn đã nhúng vào vectơ nhiễu ngẫu nhiên z
+concat_gen = tf.keras.layers.concatenate([noise_input, label_embedding_gen])
+
+x_gen = tf.keras.layers.Dense(7 * 7 * 64, activation="relu")(concat_gen)
+x_gen = tf.keras.layers.Reshape()(x_gen)
+x_gen = tf.keras.layers.BatchNormalization()(x_gen)
+# Tăng mẫu không gian lên 14x14
+x_gen = tf.keras.layers.Conv2DTranspose(32, kernel_size=5, strides=2, padding="same", activation="relu")(x_gen)
+x_gen = tf.keras.layers.BatchNormalization()(x_gen)
+# Tăng mẫu không gian lên 28x28
+outputs_gen = tf.keras.layers.Conv2DTranspose(1, kernel_size=5, strides=2, padding="same", activation="tanh")(x_gen)
+
+cond_generator = tf.keras.Model(inputs=[noise_input, label_input_gen], outputs=[outputs_gen])
+
+# BỘ PHÂN BIỆT CÓ ĐIỀU KIỆN (CONDITIONAL DISCRIMINATOR)
+image_input = tf.keras.layers.Input(shape=, name="image")
+label_input_disc = tf.keras.layers.Input(shape=[], dtype=tf.int32, name="label")
+
+# Nhúng nhãn và biến đổi không gian để phủ kín ảnh đầu vào thành 1 kênh màu bổ sung
+label_embedding_disc = tf.keras.layers.Embedding(n_classes, 28 * 28)(label_input_disc)
+label_embedding_disc = tf.keras.layers.Reshape()(label_embedding_disc)
+# Nối đặc trưng nhãn thành chiều kênh màu của ảnh đầu vào
+concat_disc = tf.keras.layers.concatenate([image_input, label_embedding_disc], axis=-1)
+
+x_disc = tf.keras.layers.Conv2D(32, kernel_size=5, strides=2, padding="same")(concat_disc)
+x_disc = tf.keras.layers.LeakyReLU(0.2)(x_disc)
+x_disc = tf.keras.layers.Dropout(0.4)(x_disc)
+x_disc = tf.keras.layers.Conv2D(64, kernel_size=5, strides=2, padding="same")(x_disc)
+x_disc = tf.keras.layers.LeakyReLU(0.2)(x_disc)
+x_disc = tf.keras.layers.Dropout(0.4)(x_disc)
+x_disc = tf.keras.layers.Flatten()(x_disc)
+outputs_disc = tf.keras.layers.Dense(1, activation="sigmoid")(x_disc)
+
+cond_discriminator = tf.keras.Model(inputs=[image_input, label_input_disc], outputs=[outputs_disc])
+
+# 4. Định nghĩa tối ưu hóa và hàm lỗi cho hai mô hình
+loss_fn = tf.keras.losses.BinaryCrossentropy()
+gen_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
+disc_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
+
+# 5. Thiết lập vòng lặp huấn luyện tùy chỉnh tích hợp cả hai kỹ thuật nâng cao
+@tf.function
+def train_step(real_images, real_labels, batch_size):
+    # Lấy mẫu nhiễu để sinh ảnh giả mới
+    noise = tf.random.normal(shape=[batch_size, codings_size])
+    fake_labels = tf.random.uniform(shape=[batch_size], minval=0, maxval=n_classes, dtype=tf.int32)
+    
+    # --- BƯỚC 1: HUÂN LUYỆN BỘ PHÂN BIỆT ---
+    with tf.GradientTape() as disc_tape:
+        fake_images = cond_generator([noise, fake_labels], training=True)
+        
+        # Nhãn mục tiêu phân biệt: 1 cho thật, 0 cho giả
+        real_targets = tf.ones([batch_size, 1])
+        fake_targets = tf.zeros([batch_size, 1])
+        
+        # Đo mức độ lỗi trên ảnh thật và ảnh giả mới tạo
+        real_loss = loss_fn(real_targets, cond_discriminator([real_images, real_labels], training=True))
+        fake_loss = loss_fn(fake_targets, cond_discriminator([fake_images, fake_labels], training=True))
+        disc_loss = (real_loss + fake_loss) / 2.0
+        
+    disc_gradients = disc_tape.gradient(disc_loss, cond_discriminator.trainable_variables)
+    disc_optimizer.apply_gradients(zip(disc_gradients, cond_discriminator.trainable_variables))
+    
+    # --- BƯỚC 2: HUÂN LUYỆN BỘ TẠO (Muốn lừa bộ phân biệt đoán ra toàn 1) ---
+    with tf.GradientTape() as gen_tape:
+        generated_images = cond_generator([noise, fake_labels], training=True)
+        gen_loss = loss_fn(tf.ones([batch_size, 1]), cond_discriminator([generated_images, fake_labels], training=False))
+        
+    gen_gradients = gen_tape.gradient(gen_loss, cond_generator.trainable_variables)
+    gen_optimizer.apply_gradients(zip(gen_gradients, cond_generator.trainable_variables))
+    
+    return disc_loss, gen_loss, fake_images, fake_labels
+
+# Vòng lặp huấn luyện chính
+dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).shuffle(1000).batch(batch_size, drop_remainder=True)
+
+epochs = 5
+for epoch in range(1, epochs + 1):
+    print(f"Epoch {epoch}/{epochs}")
+    for step, (real_images, real_labels) in enumerate(dataset):
+        # Huấn luyện một bước
+        d_loss, g_loss, f_images, f_labels = train_step(real_images, real_labels, batch_size)
+        
+        # Thêm ảnh giả vừa tạo vào Experience Replay Buffer
+        replay_buffer.add(f_images.numpy(), f_labels.numpy())
+        
+        # Phát lại kinh nghiệm: thi thoảng lôi ảnh giả cũ trong bộ đệm ra để huấn luyện thêm bộ phân biệt
+        if step % 10 == 0:
+            sampled_imgs, sampled_lbls = replay_buffer.sample(batch_size)
+            if sampled_imgs is not None:
+                with tf.GradientTape() as replay_tape:
+                    replay_loss = loss_fn(tf.zeros([batch_size, 1]), cond_discriminator([sampled_imgs, sampled_lbls], training=True))
+                replay_grads = replay_tape.gradient(replay_loss, cond_discriminator.trainable_variables)
+                disc_optimizer.apply_gradients(zip(replay_grads, cond_discriminator.trainable_variables))
+
+        if step % 300 == 0:
+            print(f" Lượt lặp {step} - Discriminator Loss: {d_loss:.4f} - Generator Loss: {g_loss:.4f}")
+
+# 6. Tạo ra một loại sản phẩm thời trang có điều kiện (Ví dụ: sinh ra Giày Sneaker - Class 7)
+print("\n--- TIẾN HÀNH SINH ẢNH GIÀY SNEAKER (CLASS 7) CÓ ĐIỀU KIỆN ---")
+target_class = 7
+test_noise = tf.random.normal(shape=[5, codings_size])
+test_labels = tf.constant([target_class] * 5, dtype=tf.int32)
+
+generated_sneakers = cond_generator([test_noise, test_labels], training=False).numpy()
+print("Đã sinh thành công 5 ảnh Giày Sneaker dựa trên nhãn điều kiện! Kích thước:", generated_sneakers.shape)
+``` [cite: 422, 424, 425, 426, 429, 446]
+
+---
+
+###### **Câu 13: Trải nghiệm Stable Diffusion của KerasCV để tạo tranh vẽ nghệ thuật**
+*   **Lời giải chi tiết**:
+    *   **Giới thiệu và Sức mạnh**: **Stable Diffusion** là một mô hình khuếch tán tiềm ẩn (Latent Diffusion Model) cực kỳ mạnh mẽ được huấn luyện sẵn trên hàng tỷ cặp ảnh-văn bản từ tập dữ liệu LAION [cite: 442]. Thay vì khuếch tán trực tiếp trên không gian pixel thô (gây ngốn RAM GPU khủng khiếp), Stable Diffusion thực hiện toàn bộ quá trình khuếch tán tiến/ngược bên trong không gian tiềm ẩn (latent space) có số chiều thu nhỏ của một Autoencoder được huấn luyện tối ưu [cite: 442]. Điều này giúp mô hình có thể tạo ra các bức tranh nghệ thuật tuyệt đẹp chỉ trong vài giây trên các GPU thương mại thông thường [cite: 442].
+    *   **Cách thức triển khai đơn giản bằng KerasCV**:
+        ```python
+        import keras_cv
+        import matplotlib.pyplot as plt
+
+        # Khởi tạo mô hình Stable Diffusion đã được tối ưu hóa sâu sắc
+        model = keras_cv.models.StableDiffusion(img_width=512, img_height=512)
+
+        # Định nghĩa Prompt mô tả nội dung tác phẩm mong muốn (In đậm chi tiết tả cảnh)
+        prompt = "A beautiful watercolor painting of **a cute salamander reading a book** in a cozy library, highly detailed, warm lighting"
+
+        # Tiến hành quá trình giải mã khuếch tán ngược từ không gian tiềm ẩn
+        images = model.text_to_image(prompt, batch_size=1)
+
+        # Hiển thị kiệt tác thu được
+        plt.imshow(images)
+        plt.axis("off")
+        plt.show()
+        ``` [cite: 442, 446]
+
+---

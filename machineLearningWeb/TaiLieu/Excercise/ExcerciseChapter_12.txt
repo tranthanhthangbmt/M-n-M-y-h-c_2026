@@ -1,0 +1,383 @@
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định yêu cầu**: Bạn muốn có danh sách đầy đủ các bài tập của **Chương 12: Các Mô hình Tùy chỉnh và Huấn luyện với TensorFlow** [cite: 343] và lời giải chi tiết của chúng. Do nội dung chương này rất dài (bao gồm cả lý thuyết hệ thống TensorFlow và các bài tập lập trình tùy chỉnh Keras phức tạp) [cite: 343, 372, 373], tôi sẽ tiến hành chia thành **2 phần** và thực hiện **Phần 1 trước** (bao gồm danh mục toàn bộ 13 câu hỏi và lời giải chi tiết từ **Câu 1 đến Câu 6**), tham khảo đúng cấu trúc chuẩn hóa của file mẫu `ExcerciseChapter_01.txt` [cite: 770].
+2.  **Khớp nối nguồn tài liệu**:
+    *   **Danh sách câu hỏi**: Nằm ở phần cuối của chương lý thuyết `"CHƯƠNG 12.docx"` (Mục **12.4. Bài tập**) [cite: 371, 372, 373].
+    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành `"12.1_custom_models_and_training_with_tensorflow_VN.ipynb - Colab.pdf"` (Mục **### Lời giải bài tập** hoặc phần bài tập tương ứng) [cite: 177, 178, 179, 180, 181, 182, 183, 184, 185].
+3.  **Lên kế hoạch phân chia chi tiết**:
+    *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của 13 câu hỏi/bài tập** của Chương 12 [cite: 371, 372, 373]. Sau đó, trình bày lời giải chi tiết, sâu sắc nhất cho **từ Câu 1 đến Câu 6** (tập trung vào các khái niệm nền tảng của TensorFlow, so sánh hệ thống với NumPy, và các kỹ thuật tùy chỉnh ở cấp độ API như Custom Loss và Custom Metrics) [cite: 177, 178, 350, 351, 354].
+    *   **Phần 2 (Lượt sau)**: Giải quyết các câu hỏi nâng cao còn lại từ **Câu 7 đến Câu 13** (bao gồm thiết kế Custom Layers, Custom Models, vòng lặp huấn luyện thủ công Custom Training Loops, cơ chế biên dịch đồ thị TF Functions, mô hình động, và toàn bộ mã nguồn Python lập trình cho hai dự án thực hành lớn là Layer Normalization và Fashion MNIST) [cite: 179, 180, 181, 182, 184, 185, 372, 373].
+
+---
+
+##### Danh sách 13 bài tập Chương 12
+
+1. **Câu 1**: Bạn sẽ mô tả TensorFlow trong một câu ngắn gọn như thế nào? Các tính năng chính của nó là gì? Bạn có thể kể tên các thư viện học sâu phổ biến khác không? [cite: 371]
+2. **Câu 2**: TensorFlow có phải là một sự thay thế trực tiếp cho NumPy không? Sự khác biệt chính giữa hai cái là gì? [cite: 371]
+3. **Câu 3**: Bạn có nhận được kết quả tương tự với `tf.range(10)` và `tf.constant(np.arange(10))` không? [cite: 371]
+4. **Câu 4**: Bạn có thể kể tên sáu cấu trúc dữ liệu khác có sẵn trong TensorFlow, ngoài các tensor thông thường không? [cite: 371]
+5. **Câu 5**: Khi nào bạn muốn sử dụng một hàm mất mát (loss function) tùy chỉnh? Làm thế nào bạn tạo một hàm như vậy? [cite: 350, 351]
+6. **Câu 6**: Khi nào bạn muốn sử dụng một chỉ số (metric) tùy chỉnh? Làm thế nào bạn tạo một chỉ số như vậy? [cite: 354]
+7. **Câu 7**: Khi nào bạn nên tạo một lớp tùy chỉnh (custom layer) so với một mô hình tùy chỉnh (custom model)? [cite: 355, 356]
+8. **Câu 8**: Khi nào bạn nên viết một vòng lặp huấn luyện tùy chỉnh (custom training loop)? [cite: 362]
+9. **Câu 9**: Các thành phần Keras tùy chỉnh có thể chứa mã Python tùy ý không? Có quy tắc nào cần tuân thủ không? [cite: 179]
+10. **Câu 10**: Các quy tắc chính cần tuân thủ nếu bạn muốn một hàm có thể chuyển đổi thành hàm TF (TF Function) là gì? [cite: 372]
+11. **Câu 11**: Khi nào bạn cần tạo một mô hình Keras động (dynamic Keras model)? Bạn làm điều đó như thế nào? Tại sao không làm cho tất cả các mô hình của bạn động? [cite: 372]
+12. **Câu 12**: Triển khai một lớp tùy chỉnh thực hiện chuẩn hóa lớp (Layer Normalization). [cite: 372]
+13. **Câu 13**: Huấn luyện một mô hình bằng cách sử dụng vòng lặp huấn luyện tùy chỉnh để giải quyết tập dữ liệu Fashion MNIST. [cite: 373]
+
+---
+
+##### PHẦN 1: Chi tiết bài tập và lời giải (Từ Câu 1 đến Câu 6)
+
+###### **Câu 1: Bạn sẽ mô tả TensorFlow trong một câu ngắn gọn như thế nào? Các tính năng chính của nó là gì? Bạn có thể kể tên các thư viện học sâu phổ biến khác không?**
+*   **Lời giải chi tiết**:
+    *   **Mô tả ngắn gọn**: **TensorFlow** là một thư viện mã nguồn mở mạnh mẽ dành cho tính toán số học, được thiết kế và tối ưu hóa đặc biệt cho các tác vụ **Học máy (Machine Learning) và Học sâu (Deep Learning) quy mô lớn** [cite: 177, 344].
+    *   **Các tính năng chính**:
+        1.  **Hỗ trợ phần cứng mạnh mẽ**: Khả năng chạy mượt mà và tự động tối ưu hóa tính toán trên cả CPU, GPU và các bộ tăng tốc chuyên dụng như ASIC TPU [cite: 177, 343].
+        2.  **Tính toán phân tán**: Hỗ trợ huấn luyện và triển khai mô hình trên nhiều thiết bị và cụm máy chủ quy mô lớn [cite: 177].
+        3.  **Tối ưu hóa đồ thị tính toán**: Khả năng phân tích, biên dịch Just-In-Time (JIT) và tối ưu hóa đồ thị tính toán thành một định dạng đồ thị di động (portable graph), cho phép bạn huấn luyện mô hình trong một môi trường (như Python) và chạy nó ở một môi trường khác (như C++, Java, hoặc thiết bị nhúng) [cite: 177, 345].
+        4.  **Tự động tính đạo hàm (Autodiff)**: Tích hợp một API tối ưu hóa dựa trên cơ chế tự động tính đạo hàm chế độ đảo ngược (reverse-mode autodiff) cực kỳ nhanh chóng và chính xác [cite: 177].
+        5.  **Hệ sinh thái phong phú**: Cung cấp các API mạnh mẽ, thiết kế đẹp mắt như `tf.keras` (xây dựng mạng nơ-ron), `tf.data` (đường ống dữ liệu hiệu năng cao), `tf.image` (xử lý ảnh), `tf.summary` (ghi nhật ký TensorBoard), v.v. [cite: 177, 261, 374].
+    *   **Các thư viện học sâu phổ biến khác**: PyTorch, MXNet, Microsoft Cognitive Toolkit (CNTK), Theano, Caffe2, và Chainer [cite: 177].
+
+###### **Câu 2: TensorFlow có phải là một sự thay thế trực tiếp cho NumPy không? Sự khác biệt chính giữa hai cái là gì?**
+*   **Lời giải chi tiết**:
+    *   **Mối quan hệ**: TensorFlow **không phải là sự thay thế trực tiếp (not a drop-in replacement)** cho NumPy [cite: 177].
+    *   **Các sự khác biệt chính**:
+        1.  **Tên gọi và hành vi của hàm**: Một số hàm có tên gọi khác nhau (ví dụ: NumPy dùng `np.sum()`, TensorFlow dùng `tf.reduce_sum()`) [cite: 177]. Ngoài ra, một số phép toán có hành vi khác biệt; ví dụ, thuộc tính `.T` của NumPy chỉ tạo một tham chiếu chuyển vị của mảng, trong khi hàm `tf.transpose()` của TensorFlow tạo ra một tensor chuyển vị mới thực sự bằng cách sao chép dữ liệu [cite: 177].
+        2.  **Tính khả biến (Mutability)**: Các mảng NumPy có thể thay đổi trực tiếp (mutable) thông qua phép gán chỉ mục (ví dụ: `a = 5`) [cite: 177]. Ngược lại, các tensor thông thường của TensorFlow là **bất biến (immutable)** [cite: 177]. Để quản lý một trạng thái có thể thay đổi và cập nhật được trong TensorFlow (như trọng số của mô hình), bạn bắt buộc phải sử dụng đối tượng đặc biệt `tf.Variable` [cite: 160, 177].
+        3.  **Hỗ trợ phần cứng**: NumPy chỉ chạy trên CPU, trong khi TensorFlow được thiết kế để tận dụng tối đa sức mạnh của GPU và TPU [cite: 177, 343].
+
+###### **Câu 3: Bạn có nhận được kết quả tương tự với `tf.range(10)` và `tf.constant(np.arange(10))` không?**
+*   **Lời giải chi tiết**:
+    *   **Về mặt dữ liệu**: Cả hai đều trả về một tensor một chiều chứa chuỗi các số nguyên liên tiếp từ 0 đến 9 [cite: 178].
+    *   **Sự khác biệt cốt lõi**: Nằm ở **kiểu dữ liệu mặc định (data type - `dtype`)** của chúng [cite: 178].
+        *   `tf.range(10)` trả về một tensor có kiểu dữ liệu là **`tf.int32` (số nguyên 32-bit)** [cite: 178]. Điều này là do TensorFlow mặc định sử dụng các kiểu dữ liệu 32-bit để tiết kiệm bộ nhớ và tăng tốc độ tính toán phần cứng [cite: 178].
+        *   `tf.constant(np.arange(10))` trả về một tensor có kiểu dữ liệu là **`tf.int64` (số nguyên 64-bit)** [cite: 178]. Lý do là hàm `np.arange(10)` tạo ra mảng NumPy có kiểu 64-bit theo mặc định của NumPy, và TensorFlow tôn trọng kiểu dữ liệu gốc này khi chuyển đổi thành hằng số [cite: 178].
+
+###### **Câu 4: Bạn có thể kể tên sáu cấu trúc dữ liệu khác có sẵn trong TensorFlow, ngoài các tensor thông thường không?**
+*   **Lời giải chi tiết**: Sáu cấu trúc dữ liệu đặc biệt được TensorFlow hỗ trợ bao gồm [cite: 178, 348]:
+    1.  **Tensor thưa thớt (Sparse Tensors - `tf.SparseTensor`)**: Định dạng lưu trữ và biểu diễn cực kỳ hiệu quả cho các tensor khổng lồ chứa chủ yếu là giá trị 0 [cite: 178, 348]. Nó chỉ lưu giữ các chỉ số của phần tử khác không, các giá trị tương ứng và hình dạng thực tế của tensor [cite: 348, 948].
+    2.  **Tensor lởm chởm (Ragged Tensors - `tf.RaggedTensor`)**: Cấu trúc chuyên dụng để lưu giữ các danh sách có độ dài không đồng đều (như các câu văn có số lượng từ khác nhau trong NLP) [cite: 178, 348, 945].
+    3.  **Mảng tensor (Tensor Arrays - `tf.TensorArray`)**: Là một danh sách các tensor có kích thước cố định hoặc động [cite: 178, 348]. Tất cả các tensor bên trong mảng bắt buộc phải có cùng hình dạng và kiểu dữ liệu [cite: 348].
+    4.  **Hàng đợi (Queues - nằm trong gói `tf.queue`)**: Cấu trúc lưu trữ và điều phối các tensor qua nhiều bước tính toán [cite: 178, 349]. TensorFlow cung cấp nhiều loại hàng đợi như hàng đợi FIFO cơ bản (`FIFOQueue`), hàng đợi ưu tiên (`PriorityQueue`), và hàng đợi xáo trộn (`RandomShuffleQueue`) [cite: 349, 951].
+    5.  **Tensor chuỗi (String Tensors - kiểu dữ liệu `tf.string`)**: Tensor thông thường nhưng chứa các chuỗi byte, đóng vai trò quan trọng trong tiền xử lý văn bản [cite: 161, 178, 945].
+    6.  **Tập hợp (Sets - nằm trong gói `tf.sets`)**: Được biểu diễn dưới dạng các tensor thông thường hoặc thưa thớt, nhưng được thao tác bằng các phép toán tập hợp toán học chuyên dụng (như tính giao, hợp, hiệu) [cite: 162, 178, 349].
+
+###### **Câu 5: Khi nào bạn muốn sử dụng một hàm mất mát (loss function) tùy chỉnh? Làm thế nào bạn tạo một hàm như vậy?**
+*   **Lời giải chi tiết**:
+    *   **Khi nào cần sử dụng**: Bạn cần tự viết một hàm mất mát tùy chỉnh khi các hàm mất mát tiêu chuẩn được tích hợp sẵn trong Keras (như MSE, MAE, Cross-Entropy) không phản ánh chính xác mục tiêu tối ưu hóa hoặc đặc thù dữ liệu của bạn [cite: 343, 350].
+        *   *Ví dụ thực tế*: Tập dữ liệu huấn luyện của bạn bị nhiễu và chứa nhiều **giá trị ngoại lai (outliers)** [cite: 350]. Sai số bình phương trung bình (MSE) phạt quá nặng các lỗi lớn khiến mô hình bị lệch hướng [cite: 350], trong khi sai số tuyệt đối trung bình (MAE) lại hội tụ chậm và không ổn định quanh điểm tối ưu [cite: 350]. Khi đó, việc tự triển khai **hàm mất mát Huber tùy chỉnh** (kết hợp tính chất tuyến tính của MAE cho lỗi lớn và tính chất bậc hai của MSE cho lỗi nhỏ) là lựa chọn hoàn hảo [cite: 350].
+    *   **Cách tạo hàm mất mát tùy chỉnh**:
+        *   *Cách đơn giản (dạng hàm Python)*: Chỉ cần định nghĩa một hàm Python nhận hai đối số đầu vào là `y_true` (nhãn thực tế) và `y_pred` (giá trị dự đoán) [cite: 351]. Sử dụng hoàn toàn các phép toán của TensorFlow để tính toán sai số của từng mẫu và trả về một tensor chứa các mất mát này [cite: 351].
+            ```python
+            def huber_fn(y_true, y_pred):
+                error = y_true - y_pred
+                is_small_error = tf.abs(error) < 1
+                squared_loss = tf.square(error) / 2
+                linear_loss = tf.abs(error) - 0.5
+                return tf.where(is_small_error, squared_loss, linear_loss)
+            ``` [cite: 351]
+        *   *Cách nâng cao (Subclassing lớp Loss)*: Nếu hàm mất mát của bạn chứa các siêu tham số cần được lưu và tải cùng với mô hình (ví dụ: ngưỡng \\(\delta\\) trong Huber loss), bạn nên kế thừa lớp `tf.keras.losses.Loss` [cite: 351, 352]. Ghi đè phương thức `__init__()` để lưu siêu tham số, phương thức `call()` để thực hiện phép toán, và phương thức `get_config()` để trả về một từ điển cấu hình phục vụ cho việc tuần tự hóa mô hình [cite: 352, 354].
+
+###### **Câu 6: Khi nào bạn muốn sử dụng một chỉ số (metric) tùy chỉnh? Làm thế nào bạn tạo một chỉ số như vậy?**
+*   **Lời giải chi tiết**:
+    *   **Khi nào cần sử dụng**: Chỉ số (metric) được dùng để theo dõi hiệu suất của mô hình (ví dụ: để con người đánh giá hoặc thiết lập dừng sớm) [cite: 1, 165]. Bạn cần một chỉ số tùy chỉnh khi thước đo bạn quan tâm không có sẵn trong Keras [cite: 343]. Khác với hàm mất mát, chỉ số không dùng để tính đạo hàm trực tiếp nên nó không cần khả vi [cite: 358], và nó cần khả năng **tích lũy trạng thái qua nhiều lô (batches) dữ liệu** để tính toán giá trị trung bình chính xác cho toàn bộ kỷ nguyên (epoch) [cite: 165, 354].
+    *   **Cách tạo chỉ số tùy chỉnh**:
+        *   *Cách đơn giản (chỉ số độc lập từng lô)*: Nếu chỉ số có thể được tính trung bình đơn giản trên các batch (như độ chính xác nhị phân), bạn chỉ cần định nghĩa một hàm Python nhận `y_true` và `y_pred` tương tự như hàm mất mát [cite: 353].
+        *   *Cách nâng cao (Subclassing lớp Metric)*: Đối với các chỉ số tích lũy (như Precision - Độ chính xác, hoặc Huber loss tích lũy qua epoch), bạn phải tạo một lớp con kế thừa từ `tf.keras.metrics.Metric` [cite: 354].
+            1.  **Hàm khởi tạo `__init__()`**: Sử dụng phương thức `self.add_weight()` để tạo các biến theo dõi trạng thái của chỉ số qua các batch (ví dụ: biến `total` cộng dồn tổng lỗi, và biến `count` đếm số lượng mẫu dữ liệu đã thấy) [cite: 354].
+            2.  **Phương thức `update_state()`**: Được gọi sau mỗi batch dữ liệu để tính toán và cập nhật giá trị mới vào các biến trạng thái (`total` và `count`) [cite: 354].
+            3.  **Phương thức `result()`**: Được gọi khi cần lấy ra giá trị chỉ số cuối cùng (ví dụ: ở cuối mỗi epoch) bằng cách thực hiện phép chia `total / count` [cite: 354].
+            4.  **Phương thức `reset_states()`**: Được gọi vào đầu mỗi epoch mới để đặt lại các biến trạng thái về 0 [cite: 354, 366].
+
+---
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định phạm vi yêu cầu**: Người dùng muốn hoàn thành trọn vẹn **Phần 2 (từ Câu 7 đến Câu 13)** của hệ thống bài tập **Chương 12: Các Mô hình Tùy chỉnh và Huấn luyện với TensorFlow** [cite: 128]. Đây là các bài tập đi sâu vào cấu trúc Keras nâng cao, quy tắc tối ưu hóa Hàm TF (TF Functions), và các dự án thực hành lập trình thực tế có quy mô mã nguồn lớn (lớp chuẩn hóa lớp tùy chỉnh và vòng lặp huấn luyện thủ công Fashion MNIST) [cite: 195, 201].
+2.  **Truy xuất tài liệu nguồn**:
+    *   **Câu 7** (Phân biệt Lớp vs Mô hình): Dựa trên notebook [cite: 192] và tài liệu lý thuyết [cite: 481, 485].
+    *   **Câu 8** (Khi nào cần vòng lặp tùy chỉnh): Dựa trên notebook [cite: 192] và lý thuyết [cite: 495].
+    *   **Câu 9** (Mã Python tùy ý trong thành phần Keras): Dựa trên notebook [cite: 193] và lý thuyết [cite: 512].
+    *   **Câu 10** (Quy tắc thiết lập Hàm TF): Dựa trên notebook [cite: 194] và lý thuyết [cite: 510, 511, 512, 513, 514].
+    *   **Câu 11** (Mô hình Keras động): Dựa trên notebook [cite: 194, 195].
+    *   **Câu 12** (Lập trình lớp chuẩn hóa Layer Normalization): Lấy chính xác mã nguồn và phép so sánh MAE từ notebook thực hành [cite: 197, 198, 199, 200].
+    *   **Câu 13** (Lập trình vòng lặp huấn luyện Fashion MNIST): Lấy chính xác kiến trúc Keras lồng, cách xử lý `random_batch`, `tf.GradientTape()`, và hai biến thể (a) vòng lặp đơn và (b) vòng lặp phân tách bộ tối ưu hóa đa cấp độ cho lớp trên/lớp dưới [cite: 170, 201, 202].
+3.  **Tổ chức cấu trúc trình bày**: Trình bày rõ ràng, chi tiết, đảm bảo tính chuẩn xác tuyệt đối của mã nguồn và các lập luận toán học đi kèm. Mỗi câu trả lời lý thuyết sẽ đi sâu vào bản chất kỹ thuật để người học làm chủ hoàn toàn API cấp thấp của TensorFlow [cite: 439].
+
+---
+
+##### PHẦN 2: Chi tiết bài tập và lời giải thực hành (Từ Câu 7 đến Câu 13)
+
+###### **Câu 7: Khi nào bạn nên tạo một lớp tùy chỉnh (custom layer) so với một mô hình tùy chỉnh (custom model)?**
+*   **Lời giải chi tiết**:
+    *   **Lớp tùy chỉnh (Custom Layer)**: Bạn nên kế thừa từ lớp `tf.keras.layers.Layer` để xây dựng các **thành phần nội bộ của mô hình** (các khối tính toán, các lớp ẩn, hoặc các khối có thể tái sử dụng) [cite: 192]. Một lớp tùy chỉnh tập trung vào việc nhận các tensor đầu vào, thực hiện các phép biến đổi toán học cụ thể thông qua phương thức `call()`, quản lý và cập nhật các trọng số nội bộ của riêng nó [cite: 155, 192].
+    *   **Mô hình tùy chỉnh (Custom Model)**: Bạn nên kế thừa từ lớp `tf.keras.Model` khi muốn định nghĩa **chính mô hình hoàn chỉnh** – đối tượng mà bạn sẽ gọi huấn luyện trực tiếp [cite: 192]. Khác với lớp thông thường, một đối tượng `Model` sở hữu các tính năng và API cấp cao tích hợp sẵn để phục vụ việc huấn luyện (`fit()`), đánh giá (`evaluate()`), dự đoán (`predict()`), theo dõi các chi tiết nội bộ (`get_layer()`), và lưu trữ/tải mô hình (`save()`) [cite: 192, 485].
+
+###### **Câu 8: Một số trường hợp sử dụng nào yêu cầu viết vòng lặp huấn luyện tùy chỉnh (custom training loop) của riêng bạn? Những lưu ý quan trọng là gì?**
+*   **Lời giải chi tiết**:
+    *   **Khi nào thực sự cần thiết**: Việc tự viết vòng lặp huấn luyện tùy chỉnh là kỹ thuật khá nâng cao và bạn **chỉ nên làm khi thực sự không có giải pháp thay thế nào khác** [cite: 192]. Một số trường hợp bắt buộc phải viết vòng lặp tùy chỉnh bao gồm:
+        1.  Khi mô hình yêu cầu sử dụng **nhiều bộ tối ưu hóa (optimizers) khác nhau cho các phần khác nhau** của mạng nơ-ron (ví dụ: mô hình Wide & Deep trong bài báo gốc cần bộ tối ưu hóa riêng cho đường dẫn rộng và đường dẫn sâu [cite: 192, 495], hoặc mạng đối kháng tạo sinh GANs cần cập nhật xen kẽ giữa bộ tạo và bộ phân biệt [cite: 489, 704]).
+        2.  Khi gỡ lỗi sâu sắc hoặc muốn quan sát và can thiệp trực tiếp vào từng bước tính toán đạo hàm tự động của mạng [cite: 192].
+    *   **Lưu ý quan trọng**: Keras cung cấp sẵn rất nhiều công cụ mạnh mẽ và an toàn để tùy chỉnh quá trình huấn luyện như callbacks, bộ chính quy hóa tùy chỉnh (custom regularizers), ràng buộc tùy chỉnh (custom constraints), v.v. [cite: 192] Bạn nên ưu tiên sử dụng các công cụ này trước vì viết vòng lặp huấn luyện tùy chỉnh **rất dễ phát sinh lỗi (error-prone), mã nguồn dài hơn và cực kỳ khó tái sử dụng hoặc bảo trì** [cite: 192, 495].
+
+###### **Câu 9: Các thành phần Keras tùy chỉnh có thể chứa mã Python tùy ý, hay chúng phải có thể chuyển đổi sang các hàm TF (TF Functions)?**
+*   **Lời giải chi tiết**:
+    *   Các thành phần Keras tùy chỉnh **bắt buộc phải có khả năng chuyển đổi thành các Hàm TF (TF Functions)** [cite: 193]. Điều này có nghĩa là mã nguồn bên trong chúng phải sử dụng các phép toán của TensorFlow nhiều nhất có thể và tuân thủ nghiêm ngặt các quy tắc biên dịch đồ thị [cite: 193].
+    *   **Nếu bắt buộc phải chứa mã Python tùy ý** (ví dụ như gọi các thư viện bên ngoài không hỗ trợ TensorFlow), bạn có hai giải pháp khắc phục:
+        1.  Bọc phần mã Python đó bên trong một phép toán `tf.py_function()` (uy nhiên điều này sẽ làm giảm hiệu suất tính toán và hạn chế khả năng di động của mô hình sang các môi trường không có Python) [cite: 193].
+        2.  Vô hiệu hóa việc biên dịch tự động bằng cách đặt `dynamic=True` khi khởi tạo lớp/mô hình tùy chỉnh, hoặc gọi phương thức biên dịch với tham số `run_eagerly=True` khi huấn luyện [cite: 193].
+
+###### **Câu 10: Các quy tắc chính cần tuân thủ nếu bạn muốn một hàm có thể chuyển đổi thành hàm TF (TF Function) là gì?**
+*   **Lời giải chi tiết**: Để TensorFlow có thể truy vết (trace) và biên dịch một hàm Python thành một đồ thị tính toán tĩnh tối ưu, bạn phải tuân thủ các quy tắc cốt lõi sau [cite: 508, 510]:
+    1.  **Chỉ sử dụng phép toán của TensorFlow**: Tránh gọi các thư viện bên ngoài (như NumPy hay thư viện chuẩn Python) bên trong hàm [cite: 510]. Mọi lệnh gọi ngoài TensorFlow chỉ thực thi một lần duy nhất trong quá trình truy vết (tracing) chứ không nằm trong đồ thị thực thi thực tế [cite: 510, 511]. Nên thay thế `np.sum()` bằng `tf.reduce_sum()`, `sorted()` bằng `tf.sort()`, v.v. [cite: 510]
+    2.  **Tránh các tác dụng phụ của Python (Side-effects)**: Các lệnh in ấn `print()` hoặc thay đổi bộ đếm Python sẽ chỉ chạy một lần lúc tạo đồ thị [cite: 511]. Nếu muốn tạo số ngẫu nhiên thực sự ở mỗi lượt chạy của đồ thị, phải sử dụng các phép toán ngẫu nhiên của TensorFlow như `tf.random.uniform()` thay vì `np.random.rand()` [cite: 511].
+    3.  **Quản lý các tài nguyên có trạng thái**: Nếu hàm của bạn tạo ra các biến TensorFlow (`tf.Variable`), hàng đợi hoặc tập dữ liệu, nó bắt buộc phải khởi tạo ngay trong lần gọi đầu tiên [cite: 513]. Tốt nhất là nên định nghĩa các biến này bên ngoài hàm (ví dụ trong phương thức `build()` của một lớp tùy chỉnh) [cite: 513]. Sử dụng `.assign()` thay vì phép gán `=` để cập nhật giá trị biến [cite: 513].
+    4.  **Sử dụng vòng lặp động**: TensorFlow chỉ ghi nhận các vòng lặp `for` động nếu chúng lặp trên một tensor hoặc một `tf.data.Dataset` [cite: 514]. Hãy dùng `for i in tf.range(x)` thay vì `for i in range(x)`, nếu không vòng lặp sẽ bị mở rộng tĩnh (unroll) thành nhiều phép toán lặp lại trong đồ thị [cite: 514, 968].
+    5.  **Luôn ưu tiên vector hóa**: Triển khai mã nguồn dưới dạng tính toán song song vector hóa để tận dụng tối đa sức mạnh của GPU/TPU [cite: 514].
+
+###### **Câu 11: Khi nào bạn cần tạo một mô hình Keras động (dynamic Keras model)? Bạn làm điều đó như thế nào? Tại sao không làm cho tất cả các mô hình của bạn động?**
+*   **Lời giải chi tiết**:
+    *   **Khi nào cần thiết**: Bạn cần thiết lập mô hình động khi muốn **phục vụ mục đích gỡ lỗi (debugging)** [cite: 194]. Khi mô hình chạy ở chế độ động, Keras sẽ không biên dịch các thành phần tùy chỉnh thành Hàm TF, cho phép bạn sử dụng bất kỳ trình gỡ lỗi Python thông thường nào (như `pdb` hoặc các công cụ của IDE) để đặt điểm dừng và theo dõi giá trị trực tiếp [cite: 194]. Nó cũng cần thiết khi bạn bắt buộc phải tích hợp mã Python tùy ý hoặc các thư viện bên thứ ba vào mô hình [cite: 194].
+    *   **Cách thiết lập**: Đặt đối số `dynamic=True` khi khởi tạo mô hình/lớp tùy chỉnh, hoặc truyền tham số `run_eagerly=True` khi gọi phương thức `compile()` [cite: 194].
+    *   **Tại sao không nên lạm dụng**: Việc chạy mô hình động sẽ ngăn TensorFlow sử dụng bất kỳ tính năng tối ưu hóa đồ thị nào (như cắt bỏ nút dư thừa, thực thi song song liên toán tử) [cite: 195, 441]. Điều này sẽ **làm chậm đáng kể tốc độ huấn luyện lẫn suy luận**, đồng thời bạn sẽ **không thể xuất đồ thị tính toán sang một định dạng di động**, hạn chế nghiêm trọng khả năng triển khai mô hình lên môi trường sản xuất (như thiết bị di động hay máy chủ C++) [cite: 195, 442].
+
+---
+
+###### **Câu 12: Triển khai một lớp tùy chỉnh thực hiện chuẩn hóa lớp (Layer Normalization)**
+*   **Yêu cầu**: Phương thức `build()` định nghĩa hai trọng số có thể huấn luyện là \\(\alpha\\) (khởi tạo bằng 1) và \\(\beta\\) (khởi tạo bằng 0) có hình dạng `input_shape[-1:]` [cite: 195]. Phương thức `call()` tính toán trung bình \\(\mu\\) và độ lệch chuẩn \\(\sigma\\) của các đặc trưng cho mỗi mẫu dữ liệu bằng `tf.nn.moments(inputs, axes=-1, keepdims=True)`, sau đó trả về giá trị đã chuẩn hóa kèm hệ số làm mịn \\(\epsilon\\) [cite: 196]. Đảm bảo kết quả giống hệt lớp `tf.keras.layers.LayerNormalization` của Keras [cite: 199].
+
+*   **Mã nguồn Python hoàn chỉnh và Phép thử nghiệm thực tế** [cite: 197, 199, 200]:
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# 1. Định nghĩa lớp Layer Normalization tùy chỉnh
+class LayerNormalization(tf.keras.layers.Layer):
+    def __init__(self, eps=0.001, **kwargs):
+        super().__init__(**kwargs)
+        self.eps = eps
+
+    def build(self, batch_input_shape):
+        # Khởi tạo alpha bằng 1s và beta bằng 0s theo đúng shape của chiều cuối cùng
+        self.alpha = self.add_weight(
+            name="alpha", 
+            shape=batch_input_shape[-1:],
+            initializer="ones"
+        )
+        self.beta = self.add_weight(
+            name="beta", 
+            shape=batch_input_shape[-1:],
+            initializer="zeros"
+        )
+        super().build(batch_input_shape)
+
+    def call(self, X):
+        # Tính trung bình và phương sai dọc theo trục cuối cùng (axes=-1)
+        mean, variance = tf.nn.moments(X, axes=-1, keepdims=True)
+        # Cộng eps vào bên trong căn bậc hai để tránh lỗi đạo hàm không xác định tại 0
+        return self.alpha * (X - mean) / (tf.sqrt(variance + self.eps)) + self.beta
+
+    def get_config(self):
+        base_config = super().get_config()
+        return {**base_config, "eps": self.eps}
+
+# 2. Tạo dữ liệu giả lập (sử dụng ma trận float32 ngẫu nhiên) để kiểm nghiệm
+np.random.seed(42)
+X_dummy = np.random.rand(100, 28, 28).astype(np.float32)
+
+# Khởi tạo lớp tùy chỉnh và lớp chính thức của Keras
+custom_layer_norm = LayerNormalization()
+keras_layer_norm = tf.keras.layers.LayerNormalization()
+
+# 3. Phép so sánh 1: So sánh với cấu hình mặc định (alpha=1, beta=0)
+diff_default = tf.reduce_mean(tf.keras.losses.mean_absolute_error(
+    keras_layer_norm(X_dummy), custom_layer_norm(X_dummy)
+))
+print("Cấu hình mặc định - Sai số MAE trung bình giữa hai lớp:", diff_default.numpy())
+
+# 4. Phép so sánh 2: Đặt alpha và beta hoàn toàn ngẫu nhiên để đối chiếu chuyên sâu
+random_alpha = np.random.rand(X_dummy.shape[-1]).astype(np.float32)
+random_beta = np.random.rand(X_dummy.shape[-1]).astype(np.float32)
+
+custom_layer_norm.set_weights([random_alpha, random_beta])
+keras_layer_norm.set_weights([random_alpha, random_beta])
+
+diff_random = tf.reduce_mean(tf.keras.losses.mean_absolute_error(
+    keras_layer_norm(X_dummy), custom_layer_norm(X_dummy)
+))
+print("Cấu hình ngẫu nhiên - Sai số MAE trung bình giữa hai lớp:", diff_random.numpy())
+```
+
+*   **Nhận xét thực nghiệm**: Sai số thu được giữa lớp tự viết và lớp của Keras là cực kỳ nhỏ (xấp xỉ cỡ \\(10^{-8}\\)), chứng tỏ lớp tùy chỉnh hoạt động hoàn hảo và chính xác tuyệt đối [cite: 199, 200]. Việc đặt hệ số làm mịn \\(\epsilon\\) bên trong dấu căn bậc hai `tf.sqrt(variance + self.eps)` là một mẹo toán học quan trọng để bảo vệ đồ thị khỏi việc tính toán đạo hàm vô hạn khi phương sai bằng đúng 0 [cite: 198].
+
+---
+
+###### **Câu 13: Huấn luyện một mô hình bằng cách sử dụng vòng lặp huấn luyện tùy chỉnh để giải quyết tập dữ liệu Fashion MNIST**
+*   **Yêu cầu**: 
+    *   **Phần a**: Hiển thị epoch, iteration, mean training loss, và mean accuracy qua mỗi epoch (cập nhật sau từng iteration), kèm theo validation loss và validation accuracy ở cuối mỗi epoch [cite: 201].
+    *   **Phần b**: Thử nghiệm một kiến trúc Keras lồng, sử dụng các bộ tối ưu hóa khác nhau với các tốc độ học khác nhau cho các lớp phía trên (upper layers) và các lớp phía dưới (lower layers) [cite: 202].
+
+*   **Mã nguồn Python hoàn chỉnh cho cả hai phần (a) và (b)** [cite: 170, 201, 202]:
+
+```python
+import tensorflow as tf
+import numpy as np
+from collections import OrderedDict
+
+# 1. Tải và tiền xử lý tập dữ liệu Fashion MNIST
+fashion_mnist = tf.keras.datasets.fashion_mnist.load_data()
+(X_train_full, y_train_full), (X_test, y_test) = fashion_mnist
+
+# Chuyển kiểu dữ liệu sang float32 và chuẩn hóa cường độ pixel về
+X_train_full = X_train_full.astype(np.float32) / 255.0
+X_test = X_test.astype(np.float32) / 255.0
+
+# Phân tách tập xác thực (5000 mẫu đầu tiên) và tập huấn luyện (55000 mẫu còn lại)
+X_valid, X_train = X_train_full[:5000], X_train_full[5000:]
+y_valid, y_train = y_train_full[:5000], y_train_full[5000:]
+
+# 2. Hàm tiện ích lấy ngẫu nhiên một lô dữ liệu (Batch)
+def random_batch(X, y, batch_size=32):
+    idx = np.random.randint(len(X), size=batch_size)
+    return X[idx], y[idx]
+
+# Thiết lập siêu tham số chung
+n_epochs = 5
+batch_size = 32
+n_steps = len(X_train) // batch_size
+loss_fn = tf.keras.losses.sparse_categorical_crossentropy
+
+# ==========================================
+# PHẦN A: VÒNG LẶP HUẤN LUYỆN TÙY CHỈNH CƠ BẢN
+# ==========================================
+print("\n--- BẮT ĐẦU PHẦN A: VÒNG LẶP TIÊU CHUẨN ---")
+tf.random.set_seed(42)
+
+# Xây dựng mô hình tuần tự đơn giản
+model_a = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape=),
+    tf.keras.layers.Dense(100, activation="relu"),
+    tf.keras.layers.Dense(10, activation="softmax")
+])
+
+# Định nghĩa các công cụ huấn luyện
+optimizer_a = tf.keras.optimizers.Nadam(learning_rate=0.01)
+mean_loss_a = tf.keras.metrics.Mean(name="mean_loss")
+accuracy_metric_a = tf.keras.metrics.SparseCategoricalAccuracy(name="accuracy")
+
+# Vòng lặp huấn luyện chính của Phần A
+for epoch in range(1, n_epochs + 1):
+    print(f"Epoch {epoch}/{n_epochs}")
+    for step in range(1, n_steps + 1):
+        X_batch, y_batch = random_batch(X_train, y_train, batch_size)
+        
+        with tf.GradientTape() as tape:
+            y_pred = model_a(X_batch, training=True)
+            main_loss = tf.reduce_mean(loss_fn(y_batch, y_pred))
+            loss = tf.add_n([main_loss] + model_a.losses) # Cộng thêm các loss phụ nếu có
+            
+        # Tính toán gradient lỗi và cập nhật trọng số
+        gradients = tape.gradient(loss, model_a.trainable_variables)
+        optimizer_a.apply_gradients(zip(gradients, model_a.trainable_variables))
+        
+        # Áp dụng ràng buộc trọng số (nếu có)
+        for variable in model_a.variables:
+            if variable.constraint is not None:
+                variable.assign(variable.constraint(variable))
+                
+        # Cập nhật số liệu trung bình theo thời gian thực
+        mean_loss_a(loss)
+        accuracy_metric_a(y_batch, y_pred)
+        
+        # In trạng thái tiến trình cập nhật liên tục trên từng dòng (In đậm thông tin quan trọng)
+        print(f"\rLượt lặp {step}/{n_steps} - loss: {mean_loss_a.result():.4f} - accuracy: {accuracy_metric_a.result():.4f}", end="")
+        
+    # Đánh giá trên tập xác thực ở cuối mỗi Epoch
+    y_pred_val = model_a(X_valid, training=False)
+    val_loss = tf.reduce_mean(loss_fn(y_valid, y_pred_val))
+    
+    val_accuracy_metric = tf.keras.metrics.SparseCategoricalAccuracy()
+    val_accuracy_metric.update_state(y_valid, y_pred_val)
+    val_accuracy = val_accuracy_metric.result()
+    
+    print(f"\n=> Kết quả cuối Epoch {epoch} - loss: {mean_loss_a.result():.4f} - acc: {accuracy_metric_a.result():.4f} | **val_loss: {val_loss:.4f}** | **val_acc: {val_accuracy:.4f}**\n")
+    
+    # Khởi động lại trạng thái của bộ tích lũy số liệu cho epoch mới
+    mean_loss_a.reset_states()
+    accuracy_metric_a.reset_states()
+
+
+# ==========================================
+# PHẦN B: PHÂN TÁCH BỘ TỐI ƯU HÓA ĐA CẤP ĐỘ
+# ==========================================
+print("\n--- BẮT ĐẦU PHẦN B: BỘ TỐI ƯU HÓA PHÂN CẤP ---")
+tf.random.set_seed(42)
+
+# Định nghĩa các phân đoạn lớp trên và lớp dưới một cách rõ ràng
+lower_layers = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape=),
+    tf.keras.layers.Dense(100, activation="relu"),
+])
+upper_layers = tf.keras.Sequential([
+    tf.keras.layers.Dense(10, activation="softmax"),
+])
+
+# Liên kết chúng thành một mô hình tổng thể
+model_b = tf.keras.Sequential([lower_layers, upper_layers])
+
+# Thiết lập hai bộ tối ưu hóa hoàn toàn độc lập với tốc độ học khác nhau
+lower_optimizer = tf.keras.optimizers.SGD(learning_rate=0.001, momentum=0.9) # SGD chậm cho các đặc trưng thô thấp
+upper_optimizer = tf.keras.optimizers.Nadam(learning_rate=0.01)             # Nadam nhanh cho lớp phân loại nhạy bén
+
+mean_loss_b = tf.keras.metrics.Mean(name="mean_loss")
+accuracy_metric_b = tf.keras.metrics.SparseCategoricalAccuracy(name="accuracy")
+
+# Vòng lặp huấn luyện chính của Phần B
+for epoch in range(1, n_epochs + 1):
+    print(f"Epoch {epoch}/{n_epochs}")
+    for step in range(1, n_steps + 1):
+        X_batch, y_batch = random_batch(X_train, y_train, batch_size)
+        
+        # Sử dụng ngữ cảnh persistent=True để có thể gọi tape.gradient nhiều lần cho các biến khác nhau
+        with tf.GradientTape(persistent=True) as tape:
+            y_pred = model_b(X_batch, training=True)
+            main_loss = tf.reduce_mean(loss_fn(y_batch, y_pred))
+            loss = tf.add_n([main_loss] + model_b.losses)
+            
+        # Tính toán và áp dụng gradient riêng biệt cho các lớp phía dưới
+        lower_grads = tape.gradient(loss, lower_layers.trainable_variables)
+        lower_optimizer.apply_gradients(zip(lower_grads, lower_layers.trainable_variables))
+        
+        # Tính toán và áp dụng gradient riêng biệt cho các lớp phía trên
+        upper_grads = tape.gradient(loss, upper_layers.trainable_variables)
+        upper_optimizer.apply_gradients(zip(upper_grads, upper_layers.trainable_variables))
+        
+        # Giải phóng tape thủ công
+        del tape
+        
+        # Cập nhật số liệu
+        mean_loss_b(loss)
+        accuracy_metric_b(y_batch, y_pred)
+        
+        print(f"\rLượt lặp {step}/{n_steps} - loss: {mean_loss_b.result():.4f} - accuracy: {accuracy_metric_b.result():.4f}", end="")
+        
+    # Đánh giá trên tập xác thực cuối Epoch
+    y_pred_val = model_b(X_valid, training=False)
+    val_loss = tf.reduce_mean(loss_fn(y_valid, y_pred_val))
+    
+    val_accuracy_metric = tf.keras.metrics.SparseCategoricalAccuracy()
+    val_accuracy_metric.update_state(y_valid, y_pred_val)
+    val_accuracy = val_accuracy_metric.result()
+    
+    print(f"\n=> Kết quả cuối Epoch {epoch} - loss: {mean_loss_b.result():.4f} - acc: {accuracy_metric_b.result():.4f} | **val_loss: {val_loss:.4f}** | **val_acc: {val_accuracy:.4f}**\n")
+    
+    # Đặt lại trạng thái
+    mean_loss_b.reset_states()
+    accuracy_metric_b.reset_states()
+```
+
+---
+

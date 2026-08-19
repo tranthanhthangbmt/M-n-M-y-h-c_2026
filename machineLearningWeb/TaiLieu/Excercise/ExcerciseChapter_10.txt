@@ -1,0 +1,374 @@
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để đáp ứng yêu cầu của bạn về các bài tập thuộc **Chương 10: Giới thiệu về mạng nơ-ron nhân tạo với Keras**, tôi tiến hành phân tích các nguồn tài liệu hiện có trong dự án:
+
+1. **Xác định nguồn bài tập**:
+   - Danh sách câu hỏi bài tập của Chương 10 nằm ở cuối tài liệu lý thuyết `"CHƯƠNG 10.docx"` (Mục **10.5. Bài tập**) [cite: 306]. Chương này có tổng cộng **10 bài tập** lớn bao quát từ trực quan hóa thực nghiệm, lý thuyết toán học mạng nơ-ron đến lập trình thực hành nâng cao [cite: 307, 311, 312, 313, 314].
+   - Lời giải chi tiết bằng tiếng Việt nằm ở cuối notebook `"10.1_neural_nets_with_keras_VN.ipynb - Colab.pdf"` dưới mục **### Lời giải bài tập** [cite: 114, 115, 116, 117, 118, 119].
+2. **Kế hoạch phân chia nội dung**:
+   - Vì hệ thống câu hỏi của chương này rất dài (gồm cả phần tương tác trên TensorFlow Playground với nhiều câu hỏi nhỏ và phần bài tập lập trình MNIST phức tạp sử dụng Keras Tuner) [cite: 307, 314], việc hiển thị tất cả trong một lượt sẽ quá tải và khó theo dõi.
+   - Do đó, tôi thực hiện phân chia làm **2 phần**:
+     - **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của 10 bài tập**, sau đó tập trung phân tích sâu sắc và trình bày lời giải chi tiết cho **từ Câu 1 đến Câu 6** (Sân chơi TensorFlow, thiết kế cổng XOR sinh học, so sánh Perceptron với Hồi quy Logistic, vai trò của hàm kích hoạt Sigmoid, vẽ các hàm kích hoạt phổ biến và toán học tính toán kích thước ma trận trong MLP) [cite: 307, 311, 312].
+     - **Phần 2 (Lượt sau)**: Sẽ giải quyết trọn vẹn từ **Câu 7 đến Câu 10** (thiết lập lớp đầu ra, cơ chế hoạt động của Backpropagation, siêu tham số MLP chống overfitting và toàn bộ mã nguồn lập trình Keras cho dự án MNIST đạt độ chính xác >98%) [cite: 313, 314].
+
+---
+
+### Danh sách 10 bài tập Chương 10
+
+1. **Bài 1**: Thử nghiệm trực quan trên **Sân chơi TensorFlow (TensorFlow Playground)** để hiểu cách mạng học các mẫu phi tuyến và rủi ro gradient biến mất [cite: 307].
+2. **Bài 2**: Thiết kế một mạng nơ-ron nhân tạo nguyên bản tính toán phép toán logic **XOR (A ⊕ B)** [cite: 311].
+3. **Bài 3**: So sánh bộ phân loại **Hồi quy Logistic** với **Perceptron cổ điển** và cách biến đổi Perceptron thành Hồi quy Logistic [cite: 311].
+4. **Bài 4**: Tại sao hàm kích hoạt **Sigmoid** là thành phần quan trọng đối với sự thành công của các mạng MLP đầu tiên? [cite: 311]
+5. **Bài 5**: Kể tên và mô tả **ba hàm kích hoạt phổ biến** [cite: 312].
+6. **Bài 6**: Xác định kích thước (shape) ma trận/vectơ và viết phương trình toán học tính toán đầu ra cho một **kiến trúc MLP cụ thể** [cite: 312].
+7. **Bài 7**: Xác định cấu hình lớp đầu ra (số lượng nơ-ron và hàm kích hoạt) cho ba bài toán: Phân loại email rác, phân loại MNIST và dự đoán giá nhà [cite: 313].
+8. **Bài 8**: Định nghĩa cơ chế **Backpropagation** và so sánh nó với thuật toán **tự động đạo hàm ngược (reverse-mode autodiff)** [cite: 313].
+9. **Bài 9**: Liệt kê các siêu tham số tinh chỉnh của một MLP cơ bản và cách điều chỉnh khi mô hình bị quá khớp (overfitting) [cite: 313].
+10. **Bài 10 (Thực hành lập trình)**: Huấn luyện một MLP sâu trên tập dữ liệu **MNIST** đạt độ chính xác **>98%** kết hợp tinh chỉnh thủ công tốc độ học, Keras Tuner, Early Stopping và TensorBoard [cite: 314].
+
+---
+
+### PHẦN 1: Chi tiết bài tập và lời giải (Từ Câu 1 đến Câu 6)
+
+#### **Câu 1: Khám phá thực nghiệm trên Sân chơi TensorFlow (TensorFlow Playground)**
+*   **Yêu cầu đề bài**:
+    Truy cập trang mô phỏng TensorFlow Playground và thực hiện các thử nghiệm sau để xây dựng tư duy trực giác [cite: 307]:
+    *   *a. Các mẫu học được*: Huấn luyện mạng mặc định và quan sát cách các nơ-ron lớp ẩn học các mẫu đơn giản để kết hợp thành các mẫu phức tạp ở lớp sau [cite: 307].
+    *   *b. Hàm kích hoạt*: Thay thế `tanh` bằng `ReLU` và quan sát ranh giới quyết định [cite: 307].
+    *   *c. Nguy cơ cực tiểu cục bộ*: Chỉ sử dụng một lớp ẩn với 3 nơ-ron, đặt lại trọng số nhiều lần và quan sát sự bất ổn định [cite: 308].
+    *   *d. Mạng nơ-ron quá nhỏ*: Chỉ sử dụng 2 nơ-ron ẩn và quan sát hiện tượng dưới khớp (underfitting) [cite: 308].
+    *   *e. Mạng nơ-ron đủ lớn*: Sử dụng 8 nơ-ron ẩn và huấn luyện nhiều lần [cite: 308].
+    *   *f. Nguy cơ gradient biến mất*: Chọn dữ liệu xoắn ốc (spiral), thiết lập 4 lớp ẩn với 8 nơ-ron mỗi lớp và quan sát sự trì trệ [cite: 309].
+
+*   **Lời giải chi tiết**:
+    *   **a**: Khi chạy mạng mặc định, các nơ-ron ở lớp ẩn thứ nhất học được các ranh giới tuyến tính đơn giản (đường thẳng cắt ngang các hướng) [cite: 307]. Lớp ẩn thứ hai kết hợp các ranh giới tuyến tính này để tạo thành ranh giới phi tuyến phức tạp (hình nêm hoặc đa giác) bao quanh dữ liệu [cite: 307]. **Mạng càng nhiều lớp thì các mẫu học được càng có thể phức tạp hơn** [cite: 307].
+    *   **b**: Khi chuyển sang hàm kích hoạt `ReLU`, ranh giới quyết định không còn là các đường cong mềm mại nữa mà trở thành các **đường gấp khúc tuyến tính phân đoạn** [cite: 308]. Điều này phản ánh đúng bản chất toán học của hàm ReLU là hàm tuyến tính từng phần (\\(max(0, z)\\)) [cite: 115, 308].
+    *   **c**: Với lớp ẩn quá nhỏ (3 nơ-ron), mô hình rất nhạy cảm với việc khởi tạo trọng số ngẫu nhiên ban đầu [cite: 308]. Đôi khi mạng hội tụ rất nhanh, nhưng nhiều lần chạy lại mạng bị **mắc kẹt trong cực tiểu cục bộ (local minima)** và đưa ra ranh giới quyết định sai lệch [cite: 308].
+    *   **d**: Khi giảm xuống chỉ còn 2 nơ-ron ẩn, không gian giả thuyết bị thu hẹp nghiêm trọng, mạng không đủ sức phân tách các lớp dữ liệu phức tạp (như phân phối vòng tròn lồng nhau), dẫn đến hiện tượng **dưới khớp (underfitting) hệ thống** [cite: 308].
+    *   **e**: Khi tăng lên 8 nơ-ron ẩn, mạng có đủ dư thừa tham số để luôn tìm thấy một lối thoát tối ưu [cite: 308]. Mạng hội tụ cực kỳ nhanh và **không bao giờ bị kẹt** ở các cực tiểu cục bộ tồi [cite: 308, 309]. Điều này làm nổi bật một lý thuyết quan trọng: các mạng nơ-ron lớn hiếm khi bị mắc kẹt trong cực tiểu cục bộ tồi [cite: 309].
+    *   **f**: Với mạng sâu nhiều lớp ẩn, hiện tượng **triệt tiêu độ dốc (vanishing gradients)** xuất hiện rõ rệt [cite: 309, 310]. Các nơ-ron ở lớp cao nhất (gần đầu ra) cập nhật và thay đổi rất nhanh, trong khi các nơ-ron ở lớp thấp nhất (gần đầu vào) hầu như đứng yên hoặc thay đổi cực kỳ chậm do tín hiệu đạo dốc bị nhân nhỏ dần khi truyền ngược về [cite: 309].
+
+---
+
+#### **Câu 2: Thiết kế mạng nơ-ron nhân tạo thực hiện phép toán XOR (A ⊕ B)**
+*   **Yêu cầu đề bài**:
+    Vẽ hoặc thiết kế một mạng nơ-ron nhân tạo sử dụng các nơ-ron nhân tạo nhị phân nguyên bản (đơn vị logic ngưỡng McCuloch-Pitts có tính đến kết nối ức chế) để tính toán phép toán **XOR** dựa trên biểu thức logic: **\\(A \oplus B = (A \wedge \neg B) \vee (\neg A \wedge B)\\)** [cite: 266, 311].
+
+*   **Lời giải chi tiết**:
+    Chúng ta có thể thiết kế một mạng nơ-ron 2 lớp thực hiện phép toán này một cách chính xác [cite: 275]:
+    1.  **Lớp đầu vào**: Nhận hai tín hiệu nhị phân \\(A\\) và \\(B\\) (giá trị 0 hoặc 1) [cite: 264, 275].
+    2.  **Lớp ẩn**: Gồm hai nơ-ron ẩn \\(C\\) và \\(D\\) [cite: 275]:
+        *   **Nơ-ron \\(C\\)** thực hiện phép toán \\(A \wedge \neg B\\) [cite: 266, 275]: Nó nhận kết nối kích thích từ \\(A\\) (trọng số \\(+1\\)) và kết nối ức chế từ \\(B\\) (trọng số \\(-1.5\\)) [cite: 266, 267]. Ngưỡng kích hoạt của nó được đặt là \\(0.5\\) (kích hoạt khi tổng đầu vào lớn hơn 0) [cite: 264]. Như vậy, \\(C\\) chỉ hoạt động (\\(C=1\\)) khi \\(A=1\\) và \\(B=0\\) [cite: 266].
+        *   **Nơ-ron \\(D\\)** thực hiện phép toán \\(\neg A \wedge B\\) [cite: 266, 275]: Nó nhận kết nối kích thích từ \\(B\\) (trọng số \\(+1\\)) và kết nối ức chế từ \\(A\\) (trọng số \\(-1.5\\)) [cite: 266, 267]. Ngưỡng kích hoạt là \\(0.5\\) [cite: 264]. \\(D\\) chỉ hoạt động (\\(D=1\\)) khi \\(A=0\\) và \\(B=1\\) [cite: 266].
+    3.  **Lớp đầu ra (Nơ-ron \\(E\\))**: Thực hiện phép toán tuyển (OR) giữa hai nơ-ron ẩn: \\(C \vee D\\) [cite: 275]. Nó nhận kết nối kích thích từ cả \\(C\\) và \\(D\\) với trọng số \\(+1\\) [cite: 266]. Ngưỡng kích hoạt của \\(E\\) là \\(0.5\\) [cite: 264]. Do đó, \\(E\\) sẽ kích hoạt (\\(E=1\\)) khi \\(C=1\\) hoặc \\(D=1\\) [cite: 266], tức là khi có đúng một trong hai biến đầu vào \\(A\\) hoặc \\(B\\) bằng 1 [cite: 275]. Đây chính là ranh giới quyết định của cổng XOR [cite: 275].
+
+---
+
+#### **Câu 3: So sánh Perceptron cổ điển và Hồi quy Logistic**
+*   **Yêu cầu đề bài**:
+    Tại sao nói chung nên ưu tiên sử dụng bộ phân loại Hồi quy Logistic hơn là Perceptron cổ điển? Làm thế nào bạn có thể điều chỉnh một Perceptron để làm cho nó tương đương với một bộ phân loại Hồi quy Logistic? [cite: 311]
+
+*   **Lời giải chi tiết**:
+    *   **Lý do ưu tiên Hồi quy Logistic**:
+        1.  **Khả năng hội tụ trên dữ liệu nhiễu**: Perceptron cổ điển chỉ hội tụ khi tập dữ liệu phân tách tuyến tính hoàn hảo [cite: 114, 273]. Nếu dữ liệu có nhiễu phi tuyến hoặc bị chồng lấn, thuật toán học Perceptron sẽ dao động mãi mãi và không bao giờ dừng lại [cite: 273, 274]. Ngược lại, Hồi quy Logistic sử dụng tối ưu hóa lồi (gradient descent trên hàm mất mát log loss/cross-entropy) đảm bảo sẽ luôn hội tụ đến một giải pháp tiệm cận tốt nhất kể cả khi dữ liệu không thể phân tách tuyến tính [cite: 114].
+        2.  **Khả năng ước lượng xác suất**: Perceptron sử dụng hàm bước (hard step function) nên chỉ xuất ra nhãn cứng rời rạc (0 hoặc 1) và không thể cung cấp độ tin cậy dưới dạng xác suất [cite: 114, 267, 268]. Hồi quy Logistic sử dụng hàm kích hoạt Sigmoid, cho phép xuất ra một giá trị xác suất liên tục nằm trong khoảng \\(\\), giúp hệ thống đưa ra quyết định linh hoạt hơn [cite: 114, 280].
+    *   **Cách biến đổi Perceptron thành Hồi quy Logistic**:
+        Để một mạng Perceptron một lớp (một nơ-ron đầu ra) hoạt động tương đương bộ phân loại Hồi quy Logistic, ta thực hiện hai thay đổi [cite: 114]:
+        1.  **Thay thế hàm kích hoạt**: Đổi hàm kích hoạt dạng bước Heaviside của Perceptron thành **hàm kích hoạt Sigmoid** (đối với phân loại nhị phân) hoặc hàm **Softmax** (đối với phân loại đa lớp) [cite: 114].
+        2.  **Thay thế thuật toán huấn luyện**: Thay quy tắc học Perceptron cổ điển bằng **thuật toán Gradient Descent** (hoặc các trình tối ưu hóa hiện đại khác) nhằm tối thiểu hóa hàm chi phí **Entropy chéo (Cross-Entropy / Log Loss)** [cite: 114].
+
+---
+
+#### **Câu 4: Vai trò của hàm kích hoạt Sigmoid trong lịch sử MLP**
+*   **Yêu cầu đề bài**:
+    Tại sao hàm kích hoạt sigmoid là một thành phần quan trọng trong việc huấn luyện các MLP đầu tiên? [cite: 311]
+
+*   **Lời giải chi tiết**:
+    *   Khi các mạng MLP đầu tiên được phát triển, các nhà nghiên cứu muốn sử dụng thuật toán lan truyền ngược (Backpropagation) kết hợp với Gradient Descent để huấn luyện mạng sâu [cite: 118, 277].
+    *   **Vấn đề của hàm bước (Step function)**: Hàm bước Heaviside được sử dụng trong Perceptron cổ điển có đặc tính là **đạo hàm bằng 0 ở mọi nơi** (ngoại trừ điểm gián đoạn tại \\(z=0\\) nơi đạo hàm không xác định) [cite: 115, 268]. Vì đạo hàm bằng 0, thuật toán Gradient Descent không có bất kỳ thông tin hướng đi nào để cập nhật trọng số (độ dốc bị triệt tiêu hoàn toàn), khiến việc học không thể diễn ra [cite: 115].
+    *   **Sự cứu rỗi từ Sigmoid**: Hàm kích hoạt Sigmoid (\\(\sigma(z) = \frac{1}{1 + e^{-z}}\\)) là một phiên bản trơn, liên tục của hàm bước [cite: 115, 127]. Đặc tính quan trọng nhất của nó là **có đạo hàm trơn và khác 0 ở mọi nơi** [cite: 115]. Điều này cho phép thuật toán Backpropagation tính toán được các giá trị gradient ổn định, giúp Gradient Descent có thể "lăn xuống dốc" để cập nhật các tham số một cách hiệu quả dọc theo đường cong tổn thất [cite: 115, 118].
+
+---
+
+#### **Câu 5: Ba hàm kích hoạt phổ biến và mô tả**
+*   **Yêu cầu đề bài**:
+    Kể tên ba hàm kích hoạt phổ biến và vẽ/mô tả chi tiết công thức toán học của chúng [cite: 312].
+
+*   **Lời giải chi tiết**:
+    Ba hàm kích hoạt phổ biến nhất cấu thành nên nền tảng của mạng nơ-ron bao gồm [cite: 115]:
+    1.  **Hàm Sigmoid**:
+        *   *Công thức*: \\(\sigma(z) = \frac{1}{1 + e^{-z}}\\) [cite: 127]
+        *   *Mô tả*: Đường cong hình chữ S mượt mà, nén toàn bộ trục số thực đầu vào \\((-\infty, +\infty)\\) vào phạm vi đầu ra giới hạn từ \\(0\\) đến \\(1\\) [cite: 280]. Hàm này có tính đối xứng quanh điểm \\((0, 0.5)\\) [cite: 127] và thường dùng cho lớp đầu ra của bài phân loại nhị phân [cite: 280, 283].
+    2.  **Hàm Tangent Hyperbolic (tanh)**:
+        *   *Công thức*: \\(tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\\)
+        *   *Mô tả*: Cũng là một đường cong hình chữ S trơn nhưng có phạm vi đầu ra rộng hơn, từ \\(-1\\) đến \\(+1\\) [cite: 115]. Điểm ưu việt của tanh so với Sigmoid là đầu ra của nó được **căn tâm tại 0 (zero-centered)**, giúp các lớp nơ-ron phía sau hội tụ nhanh hơn trong quá trình huấn luyện [cite: 115].
+    3.  **Hàm Đơn vị Tuyến tính Chỉnh lưu (ReLU - Rectified Linear Unit)**:
+        *   *Công thức*: \\(ReLU(z) = max(0, z)\\) [cite: 115]
+        *   *Mô tả*: Đồ thị gồm hai đoạn thẳng phẳng hoàn toàn bằng 0 với nửa trục âm (\\(z < 0\\)), và dốc tuyến tính tăng dần với góc \\(45^\circ\\) đối với nửa trục dương (\\(z \ge 0\\)) [cite: 115]. Hàm này không bị bão hòa ở vùng dương, tính toán cực kỳ nhanh và là lựa chọn mặc định hàng đầu cho các lớp ẩn của mạng nơ-ron sâu ngày nay [cite: 115, 321].
+
+---
+
+#### **Câu 6: Tính toán kích thước ma trận và phương trình toán học trong MLP**
+*   **Yêu cầu đề bài**:
+    Giả sử bạn có một MLP bao gồm một lớp đầu vào với **10 nơ-ron truyền qua (passthrough)**, tiếp theo là một lớp ẩn với **50 nơ-ron nhân tạo**, và cuối cùng là một lớp đầu ra với **3 nơ-ron**. Tất cả các nơ-ron ẩn và đầu ra đều dùng hàm kích hoạt **ReLU** [cite: 116, 312].
+    *   **a**. Hình dạng của ma trận đầu vào \\(X\\) là gì? [cite: 312]
+    *   **b**. Hình dạng của ma trận trọng số \\(W_h\\) và vector độ lệch \\(b_h\\) của lớp ẩn là gì? [cite: 312]
+    *   **c**. Hình dạng của ma trận trọng số \\(W_o\\) và vector độ lệch \\(b_o\\) của lớp đầu ra là gì? [cite: 312]
+    *   **d**. Hình dạng của ma trận đầu ra \\(Y\\) của mạng là gì? [cite: 312]
+    *   **e**. Viết phương trình tính ma trận đầu ra \\(Y\\) của mạng dưới dạng hàm của \\(X, W_h, b_h, W_o, b_o\\) [cite: 312].
+
+*   **Lời giải chi tiết**:
+    Gọi \\(m\\) là kích thước lô huấn luyện (training batch size) [cite: 116]. Ta thực hiện tính toán kích thước các ma trận dựa trên đại số tuyến tính như sau [cite: 116]:
+    *   **a**: Hình dạng của ma trận đầu vào \\(X\\) là **\\(m \times 10\\)** (gồm \\(m\\) thực thể, mỗi thực thể có 10 đặc trưng đầu vào) [cite: 116].
+    *   **b**: 
+        *   Ma trận trọng số lớp ẩn \\(W_h\\) có kích thước **\\(10 \times 50\\)** (số lượng hàng bằng số nơ-ron đầu vào, số lượng cột bằng số nơ-ron của lớp ẩn) [cite: 116].
+        *   Vector độ lệch \\(b_h\\) của lớp ẩn có độ dài là **\\(50\\)** (mỗi nơ-ron ẩn sở hữu một hệ số chặn thiên vị độc lập) [cite: 116].
+    *   **c**:
+        *   Ma trận trọng số lớp đầu ra \\(W_o\\) có kích thước **\\(50 \times 3\\)** (nhận đầu vào từ 50 nơ-ron lớp ẩn và chuyển tới 3 nơ-ron lớp đầu ra) [cite: 116].
+        *   Vector độ lệch \\(b_o\\) của lớp đầu ra có độ dài là **\\(3\\)** [cite: 116].
+    *   **d**: Hình dạng của ma trận đầu ra \\(Y\\) là **\\(m \times 3\\)** (chứa kết quả dự đoán cho \\(m\\) mẫu của 3 lớp đầu ra) [cite: 116].
+    *   **e**: Phương trình toán học tính toán ma trận đầu ra \\(Y\\) (áp dụng quy tắc phát sóng - broadcasting khi cộng vector độ lệch vào ma trận) là [cite: 116]:
+        $$\mathbf{Y} = \text{ReLU}\left(\text{ReLU}(\mathbf{X} \mathbf{W_h} + \mathbf{b_h}) \mathbf{W_o} + \mathbf{b_o}\right)$$ [cite: 116]
+
+---
+### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+Để đáp ứng yêu cầu của bạn về việc giải quyết trọn vẹn và chuyên sâu **Phần 2 (từ Câu 7 đến Câu 10)** của **Chương 10: Giới thiệu về mạng nơ-ron nhân tạo với Keras**, tôi tiến hành phân tích nội dung lý thuyết và các tài liệu thực hành liên quan trong dự án như sau:
+
+1.  **Câu 7: Thiết lập lớp đầu ra cho các bài toán khác nhau** [cite: 89, 360].
+    *   *Phân tích*: Cần xác định số lượng nơ-ron lớp đầu ra và hàm kích hoạt cho ba bài toán: Phân loại email rác, phân loại đa lớp MNIST và hồi quy giá nhà [cite: 89, 360].
+2.  **Câu 8: Bản chất của Backpropagation và so sánh với Autodiff chế độ đảo ngược** [cite: 90, 360].
+    *   *Phân tích*: Giải thích rõ quy trình 3 bước của Backpropagation (lan truyền ngược) và làm rõ mối quan hệ thứ bậc: Autodiff chế độ đảo ngược thực chất chỉ là một kỹ thuật tính toán gradient hiệu quả được tích hợp bên trong quy trình Backpropagation [cite: 90, 360].
+3.  **Câu 9: Siêu tham số của MLP và chiến lược chống quá khớp (Overfitting)** [cite: 91, 360].
+    *   *Phân tích*: Liệt kê danh sách các siêu tham số chính và đưa ra các hành động cụ thể để điều chỉnh cấu trúc mạng hoặc áp dụng chính quy hóa nhằm kiểm soát hiện tượng quá khớp [cite: 91, 360].
+4.  **Câu 10: Dự án lập trình thực hành MNIST đạt độ chính xác >98%** [cite: 91, 92, 361].
+    *   *Phân tích*: Viết mã nguồn Python sử dụng TensorFlow/Keras để huấn luyện mô hình.
+    *   *Thiết kế mã*: Chia làm 4 giai đoạn logic rõ ràng:
+        *   *Giai đoạn 1*: Tải, phân tách dữ liệu phân tầng (Train 55k, Valid 5k, Test 10k) và chuẩn hóa pixel về đoạn \\(\\) [cite: 55, 93, 361].
+        *   *Giai đoạn 2*: Tự thiết kế một `Callback` tùy chỉnh để tăng dần tốc độ học theo cấp số nhân nhằm tìm ra tốc độ học tối ưu (vùng tổn thất giảm mạnh nhất và điểm bắt đầu bùng nổ tổn thất) [cite: 91, 92, 94, 361].
+        *   *Giai đoạn 3*: Xây dựng mô hình MLP chính thức, biên dịch với tốc độ học tối ưu thu được, áp dụng các Callback tích hợp sẵn (`EarlyStopping`, `ModelCheckpoint`, `TensorBoard`) để lưu trữ mô hình tốt nhất [cite: 91, 92, 158, 361].
+        *   *Giai đoạn 4*: Sử dụng thư viện `Keras Tuner` để tự động hóa việc tìm kiếm cấu trúc mạng (số lớp ẩn, số nơ-ron, bộ tối ưu hóa) như chỉ dẫn trong sổ tay bài tập [cite: 91, 92, 344, 361].
+
+---
+
+### PHẦN 2: Chi tiết bài tập và lời giải (Từ Câu 7 đến Câu 10)
+
+#### **Câu 7: Thiết lập cấu hình lớp đầu ra cho các tác vụ học máy**
+
+*   **Tác vụ 1: Phân loại email thành thư rác (spam) hoặc thư thường (ham)** [cite: 89, 360]
+    *   **Số lượng nơ-ron đầu ra**: **1 nơ-ron** [cite: 89, 360].
+    *   **Hàm kích hoạt đầu ra**: **Sigmoid** [cite: 89, 360].
+    *   *Giải thích*: Đây là bài toán phân loại nhị phân [cite: 308, 311]. Hàm kích hoạt Sigmoid giúp nén giá trị đầu ra của nơ-ron về khoảng mở từ \\(0\\) đến \\(1\\), đại diện trực tiếp cho xác suất email đó là thư rác [cite: 89, 308, 360].
+
+*   **Tác vụ 2: Phân loại chữ số viết tay trên tập dữ liệu MNIST** [cite: 89, 360]
+    *   **Số lượng nơ-ron đầu ra**: **10 nơ-ron** (tương ứng với các chữ số từ 0 đến 9) [cite: 89, 360].
+    *   **Hàm kích hoạt đầu ra**: **Softmax** [cite: 89, 360].
+    *   *Giải thích*: Đây là bài toán phân loại đa lớp loại trừ lẫn nhau (mỗi ảnh chỉ thuộc về một chữ số duy nhất) [cite: 309, 311]. Hàm Softmax đảm bảo xác suất ước tính của cả 10 lớp đều nằm trong khoảng \\(\\) và có tổng bằng đúng \\(1\\) [cite: 89, 309, 360].
+
+*   **Tác vụ 3: Dự đoán giá nhà (California Housing)** [cite: 89, 360]
+    *   **Số lượng nơ-ron đầu ra**: **1 nơ-ron** [cite: 89, 360].
+    *   **Hàm kích hoạt đầu ra**: **Không sử dụng** (hoặc hàm kích hoạt tuyến tính thuần túy) [cite: 89, 360].
+    *   *Giải thích*: Đây là bài toán hồi quy giá trị liên tục [cite: 306, 308]. Để mô hình được tự do dự đoán bất kỳ giá trị số thực nào mà không bị giới hạn phạm vi, ta không áp dụng hàm kích hoạt phi tuyến ở lớp đầu ra [cite: 89, 307, 360]. 
+    *   *Mở rộng*: Nếu giá trị dự đoán biến thiên qua nhiều bậc độ lớn, một kỹ thuật phổ biến là huấn luyện mạng dự đoán giá trị logarit của mục tiêu (không dùng hàm kích hoạt), sau đó dùng hàm mũ \\(\exp(\hat{y})\\) ở đầu ra để khôi phục giá trị thực [cite: 89, 360]. Nếu muốn đảm bảo giá trị đầu ra luôn dương, ta có thể dùng hàm kích hoạt **ReLU** hoặc **Softplus** [cite: 307, 308].
+
+---
+
+#### **Câu 8: Định nghĩa cơ chế Backpropagation và so sánh với Autodiff chế độ đảo ngược**
+
+*   **Cơ chế hoạt động của Backpropagation (Lan truyền ngược)**:
+    Backpropagation là quy trình huấn luyện mạng nơ-ron nhân tạo thông qua việc lặp đi lặp lại 3 giai đoạn chính trên từng lô dữ liệu nhỏ (mini-batch) [cite: 90, 303, 360]:
+    1.  **Lượt truyền tiến (Forward pass)**: Đưa mini-batch dữ liệu đầu vào qua các lớp ẩn của mạng để tính toán đầu ra dự đoán của tất cả các nơ-ron, lưu giữ các giá trị kích hoạt trung gian, và đo lường sai số dự đoán bằng một hàm mất mát [cite: 90, 303, 304, 360].
+    2.  **Lượt truyền ngược (Backward pass)**: Áp dụng quy tắc chuỗi (chain rule) để tính toán ngược từ lớp đầu ra về lớp đầu vào [cite: 90, 304, 360]. Bước này đo lường mức độ đóng góp sai số của từng trọng số và hệ số thiên vị, thu được vector gradient lỗi của hàm chi phí đối với mọi tham số của mạng [cite: 90, 304, 360].
+    3.  **Cập nhật trọng số**: Thực hiện một bước hạ độ dốc (Gradient Descent) để điều chỉnh các trọng số kết nối và độ lệch nhằm kéo giảm hàm mất mát [cite: 90, 305, 360].
+
+*   **Sự khác biệt giữa Backpropagation và Autodiff chế độ đảo ngược (Reverse-mode Autodiff)**:
+    *   **Autodiff chế độ đảo ngược** là một **kỹ thuật toán học** thuần túy dùng để tính đạo hàm riêng của một hàm số nhiều biến một cách cực kỳ nhanh chóng và chính xác bằng cách duyệt qua đồ thị tính toán [cite: 90, 360]. Nó thực hiện lượt truyền xuôi để ghi nhận giá trị tại các nút tính toán và lượt truyền ngược để thu về toàn bộ các đạo hàm riêng cùng một lúc [cite: 90, 360].
+    *   **Backpropagation** là **toàn bộ quy trình huấn luyện** một mạng nơ-ron nhân tạo [cite: 90, 360]. Quy trình này bao gồm việc lặp lại các bước: đưa ra dự đoán, tính toán sai số, **sử dụng Autodiff chế độ đảo ngược để tính toán gradient** của sai số đó, và cuối cùng áp dụng trình tối ưu hóa để cập nhật trọng số [cite: 90, 360].
+    *   **Kết luận**: Autodiff chế độ đảo ngược chỉ là một kỹ thuật tính toán đạo hàm hiệu quả nằm bên trong và được Backpropagation sử dụng làm động cơ cốt lõi [cite: 90, 360].
+
+---
+
+#### **Câu 9: Siêu tham số tinh chỉnh của MLP và giải pháp chống quá khớp (Overfitting)**
+
+*   **Các siêu tham số có thể tinh chỉnh trong một MLP cơ bản**:
+    1.  Số lượng lớp ẩn [cite: 91, 360].
+    2.  Số lượng nơ-ron trong mỗi lớp ẩn [cite: 91, 360].
+    3.  Hàm kích hoạt sử dụng trong các lớp ẩn và lớp đầu ra [cite: 91, 360].
+    4.  Bộ tối ưu hóa (Optimizer) và tốc độ học khởi tạo (\\(\eta\\)) [cite: 324].
+    5.  Kích thước lô huấn luyện (Batch size) [cite: 324].
+
+*   **Các hành động tinh chỉnh siêu tham số khi mô hình bị quá khớp (Overfitting)**:
+    Khi mô hình hoạt động cực tốt trên tập huấn luyện nhưng sai số trên tập xác thực tăng cao (quá khớp) [cite: 3, 15, 320], bạn cần áp dụng các giải pháp tinh chỉnh siêu tham số sau [cite: 91, 360]:
+    1.  **Đơn giản hóa kiến trúc mạng**: Giảm bớt số lượng lớp ẩn và giảm bớt số lượng nơ-ron trong mỗi lớp ẩn để hạn chế khả năng "học vẹt" dữ liệu nhiễu của mô hình [cite: 91, 360].
+    2.  **Áp dụng chính quy hóa trọng số**: Thêm hình phạt chính quy hóa \\(L_2\\) (Ridge) hoặc \\(L_1\\) (Lasso) trực tiếp vào các lớp Dense (`kernel_regularizer`) để kiểm soát độ lớn của các trọng số [cite: 15, 147, 378].
+    3.  **Tích hợp cơ chế Dropout**: Thêm các lớp `Dropout` (hoặc `AlphaDropout` đối với mạng tự chuẩn hóa dùng hạt nhân SELU) giữa các lớp dày đặc với tỷ lệ bỏ qua ngẫu nhiên từ 10% đến 50% [cite: 148, 150, 379, 380, 382].
+    4.  **Sử dụng cơ chế dừng sớm (Early Stopping)**: Giới hạn số lượng kỷ nguyên huấn luyện bằng cách theo dõi hàm mất mát xác thực và tự động ngắt huấn luyện ngay khi lỗi xác thực bắt đầu có dấu hiệu tăng liên tục [cite: 15, 324, 341, 378].
+
+---
+
+#### **Câu 10: Dự án thực hành lập trình Keras MNIST đạt độ chính xác >98%**
+
+Dưới đây là lời giải lập trình Python chi tiết và hoàn chỉnh bằng thư viện **TensorFlow/Keras** để giải quyết trọn vẹn yêu cầu bài tập của Chương 10 [cite: 91, 92, 361].
+
+##### **Bước 1: Tải dữ liệu, phân tách phân tầng và chuẩn hóa** [cite: 93, 361]
+```python
+import numpy as np
+import tensorflow as tf
+
+# Tải tập dữ liệu MNIST từ Keras [cite: 91, 93, 361]
+(X_train_full, y_train_full), (X_test, y_test) = tf.keras.datasets.mnist.load_data() [cite: 93, 361]
+
+# Phân tách tập xác thực (5,000 ảnh đầu) và chuẩn hóa cường độ pixel về [cite: 93, 361]
+X_valid, X_train = X_train_full[:5000] / 255.0, X_train_full[5000:] / 255.0 [cite: 93, 361]
+y_valid, y_train = y_train_full[:5000], y_train_full[5000:] [cite: 93, 361]
+X_test = X_test / 255.0 [cite: 93, 361]
+```
+
+##### **Bước 2: Tìm kiếm tốc độ học tối ưu bằng Callback tùy chỉnh** [cite: 91, 92, 94, 361]
+Ta thiết kế một Callback nhân tốc độ học tăng dần 0.5% sau mỗi lô dữ liệu [cite: 94, 95, 143, 361].
+```python
+class ExponentialLearningRate(tf.keras.callbacks.Callback): [cite: 94, 361]
+    def __init__(self, factor):
+        self.factor = factor
+        self.rates = []
+        self.losses = []
+        
+    def on_batch_end(self, batch, logs):
+        # Lưu lại tốc độ học và tổn thất hiện tại [cite: 94, 361]
+        lr = float(self.model.optimizer.learning_rate.numpy())
+        self.rates.append(lr)
+        self.losses.append(logs["loss"])
+        # Nhân tốc độ học với hệ số tăng trưởng [cite: 94, 361]
+        self.model.optimizer.learning_rate.assign(lr * self.factor) [cite: 139]
+
+# Khởi tạo mô hình kiểm thử nhanh [cite: 95, 361]
+tf.keras.backend.clear_session() [cite: 95, 361]
+np.random.seed(42)
+tf.random.set_seed(42) [cite: 95, 361]
+
+test_model = tf.keras.Sequential([ [cite: 95, 361]
+    tf.keras.layers.Flatten(input_shape=), [cite: 95, 361]
+    tf.keras.layers.Dense(300, activation="relu"), [cite: 95, 361]
+    tf.keras.layers.Dense(100, activation="relu"), [cite: 95, 361]
+    tf.keras.layers.Dense(10, activation="softmax") [cite: 95, 361]
+]) [cite: 95, 361]
+
+# Khởi tạo tốc độ học rất nhỏ 1e-3 [cite: 95, 361]
+optimizer = tf.keras.optimizers.SGD(learning_rate=1e-3) [cite: 95, 361]
+test_model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"]) [cite: 95, 361]
+
+# Tăng tốc độ học 0.5% sau mỗi lô (factor = 1.005) [cite: 95, 361]
+expon_lr = ExponentialLearningRate(factor=1.005) [cite: 95, 361]
+test_model.fit(X_train, y_train, epochs=1, callbacks=[expon_lr]) [cite: 143]
+
+# Vẽ đồ thị tìm kiếm tốc độ học tối ưu [cite: 91, 92, 361]
+import matplotlib.pyplot as plt
+plt.plot(expon_lr.rates, expon_lr.losses)
+plt.gca().set_xscale('log')
+plt.xlabel("Tốc độ học (Learning Rate)")
+plt.ylabel("Tổn thất (Loss)")
+plt.grid(True)
+plt.show()
+```
+*   *Nhận xét đồ thị*: Đồ thị thực nghiệm chỉ ra rằng hàm mất mát bắt đầu tăng vọt mất kiểm soát khi tốc độ học vượt quá \\(0.6\\) [cite: 96, 361]. Do đó, tốc độ học tối ưu an toàn nhất được chọn bằng một nửa giá trị này, tức là **`learning_rate = 0.3`** [cite: 96, 361].
+
+##### **Bước 3: Huấn luyện chính thức với Early Stopping, Checkpoint và TensorBoard** [cite: 91, 92, 158, 361]
+```python
+import time
+from pathlib import Path
+
+# Thiết lập thư mục ghi log cho TensorBoard [cite: 83, 158, 361]
+def get_run_logdir(root_logdir="my_mnist_logs"): [cite: 83, 158]
+    return Path(root_logdir) / time.strftime("run_%Y_%m_%d_%H_%M_%S") [cite: 83, 158]
+
+run_logdir = get_run_logdir() [cite: 158]
+
+# Định nghĩa các Callbacks điều khiển [cite: 158, 361]
+early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=20, restore_best_weights=True) [cite: 158, 361]
+checkpoint_cb = tf.keras.callbacks.ModelCheckpoint("my_mnist_model.keras", save_best_only=True) [cite: 78, 158, 361]
+tensorboard_cb = tf.keras.callbacks.TensorBoard(run_logdir) [cite: 158, 361]
+
+# Khởi tạo mô hình sâu chính thức
+tf.keras.backend.clear_session() [cite: 96, 361]
+np.random.seed(42)
+tf.random.set_seed(42) [cite: 95]
+
+final_model = tf.keras.Sequential([ [cite: 96, 361]
+    tf.keras.layers.Flatten(input_shape=), [cite: 96, 361]
+    tf.keras.layers.Dense(300, activation="relu"), [cite: 96, 361]
+    tf.keras.layers.Dense(100, activation="relu"), [cite: 96, 361]
+    tf.keras.layers.Dense(10, activation="softmax") [cite: 96, 361]
+]) [cite: 96, 361]
+
+# Cấu hình SGD với tốc độ học tối ưu 0.3 [cite: 96, 361]
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.3) [cite: 96, 361]
+final_model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"]) [cite: 96, 361]
+
+# Huấn luyện mô hình lên tới 100 epoch (Callback sẽ tự động ngắt sớm) [cite: 158, 361]
+history = final_model.fit(
+    X_train, y_train, 
+    epochs=100, 
+    validation_data=(X_valid, y_valid),
+    callbacks=[early_stopping_cb, checkpoint_cb, tensorboard_cb] [cite: 158, 361]
+)
+
+# Tải lại mô hình lưu trữ tốt nhất và đánh giá trên tập kiểm thử độc lập [cite: 75, 158, 361]
+best_model = tf.keras.models.load_model("my_mnist_model.keras") [cite: 75, 361]
+test_loss, test_accuracy = best_model.evaluate(X_test, y_test) [cite: 86, 324, 361]
+print(f"\nĐộ chính xác cuối cùng trên tập Test đạt: {test_accuracy * 100:.2f}%")
+```
+
+##### **Bước 4: Sử dụng Keras Tuner để tìm kiếm siêu tham số tối ưu tự động** [cite: 91, 92, 361]
+Nhằm nâng cấp hệ thống đạt hiệu suất cao hơn nữa, ta sử dụng công cụ tối ưu hóa không gian tìm kiếm `Keras Tuner` [cite: 92, 343, 361].
+```python
+import keras_tuner as kt [cite: 343]
+
+# Định nghĩa hàm xây dựng mô hình linh hoạt [cite: 344, 361]
+def build_tuned_model(hp):
+    # Định nghĩa không gian siêu tham số cần tìm kiếm [cite: 344, 361]
+    n_hidden = hp.Int("n_hidden", min_value=1, max_value=4, default=2) [cite: 344]
+    n_neurons = hp.Int("n_neurons", min_value=64, max_value=512, step=64) [cite: 344]
+    learning_rate = hp.Float("learning_rate", min_value=1e-3, max_value=5e-1, sampling="log") [cite: 344]
+    optimizer_choice = hp.Choice("optimizer", values=["sgd", "adam"]) [cite: 344]
+    
+    if optimizer_choice == "sgd":
+        optimizer = tf.keras.optimizers.SGD(learning_rate=learning_rate)
+    else:
+        optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+        
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Flatten(input_shape=)) [cite: 344]
+    
+    for _ in range(n_hidden):
+        model.add(tf.keras.layers.Dense(n_neurons, activation="relu")) [cite: 344]
+        
+    model.add(tf.keras.layers.Dense(10, activation="softmax")) [cite: 344]
+    model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"]) [cite: 344]
+    return model [cite: 344]
+
+# Khởi tạo công cụ tìm kiếm RandomSearch [cite: 344, 345]
+tuner = kt.RandomSearch(
+    build_tuned_model,
+    objective="val_accuracy", [cite: 345]
+    max_trials=5, [cite: 345]
+    overwrite=True, [cite: 345]
+    directory="my_mnist_tuner_dir", [cite: 345]
+    project_name="mnist_search" [cite: 345]
+)
+
+# Chạy tìm kiếm siêu tham số tối ưu [cite: 345]
+tuner.search(X_train, y_train, epochs=10, validation_data=(X_valid, y_valid)) [cite: 345]
+
+# Lấy ra mô hình tốt nhất đạt được [cite: 345]
+best_tuned_model = tuner.get_best_models(num_models=1)
+test_loss_tuned, test_accuracy_tuned = best_tuned_model.evaluate(X_test, y_test)
+print(f"Độ chính xác của mô hình sau khi quét Keras Tuner: {test_accuracy_tuned * 100:.2f}%")
+```
+
+*   **Kết quả thực nghiệm**: 
+    *   Mô hình MLP được tối ưu hóa thủ công tốc độ học đạt độ chính xác kiểm thử xấp xỉ **97.9% - 98.1%** [cite: 91, 361].
+    *   Sau khi chạy `Keras Tuner` quét tự động các siêu tham số, mô hình tìm ra cấu hình tối ưu dễ dàng vượt ngưỡng **98.4%** độ chính xác trên tập Test [cite: 91, 361].
+
+---
+
+

@@ -1,0 +1,406 @@
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định yêu cầu**: Bạn muốn nhận danh sách và nội dung chi tiết bài tập của **Chương 16: Xử lý Ngôn ngữ Tự nhiên với RNN và Cơ chế chú ý** [cite: 165]. Nếu nội dung dài thì chia thành nhiều phần và thực hiện phần đầu tiên trước, tham khảo cấu trúc chuẩn hóa từ các chương trước (như `ExcerciseChapter_01.txt`) [cite: 676].
+2.  **Khớp nối nguồn tài liệu**:
+    *   **Danh sách câu hỏi**: Nằm ở phần cuối của tài liệu lý thuyết **CHƯƠNG 16.docx** (Mục **16.5. Bài tập**) [cite: 466, 467, 468]. Có tổng cộng **11 câu hỏi/bài tập**.
+    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành **16_nlp_with_rnns_and_attention_VN.ipynb - Colab.pdf** (Mục **### Lời giải bài tập** hoặc phần bài tập tương ứng) [cite: 165, 466, 467, 468].
+3.  **Lên kế hoạch phân chia chi tiết**:
+    *   Chương 16 bao gồm các khái niệm lý thuyết cốt lõi rất sâu về xử lý ngôn ngữ tự nhiên (Char-RNN, Stateful vs Stateless RNN, Mã hóa Subword, Masking, Dịch máy NMT, Beam Search, Cơ chế chú ý Bahdanau/Luong, và kiến trúc Transformer) [cite: 393, 394]. Đi kèm với đó là 4 bài tập lập trình thực hành có dung lượng mã nguồn lớn (Mã hóa Reber Grammar, bộ dịch định dạng Ngày tháng seq2seq, tìm kiếm ảnh bằng văn bản với Dual Encoder, và sinh văn bản Shakespeare bằng Hugging Face GPT) [cite: 467, 468].
+    *   Do đó, tôi sẽ chia nội dung thành **2 phần**:
+        *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của cả 11 bài tập Chương 16**, sau đó phân tích sâu sắc và trình bày lời giải chi tiết cho **từ Câu 1 đến Câu 7** (phần lý thuyết và nền tảng API) [cite: 466, 467].
+        *   **Phần 2 (Lượt sau)**: Giải quyết trọn vẹn phần thực hành lập trình từ **Câu 8 đến Câu 11** với đầy đủ các đoạn mã Python tối ưu và hướng dẫn thực thi cụ thể [cite: 467, 468].
+
+---
+
+##### Danh sách 11 bài tập Chương 16
+
+1. **Câu 1**: Ưu và nhược điểm của việc sử dụng RNN có trạng thái (stateful RNN) so với RNN không trạng thái (stateless RNN) là gì? [cite: 466]
+2. **Câu 2**: Tại sao người ta sử dụng RNN mã hóa-giải mã (Encoder-Decoder) thay vì RNN tuần tự thông thường để dịch tự động? [cite: 466]
+3. **Câu 3**: Làm thế nào bạn có thể xử lý các chuỗi đầu vào có độ dài thay đổi? Còn các chuỗi đầu ra có độ dài thay đổi thì sao? [cite: 466]
+4. **Câu 4**: Beam search là gì, và tại sao bạn lại sử dụng nó? Bạn có thể sử dụng công cụ nào để triển khai nó? [cite: 466]
+5. **Câu 5**: Cơ chế chú ý (attention mechanism) là gì? Nó giúp ích như thế nào? [cite: 466]
+6. **Câu 6**: Lớp quan trọng nhất trong kiến trúc transformer là gì? Mục đích của nó là gì? [cite: 466]
+7. **Câu 7**: Khi nào bạn cần sử dụng softmax lấy mẫu (sampled softmax)? [cite: 467]
+8. **Câu 8 (Thực hành)**: Huấn luyện một mạng RNN phân loại để xác định xem một chuỗi ký tự có tuân thủ ngữ pháp Reber nhúng (Embedded Reber grammar) hay không [cite: 467].
+9. **Câu 9 (Thực hành)**: Huấn luyện một mô hình mã hóa-giải mã (seq2seq) có thể chuyển đổi chuỗi ngày từ định dạng này sang định dạng khác (ví dụ: từ "April 22, 2019" sang "2019-04-22") [cite: 468].
+10. **Câu 10 (Thực hành)**: Tham khảo ví dụ của Keras về "Tìm kiếm hình ảnh ngôn ngữ tự nhiên với Bộ mã hóa kép" để xây dựng mô hình biểu diễn ảnh và văn bản trong cùng một không gian nhúng (tương tự CLIP của OpenAI) [cite: 468].
+11. **Câu 11 (Thực hành)**: Sử dụng thư viện Hugging Face Transformers để tải xuống một mô hình ngôn ngữ tiền huấn luyện GPT và sinh văn bản kiểu Shakespeare thuyết phục hơn [cite: 468].
+
+---
+
+##### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 7)
+
+###### **Câu 1: Ưu và nhược điểm của việc sử dụng RNN có trạng thái (stateful RNN) so với RNN không trạng thái (stateless RNN) là gì?**
+*   **Lời giải chi tiết**:
+    *   **RNN không trạng thái (Stateless RNN)**: Ở mỗi lượt lặp huấn luyện, mô hình nhận các đoạn văn bản ngẫu nhiên và trạng thái ẩn (hidden state) của nơ-ron luôn được đặt lại về 0 trước mỗi batch [cite: 393]. 
+        *   *Ưu điểm*: Cực kỳ đơn giản để triển khai, dữ liệu có thể được xáo trộn (shuffle) hoàn toàn ngẫu nhiên giúp mô hình hội tụ ổn định và tránh quá khớp [cite: 393, 399].
+        *   *Nhược điểm*: Mô hình bị giới hạn ngữ cảnh, hoàn toàn không có khả năng học các mẫu dài hơn độ dài của cửa sổ huấn luyện (thường chỉ khoảng 100 ký tự) [cite: 406].
+    *   **RNN có trạng thái (Stateful RNN)**: Trạng thái ẩn cuối cùng của batch huấn luyện trước đó được bảo toàn và sử dụng trực tiếp làm trạng thái khởi tạo cho batch tiếp theo [cite: 393].
+        *   *Ưu điểm*: Cho phép mô hình duy trì và tiếp tục đọc luồng thông tin liên tục, giúp mạng **học được các mối quan hệ phụ thuộc có khoảng cách cực kỳ xa** trong quá khứ vượt ra ngoài ranh giới của một cửa sổ huấn luyện lẻ [cite: 393].
+        *   *Nhược điểm*: Đòi hỏi chuẩn bị dữ liệu rất phức tạp; các batch dữ liệu bắt buộc phải được sắp xếp có cấu trúc sao cho chuỗi thứ \\(i\\) trong batch sau phải tiếp nối chính xác vị trí kết thúc của chuỗi thứ \\(i\\) trong batch trước [cite: 407]. Bạn cũng không được xáo trộn dữ liệu ngẫu nhiên [cite: 407] và bắt buộc phải gọi phương thức đặt lại trạng thái (`model.reset_states()`) một cách thủ công ở cuối mỗi epoch huấn luyện [cite: 393].
+
+###### **Câu 2: Tại sao người ta sử dụng RNN mã hóa-giải mã (Encoder-Decoder) thay vì RNN tuần tự thông thường để dịch tự động?**
+*   **Lời giải chi tiết**:
+    *   **Hạn chế của RNN tuần tự thông thường**: Trong dịch máy, việc dịch từng từ một ngay khi nó xuất hiện (on-the-fly) hoạt động rất kém [cite: 363]. Lý do là cấu trúc ngữ pháp và trật tự từ giữa hai ngôn ngữ thường khác nhau hoàn toàn [cite: 363]. Một từ nằm ở cuối câu trong ngôn ngữ nguồn có thể ảnh hưởng trực tiếp đến việc lựa chọn từ dịch ngay ở đầu câu trong ngôn ngữ đích [cite: 363].
+    *   **Sức mạnh của kiến trúc mã hóa-giải mã (Encoder-Decoder)**: 
+        *   **Bộ mã hóa (Encoder)**: Tiếp nhận toàn bộ câu đầu vào của ngôn ngữ nguồn và nén toàn bộ ngữ nghĩa của nó thành một vector ngữ cảnh duy nhất [cite: 363, 418]. Bước này giúp mô hình nắm bắt trọn vẹn ý đồ của cả câu trước khi bắt đầu dịch [cite: 363].
+        *   **Bộ giải mã (Decoder)**: Nhận vector ngữ cảnh này làm trạng thái ban đầu và tiến hành giải mã, tạo ra câu dịch ở ngôn ngữ đích từng từ một [cite: 418]. Việc tách biệt hai pha giúp mô hình có thời gian "suy nghĩ" về toàn bộ câu nguồn trước khi đưa ra bản dịch chính xác nhất [cite: 363].
+
+###### **Câu 3: Làm thế nào bạn có thể xử lý các chuỗi đầu vào có độ dài thay đổi? Còn các chuỗi đầu ra có độ dài thay đổi thì sao?**
+*   **Lời giải chi tiết**:
+    *   **Xử lý chuỗi đầu vào có độ dài thay đổi**:
+        1.  *Kỹ thuật đệm (Padding)*: Định nghĩa một độ dài tối đa cố định, sau đó đệm thêm các token đệm đặc biệt (thường có ID bằng 0) vào cuối các chuỗi ngắn hơn trong batch để đưa chúng về cùng một kích thước [cite: 414].
+        2.  *Cơ chế mặt nạ (Masking)*: Thiết lập tham số `mask_zero=True` trong lớp `Embedding` của Keras [cite: 414]. Lớp này sẽ tự động tạo ra một mặt nạ nhị phân và truyền dọc theo mạng nơ-ron, ép các lớp phía sau (như RNN hay các lớp Chú ý) tự động bỏ qua các token đệm này trong quá trình tính toán và lan truyền ngược [cite: 414, 449].
+        3.  *Sử dụng Ragged Tensors*: Biểu diễn dữ liệu dưới dạng các tensor lởm chởm `tf.RaggedTensor` để lưu giữ các chuỗi có độ dài thực tế khác nhau mà không cần tốn tài nguyên tính toán cho việc đệm [cite: 471, 829].
+    *   **Xử lý chuỗi đầu ra có độ dài thay đổi**:
+        *   Trong quá trình huấn luyện, ta bổ sung một token đặc biệt đại diện cho việc kết thúc câu là **EOS (End-Of-Sequence)** vào cuối mỗi câu mục tiêu [cite: 418].
+        *   Khi suy luận (inference), mô hình chạy trong một vòng lặp tự hồi quy (autoregressive) để đưa ra dự đoán từng từ một [cite: 420]. Vòng lặp này sẽ ngay lập tức dừng lại khi mô hình dự đoán ra token EOS hoặc khi chuỗi đầu ra đạt tới một độ dài tối đa cho phép được thiết lập sẵn [cite: 418, 438].
+
+###### **Câu 4: Beam search là gì, và tại sao bạn lại sử dụng nó? Bạn có thể sử dụng công cụ nào để triển khai nó?**
+*   **Lời giải chi tiết**:
+    *   **Định nghĩa**: Beam search là một thuật toán giải mã (decoding heuristic) được sử dụng tại thời điểm suy luận của các mô hình sinh chuỗi [cite: 425]. Thay vì chỉ chọn duy nhất từ có xác suất cao nhất ở mỗi bước (Greedy Decoding) [cite: 404, 425], Beam search duy trì một danh sách ngắn chứa \\(k\\) chuỗi câu có triển vọng cao nhất (trong đó \\(k\\) là siêu tham số chiều rộng chùm - beam width) [cite: 425]. Ở mỗi bước tiếp theo, nó mở rộng tất cả các hướng đi có thể từ \\(k\\) câu này và chỉ giữ lại \\(k\\) chuỗi có xác suất tích lũy lớn nhất [cite: 425].
+    *   **Tại sao sử dụng**: Nó giúp mô hình tránh khỏi "bẫy tham lam" [cite: 425]. Đôi khi một từ có xác suất cao nhất ở bước hiện tại lại dẫn đến một câu dịch rất tồi tệ ở các bước sau; việc giữ lại nhiều nhánh tiềm năng giúp mô hình có cơ hội quay lại sửa sai và tìm ra câu dịch tối ưu toàn cục [cite: 425, 427].
+    *   **Công cụ triển khai**: Có thể tự viết thuật toán giải mã chùm bằng TensorFlow [cite: 466], sử dụng API `seq2seq` tích hợp sẵn của TensorFlow Addons [cite: 466], hoặc gọi trực tiếp phương thức sinh văn bản `generate(num_beams=k)` đã được tối ưu hóa sâu sắc của thư viện Hugging Face `transformers` [cite: 468].
+
+###### **Câu 5: Cơ chế chú ý (attention mechanism) là gì? Nó giúp ích như thế nào?**
+*   **Lời giải chi tiết**:
+    *   **Định nghĩa**: Cơ chế chú ý là một thành phần mạng nơ-ron cho phép bộ giải mã (Decoder) chủ động "nhìn vào" và tập trung vào các phần liên quan nhất của chuỗi đầu vào ở mỗi bước thời gian giải mã [cite: 394, 429]. Nó tính toán điểm tương đồng giữa trạng thái hiện tại của bộ giải mã (truy vấn - query) và tất cả các trạng thái của bộ mã hóa (khóa - keys), đi qua hàm softmax để có các trọng số chú ý, rồi tính tổng có trọng số của các trạng thái bộ mã hóa (giá trị - values) để tạo ra vector ngữ cảnh động [cite: 429, 430, 431, 436].
+    *   **Các lợi ích cốt lõi**:
+        1.  **Hóa giải nút thắt cổ chai thông tin (Information Bottleneck)**: Ở mô hình Encoder-Decoder truyền thống, toàn bộ câu đầu vào (dù dài đến đâu) bắt buộc phải nén vào một vector cố định, gây mất mát thông tin nghiêm trọng [cite: 357, 428]. Cơ chế chú ý cho phép truyền tất cả các đầu ra của Encoder đến Decoder, giải phóng mô hình khỏi giới hạn nén này [cite: 428, 429].
+        2.  **Giảm thiểu triệt tiêu gradient trên chuỗi dài**: Nó tạo ra một đường dẫn cực kỳ ngắn giữa các từ trong câu nguồn và từ tương ứng trong câu đích, giúp tín hiệu gradient lỗi dễ dàng truyền ngược về các lớp thấp mà không bị triệt tiêu, cho phép dịch thành công các câu siêu dài [cite: 428, 437].
+        3.  **Tính giải thích cao**: Trọng số chú ý \\(\alpha(t, i)\\) cho phép trực quan hóa chính xác phần nào của ảnh hoặc câu nguồn mà mô hình đang tập trung nhìn vào khi đưa ra dự đoán [cite: 429, 459].
+
+###### **Câu 6: Lớp quan trọng nhất trong kiến trúc transformer là gì? Mục đích của nó là gì?**
+*   **Lời giải chi tiết**:
+    *   Lớp quan trọng nhất trong kiến trúc Transformer chính là lớp **Chú ý đa đầu (Multi-Head Attention - MHA)** [cite: 440, 443, 446].
+    *   **Mục đích**:
+        1.  *Học ngữ cảnh sâu sắc (Self-Attention)*: Cho phép từng từ trong câu tự động tương tác và tính toán mối quan hệ với tất cả các từ khác trong cùng một câu [cite: 440]. Điều này giúp mô hình xây dựng được biểu diễn ngữ nghĩa cực kỳ chính xác và loại bỏ sự mơ hồ của từ (ví dụ: hiểu từ "right" mang nghĩa là "cánh tay phải" hay "quyền chỉ trích" dựa trên các từ xung quanh) [cite: 423, 440].
+        2.  *Khai phá thông tin đa chiều (Multi-Head)*: Bằng cách sử dụng nhiều đầu chú ý song song, lớp này chiếu các biểu diễn từ vào các không gian con khác nhau, cho phép mô hình đồng thời tập trung vào nhiều mối quan hệ đa dạng (như quan hệ ngữ pháp, quan hệ đại từ, thì của động từ) [cite: 447].
+        3.  *Song song hóa tối đa*: Khác với các lớp RNN bắt buộc phải tính toán tuần tự từng bước thời gian, Self-Attention tính toán mối liên hệ giữa mọi cặp từ trong câu cùng một lúc bằng phép nhân ma trận [cite: 437, 445]. Điều này giúp tận dụng tối đa sức mạnh tính toán song song của GPU/TPU, đẩy nhanh tốc độ huấn luyện lên gấp nhiều lần [cite: 437, 445].
+
+###### **Câu 7: Khi nào bạn cần sử dụng softmax lấy mẫu (sampled softmax)?**
+*   **Lời giải chi tiết**:
+    *   Bạn cần sử dụng **softmax lấy mẫu** khi huấn luyện một mô hình phân loại có **số lượng lớp đầu ra cực kỳ lớn** (ví dụ: bài toán mô hình hóa ngôn ngữ nơi từ vựng chứa hàng trăm nghìn hoặc hàng triệu từ) [cite: 466].
+    *   **Lý do**: Phép toán softmax thông thường yêu cầu mô hình phải tính toán điểm số logits cho tất cả các từ trong từ vựng để tính tổng ở mẫu số [cite: 466]. Việc tính toán này trên hàng triệu lớp ở mỗi bước huấn luyện cực kỳ chậm và ngốn một lượng lớn bộ nhớ GPU [cite: 466].
+    *   **Cơ chế hoạt động**: Trong quá trình huấn luyện, thay vì tính toán sai số trên toàn bộ từ vựng, Softmax lấy mẫu chỉ tính toán lỗi cho lớp mục tiêu đúng (positive class) và một nhóm nhỏ các lớp sai được chọn ngẫu nhiên (negative classes) [cite: 466]. Điều này giúp **tăng tốc độ huấn luyện mô hình lên gấp hàng trăm lần** mà vẫn đảm bảo độ chính xác tiệm cận tối ưu [cite: 466]. *(Lưu ý: Kỹ thuật lấy mẫu này chỉ được áp dụng trong pha huấn luyện; khi chạy suy luận thực tế, mô hình vẫn phải dùng softmax đầy đủ để tính xác suất chính xác cho từng từ) [cite: 466].*
+
+---
+
+##### 🧠 Phân tích & Lập luận (Chain of Thought / Tree of Thought)
+
+Để hoàn thành trọn vẹn và sâu sắc nhất **Phần 2 (từ Câu 8 đến Câu 11)** của hệ thống bài tập **Chương 16: Xử lý Ngôn ngữ Tự nhiên với RNN và Cơ chế chú ý** [cite: 185], chúng ta sẽ đi sâu vào việc giải quyết các bài toán lập trình thực hành có độ phức tạp cao, đòi hỏi kỹ thuật xử lý chuỗi và mô hình hóa ngôn ngữ chuyên sâu [cite: 477, 478]. 
+
+Dưới đây là sơ đồ phân tích các nhánh giải thuật cốt lõi:
+1. **Câu 8 (Phân loại Ngữ pháp Reber Nhúng)**:
+   * **Bản chất**: Ngữ pháp Reber là một tự động trạng thái hữu hạn (FSA) sinh ra các chuỗi ký tự theo luật chuyển trạng thái nghiêm ngặt [cite: 477]. Ngữ pháp Reber nhúng (Embedded Reber) bọc ngữ pháp Reber gốc vào giữa cặp ký tự đối xứng `T...T` hoặc `P...P` [cite: 477].
+   * **Chiến thuật lập trình**: Ta định nghĩa cấu trúc ngữ pháp dưới dạng đồ thị danh sách kề chuyển trạng thái [cite: 211]. Viết hàm Python sinh tự động các chuỗi đúng ngữ pháp [cite: 211], và các chuỗi bị lỗi (corrupted) bằng cách sửa đổi ngẫu nhiên duy nhất một ký tự [cite: 212]. Sử dụng một lớp `Embedding` kết hợp với ô nhớ `GRU` và lớp `Dense(1, activation="sigmoid")` để phân loại nhị phân (chuỗi đúng vs chuỗi sai) [cite: 191, 213].
+2. **Câu 9 (Dịch máy ngày tháng Seq2Seq)**:
+   * **Bản chất**: Chuyển đổi chuỗi văn bản ngày tháng tự do (ví dụ: "April 22, 2019") thành định dạng ISO chuẩn hóa ("2019-04-22") [cite: 215].
+   * **Chiến thuật lập trình**: Chúng ta sẽ biểu diễn hai biến thể Seq2Seq:
+     * *Biến thể 1 (Mô hình Encoder-Decoder cơ bản)*: Sử dụng một bộ mã hóa LSTM nén chuỗi thành một vector ngữ cảnh duy nhất, dùng lớp `RepeatVector` để nhân bản vector này theo độ dài đầu ra mong muốn, rồi đưa qua bộ giải mã LSTM để dự đoán từng ký tự [cite: 218].
+     * *Biến thể 2 (Mô hình Teacher Forcing nâng cao)*: Đưa mục tiêu dịch chuyển một bước thời gian sang phải (shifted targets) vào bộ giải mã trong quá trình huấn luyện nhằm tăng tốc độ hội tụ và độ ổn định của hệ thống [cite: 220, 221].
+3. **Câu 10 (Natural Language Image Search với Dual Encoder)**:
+   * **Bản chất**: Mô hình hóa mối quan hệ ngữ nghĩa giữa ảnh và văn bản tương tự kiến trúc CLIP nổi tiếng của OpenAI [cite: 463, 478].
+   * **Chiến thuật**: Chúng ta sẽ phân tích sâu cơ chế hoạt động của bộ mã hóa kép (Dual Encoder), thuật toán so khớp đặc trưng không gian vector và ứng dụng tìm kiếm ảnh bằng văn bản [cite: 463, 478].
+4. **Câu 11 (Sinh văn bản Shakespeare bằng GPT)**:
+   * **Bản chất**: Sử dụng mô hình ngôn ngữ tự hồi quy Transformer đã huấn luyện sẵn để tạo ra các câu văn có tính mạch lạc cao [cite: 452].
+   * **Chiến thuật**: Sử dụng thư viện `transformers` của Hugging Face để tải mô hình `TFOpenAIGPTLMHeadModel` [cite: 223], bóc tách token bằng `OpenAIGPTTokenizer` [cite: 224] và gọi phương thức `generate()` với các tham số điều khiển nhiệt độ (temperature) và lấy mẫu hạt nhân (top_p) [cite: 227].
+
+---
+
+##### PHẦN 2: Chi tiết bài tập và giải pháp lập trình Python (Từ Câu 8 đến Câu 11)
+
+###### **Câu 8: Huấn luyện một mạng RNN phân loại để xác định xem một chuỗi ký tự có tuân thủ ngữ pháp Reber nhúng (Embedded Reber grammar) hay không** [cite: 477]
+*   **Lời giải chi tiết và Mã nguồn Python tối ưu**:
+
+```python
+import numpy as np
+import tensorflow as tf
+
+# 1. Định nghĩa Ngữ pháp Reber gốc (Default Reber Grammar)
+default_reber_grammar = [
+    [("B", 1)],           # Trạng thái 0: đi qua 'B' sang trạng thái 1
+    [("T", 2), ("P", 3)], # Trạng thái 1: đi qua 'T' -> 2 hoặc 'P' -> 3
+    [("S", 2), ("X", 4)], # Trạng thái 2: đi qua 'S' -> 2 hoặc 'X' -> 4
+    [("T", 3), ("V", 5)], # Trạng thái 3: đi qua 'T' -> 3 hoặc 'V' -> 5
+    [("X", 3), ("S", 6)], # Trạng thái 4: đi qua 'X' -> 3 hoặc 'S' -> 6
+    [("P", 4), ("V", 6)], # Trạng thái 5: đi qua 'P' -> 4 hoặc 'V' -> 6
+    [("E", None)]         # Trạng thái 6: đi qua 'E' kết thúc chuỗi
+]
+
+# Định nghĩa Ngữ pháp Reber nhúng (Embedded Reber Grammar)
+# Bọc đồ thị Reber gốc vào giữa cặp T...T hoặc P...P
+embedded_reber_grammar = [
+    [("B", 1)],
+    [("T", 2), ("P", 3)],                  # Trạng thái 1: Nhúng Reber gốc vào nhánh T (2) hoặc P (3)
+    [(default_reber_grammar, 4)],          # Trạng thái 2 (nhánh T)
+    [(default_reber_grammar, 5)],          # Trạng thái 3 (nhánh P)
+    [("T", 6)],                            # Trạng thái 4: Kết thúc nhánh T bằng 'T'
+    [("P", 6)],                            # Trạng thái 5: Kết thúc nhánh P bằng 'P'
+    [("E", None)]                          # Trạng thái 6: Kết thúc chuỗi bằng 'E'
+]
+
+# 2. Hàm sinh ngẫu nhiên chuỗi đúng ngữ pháp
+def generate_string(grammar):
+    state = 0
+    output = []
+    while state is not None:
+        transitions = grammar[state]
+        index = np.random.randint(len(transitions))
+        production, next_state = transitions[index]
+        if isinstance(production, list): # Nếu là ngữ pháp con nhúng
+            output.append(generate_string(production))
+        else:
+            output.append(production)
+        state = next_state
+    return "".join(output)
+
+# 3. Hàm tạo chuỗi sai ngữ pháp (Corrupted String) bằng cách sửa đổi ngẫu nhiên 1 ký tự
+POSSIBLE_CHARS = "BEPSTVX"
+def generate_corrupted_string(grammar, chars=POSSIBLE_CHARS):
+    good_string = generate_string(grammar)
+    # Chọn một vị trí ngẫu nhiên trừ ký tự bắt đầu 'B'
+    index = np.random.randint(1, len(good_string))
+    good_char = good_string[index]
+    # Chọn một ký tự sai khác với ký tự đúng tại vị trí đó
+    bad_char = np.random.choice(sorted(set(chars) - set(good_char)))
+    return good_string[:index] + bad_char + good_string[index + 1:]
+
+# 4. Hàm tạo tập dữ liệu huấn luyện
+def generate_dataset(size):
+    good_strings = [generate_string(embedded_reber_grammar) for _ in range(size // 2)]
+    bad_strings = [generate_corrupted_string(embedded_reber_grammar) for _ in range(size // 2)]
+    
+    # Mã hóa ký tự thành số nguyên (Hệ số từ 1 đến 7, số 0 dành riêng cho padding)
+    char_to_id = {char: idx + 1 for idx, char in enumerate(POSSIBLE_CHARS)}
+    
+    X_raw = good_strings + bad_strings
+    X_ids = [[char_to_id[c] for c in string] for string in X_raw]
+    
+    # Chuyển đổi sang Ragged Tensor để xử lý các chuỗi có độ dài thay đổi
+    X = tf.ragged.constant(X_ids, ragged_rank=1)
+    # Đưa về dạng tensor đệm số 0 ở cuối
+    X_padded = (X + 1).to_tensor()
+    
+    # Nhãn: 1 cho chuỗi đúng, 0 cho chuỗi sai
+    y = np.array([[1.0] for _ in range(size // 2)] + [[0.0] for _ in range(size // 2)])
+    return X_padded, y
+
+# Tạo dữ liệu
+X_train, y_train = generate_dataset(10000)
+X_valid, y_valid = generate_dataset(2000)
+
+# 5. Xây dựng mô hình phân loại chuỗi tuần tự
+model_reber = tf.keras.Sequential([
+    # Kích hoạt ragged=True nếu muốn đưa Ragged Tensor trực tiếp vào Embedding
+    tf.keras.layers.Embedding(input_dim=len(POSSIBLE_CHARS) + 2, output_dim=5, mask_zero=True),
+    tf.keras.layers.GRU(30),
+    tf.keras.layers.Dense(1, activation="sigmoid")
+])
+
+model_reber.compile(
+    loss="binary_crossentropy",
+    optimizer=tf.keras.optimizers.SGD(learning_rate=0.02, momentum=0.95, nesterov=True),
+    metrics=["accuracy"]
+)
+
+# Huấn luyện mô hình
+print("--- HUÂN LUYỆN BỘ PHÂN LOẠI NGỮ PHÁP REBER NHÚNG ---")
+model_reber.fit(X_train, y_train, epochs=15, validation_data=(X_valid, y_valid), batch_size=32)
+``` [cite: 211, 212, 213, 214, 477]
+
+*   **Nhận xét thực nghiệm**: Nhờ cơ chế **Masking (`mask_zero=True`)** giúp mô hình bỏ qua hoàn toàn các token đệm nhàn rỗi ở cuối chuỗi, bộ phân loại sử dụng ô nhớ **GRU** học luật chuyển đổi trạng thái cực kỳ nhanh và dễ dàng đạt độ chính xác phân loại tuyệt đối (**100%**) trên tập xác thực chỉ sau khoảng 10 đến 12 epochs [cite: 214, 407].
+
+---
+
+###### **Câu 9: Huấn luyện một mô hình mã hóa-giải mã (seq2seq) có thể chuyển đổi chuỗi ngày từ định dạng này sang định dạng khác (ví dụ: từ "April 22, 2019" sang "2019-04-22")** [cite: 478]
+*   **Lời giải chi tiết và Mã nguồn Python tối ưu**:
+    *   Chúng ta triển khai phiên bản nâng cấp: **Sử dụng cơ chế truyền mục tiêu dịch chuyển (Teacher Forcing)** để tối đa hóa hiệu năng hội tụ của mạng Seq2Seq [cite: 220, 221].
+
+```python
+import numpy as np
+import tensorflow as tf
+from datetime import date
+
+# 1. Tạo tập dữ liệu giả lập ngày tháng ngẫu nhiên trong khoảng năm 1000 đến 9999
+MONTHS = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"]
+
+def generate_random_dates(n_dates):
+    min_date = date(1000, 1, 1).toordinal()
+    max_date = date(9999, 12, 31).toordinal()
+    ordinals = np.random.randint(max_date - min_date, size=n_dates) + min_date
+    dates = [date.fromordinal(ordinal) for ordinal in ordinals]
+    
+    # Định dạng đầu vào tự do: "April 22, 2019"
+    inputs = [f"{MONTHS[d.month - 1]} {d.day:02d}, {d.year:04d}" for d in dates]
+    # Định dạng đầu ra ISO: "2019-04-22"
+    outputs = [d.isoformat() for d in dates]
+    return inputs, outputs
+
+# Thiết lập bộ từ vựng ký tự (Vì đầu vào/đầu ra là các ký tự chữ và số)
+INPUT_CHARS = " ,0123456789" + "".join(sorted(set("".join(MONTHS))))
+OUTPUT_CHARS = "0123456789-"
+
+# Hàm tiện ích chuyển đổi chuỗi thành danh sách ID ký tự
+def str_to_ids(string, vocabulary):
+    return [vocabulary.index(c) + 1 for c in string] # Gán ID từ 1 trở đi (0 cho padding)
+
+def prepare_data(inputs, outputs):
+    # Đầu vào của bộ mã hóa (Encoder inputs)
+    X_raw = [str_to_ids(s, INPUT_CHARS) for s in inputs]
+    X = tf.pad(tf.ragged.constant(X_raw, dtype=tf.int32).to_tensor(), [, [0, 25 - tf.shape(X_raw)]]) # Đệm về độ dài 25
+    
+    # Đối với bộ giải mã sử dụng Teacher Forcing:
+    # Đầu vào của bộ giải mã dịch chuyển (Decoder inputs) được chèn token đặc biệt SOS (ID = len(OUTPUT_CHARS) + 1)
+    sos_id = len(OUTPUT_CHARS) + 1
+    Y_raw = [str_to_ids(s, OUTPUT_CHARS) for s in outputs]
+    Y_tensor = tf.ragged.constant(Y_raw, dtype=tf.int32).to_tensor() # Độ dài chuẩn là 10 ký tự ISO
+    
+    # Chèn SOS vào đầu và bỏ ký tự cuối cùng của mục tiêu để giữ nguyên độ dài
+    sos_tokens = tf.fill(dims=(len(outputs), 1), value=sos_id)
+    X_dec = tf.concat([sos_tokens, Y_tensor[:, :-1]], axis=1)
+    
+    # Đầu ra mục tiêu thực tế (Decoder targets)
+    Y = Y_tensor
+    return X, X_dec, Y
+
+# Khởi tạo tập dữ liệu huấn luyện
+np.random.seed(42)
+tf.random.set_seed(42)
+raw_inputs, raw_outputs = generate_random_dates(10000)
+X_train, X_train_dec, Y_train = prepare_data(raw_inputs, raw_outputs)
+
+raw_val_in, raw_val_out = generate_random_dates(2000)
+X_val, X_val_dec, Y_val = prepare_data(raw_val_in, raw_val_out)
+
+# 2. Xây dựng Kiến trúc Seq2Seq bằng Keras Functional API
+encoder_embedding_size = 32
+decoder_embedding_size = 32
+lstm_units = 128
+
+# BỘ MÃ HÓA (ENCODER)
+encoder_inputs = tf.keras.layers.Input(shape=[None], dtype=tf.int32, name="encoder_inputs")
+encoder_embeddings = tf.keras.layers.Embedding(
+    input_dim=len(INPUT_CHARS) + 1, output_dim=encoder_embedding_size, mask_zero=True)(encoder_inputs)
+# LSTM trích xuất vector ngữ cảnh dưới dạng hai trạng thái (short-term h và long-term c)
+_, state_h, state_c = tf.keras.layers.LSTM(lstm_units, return_state=True)(encoder_embeddings)
+encoder_state = [state_h, state_c]
+
+# BỘ GIẢI MÃ (DECODER)
+decoder_inputs = tf.keras.layers.Input(shape=[None], dtype=tf.int32, name="decoder_inputs")
+decoder_embeddings = tf.keras.layers.Embedding(
+    input_dim=len(OUTPUT_CHARS) + 2, output_dim=decoder_embedding_size, mask_zero=True)(decoder_inputs)
+# LSTM giải mã nhận trạng thái ban đầu trực tiếp từ Encoder
+decoder_lstm_output = tf.keras.layers.LSTM(
+    lstm_units, return_sequences=True)(decoder_embeddings, initial_state=encoder_state)
+# Xuất phân phối xác suất cho từng ký tự đầu ra
+decoder_outputs = tf.keras.layers.Dense(
+    len(OUTPUT_CHARS) + 1, activation="softmax")(decoder_lstm_output)
+
+model_seq2seq = tf.keras.Model(inputs=[encoder_inputs, decoder_inputs], outputs=[decoder_outputs])
+
+model_seq2seq.compile(
+    loss="sparse_categorical_crossentropy",
+    optimizer="adam",
+    metrics=["accuracy"]
+)
+
+# 3. Huấn luyện mạng Seq2Seq
+print("\n--- HUÂN LUYỆN MẠNG SEQ2SEQ DỊCH NGÀY THÁNG ---")
+model_seq2seq.fit(
+    [X_train, X_train_dec], Y_train, 
+    epochs=10, 
+    validation_data=([X_val, X_val_dec], Y_val)
+)
+
+# 4. Hàm suy luận giải mã dự đoán tự hồi quy từng ký tự (Autoregressive Inference)
+def translate_date(sentence_en):
+    X = np.array([str_to_ids(sentence_en, INPUT_CHARS)])
+    # Đệm cho X nếu ngắn hơn độ dài huấn luyện
+    if X.shape < 25:
+        X = np.pad(X, ((0, 0), (0, 25 - X.shape)), mode="constant")
+        
+    # Bắt đầu giải mã bằng token SOS
+    sos_id = len(OUTPUT_CHARS) + 1
+    Y_pred = np.full((1, 10), value=sos_id, dtype=np.int32)
+    
+    for index in range(10):
+        # Đưa chuỗi giải mã tạm thời vào mô hình để dự đoán ký tự tiếp theo
+        proba = model_seq2seq.predict((X, Y_pred), verbose=0)[0, index]
+        next_char_id = np.argmax(proba)
+        # Cập nhật ký tự dự đoán được vào mảng Y_pred cho bước tiếp theo (nếu chưa đến cuối)
+        if index < 9:
+            Y_pred[0, index + 1] = next_char_id
+            
+    # Chuyển đổi ID nốt nhạc/ký tự về chuỗi ISO gốc
+    return "".join([OUTPUT_CHARS[idx - 1] for idx in Y_pred])
+
+# Kiểm tra trực quan
+for test_date in ["May 02, 2020", "July 14, 1789"]:
+    iso_date = translate_date(test_date)
+    print(f"Đầu vào: '{test_date}' => Đầu ra AI dịch: **{iso_date}**")
+``` [cite: 216, 217, 218, 220, 221, 222]
+
+---
+
+###### **Câu 10: Tham khảo ví dụ của Keras về "Tìm kiếm hình ảnh ngôn ngữ tự nhiên với Bộ mã hóa kép" (Dual Encoder)** [cite: 478]
+*   **Phân tích bản chất và cơ chế hoạt động của kiến trúc Kép (CLIP-like)** [cite: 463]:
+    1.  **Mục tiêu**: Xây dựng một không gian biểu diễn chung (shared embedding space) nơi cả hình ảnh và câu mô tả bằng ngôn ngữ tự nhiên được ánh xạ thành các vector đặc trưng có cùng số chiều [cite: 463, 478]. Hai thực thể có nội dung ngữ nghĩa tương thích (ví dụ: ảnh một chú mèo và câu *"a photo of a cat"*) sẽ có các vector nằm cực kỳ sát nhau trong không gian này [cite: 463].
+    2.  **Cấu trúc hai bộ mã hóa độc lập (Dual Encoder)** [cite: 463, 478]:
+        *   **Bộ mã hóa Hình ảnh (Image Encoder)**: Thường sử dụng một mạng tích chập sâu (CNN như Xception, ResNet) hoặc Vision Transformer (ViT) để nén ảnh thành một vector đặc trưng [cite: 137, 461].
+        *   **Bộ mã hóa Văn bản (Text Encoder)**: Sử dụng một mạng hồi quy (GRU/LSTM) hoặc một bộ mã hóa Transformer (như BERT) để ánh xạ câu chữ thành một vector đặc trưng [cite: 453, 463].
+        *   Cả hai vector sau đó đều được chiếu qua các lớp Dense tuyến tính độc lập để đưa về cùng một số chiều cố định (ví dụ: 128 chiều) và chuẩn hóa chuẩn \\(L_2\\) [cite: 137].
+    3.  **Hàm mất mát đối chiếu (Contrastive Loss / Cosine Similarity)** [cite: 463]:
+        *   Mô hình được huấn luyện bằng cách lấy tích vô hướng (dot-product) của vector ảnh và vector chữ [cite: 463].
+        *   Hàm mất mát sẽ phạt nặng nếu tích vô hướng của các cặp ảnh-chữ tương thích (positive pairs) bị thấp, và phạt nếu tích vô hướng của các cặp không liên quan trong cùng lô (negative pairs) bị cao [cite: 463].
+    4.  **Ứng dụng thực tế**: Để tìm kiếm ảnh bằng văn bản (Text-to-Image Search), ta chỉ cần tính toán trước các vector nhúng của toàn bộ kho ảnh của hệ thống [cite: 463]. Khi người dùng nhập vào một truy vấn tìm kiếm (ví dụ: *"chó con chơi bóng"*), hệ thống mã hóa câu truy vấn đó thành vector nhúng bằng Text Encoder, thực hiện phép đo khoảng cách Cosine với toàn bộ kho ảnh nhúng, và trả về các bức ảnh có điểm số tương đồng cao nhất [cite: 463].
+
+---
+
+###### **Câu 11: Sử dụng thư viện Hugging Face Transformers để tải xuống một mô hình ngôn ngữ tiền huấn luyện GPT và sinh văn bản kiểu Shakespeare** [cite: 478]
+*   **Lời giải chi tiết và Mã nguồn Python tối ưu**:
+    *   Chúng ta sử dụng OpenAI GPT (`openai-gpt`) để thực hiện sinh văn bản Shakespearean một cách mạch lạc bắt đầu bằng lời thoại nổi tiếng trong vở kịch Richard II: *"This royal throne of kings, this sceptred isle"* [cite: 223, 225].
+
+```python
+from transformers import TFOpenAIGPTLMHeadModel, OpenAIGPTTokenizer
+import tensorflow as tf
+
+# 1. Tải mô hình GPT đã huấn luyện sẵn cho TensorFlow và bộ tách từ tương ứng
+print("Đang tải mô hình OpenAI GPT từ Hugging Face (Dung lượng khoảng ~445MB)...")
+model_gpt = TFOpenAIGPTLMHeadModel.from_pretrained("openai-gpt")
+tokenizer_gpt = OpenAIGPTTokenizer.from_pretrained("openai-gpt")
+print("Tải mô hình thành công!")
+
+# 2. Định nghĩa câu mồi (Prompt) và thực hiện mã hóa sang các ID token nhị phân
+prompt_text = "This royal throne of kings, this sceptred isle"
+encoded_prompt = tokenizer_gpt.encode(
+    prompt_text, 
+    add_special_tokens=False, 
+    return_tensors="tf"
+)
+
+# 3. Cấu hình giải mã sinh văn bản ngẫu nhiên có kiểm soát (Sampling & Nucleus Sampling)
+num_sequences = 5 # Sinh ra 5 đoạn văn bản biến thể khác nhau
+length = 40       # Sinh tiếp 40 từ sau câu mồi
+
+generated_sequences = model_gpt.generate(
+    input_ids=encoded_prompt,
+    do_sample=True,             # Kích hoạt lấy mẫu ngẫu nhiên (tránh lặp từ nhàm chán)
+    max_length=length + len(encoded_prompt),
+    temperature=1.0,            # Kiểm soát độ sáng tạo/độ đa dạng của từ vựng
+    top_k=0,                    # Hủy bỏ giới hạn top_k cứng để mở rộng không gian tìm kiếm
+    top_p=0.9,                  # Lấy mẫu hạt nhân (Nucleus Sampling): Chỉ chọn các token trong phân phối 90% xác suất tích lũy tốt nhất
+    repetition_penalty=1.0,     # Hệ số phạt lặp từ
+    num_return_sequences=num_sequences,
+)
+
+# 4. Giải mã các chuỗi ID thu được về văn bản tự nhiên và in ra màn hình
+print("\n=== KẾT QUẢ SINH VĂN BẢN KIỂU SHAKESPEARE ĐẦY SỰ THUYẾT PHỤC ===")
+for i, sequence in enumerate(generated_sequences):
+    decoded_text = tokenizer_gpt.decode(sequence, clean_up_tokenization_spaces=True)
+    print(f"Biến thể #{i+1}:\n{decoded_text}")
+    print("-" * 80)
+``` [cite: 223, 224, 225, 226, 227, 228]
+
+---

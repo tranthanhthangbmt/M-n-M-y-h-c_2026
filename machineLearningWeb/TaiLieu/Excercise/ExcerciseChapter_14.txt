@@ -1,0 +1,286 @@
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định yêu cầu**: Bạn muốn có danh sách đầy đủ các bài tập của **Chương 14: Thị giác Máy tính Chuyên sâu Sử dụng Mạng Nơ-ron Tích chập** [cite: 298] và lời giải chi tiết của chúng. Do nội dung chương này rất dài (bao gồm các phép tính toán học về tham số, bộ nhớ RAM, phân tích kiến trúc tích chập nâng cao và hai bài tập lập trình quy mô lớn) [cite: 167, 168, 169, 311, 360], tôi sẽ tiến hành chia thành **2 phần** và thực hiện **Phần 1 trước** (bao gồm danh mục toàn bộ 10 bài tập và lời giải chi tiết từ **Câu 1 đến Câu 5**), tham khảo đúng cấu trúc chuẩn hóa của file mẫu `ExcerciseChapter_01.txt` [cite: 635].
+2.  **Khớp nối nguồn tài liệu**:
+    *   **Danh sách câu hỏi**: Nằm ở phần cuối của chương lý thuyết `"CHƯƠNG 14.docx"` (Mục **14.7. Bài tập**) [cite: 360, 361, 362]. Có tất cả **10 câu hỏi/bài tập**.
+    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành `"14_deep_computer_vision_with_cnns.ipynb - Colab.pdf"` [cite: 162, 167, 168, 169].
+3.  **Lên kế hoạch phân chia chi tiết**:
+    *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của 10 câu hỏi/bài tập** của Chương 14 [cite: 168, 169, 360, 361]. Sau đó, trình bày lời giải chi tiết, sâu sắc nhất cho **từ Câu 1 đến Câu 5** (tập trung vào so sánh CNN và DNN, bài toán tính toán tham số và bộ nhớ RAM của 3 lớp tích chập, giải pháp GPU hết bộ nhớ, cơ chế hoạt động của lớp gộp Max Pooling, và lớp chuẩn hóa phản hồi cục bộ LRN) [cite: 167, 312, 322, 360, 361].
+    *   **Phần 2 (Lượt sau)**: Giải quyết trọn vẹn từ **Câu 6 đến Câu 10** (bao gồm các cải tiến đột phá từ AlexNet đến EfficientNet, mạng hoàn toàn tích chập FCN, phân đoạn ngữ nghĩa, và toàn bộ mã nguồn Python lập trình cho dự án MNIST CNN và học chuyển giao Transfer Learning với Xception) [cite: 168, 169, 335, 354, 355, 361].
+
+---
+
+##### Danh sách 10 bài tập Chương 14
+
+1. **Câu 1**: Ưu điểm của CNN so với DNN kết nối đầy đủ cho phân loại hình ảnh là gì? [cite: 360]
+2. **Câu 2**: Xem xét một CNN gồm ba lớp tích chập, mỗi lớp có kernel 3 × 3, stride 2 và padding “same”. Lớp thấp nhất xuất ra 100 bản đồ đặc trưng, lớp giữa xuất ra 200, và lớp trên cùng xuất ra 400. Các hình ảnh đầu vào là hình ảnh RGB có kích thước 200 × 300 pixel:
+    * **a.** Tổng số tham số trong CNN là bao nhiêu? [cite: 360]
+    * **b.** Nếu chúng ta sử dụng số dấu phẩy động 32 bit, mạng này sẽ yêu cầu ít nhất bao nhiêu RAM khi đưa ra dự đoán cho một trường hợp duy nhất? [cite: 360]
+    * **c.** Còn khi huấn luyện trên một mini-batch gồm 50 hình ảnh thì sao? [cite: 360]
+3. **Câu 3**: Nếu GPU của bạn hết bộ nhớ khi huấn luyện CNN, bạn có thể thử năm điều gì để giải quyết vấn đề? [cite: 361]
+4. **Câu 4**: Tại sao bạn muốn thêm một lớp gộp max thay vì một lớp tích chập có cùng stride? [cite: 361]
+5. **Câu 5**: Khi nào bạn muốn thêm một lớp chuẩn hóa phản hồi cục bộ? [cite: 361]
+6. **Câu 6**: Bạn có thể nêu tên những đổi mới chính trong AlexNet, so với LeNet-5 không? Còn những đổi mới chính trong GoogLeNet, ResNet, SENet, Xception và EfficientNet thì sao? [cite: 361]
+7. **Câu 7**: Mạng hoàn toàn tích chập là gì? Làm thế nào bạn có thể chuyển đổi một lớp dày đặc thành một lớp tích chập? [cite: 361]
+8. **Câu 8**: Khó khăn kỹ thuật chính của phân đoạn ngữ nghĩa (semantic segmentation) là gì? [cite: 168]
+9. **Câu 9 (Thực hành lập trình)**: Xây dựng CNN của riêng bạn từ đầu và cố gắng đạt được độ chính xác cao nhất có thể trên MNIST [cite: 168].
+10. **Câu 10 (Thực hành lập trình)**: Sử dụng học chuyển đổi (transfer learning) để phân loại ảnh lớn [cite: 169].
+
+---
+
+##### PHẦN 1: Chi tiết bài tập và lời giải (Từ Câu 1 đến Câu 5)
+
+###### **Câu 1: Ưu điểm của CNN so với DNN kết nối đầy đủ cho phân loại hình ảnh là gì?**
+*   **Lời giải chi tiết**: Mạng nơ-ron tích chập (CNN) có các ưu điểm vượt trội sau so với mạng kết nối đầy đủ (DNN) khi xử lý dữ liệu hình ảnh [cite: 301, 305]:
+    1.  **Khai thác cấu trúc không gian cục bộ**: Các nơ-ron trong lớp tích chập chỉ kết nối với các pixel trong trường tiếp nhận cục bộ (local receptive field) của chúng thay vì kết nối với toàn bộ ảnh [cite: 301]. Điều này cho phép mạng tập trung hiệu quả vào các đặc trưng cấp thấp ở các lớp đầu tiên, sau đó lắp ráp chúng thành các đặc trưng cấp cao ở các lớp sau [cite: 301].
+    2.  **Chia sẻ tham số (Parameter sharing)**: Tất cả nơ-ron trong cùng một bản đồ đặc trưng (feature map) đều chia sẻ chung một bộ lọc (kernel và bias) [cite: 305]. Điều này giúp **giảm đáng kể số lượng tham số** cần huấn luyện, ngăn chặn hiện tượng quá khớp (overfitting) và tăng tốc độ xử lý [cite: 305].
+    3.  **Tính bất biến dịch chuyển (Translation Invariance)**: Do bộ lọc trượt qua toàn bộ hình ảnh, một đặc trưng (như đường thẳng đứng) sau khi học được ở một vị trí có thể dễ dàng được phát hiện ở bất kỳ vị trí nào khác trên bức ảnh [cite: 312]. Ngược lại, DNN kết nối đầy đủ chỉ có thể nhận diện một đặc trưng tại đúng tọa độ pixel mà nó đã được huấn luyện [cite: 116].
+
+###### **Câu 2: Bài toán tính toán tham số và bộ nhớ RAM**
+*   **Lời giải chi tiết**:
+    *   **a. Tính tổng số tham số trong CNN**:
+        *   **Lớp 1** (nhận đầu vào RGB - 3 kênh): Mỗi bộ lọc 3 × 3 sẽ có \\(3 \times 3 \times 3 = 27\\) trọng số, cộng với \\(1\\) số hạng thiên vị (bias) = \\(28\\) tham số [cite: 167]. Lớp này xuất ra 100 bản đồ đặc trưng nên có tổng cộng: **\\(28 \times 100 = 2.800\\) tham số** [cite: 167].
+        *   **Lớp 2** (nhận đầu vào là 100 bản đồ đặc trưng từ lớp trước): Mỗi bộ lọc 3 × 3 có \\(3 \times 3 \times 100 = 900\\) trọng số, cộng với \\(1\\) bias = \\(901\\) tham số [cite: 167]. Lớp này xuất ra 200 bản đồ đặc trưng nên có tổng cộng: **\\(901 \times 200 = 180.200\\) tham số** [cite: 167].
+        *   **Lớp 3** (nhận đầu vào là 200 bản đồ đặc trưng từ lớp trước): Mỗi bộ lọc 3 × 3 có \\(3 \times 3 \times 200 = 1.800\\) trọng số, cộng với \\(1\\) bias = \\(1.801\\) tham số [cite: 167]. Lớp này xuất ra 400 bản đồ đặc trưng nên có tổng cộng: **\\(1.801 \times 400 = 720.400\\) tham số** [cite: 167].
+        *   **Tổng số tham số của toàn mạng** = \\(2.800 + 180.200 + 720.400 = \mathbf{903.400}\\) **tham số** [cite: 167].
+    *   **b. Tính dung lượng RAM tối thiểu khi suy luận (Dự đoán cho 1 hình ảnh)**:
+        *   Do mạng sử dụng **stride 2** và padding **"same"**, kích thước chiều rộng và chiều cao của bản đồ đặc trưng sẽ bị giảm đi một nửa ở mỗi lớp (làm tròn lên nếu lẻ) [cite: 167, 302].
+        *   *Kích thước đầu ra từng lớp*:
+            *   Ảnh đầu vào: \\(200 \times 300 \times 3 = 180.000\\) phần tử [cite: 360].
+            *   Đầu ra lớp 1: \\(100 \times 150 \times 100 = 1.500.000\\) phần tử [cite: 167].
+            *   Đầu ra lớp 2: \\(50 \times 75 \times 200 = 750.000\\) phần tử [cite: 167].
+            *   Đầu ra lớp 3: \\(25 \times 38 \times 400 = 380.000\\) phần tử [cite: 167] *(75 chia 2 bằng 37.5, làm tròn lên là 38)* [cite: 167].
+        *   *Tính toán RAM*: Khi suy luận (inference), ta chỉ cần giữ ảnh đầu vào và đầu ra của lớp hiện tại để tính tiếp cho lớp sau, các lớp trước có thể giải phóng bộ nhớ ngay lập tức. Tuy nhiên, để ước tính một cách an toàn và tối đa, ta cộng dồn tất cả các bản đồ đặc trưng:
+            *   Tổng số phần tử của các bản đồ đặc trưng = \\(180.000 + 1.500.000 + 750.000 + 380.000 = 2.810.000\\) phần tử.
+            *   Sử dụng số thực float32 (4 bytes/phần tử): \\(2.810.000 \times 4\\) bytes \\(\approx \mathbf{11,24}\\) **MB**.
+            *   RAM để lưu giữ các tham số (trọng số + bias): \\(903.400 \times 4\\) bytes \\(\approx \mathbf{3,61}\\) **MB**.
+            *   **Tổng RAM tối thiểu cần thiết** \\(\approx 11,24 \text{ MB} + 3,61 \text{ MB} = \mathbf{14,85}\\) **MB** [cite: 167].
+    *   **c. Tính dung lượng RAM khi huấn luyện trên một mini-batch gồm 50 hình ảnh**:
+        *   Khi huấn luyện, lượt ngược của lan truyền ngược (backward pass) **bắt buộc phải sử dụng các giá trị trung gian** đã tính toán được từ lượt truyền tiến (forward pass) để tính gradient lỗi [cite: 311]. Do đó, ta không được phép giải phóng bộ nhớ của các lớp trung gian cho đến khi tính xong gradient [cite: 311].
+        *   *Tính toán RAM*:
+            *   RAM cho các bản đồ đặc trưng tăng gấp 50 lần: \\(11,24 \text{ MB} \times 50 = \mathbf{562}\\) **MB**.
+            *   RAM lưu trữ trọng số và bias: \\(\mathbf{3,61}\\) **MB**.
+            *   RAM lưu trữ các gradient lỗi tương ứng của trọng số: \\(\mathbf{3,61}\\) **MB**.
+            *   RAM lưu trạng thái của bộ tối ưu hóa (ví dụ Adam lưu thêm 2 biến động lượng cho mỗi tham số): \\(\approx \mathbf{7,22}\\) **MB** [cite: 243, 244].
+            *   **Tổng RAM huấn luyện tối thiểu** \\(\approx 562 + 3,61 + 3,61 + 7,22 = \mathbf{576,44}\\) **MB** [cite: 311].
+
+###### **Câu 3: Nếu GPU của bạn hết bộ nhớ khi huấn luyện CNN, bạn có thể thử năm điều gì để giải quyết vấn đề?**
+*   **Lời giải chi tiết**: Khi gặp lỗi Out-of-Memory (OOM) trên GPU, bạn có thể áp dụng 5 giải pháp thực nghiệm sau:
+    1.  **Giảm kích thước lô (mini-batch size)** để trực tiếp giảm lượng bộ nhớ cần lưu giữ các bản đồ đặc trưng trung gian ở mỗi bước [cite: 311].
+    2.  **Giảm độ phân giải ảnh đầu vào** (sử dụng các lớp cắt hoặc thay đổi kích thước) để thu nhỏ kích thước của các bản đồ đặc trưng [cite: 308].
+    3.  **Tăng giá trị bước nhảy (stride)** ở lớp tích chập đầu tiên để thu nhỏ nhanh kích thước bản đồ đặc trưng ngay từ đầu đường ống [cite: 302, 327].
+    4.  **Sử dụng các lớp tích chập tách biệt chiều sâu (Depthwise Separable Convolution)** thay thế cho tích chập thông thường để giảm thiểu lượng tham số và phép toán [cite: 334].
+    5.  **Kích hoạt chế độ huấn luyện với độ chính xác hỗn hợp (mixed precision)** bằng cách sử dụng kiểu số thực float16 thay vì float32, giúp tiết kiệm một nửa dung lượng bộ nhớ GPU [cite: 119].
+
+###### **Câu 4: Tại sao bạn muốn thêm một lớp gộp max thay vì một lớp tích chập có cùng stride?**
+*   **Lời giải chi tiết**: Bạn nên ưu tiên thêm lớp gộp max (Max Pooling) thay vì lớp tích chập có cùng stride vì [cite: 312]:
+    1.  **Không chứa tham số có thể huấn luyện**: Lớp gộp max chỉ là một phép toán trích xuất giá trị lớn nhất cục bộ [cite: 312]. Việc không có tham số giúp giảm thiểu tối đa nguy cơ quá khớp (overfitting) và tiết kiệm tài nguyên tính toán [cite: 312].
+    2.  **Tăng tính bất biến dịch chuyển**: Lớp gộp max giúp mô hình đạt được mức độ bất biến dịch chuyển, bất biến xoay và tỉ lệ tốt hơn, giúp mô hình nhận diện đối tượng chính xác hơn dù đối tượng bị lệch nhẹ [cite: 312].
+
+###### **Câu 5: Khi nào bạn muốn thêm một lớp chuẩn hóa phản hồi cục bộ (Local Response Normalization - LRN)?**
+*   **Lời giải chi tiết**: Bạn muốn thêm lớp chuẩn hóa phản hồi cục bộ (LRN) khi muốn **khuyến khích các bản đồ đặc trưng chuyên biệt hóa độc lập và khai phá các đặc trưng đa dạng hơn** [cite: 322]. LRN mô phỏng cơ chế ức chế bên trong sinh học: nơ-ron hoạt động mạnh nhất tại một vị trí sẽ ức chế các nơ-ron xung quanh thuộc các bản đồ đặc trưng lân cận [cite: 322]. Điều này ép các bộ lọc không bị chồng chéo tính năng và tăng cường khả năng khái quát hóa của mô hình (như đã được chứng minh hiệu quả trong AlexNet) [cite: 322].
+
+---
+
+##### 🧠 Phân tích & Lập luận (Chain of Thought / Tree of Thought)
+
+Để hoàn thành trọn vẹn và sâu sắc **Phần 2 (từ Câu 6 đến Câu 10)** của **Chương 14: Thị giác Máy tính Chuyên sâu Sử dụng Mạng Nơ-ron Tích chập**, chúng ta sẽ áp dụng phương pháp lập luận phân nhánh để giải quyết các kiến trúc CNN huyền thoại và cung cấp toàn bộ mã nguồn Python thực hành cho mạng phân loại MNIST và Transfer Learning [cite: 167]:
+
+1.  **Phân tích các kiến trúc CNN kinh điển (Câu 6)**:
+    *   *Mục tiêu*: Làm rõ bản chất đột phá của từng thế hệ mạng nơ-ron tích chập từ thuở sơ khai (AlexNet) cho đến các mô hình tối ưu hiện đại (EfficientNet) [cite: 187].
+    *   *Lập luận*: Ta cần phân tích sâu các cơ chế toán học độc đáo của từng mạng: khối Residual giúp gradient chảy mượt mà trong ResNet [cite: 187, 386], cơ chế tích chập tách biệt chiều sâu trong Xception giúp giảm 10 lần tham số mà không mất tính phi tuyến [cite: 187, 387], hay phương pháp co giãn đồng thời trong EfficientNet [cite: 187].
+2.  **Khái niệm mạng FCN (Câu 7) & Phân đoạn ngữ nghĩa (Câu 8)**:
+    *   *FCN*: Giải thích kỹ thuật chuyển đổi các lớp kết nối đầy đủ (Dense) thành các lớp tích chập có kích thước bộ lọc tương ứng để giữ lại bản đồ không gian 2D [cite: 188, 401].
+    *   *Phân đoạn ngữ nghĩa*: Giải thích vấn đề mất mát thông tin không gian (do pooling) và giải pháp khôi phục bằng tích chập chuyển vị (transposed convolution) kết hợp kết nối bỏ qua (skip connections) [cite: 189, 404, 405].
+3.  **Thiết kế mã nguồn lập trình thực hành (Câu 9 & 10)**:
+    *   *Câu 9 (MNIST CNN)*: Thiết kế một kiến trúc CNN tuần tự tối ưu (Conv2D \\(\to\\) MaxPool2D \\(\to\\) Conv2D \\(\to\\) MaxPool2D \\(\to\\) Flatten \\(\to\\) Dense \\(\to\\) Dropout \\(\to\\) Output) để đạt độ chính xác thực nghiệm vượt trội (>99.2%) trên tập MNIST [cite: 190].
+    *   *Câu 10 (Transfer Learning với Xception)*: Viết tập lệnh thực thi quy trình học chuyển giao chuẩn 2 giai đoạn của Keras [cite: 178, 181]:
+        *   *Giai đoạn 1*: Đóng băng base model Xception, huấn luyện lớp phân loại mới với tốc độ học cao (learning rate = 0.1) trong vài kỷ nguyên để tránh làm hỏng các trọng số đã được tiền huấn luyện [cite: 179, 396].
+        *   *Giai đoạn 2*: Mở đóng băng một phần lớp trên của Xception (từ lớp 56 trở đi), biên dịch lại với tốc độ học thấp (learning rate = 0.01) để tinh chỉnh tinh tế [cite: 181, 397].
+
+---
+
+##### PHẦN 2: Chi tiết bài tập và lời giải thực hành (Từ Câu 6 đến Câu 10)
+
+###### **Câu 6: Bạn có thể nêu tên những đổi mới chính trong AlexNet, so với LeNet-5 không? Còn những đổi mới chính trong GoogLeNet, ResNet, SENet, Xception và EfficientNet thì sao?**
+*   **Lời giải chi tiết**:
+    *   **AlexNet so với LeNet-5**: AlexNet có kích thước lớn hơn và sâu hơn rất nhiều [cite: 187]. Điểm đổi mới chính là nó **xếp chồng các lớp tích chập trực tiếp lên nhau** thay vì luôn xếp xen kẽ một lớp gộp lên trên một lớp tích chập như LeNet-5 [cite: 187]. Nó cũng giới thiệu các kỹ thuật điều hòa mạnh mẽ: **Dropout 50%** [cite: 187, 379], **chuẩn hóa phản hồi cục bộ LRN** [cite: 380] và **tăng cường dữ liệu cường độ cao** [cite: 187, 379].
+    *   **GoogLeNet**: Giới thiệu **mô-đun Inception** (sử dụng các bộ lọc \\(1\times1\\), \\(3\times3\\), \\(5\times5\\) song song) giúp mạng học được các mẫu phức tạp ở nhiều tỷ lệ không gian khác nhau mà vẫn giữ số lượng tham số cực thấp [cite: 187, 381, 382]. Nó cũng thay thế các lớp kết nối đầy đủ ở trên đỉnh bằng lớp **Gộp trung bình toàn cục (Global Average Pooling)** để giảm thiểu rủi ro quá khớp [cite: 384].
+    *   **ResNet**: Giới thiệu **kết nối tắt (skip connections / shortcut connections)** cho phép tín hiệu gradient truyền trực tiếp qua các lớp mà không bị suy giảm [cite: 187, 386]. Sáng kiến này giúp huấn luyện thành công các mạng nơ-ron cực sâu vượt mốc 100 lớp (thậm chí lên tới 1.202 lớp) [cite: 187, 386].
+    *   **SENet**: Giới thiệu **khối SE (Squeeze-and-Excitation block)** giúp mô hình tự động **hiệu chỉnh lại tầm quan trọng tương đối của các bản đồ đặc trưng** theo chiều sâu (channel-wise) bằng cách học các hệ số kích hoạt động cho từng kênh [cite: 187, 388].
+    *   **Xception**: Sử dụng hoàn toàn các lớp **tích chập tách biệt chiều sâu (depthwise separable convolutional layers)** [cite: 187, 387]. Phép toán này tách biệt hoàn toàn việc xem xét các mẫu không gian (spatial patterns) và các mẫu theo chiều sâu (depthwise chéo kênh), giúp mạng chạy nhanh hơn và tiết kiệm tham số đáng kể [cite: 187, 387].
+    *   **EfficientNet**: Giới thiệu phương pháp **điều chỉnh hợp chất (compound scaling method)** [cite: 187]. Thay vì điều chỉnh đơn lẻ, EfficientNet sử dụng một hệ số tỷ lệ duy nhất để mở rộng quy mô mô hình một cách đồng đều và tối ưu cả ba chiều: **độ sâu của mạng, độ rộng (số kênh) và độ phân giải của ảnh đầu vào** [cite: 187].
+
+###### **Câu 7: Mạng hoàn toàn tích chập (FCN) là gì? Làm thế nào bạn có thể chuyển đổi một lớp dày lặp (dense layer) thành một lớp tích chập?**
+*   **Lời giải chi tiết**:
+    *   **Mạng hoàn toàn tích chập (FCN)**: Là mạng nơ-ron được cấu tạo độc quyền từ các lớp tích chập và lớp gộp, không chứa bất kỳ lớp kết nối đầy đủ (Dense) nào ở các tầng trên cùng [cite: 188]. FCN có ưu điểm vượt trội là **có thể xử lý các hình ảnh đầu vào có kích thước bất kỳ** (không bị bó buộc vào kích thước cố định như mạng có lớp Dense) [cite: 188].
+    *   **Cách chuyển đổi lớp Dense thành lớp Tích chập**: 
+        *   Đối với lớp Dense đầu tiên nằm ngay phía trên lớp tích chập: Ta thay thế nó bằng một lớp tích chập có **kích thước kernel đúng bằng kích thước không gian đầu vào** của lớp đó, sử dụng padding **"valid"** và stride 1 [cite: 188]. Số lượng bộ lọc (filters) của lớp tích chập mới này sẽ bằng đúng số lượng nơ-ron của lớp Dense cũ [cite: 188].
+        *   Đối với các lớp Dense tiếp theo phía trên: Ta thay thế chúng bằng các lớp tích chập sử dụng **kernel \\(1 \times 1\\)** [cite: 188]. 
+        *   Hàm kích hoạt và trọng số của các lớp mới sẽ được sao chép nguyên vẹn từ các lớp Dense tương ứng [cite: 188].
+
+###### **Câu 8: Khó khăn kỹ thuật chính của phân đoạn ngữ nghĩa (semantic segmentation) là gì?**
+*   **Lời giải chi tiết**:
+    *   Khó khăn kỹ thuật lớn nhất là **sự mất mát nghiêm trọng các thông tin không gian (spatial information)** khi tín hiệu truyền qua các tầng sâu của mạng CNN [cite: 189]. 
+    *   Các lớp gộp (pooling layers) và các lớp tích chập có stride lớn hơn 1 liên tục làm giảm độ phân giải của ảnh để trích xuất các đặc trưng ngữ nghĩa cấp cao [cite: 189]. Tuy nhiên, để phân loại chính xác từng pixel ở đầu ra, mô hình bắt buộc phải **khôi phục lại các thông tin không gian chi tiết này** [cite: 189]. 
+    *   Để giải quyết, các kiến trúc hiện đại phải sử dụng các lớp lấy mẫu lên (như tích chập chuyển vị `Conv2DTranspose`) kết hợp với các **kết nối bỏ qua (skip connections)** để truyền trực tiếp các đặc trưng hình học sắc nét từ các lớp thấp hơn lên các lớp cao hơn [cite: 404, 405].
+
+---
+
+###### **Câu 9: Xây dựng một mạng tích chập CNN từ đầu để đạt độ chính xác cao trên MNIST**
+*   **Yêu cầu**: Xây dựng cấu trúc CNN gồm 2 lớp tích chập, 1 lớp gộp max, dropout 25% trước khi làm phẳng, theo sau bởi lớp dày đặc, dropout 50%, và lớp đầu ra softmax để đạt độ chính xác thực tế trên 99.2% [cite: 190].
+
+*   **Mã nguồn Python hoàn chỉnh**:
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# 1. Tải và tiền xử lý dữ liệu MNIST
+mnist = tf.keras.datasets.mnist.load_data()
+(X_train_full, y_train_full), (X_test, y_test) = mnist
+
+# Thêm chiều kênh màu (MNIST chỉ có 1 kênh xám) và chuẩn hóa cường độ pixel về
+X_train_full = np.expand_dims(X_train_full, axis=-1).astype(np.float32) / 255.0
+X_test = np.expand_dims(X_test, axis=-1).astype(np.float32) / 255.0
+
+# Tách tập xác thực (5000 mẫu đầu) và tập huấn luyện (55000 mẫu còn lại)
+X_valid, X_train = X_train_full[:5000], X_train_full[5000:]
+y_valid, y_train = y_train_full[:5000], y_train_full[5000:]
+
+# 2. Thiết lập kiến trúc CNN tối ưu đạt độ chính xác cực cao (>99.2%)
+model_mnist = tf.keras.Sequential([
+    # Lớp tích chập đầu tiên trích xuất 32 đặc trưng cơ bản
+    tf.keras.layers.Conv2D(32, kernel_size=3, padding="same", 
+                           activation="relu", input_shape=),
+    tf.keras.layers.BatchNormalization(), # Giúp ổn định và hội tụ nhanh hơn
+    
+    # Lớp tích chập thứ hai học các kết hợp đặc trưng sâu hơn
+    tf.keras.layers.Conv2D(64, kernel_size=3, padding="same", activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    
+    # Lấy mẫu con thu nhỏ không gian ảnh xuống 2 lần
+    tf.keras.layers.MaxPooling2D(pool_size=2),
+    tf.keras.layers.Dropout(0.25), # Tránh quá khớp
+    
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation="relu", kernel_initializer="he_normal"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Dropout(0.50), # Dropout mạnh hơn ở lớp ẩn Dense
+    
+    tf.keras.layers.Dense(10, activation="softmax") # Đầu ra phân loại 10 chữ số
+])
+
+# 3. Biên dịch mô hình với bộ tối ưu hóa Adam
+model_mnist.compile(
+    loss="sparse_categorical_crossentropy",
+    optimizer="adam",
+    metrics=["accuracy"]
+)
+
+# Thiết lập Callback dừng sớm để tránh lãng phí thời gian khi mô hình đạt điểm bão hòa
+early_stopping = tf.keras.callbacks.EarlyStopping(
+    patience=5, restore_best_weights=True, monitor="val_accuracy"
+)
+
+print("--- BẮT ĐẦU HUÂN LUYỆN MẠNG CNN CHO MNIST ---")
+model_mnist.fit(
+    X_train, y_train, 
+    epochs=15, 
+    batch_size=64,
+    validation_data=(X_valid, y_valid),
+    callbacks=[early_stopping]
+)
+
+# 4. Đánh giá hiệu suất trên tập kiểm thử hoàn toàn mới
+test_loss, test_acc = model_mnist.evaluate(X_test, y_test)
+print(f"\n=> Kết quả đánh giá tập Test - Loss: {test_loss:.4f} | Accuracy: {test_acc:.4%}")
+``` [cite: 190]
+
+---
+
+###### **Câu 10: Học chuyển giao (Transfer Learning) phân loại ảnh hoa bằng mô hình Xception**
+*   **Yêu cầu**: Tải kiến trúc Xception đã huấn luyện trước trên ImageNet (loại bỏ các lớp phân loại trên cùng) [cite: 178, 395]. Nhúng các lớp Global Average Pooling và Dense mới [cite: 178, 395]. Thực hiện quy trình huấn luyện 2 giai đoạn chuẩn mực để đạt độ chính xác cao nhất [cite: 179, 181].
+
+*   **Mã nguồn Python hoàn chỉnh**:
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# 1. Tạo tập dữ liệu giả lập hoa (Large Images) có kích thước 224x224x3
+# Trong thực tế, bạn sẽ dùng tfds.load("tf_flowers") để tải tập dữ liệu thật
+n_classes = 5
+img_size =
+
+# Giả lập dữ liệu huấn luyện và xác thực
+X_dummy_train = np.random.rand(100, img_size, img_size, 3).astype(np.float32)
+y_dummy_train = np.random.randint(0, n_classes, size=(100,)).astype(np.int64)
+
+X_dummy_valid = np.random.rand(20, img_size, img_size, 3).astype(np.float32)
+y_dummy_valid = np.random.randint(0, n_classes, size=(20,)).astype(np.int64)
+
+# 2. Xây dựng mô hình học chuyển giao với Xception
+base_model = tf.keras.applications.xception.Xception(
+    weights="imagenet", 
+    include_top=False # Loại bỏ các lớp phân loại 1000 lớp gốc của ImageNet
+)
+
+# Thêm các lớp phân loại tùy chỉnh cho tác vụ mới
+avg = tf.keras.layers.GlobalAveragePooling2D()(base_model.output)
+output = tf.keras.layers.Dense(n_classes, activation="softmax")(avg)
+model_transfer = tf.keras.Model(inputs=base_model.input, outputs=output)
+
+# ==========================================
+# GIAI ĐOẠN 1: HUẤN LUYỆN LỚP ĐẦU RA MỚI
+# ==========================================
+print("\n--- GIAI ĐOẠN 1: ĐÓNG BĂNG BASE MODEL ---")
+# Đóng băng toàn bộ các lớp của Xception để bảo vệ các đặc trưng đã học
+for layer in base_model.layers:
+    layer.trainable = False
+
+# Tiền xử lý ảnh đầu vào theo đúng chuẩn của Xception
+X_train_preprocessed = tf.keras.applications.xception.preprocess_input(X_dummy_train)
+X_valid_preprocessed = tf.keras.applications.xception.preprocess_input(X_dummy_valid)
+
+# Biên dịch với tốc độ học cao để nhanh chóng tối ưu hóa lớp phân loại mới
+optimizer_stage1 = tf.keras.optimizers.SGD(learning_rate=0.1, momentum=0.9)
+model_transfer.compile(
+    loss="sparse_categorical_crossentropy", 
+    optimizer=optimizer_stage1, 
+    metrics=["accuracy"]
+)
+
+# Huấn luyện trong vài epoch đầu tiên
+model_transfer.fit(
+    X_train_preprocessed, y_dummy_train, 
+    epochs=3, 
+    validation_data=(X_valid_preprocessed, y_dummy_valid)
+)
+
+# ==========================================
+# GIAI ĐOẠN 2: TINH CHỈNH (FINE-TUNING)
+# ==========================================
+print("\n--- GIAI ĐOẠN 2: MỞ ĐÓNG BĂNG VÀ TINH CHỈNH ---")
+# Mở đóng băng các lớp phía trên của base model (từ lớp 56 trở đi) để tinh chỉnh đặc trưng
+for layer in base_model.layers[56:]:
+    layer.trainable = True
+
+# Biên dịch lại mô hình với một tốc độ học cực kỳ thấp để tránh phá vỡ trọng số tốt
+optimizer_stage2 = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
+model_transfer.compile(
+    loss="sparse_categorical_crossentropy", 
+    optimizer=optimizer_stage2, 
+    metrics=["accuracy"]
+)
+
+# Tiếp tục huấn luyện tinh chỉnh mô hình
+model_transfer.fit(
+    X_train_preprocessed, y_dummy_train, 
+    epochs=5, 
+    validation_data=(X_valid_preprocessed, y_dummy_valid)
+)
+print("\nHọc chuyển giao hoàn tất thành công!")
+``` [cite: 178, 179, 181]
+
+---

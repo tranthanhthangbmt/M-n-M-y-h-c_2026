@@ -1,0 +1,92 @@
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định yêu cầu**: Bạn muốn có danh sách đầy đủ các bài tập của **Chương 15: Xử lý chuỗi bằng RNN và CNN** [cite: 150, 352] và lời giải chi tiết của chúng. Do nội dung chương này rất dài (bao gồm các cấu trúc chuỗi thời gian đơn biến/đa biến, mô hình thống kê ARMA/SARIMA, ô nhớ LSTM/GRU, và các dự án thực hành lớn như SketchRNN hay Bach Chorales) [cite: 154, 155, 355, 365, 370], tôi sẽ tiến hành chia thành **2 phần** và thực hiện **Phần 1 trước** (bao gồm danh mục toàn bộ 10 bài tập và lời giải chi tiết từ **Câu 1 đến Câu 5**), tham khảo đúng cấu trúc chuẩn hóa của file mẫu `ExcerciseChapter_01.txt` [cite: 689].
+2.  **Khớp nối nguồn tài liệu**:
+    *   **Danh sách câu hỏi**: Nằm ở phần cuối của chương lý thuyết `"CHƯƠNG 15.docx"` (Mục **15.5. Bài tập**) [cite: 395, 396]. Có tất cả **10 câu hỏi/bài tập**.
+    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành `"15_processing_sequences_using_rnns_and_cnns_VN.ipynb - Colab.pdf"` [cite: 151, 152, 153].
+3.  **Lên kế hoạch phân chia chi tiết**:
+    *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của 10 câu hỏi/bài tập** của Chương 15 [cite: 395, 396]. Sau đó, trình bày lời giải chi tiết, sâu sắc nhất cho **từ Câu 1 đến Câu 5** (tập trung vào ứng dụng các dạng RNN, số chiều đầu vào/đầu ra của lớp RNN, kiến trúc RNN sâu chuỗi-sang-chuỗi vs chuỗi-sang-vector, dự báo chuỗi thời gian đa bước đơn biến, các thách thức chính khi huấn luyện RNN như triệt tiêu/bùng nổ gradient và cách khắc phục) [cite: 153, 355, 377, 379, 381, 395, 396].
+    *   **Phần 2 (Lượt sau)**: Giải quyết trọn vẹn từ **Câu 6 đến Câu 10** (bao gồm phác họa kiến trúc ô LSTM, lý do sử dụng lớp tích chập 1D, kiến trúc phân loại video, và mã nguồn Python chi tiết cùng giải thích toán học cho hai dự án lớn: phân loại SketchRNN và sáng tác nhạc giống Bach bằng JSB Chorales) [cite: 154, 155, 383, 384, 391, 396].
+
+---
+
+##### Danh sách 10 bài tập Chương 15
+
+1. **Câu 1**: Bạn có thể nghĩ ra một vài ứng dụng cho RNN chuỗi-sang-chuỗi không? Thế còn RNN chuỗi-sang-vector, và RNN vector-sang-chuỗi thì sao? [cite: 395]
+2. **Câu 2**: Đầu vào của một lớp RNN phải có bao nhiêu chiều? Mỗi chiều đại diện cho điều gì? Còn đầu ra của nó thì sao? [cite: 395]
+3. **Câu 3**: Nếu bạn muốn xây dựng một RNN sâu chuỗi-sang-chuỗi, những lớp RNN nào nên có `return_sequences=True`? Thế còn RNN chuỗi-sang-vector thì sao? [cite: 395]
+4. **Câu 4**: Giả sử bạn có một chuỗi thời gian đơn biến hàng ngày, và bạn muốn dự báo bảy ngày tiếp theo. Bạn nên sử dụng kiến trúc RNN nào? [cite: 396]
+5. **Câu 5**: Những khó khăn chính khi huấn luyện RNN là gì? Bạn có thể xử lý chúng như thế nào? [cite: 396]
+6. **Câu 6**: Bạn có thể phác họa kiến trúc của ô LSTM không? [cite: 396]
+7. **Câu 7**: Tại sao bạn lại muốn sử dụng các lớp tích chập 1D trong một RNN? [cite: 396]
+8. **Câu 8**: Bạn có thể sử dụng kiến trúc mạng thần kinh nào để phân loại video? [cite: 396]
+9. **Câu 9 (Thực hành lập trình)**: Huấn luyện một mô hình phân loại cho tập dữ liệu SketchRNN, có sẵn trong TensorFlow Datasets [cite: 154, 396].
+10. **Câu 10 (Thực hành lập trình)**: Tải tập dữ liệu Bach chorales và giải nén nó. Huấn luyện một mô hình để dự đoán bước thời gian tiếp theo và tạo ra âm nhạc giống phong cách Bach [cite: 155, 396].
+
+---
+
+##### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 5)
+
+###### **Câu 1: Bạn có thể nghĩ ra một vài ứng dụng cho RNN chuỗi-sang-chuỗi không? Thế còn RNN chuỗi-sang-vector, và RNN vector-sang-chuỗi thì sao?**
+*   **Lời giải chi tiết**:
+    *   **Mạng chuỗi-sang-chuỗi (Sequence-to-Sequence)**: Nhận một chuỗi ở đầu vào và xuất ra một chuỗi ở đầu ra [cite: 361]. Một số ứng dụng điển hình bao gồm:
+        1.  *Dự báo thời tiết* (hoặc bất kỳ tác vụ dự báo chuỗi thời gian nào khác) [cite: 153].
+        2.  *Dịch máy ngôn ngữ* (thường sử dụng kiến trúc bộ mã hóa - bộ giải mã) [cite: 153].
+        3.  *Tạo phụ đề tự động cho video* (video captioning) [cite: 153].
+        4.  *Chuyển giọng nói thành văn bản* (speech-to-text) [cite: 153].
+        5.  *Tạo nhạc* hoặc các dạng tạo chuỗi dữ liệu khác [cite: 153].
+        6.  *Nhận diện các hợp âm* của một bài hát [cite: 153].
+    *   **Mạng chuỗi-sang-vector (Sequence-to-Vector)**: Nhận một chuỗi ở đầu vào và bỏ qua tất cả các đầu ra ngoại trừ đầu ra ở bước thời gian cuối cùng [cite: 361]. Một số ứng dụng bao gồm:
+        1.  *Phân loại các mẫu nhạc* theo thể loại [cite: 153].
+        2.  *Phân tích cảm xúc* của một bài đánh giá phim hoặc đánh giá sách [cite: 153].
+        3.  *Dự đoán từ* mà một bệnh nhân mất ngôn ngữ đang nghĩ dựa trên các tín hiệu ghi nhận từ thiết bị cấy ghép não [cite: 153].
+        4.  *Dự đoán xác suất người dùng muốn xem một bộ phim* dựa trên lịch sử xem của họ (ứng dụng trong hệ thống đề xuất lọc cộng tác) [cite: 153].
+    *   **Mạng vector-sang-chuỗi (Vector-to-Sequence)**: Nhận một vector duy nhất ở đầu vào (hoặc nạp lặp lại vector đó ở mỗi bước thời gian) và xuất ra một chuỗi ở đầu ra [cite: 361]. Một số ứng dụng bao gồm:
+        1.  *Ghi chú thích cho hình ảnh* (image captioning) [cite: 153].
+        2.  *Tạo danh sách phát nhạc* dựa trên một vector nhúng của nghệ sĩ hiện tại [cite: 153].
+        3.  *Tạo ra một giai điệu âm nhạc* dựa trên một tập hợp các siêu tham số đầu vào [cite: 153].
+        4.  *Định vị người đi bộ* trong một bức ảnh (ví dụ: khung hình video từ camera của xe tự lái) [cite: 153].
+
+###### **Câu 2: Đầu vào của một lớp RNN phải có bao nhiêu chiều? Mỗi chiều đại diện cho điều gì? Còn đầu ra của nó thì sao?**
+*   **Lời giải chi tiết**:
+    *   **Chiều của đầu vào**: Đầu vào của một lớp RNN bắt buộc phải là một **tensor 3 chiều (3D tensor)** [cite: 410]. Ba chiều này đại diện cho:
+        1.  *Chiều 1*: **Kích thước lô (Batch size)** – Số lượng thực thể dữ liệu được xử lý đồng thời trong một mini-batch [cite: 358, 410].
+        2.  *Chiều 2*: **Các bước thời gian (Time steps)** – Độ dài của chuỗi dữ liệu (số lượng khung hoặc số lượng từ/ký tự trong chuỗi) [cite: 356, 410].
+        3.  *Chiều 3*: **Số lượng đặc trưng (Input features)** – Số lượng thuộc tính hoặc số chiều của vector tại mỗi bước thời gian (ví dụ: 1 đối với chuỗi thời gian đơn biến [cite: 375], hoặc kích thước embedding của từ đối với văn bản [cite: 410]).
+    *   **Chiều của đầu ra**: Phụ thuộc vào cách cấu hình tham số `return_sequences` của lớp RNN:
+        *   *Nếu `return_sequences=True`*: Lớp RNN hoạt động dưới dạng **chuỗi-sang-chuỗi**, trả về một **3D tensor** có hình dạng `[Batch size, Time steps, Number of neurons]` [cite: 377, 410]. Nó xuất ra trạng thái ẩn của ô nhớ tại mọi bước thời gian của chuỗi [cite: 377].
+        *   *Nếu `return_sequences=False` (mặc định)*: Lớp RNN hoạt động dưới dạng **chuỗi-sang-vector**, chỉ trả về một **2D tensor** có hình dạng `[Batch size, Number of neurons]` [cite: 377]. Nó bỏ qua tất cả các đầu ra trước đó và chỉ xuất ra duy nhất trạng thái ẩn ở bước thời gian cuối cùng của chuỗi [cite: 377].
+
+###### **Câu 3: Nếu bạn muốn xây dựng một RNN sâu chuỗi-sang-chuỗi, những lớp RNN nào nên có `return_sequences=True`? Thế còn RNN chuỗi-sang-vector thì sao?**
+*   **Lời giải chi tiết**:
+    *   **RNN sâu chuỗi-sang-chuỗi (Sequence-to-Sequence)**: **Tất cả các lớp RNN** trong mạng nơ-ron sâu đều phải thiết lập `return_sequences=True` [cite: 377]. Điều này là bắt buộc vì lớp RNN tiếp theo phía trên cần nhận một chuỗi dữ liệu đầy đủ tại mọi bước thời gian làm đầu vào cho nó [cite: 377].
+    *   **RNN sâu chuỗi-sang-vector (Sequence-to-Vector)**: 
+        *   **Tất cả các lớp RNN ở phía dưới** phải thiết lập `return_sequences=True` để có thể truyền chuỗi trạng thái ẩn liên tục lên lớp tiếp theo [cite: 377].
+        *   **Lớp RNN cuối cùng ở trên cùng** phải thiết lập `return_sequences=False` (hoặc giữ mặc định) [cite: 377]. Lớp này sẽ lọc và chỉ xuất ra duy nhất một vector đặc trưng đại diện cho toàn bộ ngữ cảnh của chuỗi tại bước thời gian cuối cùng để đưa vào lớp Dense tiếp theo [cite: 377].
+
+###### **Câu 4: Giả sử bạn có một chuỗi thời gian đơn biến hàng ngày, và bạn muốn dự báo bảy ngày tiếp theo. Bạn nên sử dụng kiến trúc RNN nào?**
+*   **Lời giải chi tiết**: Để giải quyết bài toán dự báo chuỗi thời gian đa bước (multi-step forecasting), chúng ta có thể áp dụng 2 kiến trúc chính tùy thuộc vào mục tiêu tối ưu [cite: 352, 396]:
+    1.  **Dự báo lặp từng bước (Autoregressive / Iterative Model)**:
+        *   *Kiến trúc*: Sử dụng một mạng RNN dạng **chuỗi-sang-vector** được thiết kế để chỉ dự báo giá trị của **1 ngày tiếp theo** [cite: 361]. 
+        *   *Quy trình*: Khi muốn dự báo 7 ngày, ta lấy giá trị dự báo của ngày đầu tiên, nối nó vào cuối chuỗi thời gian đầu vào, rồi tiếp tục đưa chuỗi mới này vào mô hình để dự báo ngày thứ hai [cite: 396]. Quá trình này được lặp lại 7 lần [cite: 396].
+        *   *Đánh giá*: Đơn giản và dễ huấn luyện, nhưng nhược điểm lớn là **sai số dự báo sẽ bị tích lũy và phóng đại qua từng bước lặp**, khiến độ chính xác của các ngày sau cùng bị giảm mạnh [cite: 396].
+    2.  **Dự báo đồng thời cả 7 ngày (Direct / Joint Forecasting)**:
+        *   *Kiến trúc*: Sử dụng một mạng RNN dạng **chuỗi-sang-vector** nhưng lớp đầu ra Dense phía trên cùng có **7 nơ-ron** để xuất ra trực tiếp một vector chứa cả 7 ngày dự báo cùng một lúc [cite: 375, 396].
+        *   *Kiến trúc nâng cao (Sequence-to-Sequence)*: Ta huấn luyện mạng dưới dạng **chuỗi-sang-chuỗi** [cite: 361]. Tại mỗi bước thời gian, mô hình được huấn luyện để dự báo giá trị của cả 7 ngày tiếp theo (thay vì chỉ dự báo ở bước cuối cùng) [cite: 378, 379]. 
+        *   *Đánh giá*: Phương pháp này đòi hỏi sự chuẩn bị dữ liệu phức tạp hơn (sử dụng các cửa sổ trượt lồng nhau) [cite: 379]. Tuy nhiên, việc ép mô hình đưa ra dự đoán đa bước tại mọi bước thời gian giúp **cung cấp nhiều tín hiệu gradient lỗi ổn định hơn** trong quá trình lan truyền ngược, giúp mô hình hội tụ nhanh hơn, đạt độ chính xác cao hơn và hạn chế hiện tượng quá khớp [cite: 379].
+
+###### **Câu 5: Những khó khăn chính khi huấn luyện RNN là gì? Bạn có thể xử lý chúng như thế nào?**
+*   **Lời giải chi tiết**: Huấn luyện một mạng thần kinh hồi quy (RNN) đối mặt với hai thách thức kỹ thuật cực kỳ lớn [cite: 381, 382]:
+    1.  **Đạo hàm không ổn định (Unstable Gradients)**: Do RNN thực hiện tính toán lặp qua nhiều bước thời gian, việc mở rộng mạng qua thời gian (unrolling) tạo ra một mạng nơ-ron cực kỳ sâu [cite: 356, 381]. Khi truyền ngược qua thời gian (BPTT), các gradient lỗi rất dễ bị triệt tiêu về 0 (**triệt tiêu gradient - vanishing gradients**) hoặc bị nhân lên theo cấp số nhân dẫn đến vô cực (**bùng nổ gradient - exploding gradients**) [cite: 363, 381]. Cả hai đều khiến các lớp thấp gần đầu vào không thể học được [cite: 223].
+    2.  **Bộ nhớ ngắn hạn hạn chế (Limited Short-Term Memory)**: Do dữ liệu phải đi qua rất nhiều phép biến đổi phi tuyến liên tiếp dọc theo chuỗi thời gian, thông tin của các bước thời gian đầu tiên sẽ bị mờ nhạt và mất dấu hoàn toàn sau khoảng 10 bước [cite: 360, 381, 382]. Mô hình sẽ quên mất ngữ cảnh ban đầu khi chuỗi thời gian quá dài [cite: 381, 382].
+*   **Các giải pháp khắc phục**:
+    *   *Đối với gradient bùng nổ*: Áp dụng kỹ thuật **Cắt Gradient (Gradient Clipping)** để giới hạn các đạo hàm không vượt quá một ngưỡng nhất định [cite: 355].
+    *   *Đối với gradient biến mất*:
+        *   Sử dụng các hàm kích hoạt bão hòa như **tanh** (giúp kiểm soát tốt độ lớn tín hiệu hơn ReLU trong một số cấu trúc RNN) [cite: 355, 397].
+        *   Áp dụng kỹ thuật **Chuẩn hóa lớp (Layer Normalization)** cho các bước thời gian (Batch Normalization hoạt động rất kém trong RNN do phân phối thống kê thay đổi liên tục theo thời gian) [cite: 355, 397].
+        *   Thay thế các ô hồi quy cơ bản bằng các ô nhớ nâng cao có cơ chế cổng như **LSTM (Long Short-Term Memory)** hoặc **GRU (Gated Recurrent Unit)** [cite: 355, 382, 388]. Các kiến trúc này sở hữu đường dẫn trạng thái dài hạn tuyến tính, cho phép gradient lỗi chảy thẳng ngược về quá khứ mà không bị suy giảm [cite: 384, 389].
+        *   Sử dụng **lớp tích chập 1D (1D Conv)** để quét và giảm mẫu (downsample) chiều dài chuỗi trước khi đưa vào RNN [cite: 355, 391, 392]. Việc rút ngắn chuỗi giúp các ô GRU/LSTM dễ dàng phát hiện các mẫu có khoảng cách xa hơn [cite: 392].
+        *   Sử dụng kiến trúc **WaveNet** (xếp chồng các lớp tích chập 1D với tỷ lệ giãn nở tăng gấp đôi) giúp mở rộng trường thụ cảm siêu hiệu quả để xử lý chuỗi cực dài lên tới hàng chục nghìn bước thời gian [cite: 355, 393].
+
+---
+
