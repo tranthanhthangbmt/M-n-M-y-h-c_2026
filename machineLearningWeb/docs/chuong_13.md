@@ -2007,4 +2007,533 @@ cho các bài tập này có sẵn ở cuối sổ tay của chương này, tạ
   </div>
 </div>
 
+
+
+
+#### ** 📝 Bài Tập **
+
+
+<script>
+if (typeof checkPasswordAndShow !== 'function') {
+  window.checkPasswordAndShow = function(btn) {
+    let password = prompt("Vui lòng nhập mật khẩu để xem lời giải:");
+    if (password === "donga2026") {
+      let content = btn.nextElementSibling;
+      if (content && content.classList.contains("solution-content")) {
+        content.style.display = "block";
+        btn.style.display = "none";
+      }
+    } else {
+      alert("Mật khẩu không đúng!");
+    }
+  };
+}
+</script>
+##### 🧠 Phân tích & Lập luận (Chain of Thought)
+
+1.  **Xác định yêu cầu**: Người dùng muốn có danh sách đầy đủ các bài tập của **Chương 13: Tải và Tiền xử lý Dữ liệu với TensorFlow** và lời giải chi tiết của chúng [cite: 176]. Tương tự như lượt trước, do nội dung chương này rất dài (gồm các cơ chế tối ưu hóa luồng dữ liệu của `tf.data`, định dạng lưu trữ nhị phân `TFRecord`, các lớp tiền xử lý nâng cao của Keras và hai dự án lập trình thực hành lớn trên Fashion MNIST và IMDb) [cite: 176, 350, 408, 409], tôi sẽ tiến hành chia thành **2 phần** và thực hiện **Phần 1 trước** (bao gồm danh mục toàn bộ 10 bài tập và lời giải chi tiết từ **Câu 1 đến Câu 8**), tham khảo đúng cấu trúc chuẩn hóa của file mẫu `ExcerciseChapter_01.txt` [cite: 732].
+2.  **Khớp nối nguồn tài liệu**:
+    *   **Danh sách câu hỏi**: Nằm ở phần cuối của chương lý thuyết `"CHƯƠNG 13.docx"` (Mục **13.4. Bài tập**) [cite: 406, 407, 408, 409]. Có tất cả **10 câu hỏi/bài tập**.
+    *   **Lời giải mẫu**: Được tổng hợp trực tiếp từ mã nguồn và diễn giải trong notebook thực hành `"13_loading_and_preprocessing_data_VN.ipynb - Colab.pdf"` (Mục **### Lời giải bài tập** hoặc phần bài tập tương ứng) [cite: 185, 186, 187, 188].
+3.  **Lên kế hoạch phân chia chi tiết**:
+    *   **Phần 1 (Lượt này)**: Cung cấp **danh mục đầy đủ của 10 câu hỏi/bài tập** của Chương 13 [cite: 406, 407, 408, 409]. Sau đó, trình bày lời giải chi tiết, sâu sắc nhất cho **từ Câu 1 đến Câu 8** (tập trung vào API dữ liệu `tf.data`, chia tệp, gỡ lỗi nghẽn cổ chai pipeline, hệ thống nhị phân TFRecord, protocol buffer `Example` và các kỹ thuật mã hóa Keras Preprocessing Layers) [cite: 180, 185, 186, 187, 350].
+    *   **Phần 2 (Lượt sau)**: Giải quyết trọn vẹn hai bài tập lập trình thực hành quy mô lớn là **Câu 9 (Thời gian thực thi và tối ưu hóa Fashion MNIST sang nhiều tệp TFRecord)** [cite: 408] và **Câu 10 (Xây dựng pipeline dữ liệu IMDb, TextVectorization, học biểu diễn Embedding và so sánh mô hình)** [cite: 409].
+
+---
+
+##### Danh sách 10 bài tập Chương 13
+
+1. **Câu 1**: Tại sao bạn muốn sử dụng API `tf.data`? [cite: 406]
+2. **Câu 2**: Lợi ích của việc chia một tập dữ liệu lớn thành nhiều tệp là gì? [cite: 407]
+3. **Câu 3**: Trong quá trình huấn luyện, làm thế nào bạn có thể biết rằng pipeline đầu vào của bạn là nút thắt cổ chai? Bạn có thể làm gì để khắc phục nó? [cite: 407]
+4. **Câu 4**: Bạn có thể lưu bất kỳ dữ liệu nhị phân nào vào tệp TFRecord, hay chỉ các bộ đệm giao thức đã được tuần tự hóa? [cite: 407]
+5. **Câu 5**: Tại sao bạn lại phải mất công chuyển đổi tất cả dữ liệu của mình sang định dạng protobuf `Example`? Tại sao không sử dụng định nghĩa protobuf của riêng bạn? [cite: 407]
+6. **Câu 6**: Khi sử dụng TFRecord, khi nào bạn muốn kích hoạt nén? Tại sao không làm điều đó một cách hệ thống? [cite: 407]
+7. **Câu 7**: Dữ liệu có thể được tiền xử lý trực tiếp khi ghi các tệp dữ liệu, hoặc trong pipeline `tf.data`, hoặc trong các lớp tiền xử lý trong mô hình của bạn. Bạn có thể liệt kê một vài ưu và nhược điểm của mỗi tùy chọn không? [cite: 408]
+8. **Câu 8**: Kể tên một vài cách phổ biến bạn có thể mã hóa các đặc trưng số nguyên phân loại. Còn văn bản thì sao? [cite: 408]
+9. **Câu 9 (Thực hành lập trình)**: Tải tập dữ liệu Fashion MNIST, phân chia tập dữ liệu, xáo trộn và lưu trữ chúng sang nhiều tệp TFRecord phân đoạn dưới dạng serialized `Example` protobuf. Sau đó xây dựng đường ống nạp dữ liệu hiệu năng cao với Keras và theo dõi lược đồ TensorBoard [cite: 408].
+10. **Câu 10 (Thực hành lập trình)**: Tải xuống và tiền xử lý hiệu quả Large Movie Review Dataset (IMDb) bằng `tf.data`, xây dựng mô hình phân loại nhị phân sử dụng lớp `TextVectorization` kết hợp học biểu diễn `Embedding` [cite: 409].
+
+---
+
+##### PHẦN 1: Chi tiết bài tập và lời giải lý thuyết (Từ Câu 1 đến Câu 8)
+
+
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 1: Tại sao bạn muốn sử dụng API `tf.data`?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Bản chất vấn đề**: Việc nạp và tiền xử lý một tập dữ liệu có kích thước khổng lồ một cách hiệu quả luôn là một thách thức kỹ thuật lớn trong học sâu [cite: 185]. API `tf.data` của TensorFlow được thiết kế để giải quyết triệt để bài toán này [cite: 350].
+    *   **Các tính năng ưu việt**:
+        1.  Hỗ trợ **đọc dữ liệu tăng dần từ đĩa cứng** [cite: 353], cho phép xử lý các tập dữ liệu cực lớn không thể vừa trong bộ nhớ RAM [cite: 351].
+        2.  Hỗ trợ **tải dữ liệu đa dạng** từ nhiều nguồn khác nhau (tệp văn bản CSV, tệp nhị phân, TFRecords, cơ sở dữ liệu SQL, hoặc các luồng máy khách) [cite: 185, 351].
+        3.  Cung cấp các phép biến đổi dữ liệu song song hóa cực nhanh (`map()`, `interleave()`) nhờ tận dụng tối đa các lõi CPU vật lý [cite: 180, 359, 366].
+        4.  Hỗ trợ các kỹ thuật tối ưu hóa đường ống như **xáo trộn (shuffling)** [cite: 361], **phân lô (batching)** [cite: 357], **lưu bộ đệm ẩn (caching)** [cite: 374] và đặc biệt là **tìm nạp trước (prefetching)** [cite: 372]. Phép toán `prefetch` cho phép CPU chuẩn bị sẵn lô dữ liệu tiếp theo trong khi GPU đang bận huấn luyện lô hiện tại, triệt tiêu thời gian nhàn rỗi của bộ gia tốc phần cứng [cite: 350, 372].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 2: Lợi ích của việc chia một tập dữ liệu lớn thành nhiều tệp là gì?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: Việc chia nhỏ một tập dữ liệu khổng lồ thành hàng ngàn tệp thành phần (shards) mang lại các lợi ích kỹ thuật quan trọng sau [cite: 185]:
+    1.  **Tăng hiệu quả xáo trộn**: Cho phép chúng ta thực hiện xáo trộn dữ liệu ở **mức thô (coarse level)** bằng cách trộn thứ tự các đường dẫn tệp trước [cite: 185, 365], sau đó mới xáo trộn ở **mức chi tiết (fine level)** bằng bộ đệm xáo trộn `shuffle(buffer_size)` [cite: 185, 362]. Kỹ thuật này giúp phân phối dữ liệu ngẫu nhiên đều hơn mà không cần nạp toàn bộ tập dữ liệu khổng lồ vào RAM [cite: 361, 362].
+    2.  **Khả năng phân tán**: Giúp dễ dàng lưu trữ, quản lý và huấn luyện phân tán trên các cụm máy chủ hoặc hệ thống lưu trữ đám mây có quy mô lớn (do dữ liệu được trải đều ra nhiều đĩa cứng vật lý) [cite: 185].
+    3.  **Tối ưu băng thông**: Khi huấn luyện, ta có thể tải song song nhiều tệp nhỏ từ nhiều máy chủ lưu trữ khác nhau cùng lúc, giúp tối ưu hóa tối đa băng thông đường truyền [cite: 185].
+    4.  **Dễ dàng thao tác**: Việc phân chia dữ liệu thành các tập con như huấn luyện (train), xác thực (validation) và kiểm thử (test) trở nên đơn giản hơn nhiều bằng cách chỉ cần phân bổ số lượng tệp tương ứng [cite: 185].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 3: Trong quá trình huấn luyện, làm thế nào bạn có thể biết rằng pipeline đầu vào của bạn là nút thắt cổ chai? Bạn có thể làm gì để khắc phục nó?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Cách nhận biết**:
+        *   Sử dụng công cụ giám sát tương tác **TensorBoard Profiler** để ghi nhật ký và phân tích chi tiết thời gian chạy của đường ống dữ liệu [cite: 190, 408].
+        *   Nếu biểu đồ giám sát cho thấy **mức độ sử dụng GPU (GPU utilization) rất thấp** hoặc không ổn định (thường xuyên giảm về 0% rồi lại tăng lên), trong khi CPU hoạt động liên tục ở mức tối đa (100%), thì pipeline đầu vào chính là nút thắt cổ chai (bottleneck) [cite: 373]. GPU đang bị "đói dữ liệu" vì CPU chuẩn bị dữ liệu không kịp [cite: 373].
+    *   **Các giải pháp khắc phục**:
+        1.  **Song song hóa tiến trình tiền xử lý**: Thiết lập tham số `num_parallel_calls=tf.data.AUTOTUNE` khi gọi phương thức `map()` và `interleave()` để TensorFlow tự động tính toán và điều phối số lượng luồng CPU song song tối ưu [cite: 359, 367].
+        2.  **Áp dụng kỹ thuật Prefetching**: Luôn đặt `.prefetch(tf.data.AUTOTUNE)` ở cuối pipeline huấn luyện để CPU chuẩn bị sẵn lô dữ liệu tiếp theo song song trên nền [cite: 181, 372, 373].
+        3.  **Sử dụng cơ chế Caching**: Nếu tập dữ liệu đủ nhỏ để chứa vừa trong bộ nhớ RAM, hãy gọi phương thức `.cache()` ngay sau bước tải và tiền xử lý, nhưng trước bước xáo trộn và phân lô [cite: 374]. Việc này giúp dữ liệu chỉ bị đọc và tiền xử lý duy nhất một lần ở kỷ nguyên đầu tiên [cite: 374].
+        4.  **Chuyển đổi sang tệp nhị phân**: Lưu trữ dữ liệu dưới định dạng nhị phân hiệu quả như TFRecord để tăng tốc độ I/O đọc đĩa [cite: 351, 377].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 4: Bạn có thể lưu bất kỳ dữ liệu nhị phân nào vào tệp TFRecord, hay chỉ các bộ đệm giao thức đã được tuần tự hóa?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Có thể lưu trữ bất kỳ dữ liệu nhị phân nào** [cite: 186].
+    *   **Bản chất**: Định dạng TFRecord của TensorFlow thực chất chỉ là một cấu trúc tệp nhị phân cực kỳ đơn giản, đóng vai trò là một chuỗi các bản ghi nhị phân có kích thước thay đổi [cite: 377]. Mỗi bản ghi chỉ bao gồm: độ dài của dữ liệu, tổng kiểm CRC để kiểm tra lỗi hỏng độ dài, dữ liệu nhị phân thô thực tế, và cuối cùng là tổng kiểm CRC cho dữ liệu [cite: 377].
+    *   **Thực tế**: Bạn có thể ghi bất kỳ chuỗi byte nhị phân thô nào (như ảnh JPEG, âm thanh, văn bản thô) vào TFRecord bằng `tf.io.TFRecordWriter` [cite: 377, 383]. Tuy nhiên, để TensorFlow có thể phân tích cú pháp một cách mượt mà và chuẩn hóa, người ta thường đóng gói các dữ liệu này vào bên trong các protocol buffer `Example` đã tuần tự hóa trước khi ghi [cite: 186, 380].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 5: Tại sao bạn lại phải mất công chuyển đổi tất cả dữ liệu của mình sang định dạng protobuf `Example`? Tại sao không sử dụng định nghĩa protobuf của riêng bạn?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Lợi thế của định dạng `Example` tiêu chuẩn**:
+        1.  **Hỗ trợ API tối ưu sẵn**: TensorFlow cung cấp sẵn các phép toán phân tích cú pháp nhị phân hiệu năng cao đã được tối ưu sâu bằng C++ như `tf.io.parse_single_example()` và `tf.io.parse_example()` [cite: 381, 383]. Bạn không cần tốn công tự viết và gỡ lỗi các bộ giải mã nhị phân phức tạp [cite: 381].
+        2.  **Độ linh hoạt cao**: Định dạng `Example` protobuf tiêu chuẩn (chứa một từ điển các đặc trưng `Features`, hỗ trợ 3 kiểu danh sách danh mục là `BytesList`, `FloatList`, và `Int64List`) [cite: 379, 380] đã đủ mạnh để biểu diễn gần như mọi cấu trúc dữ liệu học máy phổ biến (ảnh, âm thanh, văn bản, bảng số) [cite: 383, 407].
+    *   **Hạn chế khi tự định nghĩa protobuf riêng**: Mặc dù bạn hoàn toàn có thể tự viết file `.proto` riêng và dùng `tf.io.decode_proto()` để giải mã [cite: 186], việc này sẽ:
+        *   Làm tăng đáng kể độ phức tạp của mã nguồn [cite: 186].
+        *   Yêu cầu bạn phải luôn phân phối và triển khai kèm tệp mô tả (descriptor) của protobuf cùng với mô hình của bạn sang môi trường sản xuất [cite: 186], gây khó khăn cho việc bảo trì hệ thống.
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 6: Khi sử dụng TFRecord, khi nào bạn muốn kích hoạt nén? Tại sao không làm điều đó một cách hệ thống?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Khi nào nên kích hoạt nén**: Bạn nên kích hoạt nén (như định dạng GZIP) cho các tệp TFRecord khi dữ liệu huấn luyện cần được truyền tải, tải xuống hoặc đồng bộ hóa qua kết nối mạng mạng (ví dụ: huấn luyện phân tán trên cụm máy chủ đám mây Google Cloud/AWS, hoặc tải từ GCS bucket về máy ảo Vertex AI) [cite: 186, 187]. Việc nén giúp thu nhỏ đáng kể dung lượng tệp, tiết kiệm băng thông và giảm thiểu thời gian tải xuống [cite: 187].
+    *   **Tại sao không nên nén một cách hệ thống**: Nếu các tệp TFRecord đã được lưu trữ cục bộ trực tiếp trên cùng một ổ đĩa vật lý của máy tính chạy tập lệnh huấn luyện, việc nén dữ liệu hoàn toàn không mang lại lợi ích về tốc độ [cite: 187]. Ngược lại, nó bắt buộc CPU phải tiêu tốn một lượng tài nguyên tính toán (chu kỳ xử lý) khổng lồ để thực hiện giải nén liên tục các tệp nhị phân này trong suốt quá trình đọc [cite: 187]. Việc để tệp ở dạng không nén (uncompressed) sẽ giúp CPU tập trung toàn bộ sức mạnh cho các tác vụ tiền xử lý và tăng cường dữ liệu on-the-fly quan trọng hơn [cite: 187].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 7: Dữ liệu có thể được tiền xử lý trực tiếp khi ghi các tệp dữ liệu, hoặc trong pipeline `tf.data`, hoặc trong các lớp tiền xử lý trong mô hình của bạn. Bạn có thể liệt kê một vài ưu và nhược điểm của mỗi tùy chọn không?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**: Ba phương án tiền xử lý dữ liệu có các ưu và nhược điểm thực nghiệm rõ rệt như sau [cite: 187]:
+    1.  **Tiền xử lý trước khi tạo tệp (Offline Preprocessing)**:
+        *   *Ưu điểm*: Quá trình huấn luyện mô hình diễn ra với tốc độ cực đại vì CPU không cần thực hiện bất kỳ phép toán tiền xử lý nào trong thời gian chạy [cite: 187]. Dữ liệu sau tiền xử lý thường nhỏ hơn dữ liệu thô gốc, giúp tiết kiệm dung lượng ổ cứng và tăng tốc truyền tải mạng [cite: 187].
+        *   *Nhược điểm*: Thiếu tính linh hoạt; mỗi khi bạn muốn thử nghiệm một phương pháp tiền xử lý mới (như thay đổi kích thước ảnh khác, đổi cách chuẩn hóa), bạn bắt buộc phải tạo lại toàn bộ tập dữ liệu thô từ đầu [cite: 187]. Nếu muốn áp dụng tăng cường dữ liệu (data augmentation), bạn phải lưu trữ rất nhiều biến thể ảnh biến đổi trên đĩa cứng, gây lãng phí đĩa [cite: 187]. Đặc biệt, ứng dụng thực tế khi gọi mô hình sẽ phải tự viết lại mã tiền xử lý dữ liệu thô bên ngoài, dễ gây ra hiện tượng sai lệch tiền xử lý (preprocessing skew) [cite: 187].
+    2.  **Tiền xử lý on-the-fly trong pipeline `tf.data`**:
+        *   *Ưu điểm*: Cực kỳ linh hoạt và dễ dàng điều chỉnh logic tiền xử lý; rất thích hợp cho việc áp dụng các phép tăng cường dữ liệu ngẫu nhiên (xoay, lật, chỉnh tương phản) [cite: 187]. API `tf.data` giúp xây dựng đường ống song song đa luồng rất nhanh [cite: 187].
+        *   *Nhược điểm*: Làm chậm tiến trình huấn luyện do CPU phải tính toán liên tục [cite: 187]. Mỗi mẫu dữ liệu sẽ bị tiền xử lý lặp đi lặp lại ở mỗi kỷ nguyên (epoch) ngoại trừ trường hợp tập dữ liệu vừa RAM và được lưu cache [cite: 187].
+    3.  **Tiền xử lý bằng các lớp tích hợp trong mô hình (Keras Preprocessing Layers)**:
+        *   *Ưu điểm*: Đơn giản hóa kiến trúc hệ thống; bạn chỉ viết mã tiền xử lý đúng một lần duy nhất cho cả quá trình huấn luyện lẫn suy luận sản xuất [cite: 187]. Loại bỏ hoàn toàn nguy cơ sai lệch tiền xử lý vì bước chuẩn hóa đã được nhúng trực tiếp thành một lớp bên trong mô hình final [cite: 186, 187].
+        *   *Nhược điểm*: Tiền xử lý trực tiếp trong mô hình sẽ tiêu tốn tài nguyên huấn luyện và làm giảm nhẹ tốc độ học [cite: 187]. (Tuy nhiên, ta hoàn toàn có thể khắc phục triệt để bằng cách: huấn luyện mô hình bằng pipeline `tf.data` trước để đạt tốc độ cao nhất, sau đó xuất bản một mô hình mới bao bọc mô hình đã huấn luyện cùng các lớp tiền xử lý Keras) [cite: 387].
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise-box" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <h4 style="color: #1a73e8; margin-top: 0;">Câu 8: Kể tên một vài cách phổ biến bạn có thể mã hóa các đặc trưng số nguyên phân loại. Còn văn bản thì sao?</h4>
+  
+
+
+  <details style="margin-top: 15px; margin-bottom: 15px; background: #f8faff; padding: 10px; border-radius: 6px; border-left: 4px solid #1a73e8;">
+    <summary style="font-weight: bold; cursor: pointer; color: #1a73e8;">💡 Gợi ý</summary>
+    <div style="margin-top: 10px;">
+      Hãy phân tích kỹ các khái niệm trong bài học và áp dụng vào yêu cầu của đề bài. Đọc lại phần lý thuyết liên quan nếu cần.
+    </div>
+  </details>
+  
+  <div class="solution-section">
+    <button onclick="checkPasswordAndShow(this)" style="background: #34a853; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.3s;">🔑 Xem lời giải</button>
+    <div class="solution-content" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+
+*   **Lời giải chi tiết**:
+    *   **Đối với đặc trưng số nguyên phân loại (Categorical Integer Features)**:
+        1.  **Mã hóa thứ tự (Ordinal Encoding)**: Nếu các danh mục có một thứ tự tự nhiên rõ ràng (như mức độ hài lòng: "tồi" $\to 0$, "trung bình" $\to 1$, "tốt" $\to 2$), ta chỉ cần gán cho mỗi danh mục một số nguyên tăng dần [cite: 187].
+        2.  **Mã hóa một nóng (One-Hot Encoding)**: Khi các danh mục hoàn toàn độc lập và không có thứ tự tự nhiên (như giới tính, quốc gia), ta mã hóa chúng thành một vector thưa chứa toàn số 0 ngoại trừ vị trí của danh mục đó mang giá trị 1 [cite: 187]. Trong Keras, ta sử dụng lớp `StringLookup` (hoặc `IntegerLookup`) với tham số `output_mode="one_hot"` (hoặc `"multi_hot"`) [cite: 187].
+        3.  **Mã hóa nhúng (Embeddings)**: Đối với các đặc trưng phân loại có số lượng danh mục cực kỳ lớn (như ID người dùng, ID từ vựng), ta sử dụng một lớp `Embedding` để ánh xạ mỗi danh mục thành một vector dày đặc có số chiều thấp có thể huấn luyện [cite: 187]. Trình tối ưu hóa sẽ tự động học cách điều chỉnh các vector này trong không gian tiềm ẩn để các danh mục tương đồng nằm gần nhau [cite: 388].
+    *   **Đối với Văn bản (Text)**:
+        1.  **Mã hóa vector hóa văn bản (TextVectorization)**: Sử dụng lớp `TextVectorization` của Keras để thực hiện phân tách từ (tokenization), chuyển đổi chữ thường, loại bỏ dấu câu và ánh xạ từ thành ID nguyên [cite: 393]. Ta có thể thiết lập `output_mode` thành `"multi_hot"` (đánh dấu sự hiện diện), `"count"` (đếm số lần xuất hiện), hoặc tối ưu nhất là `"tf_idf"` (tần suất từ × nghịch đảo tần suất tài liệu - giúp giảm trọng số của các từ cực kỳ phổ biến như "the", "and" và tăng cường trọng số cho các từ hiếm mang nhiều thông tin) [cite: 394, 395].
+        2.  **Sử dụng bộ tách từ Subword nâng cao**: Sử dụng thư viện `TensorFlow Text` hoặc bộ mã hóa nhanh của Hugging Face để phân tách văn bản thành các token nhỏ hơn cấp độ từ (như BPE, WordPiece, SentencePiece) [cite: 396, 517], giúp mô hình dễ dàng phát hiện ra các từ có chung gốc từ (ví dụ "evolution" và "evolutionary") [cite: 396].
+        3.  **Tải các Mô hình Ngôn ngữ đã huấn luyện sẵn**: Tải các lớp nhúng câu mạnh mẽ từ TensorFlow Hub (như module `universal-sentence-encoder`) hoặc các mô hình Transformer từ Hugging Face Hub [cite: 398, 519, 542].
+
+---
+
+##### 🧠 Phân tích & Lập luận (Chain of Thought / Tree of Thought)
+
+Để hoàn thành trọn vẹn và sâu sắc **Phần 2** của hệ thống bài tập **Chương 13: Tải và Tiền xử lý Dữ liệu với TensorFlow** [cite: 191], chúng ta sẽ áp dụng phương pháp lập luận phân nhánh để phân tích kỹ thuật hai bài tập lập trình thực hành lớn (Câu 9 và Câu 10) [cite: 529, 530]:
+
+1.  **Bài 9: Lưu trữ Fashion MNIST sang nhiều tệp TFRecord và Huấn luyện với Keras** [cite: 529]:
+    *   **Thách thức**: Fashion MNIST là tập dữ liệu ảnh thang độ xám kích thước \\(28 \times 28\\) [cite: 388, 390]. Việc ghi và đọc từng ảnh đơn lẻ từ đĩa rất chậm và không tối ưu hóa được băng thông I/O của phần cứng.
+    *   **Giải pháp**: Chuyển đổi dữ liệu sang định dạng nhị phân hiệu năng cao **TFRecord** dưới dạng các protocol buffer `Example` đã tuần tự hóa [cite: 490, 529].
+    *   **Phân nhánh thiết kế ghi tệp (Sharding & Round-Robin)** [cite: 241, 529]:
+        *   Ta chia dữ liệu thành nhiều phân đoạn (shards) (ví dụ: 10 phân đoạn) [cite: 241].
+        *   Để phân phối dữ liệu đồng đều và ngẫu nhiên, ta sử dụng cơ chế chia xoay vòng (round-robin): mẫu thứ \\(i\\) sẽ được ghi vào tệp có chỉ số `i % n_shards` [cite: 241].
+        *   Sử dụng lớp `ExitStack` từ thư viện `contextlib` của Python để quản lý đồng thời nhiều ngữ cảnh mở tệp `TFRecordWriter`, bảo vệ hệ thống khỏi lỗi rò rỉ tài nguyên hoặc khóa file khi xảy ra sự cố I/O đột ngột [cite: 241].
+    *   **Xây dựng Input Pipeline hiệu năng cao với `tf.data`** [cite: 243, 529]:
+        *   Sử dụng `tf.data.TFRecordDataset` để tải song song nhiều tệp nhị phân thông qua tham số `num_parallel_reads` [cite: 204, 243].
+        *   Sử dụng cơ chế `cache()` để lưu dữ liệu đã nạp vào RAM sau kỷ nguyên đầu tiên (nếu tập dữ liệu vừa RAM) [cite: 243, 484].
+        *   Áp dụng `.map()` song song hóa đa luồng CPU bằng `num_parallel_calls=n_parse_threads` để phân tích cú pháp `Example` nhị phân và giải mã tensor [cite: 243, 483].
+        *   Cuối cùng là thiết lập `.prefetch(1)` (hoặc `tf.data.AUTOTUNE`) để CPU chuẩn bị sẵn lô tiếp theo trong khi GPU đang bận huấn luyện [cite: 200, 243, 482].
+
+2. **Bài 10: Xây dựng pipeline dữ liệu IMDb, TextVectorization và học biểu diễn Embedding** [cite: 530]:
+    *   **Thách thức**: Tập dữ liệu IMDb chứa 50.000 đánh giá phim có độ dài từ rất khác nhau [cite: 530, 595]. Việc biểu diễn văn bản thô thành các vector đặc trưng cố định để huấn luyện mạng nơ-ron dày đặc cần được tối ưu hóa sâu sắc [cite: 396, 530].
+    *   **Thiết kế và xử lý logic**:
+        *   *Phân tách tập dữ liệu*: Phân chia tập kiểm thử 25.000 mẫu ban đầu thành tập xác thực (15.000 mẫu - 7.500 mẫu tích cực, 7.500 mẫu tiêu cực) và tập kiểm thử thực sự (10.000 mẫu - 5.000 mẫu tích cực, 5.000 mẫu tiêu cực) [cite: 249, 250, 530].
+        *   *Simulate Out-Of-Core*: Để mô phỏng trường hợp dữ liệu lớn không vừa RAM, ta sử dụng `TextLineDataset` để đọc song song trực tiếp các dòng từ tệp văn bản thay vì nạp toàn bộ vào bộ nhớ [cite: 252, 253].
+        *   *Vector hóa văn bản*: Sử dụng lớp `TextVectorization` ở chế độ số nguyên (`output_mode="int"`) để chuyển đổi các từ thành các ID số nguyên [cite: 259, 260].
+        *   *Mặt nạ bảo vệ (Masking)*: Kích hoạt `mask_zero=True` trong lớp `Embedding` để ánh xạ các token đệm (`<pad>` có ID 0) thành các vector 0, giúp mô hình bỏ qua các token này một cách tự động [cite: 260, 604].
+        *   *Toán học của việc co giãn trung bình nhúng (Rescaled Mean Embedding)* [cite: 256, 257]:
+            Nếu ta sử dụng phép trung bình nhúng thông thường \\(M = \frac{S}{N}\\) (với \\(S\\) là tổng các vector nhúng từ, \\(N\\) là số từ thực tế của câu), tín hiệu của các câu rất dài sẽ bị chia nhỏ quá nhiều dẫn đến gradient bị triệt tiêu [cite: 257]. Ngược lại, nếu chỉ tính tổng \\(S\\), các câu dài sẽ có phương sai lớn và gây bùng nổ gradient.
+            Giải pháp là **nhân trung bình nhúng với căn bậc hai của số từ** (\\(M \times \sqrt{N}\\)), tương đương với:
+            \\[S' = M \times \sqrt{N} = \frac{S}{N} \times \sqrt{N} = \frac{S}{\sqrt{N}}\\]
+            Kỹ thuật toán học này giúp giữ cho phương sai của vector câu không phụ thuộc vào độ dài câu \\(N\\) (giả định các vector từ độc lập), ổn định hóa tối đa quá trình lan truyền ngược [cite: 257, 258].
+
+---
+
+##### PHẦN 2: Lời giải thực hành lập trình chi tiết và tối ưu hóa hệ thống
+
+Dưới đây là toàn bộ mã nguồn Python chuẩn, tối ưu hóa sâu sắc bằng các API mới nhất của TensorFlow để hoàn thành trọn vẹn cả hai dự án thực hành lớn của Chương 13 [cite: 529, 530].
+
+###### **Bài 9: Đường ống TFRecords xoay vòng đa phân đoạn cho Fashion MNIST** [cite: 529]
+
+```python
+import os
+import tensorflow as tf
+import numpy as np
+from tensorflow.train import BytesList, Int64List, Feature, Features, Example
+from contextlib import ExitStack
+
+# 1. Tải và phân tách dữ liệu Fashion MNIST
+fashion_mnist = tf.keras.datasets.fashion_mnist.load_data()
+(X_train_full, y_train_full), (X_test, y_test) = fashion_mnist
+
+# Tách 5.000 mẫu cuối của tập huấn luyện đầy đủ để làm tập xác thực
+X_valid, X_train = X_train_full[:5000], X_train_full[5000:]
+y_valid, y_train = y_train_full[:5000], y_train_full[5000:]
+
+# Chuyển đổi sang Dataset gốc của tf.data
+train_set = tf.data.Dataset.from_tensor_slices((X_train, y_train))
+valid_set = tf.data.Dataset.from_tensor_slices((X_valid, y_valid))
+test_set = tf.data.Dataset.from_tensor_slices((X_test, y_test))
+
+# 2. Định nghĩa hàm đóng gói dữ liệu thành Example Protobuf
+def create_example(image, label):
+    # Tuần tự hóa ma trận ảnh 28x28 thành chuỗi byte nhị phân hiệu năng cao
+    image_data = tf.io.serialize_tensor(image)
+    return Example(
+        features=Features(
+            feature={
+                "image": Feature(bytes_list=BytesList(value=[image_data.numpy()])),
+                "label": Feature(int64_list=Int64List(value=[label])),
+            }))
+
+# 3. Hàm ghi dữ liệu xoay vòng (Round-Robin) ra nhiều tệp TFRecord
+def write_tfrecords(name, dataset, n_shards=10):
+    # Tạo danh sách đường dẫn tệp phân đoạn dạng: name.tfrecord-00000-of-00010
+    paths = ["{}.tfrecord-{:05d}-of-{:05d}".format(name, index, n_shards)
+             for index in range(n_shards)]
+    
+    # ExitStack giúp tự động đóng toàn bộ các Writer khi kết thúc hoặc xảy ra lỗi I/O
+    with ExitStack() as stack:
+        writers = [stack.enter_context(tf.io.TFRecordWriter(path))
+                   for path in paths]
+        for index, (image, label) in dataset.enumerate():
+            shard = index.numpy() % n_shards
+            example = create_example(image, label)
+            writers[shard].write(example.SerializeToString())
+    return paths
+
+# Tiến hành xuất bản các tệp nhị phân TFRecord ra đĩa
+print("--- GHI FILE TFRECORDS ---")
+train_filepaths = write_tfrecords("fashion_mnist.train", train_set, n_shards=10)
+valid_filepaths = write_tfrecords("fashion_mnist.valid", valid_set, n_shards=5)
+test_filepaths = write_tfrecords("fashion_mnist.test", test_set, n_shards=5)
+print("Đã ghi xong các file TFRecord thành công!")
+
+# 4. Xây dựng bộ phân tích cú pháp nhị phân trong Pipeline nạp dữ liệu
+def preprocess(tfrecord):
+    feature_descriptions = {
+        "image": tf.io.FixedLenFeature([], tf.string, default_value=""),
+        "label": tf.io.FixedLenFeature([], tf.int64, default_value=-1)
+    }
+    example = tf.io.parse_single_example(tfrecord, feature_descriptions)
+    # Giải mã chuỗi byte ngược lại thành ma trận ảnh gốc uint8
+    image = tf.io.parse_tensor(example["image"], out_type=tf.uint8)
+    image = tf.reshape(image, shape=)
+    return image, example["label"]
+
+# 5. Hàm thiết lập pipeline dữ liệu tf.data tối ưu phần cứng tối đa
+def mnist_dataset(filepaths, n_read_threads=5, shuffle_buffer_size=None,
+                  n_parse_threads=5, batch_size=32, cache=True):
+    # Đọc song song nhiều file TFRecord đan xen
+    dataset = tf.data.TFRecordDataset(filepaths, num_parallel_reads=n_read_threads)
+    if cache:
+        dataset = dataset.cache() # Caching dữ liệu vào RAM
+    if shuffle_buffer_size:
+        dataset = dataset.shuffle(shuffle_buffer_size)
+    # Áp dụng giải mã song song đa luồng CPU
+    dataset = dataset.map(preprocess, num_parallel_calls=n_parse_threads)
+    dataset = dataset.batch(batch_size)
+    return dataset.prefetch(tf.data.AUTOTUNE) # Tìm nạp trước thông minh (Prefetching)
+
+# Tạo các tập dữ liệu hiệu năng cao final
+train_ds = mnist_dataset(train_filepaths, shuffle_buffer_size=60000)
+valid_ds = mnist_dataset(valid_filepaths)
+test_ds = mnist_dataset(test_filepaths)
+
+# 6. Chuẩn hóa dữ liệu bằng lớp Normalization của Keras
+standardization = tf.keras.layers.Normalization(input_shape=)
+
+# Lấy một mẫu dữ liệu huấn luyện để thích ứng (adapt) lớp chuẩn hóa
+sample_image_batches = train_ds.take(100).map(lambda image, label: image)
+sample_images = np.concatenate(list(sample_image_batches.as_numpy_iterator()), axis=0).astype(np.float32)
+standardization.adapt(sample_images)
+
+# 7. Xây dựng và Huấn luyện mô hình Keras
+model = tf.keras.Sequential([
+    standardization,
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation="relu"),
+    tf.keras.layers.Dense(10, activation="softmax")
+])
+
+model.compile(
+    loss="sparse_categorical_crossentropy", 
+    optimizer="adam", 
+    metrics=["accuracy"]
+)
+
+print("\n--- BẮT ĐẦU HUÂN LUYỆN MÔ HÌNH VỚI PIPELINE TFRECORD ---")
+model.fit(train_ds, epochs=5, validation_data=valid_ds)
+test_loss, test_acc = model.evaluate(test_ds)
+print(f"\n=> Kết quả đánh giá tập kiểm thử - Test Loss: {test_loss:.4f} | Test Accuracy: {test_acc:.4f}")
+``` [cite: 238, 239, 240, 241, 242, 243, 244]
+
+---
+
+###### **Bài 10: Phân tích cảm xúc IMDb với đường ống nạp dữ liệu đĩa và lớp nhúng Embedding tùy chỉnh** [cite: 530]
+
+```python
+import tensorflow as tf
+import numpy as np
+
+# Giả lập thiết lập đường dẫn dữ liệu (Hoặc sử dụng tensorflow_datasets để lấy mẫu thực tế)
+# Trong môi trường thực tế, bạn sẽ tải tệp aclImdb_v1.tar.gz và phân tách thành các danh sách đường dẫn:
+# train_pos, train_neg, valid_pos, valid_neg, test_pos, test_neg...
+
+# Để mô phỏng hoàn chỉnh cơ chế toán học của mô hình nhúng câu tùy chỉnh,
+# ta tạo dữ liệu văn bản giả lập có độ dài thay đổi:
+train_reviews = [
+    "this movie was absolutely fantastic and brilliant",
+    "terrible acting worst director garbage storyline",
+    "highly recommended great cast beautiful cinematography",
+    "boring plot waste of time and money",
+    "loved the plot characters were well developed",
+    "i hated everything about this film extremely disappointing"
+] * 1000 # Nhân rộng quy mô tập huấn luyện
+train_labels = * 1000
+
+valid_reviews = ["amazing beautiful loved it", "awful terrible waste of money"] * 200
+valid_labels = * 200
+
+# 1. Tạo tf.data.Dataset hiệu năng cao
+batch_size = 32
+train_set = tf.data.Dataset.from_tensor_slices((train_reviews, train_labels)).shuffle(1000, seed=42).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+valid_set = tf.data.Dataset.from_tensor_slices((valid_reviews, valid_labels)).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+
+# 2. Cấu hình lớp Vector hóa văn bản TextVectorization
+max_tokens = 1000
+text_vectorization = tf.keras.layers.TextVectorization(
+    max_tokens=max_tokens, 
+    output_mode="int" # Xuất ra chuỗi ID số nguyên (để đưa vào lớp Embedding)
+)
+# Thích ứng từ vựng dựa trên tập mẫu huấn luyện
+sample_reviews = train_set.map(lambda review, label: review)
+text_vectorization.adapt(sample_reviews)
+
+# 3. Hàm toán học tính toán Trung bình nhúng đã điều chỉnh tỷ lệ (Rescaled Mean Embedding)
+@tf.keras.utils.register_keras_serializable(package="custom")
+def compute_mean_embedding(inputs):
+    # inputs có shape: [batch_size, sequence_length, embedding_size]
+    
+    # Đếm số lượng từ thực tế (không phải padding) dọc theo trục sequence_length
+    # Vì mask_zero=True nên các token đệm sẽ có vector nhúng bằng đúng vector 0
+    not_pad = tf.math.count_nonzero(inputs, axis=-1) # shape: [batch_size, sequence_length]
+    n_words = tf.math.count_nonzero(not_pad, axis=-1, keepdims=True) # shape: [batch_size, 1]
+    
+    # Bảo vệ phép chia khỏi lỗi chia cho 0 trong trường hợp câu rỗng
+    n_words = tf.maximum(n_words, 1)
+    
+    # Tính căn bậc hai của số lượng từ N
+    sqrt_n_words = tf.math.sqrt(tf.cast(n_words, tf.float32))
+    
+    # Tính tổng vector nhúng S và chia cho căn bậc hai của N
+    return tf.reduce_sum(inputs, axis=1) / sqrt_n_words
+
+# 4. Xây dựng Mô hình học sâu với các lớp Keras Preprocessing và Custom Lambda
+embedding_size = 20
+
+model_imdb = tf.keras.Sequential([
+    text_vectorization,
+    tf.keras.layers.Embedding(
+        input_dim=max_tokens,
+        output_dim=embedding_size,
+        mask_zero=True # Rất quan trọng: giúp bỏ qua các token đệm trong các phép toán sau
+    ),
+    # Nhúng hàm toán học tùy chỉnh của chúng ta thông qua lớp Lambda của Keras
+    tf.keras.layers.Lambda(compute_mean_embedding),
+    tf.keras.layers.Dense(100, activation="relu"),
+    tf.keras.layers.Dense(1, activation="sigmoid") # Phân loại nhị phân (0: tiêu cực, 1: tích cực)
+])
+
+# 5. Biên dịch và Huấn luyện mô hình phân loại cảm xúc
+model_imdb.compile(
+    loss="binary_crossentropy", 
+    optimizer="nadam", 
+    metrics=["accuracy"]
+)
+
+print("\n--- BẮT ĐẦU HUÂN LUYỆN MÔ HÌNH IMDb EMBEDDING TÙY CHỈNH ---")
+model_imdb.fit(train_set, epochs=5, validation_data=valid_set)
+
+# 6. Dự đoán thử nghiệm trực quan
+test_sentences = [
+    "absolutely waste of time",
+    "it was a brilliant and beautiful masterpiece"
+]
+predictions = model_imdb.predict(test_sentences)
+for sentence, prob in zip(test_sentences, predictions):
+    sentiment = "Tích cực (Positive)" if prob > 0.5 else "Tiêu cực (Negative)"
+    print(f"Câu: '{sentence}' => Xác suất: {prob:.4f} | Nhận diện: **{sentiment}**")
+``` [cite: 254, 255, 256, 257, 258, 259, 260]
+
+---
+
+    </div>
+  </div>
+</div>
+
+
 <!-- tabs:end -->
