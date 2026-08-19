@@ -2146,7 +2146,7 @@ my_logs/run_2022_08_01_17_25_59
 [cite: 1]
 
 Tin tốt là Keras cung cấp một callback
-TensorBoard()` tiện lợi sẽ đảm nhiệm việc tạo thư mục nhật ký cho bạn (cùng với
+`TensorBoard()` tiện lợi sẽ đảm nhiệm việc tạo thư mục nhật ký cho bạn (cùng với
 các thư mục cha của nó nếu cần), và nó sẽ tạo các tệp sự kiện và ghi các bản
 tóm tắt vào chúng trong quá trình huấn luyện. Nó sẽ đo mất mát và các số liệu
 huấn luyện và xác thực của mô hình của bạn (trong trường hợp này là MSE và
@@ -2296,7 +2296,7 @@ cùng, bạn đã học cách sử dụng TensorBoard để trực quan hóa. B�
 tục và sử dụng mạng nơ-ron để giải quyết nhiều vấn đề! Tuy nhiên, bạn có thể tự
 hỏi làm thế nào để chọn số lớp ẩn, số nơ-ron trong mạng và tất cả các siêu tham
 số khác. Hãy xem xét điều này bây giờ. [cite: 1]
-```
+
 
 
 ### Tinh chỉnh các siêu tham số của mạng
