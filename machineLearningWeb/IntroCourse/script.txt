@@ -1,0 +1,104 @@
+Dưới đây là kịch bản (script) diễn giải chi tiết cho 20 slide của bài giảng "Giới thiệu môn học Máy học":
+
+---
+**Slide 1: Tiêu đề - Máy học (3 Tín chỉ)**
+"Chào mừng các bạn sinh viên đến với học phần Máy học, một trong những môn học hấp dẫn và quan trọng nhất hiện nay. Môn học này có thời lượng 3 tín chỉ, với mục tiêu cao nhất là giúp các bạn 'Làm chủ thuật toán - Dẫn đầu tương lai công nghệ'. Thầy là TS. Trần Thành Thắng, đến từ Khoa Công nghệ Thông tin & AI, Đại học Đông Á, sẽ đồng hành cùng các bạn trong suốt học kỳ này. Chúng ta sẽ cùng nhau khám phá 'bộ não' của trí tuệ nhân tạo."
+
+---
+**Slide 2: Mục Tiêu Cốt Lõi**
+"Khóa học này được thiết kế với 3 mục tiêu cốt lõi:
+Thứ nhất, Hiểu Sâu Khái Niệm. Các bạn sẽ không chỉ học cách dùng tool, mà còn phải nắm vững nền tảng toán học và cơ chế hoạt động bên trong của các thuật toán Machine Learning và Deep Learning.
+Thứ hai, Xây Dựng Mô Hình. Các bạn sẽ tự tay lập trình, tối ưu hóa siêu tham số và huấn luyện các mạng nơ-ron phức tạp sử dụng TensorFlow và Keras.
+Thứ ba, Triển Khai Thực Tế. Học xong là phải dùng được. Các bạn sẽ biết cách đóng gói sản phẩm AI và triển khai lên môi trường thực tế (Scalable AI) để sẵn sàng phục vụ hàng triệu người dùng."
+
+---
+**Slide 3: Thang Điểm Đánh Giá Môn Học**
+"Về cách thức đánh giá, môn học chú trọng vào thực hành và kỹ năng thực tế:
+- 50% số điểm sẽ nằm ở Dự Án Cuối Môn. Đây là trọng tâm của khóa học, yêu cầu các bạn làm việc nhóm để xây dựng một ứng dụng AI End-to-End giải quyết một bài toán thực tế.
+- 25% là Điểm Thường Xuyên từ các bài tập Lab, bài tập về nhà và thử thách lập trình hàng tuần.
+- 15% dành cho bài kiểm tra Giữa Kỳ nhằm đánh giá lý thuyết và mức độ hiểu cấu trúc thuật toán.
+- 10% còn lại là điểm Chuyên Cần & Tương Tác. Thầy rất khuyến khích các bạn thảo luận, đặt câu hỏi và phản biện tại lớp."
+
+---
+**Slide 4: Chặng 1 | Nền Tảng Machine Learning Cổ Điển**
+"Nội dung môn học được chia làm 5 chặng. Chặng 1 bao gồm từ Chương 1 đến Chương 7. Trước khi bay cao với Deep Learning, chúng ta phải đi những bước thật vững chắc bằng các thuật toán Machine Learning cổ điển. Chúng ta sẽ tìm hiểu về Phân loại (Classification) & Hồi quy (Regression), thuật toán Máy học Vector Hỗ trợ (SVM) mạnh mẽ, trực quan hóa logic với Cây Quyết Định (Decision Trees), và cuối cùng là kết hợp nhiều mô hình yếu thành một mô hình mạnh thông qua Học Tập Hợp (Ensemble Learning) như Random Forests."
+
+---
+**Slide 5: Module 1 - Classical ML Foundations (Chi tiết)**
+"Đi sâu hơn vào Module 1, chúng ta sẽ làm rõ khái niệm Machine Learning là gì - đó là việc dạy máy tính tự học từ dữ liệu mà không cần lập trình các quy tắc cứng nhắc. Các bạn sẽ làm quen với các bài toán có giám sát (Supervised learning) phân ra thành Phân loại (dự đoán nhãn rời rạc) và Hồi quy (dự đoán số liên tục). Chúng ta sẽ đối mặt với thách thức lớn nhất là Overfitting (Quá khớp). Ngoài ra, các bạn sẽ hiểu được tư duy hình học của SVM là tìm 'con đường' rộng nhất để phân tách dữ liệu, cũng như logic hoạt động của Cây quyết định."
+
+---
+**Slide 6: Chặng 2 | Tiền Xử Lý Dữ Liệu & Học Không Giám Sát**
+"Bước sang Chặng 2 (Chương 8, 9, 13), chúng ta sẽ khám phá thế giới của dữ liệu không nhãn và kỹ thuật tiền xử lý. Chúng ta sẽ học cách Giảm chiều dữ liệu bằng PCA và t-SNE để nén không gian và loại bỏ nhiễu. Tiếp theo là Phân cụm dữ liệu (Clustering) bằng K-Means hoặc GMM để gom nhóm các dữ liệu có sự tương đồng. Đặc biệt, chúng ta sẽ học cách xây dựng các đường ống dẫn dữ liệu (Data Pipelines) tốc độ cao bằng kiến trúc tf.data để cung cấp dữ liệu liên tục cho mô hình."
+
+---
+**Slide 7: Module 2 - Preprocessing & Unsupervised Learning (Chi tiết)**
+"Ở Module 2 này, chúng ta sẽ so sánh kỹ hơn: PCA thiên về nén và tăng tốc, trong khi t-SNE cực kỳ xuất sắc trong việc trực quan hóa dữ liệu phức tạp. Đối với phân cụm, K-Means thực hiện phân cụm cứng (rõ ràng ranh giới), còn GMM thực hiện phân cụm mềm dựa trên xác suất, rất tốt để phát hiện bất thường. Một điểm nhấn cực kỳ quan trọng về kỹ thuật là `tf.data`. Các bạn sẽ học cách dùng `prefetch` để tối ưu hóa hiệu năng, giúp CPU chuẩn bị sẵn dữ liệu trong lúc GPU đang huấn luyện, tránh tình trạng thắt cổ chai."
+
+---
+**Slide 8: Chặng 3 | Học Sâu & Chinh Phục TensorFlow**
+"Chặng 3 (Chương 10 đến 12) chính là kỷ nguyên của Neural Networks (Mạng nơ-ron). Đây là lúc chúng ta khai phá sức mạnh của framework TensorFlow. Các bạn sẽ tìm hiểu cấu trúc của Mạng Nơ-ron Nhân Tạo (ANNs), các hàm kích hoạt và cách tinh chỉnh siêu tham số. Đặc biệt, chúng ta sẽ đi sâu vào Tự Động Vi Phân (Autodiff) và thuật toán Lan truyền ngược (Backpropagation) - trái tim của quá trình học. Cuối cùng, chúng ta sẽ học cách tùy chỉnh linh hoạt các layer và hàm loss của riêng mình."
+
+---
+**Slide 9: Module 3 - Deep Learning & TensorFlow (Chi tiết)**
+"Module này rất đồ sộ. Ở Chương 10, chúng ta bắt đầu từ Perceptron cơ bản tiến đến MLP đa lớp, và làm quen với 3 phương pháp xây dựng mô hình trong Keras: Sequential, Functional, và Subclassing API. Chương 11 sẽ giải quyết bài toán khó như Gradient biến mất (Vanishing Gradient) bằng các kỹ thuật khởi tạo trọng số (He/Glorot) và hàm kích hoạt hiện đại (ReLU/Swish). Các bạn cũng sẽ biết cách dùng Early Stopping hay TensorBoard để kiểm soát huấn luyện. Chương 12 sẽ biến bạn thành một 'phù thủy' TensorFlow với khả năng tùy biến mọi thành phần (Custom Components) và sử dụng GradientTape."
+
+---
+**Slide 10: Chặng 4 | AI Nâng Cao & Mô Hình Sinh**
+"Chặng 4 (Chương 14 - 18) sẽ đưa các bạn đến với ranh giới của AI hiện đại. Chúng ta sẽ ứng dụng Mạng tích chập (CNN) cho bài toán Thị Giác Máy Tính (Computer Vision). Sau đó là Xử Lý Ngôn Ngữ Tự Nhiên (NLP) với sức mạnh của kiến trúc Transformers và cơ chế Attention. Chúng ta cũng sẽ đắm chìm vào thế giới sáng tạo của Mô Hình Sinh (Generative Models) như GANs hay Diffusion Models. Cuối cùng là Học Tăng Cường (Reinforcement Learning), nơi AI tự học cách ra quyết định thông qua thử sai."
+
+---
+**Slide 11: Module 4 - Advanced AI & Generative Models (Chi tiết)**
+"Chi tiết hơn cho Module 4: CNN sẽ sử dụng cơ chế cửa sổ trượt (sliding window) để nhận diện đặc trưng cục bộ hình ảnh. Trái lại, RNN và Transformers xử lý chuỗi dữ liệu (văn bản, âm thanh). Cơ chế Attention là một cuộc cách mạng, giúp mô hình 'chú ý' đúng vào các từ vựng quan trọng trong ngữ cảnh. Về mô hình sinh, chúng ta sẽ chứng kiến cuộc 'trò chơi đối đầu' trong GANs giữa Generator và Discriminator, và so sánh nó với Diffusion Models (như Midjourney hay Stable Diffusion). Trong Học tăng cường, chúng ta sẽ giải quyết bài toán cân bằng giữa việc Khám phá (Explore) và Khai thác (Exploit)."
+
+---
+**Slide 12: Chặng 5 | Vận Hành Ở Quy Mô Lớn & MLOps**
+"Chặng cuối cùng (Chương 19) là thứ phân biệt một sinh viên làm đồ án và một Kỹ sư AI thực thụ: Đưa mô hình ra thế giới thực (MLOps). Chúng ta sẽ học cách huấn luyện trên Môi trường Đám mây (Google Vertex AI). Sau khi có mô hình, chúng ta sẽ cung cấp nó dưới dạng API bằng TensorFlow Serving. Để chạy được trên điện thoại hay trình duyệt web, các bạn phải biết cách Tối ưu hóa trọng số (Quantization) và sử dụng TFLite cũng như TensorFlow.js."
+
+---
+**Slide 13: Module 5 - Production Scaling & MLOps (Chi tiết)**
+"Đi sâu vào quá trình triển khai: Mô hình của bạn sẽ được xuất ra định dạng SavedModel. TF Serving hỗ trợ cả giao thức REST (dễ dùng) và gRPC (hiệu suất cao, độ trễ thấp). Một kỹ thuật cực kỳ giá trị là Post-training Quantization, giúp giảm kích thước mô hình từ Float 32-bit xuống Integer 8-bit, làm mô hình nhẹ đi 4 lần mà ít ảnh hưởng đến độ chính xác. Nhờ đó, AI có thể chạy mượt mà trên điện thoại (TFLite) hoặc ngay trên trình duyệt web của người dùng (TF.js)."
+
+---
+**Slide 14: Đồ Án Cuối Môn | Kiến Tạo Ứng Dụng End-to-End**
+"Nhắc lại về Đồ án cuối môn chiếm 50% số điểm. Đây là lúc các bạn thể hiện toàn bộ kỹ năng. Quy trình gồm 4 bước: 
+1. Mục tiêu: Xác định một bài toán thực tế có giá trị.
+2. Dữ liệu: Tự thu thập, làm sạch và phân tích (EDA).
+3. Huấn luyện: Thiết kế kiến trúc và tinh chỉnh mô hình tốt nhất.
+4. Triển khai: Phải đóng gói được thành một Web Service hoặc Live API hoàn chỉnh chứ không chỉ dừng lại ở file code Jupyter Notebook."
+
+---
+**Slide 15: Hệ Sinh Thái Công Nghệ (Tech Stack)**
+"Để làm được tất cả những điều trên, đây là Hệ sinh thái công nghệ chuẩn công nghiệp (Industry-Standard) mà chúng ta sẽ làm chủ. Nó được xây dựng theo hình tháp:
+Tầng 1 (Cơ sở dữ liệu & Toán học): Python, NumPy, Pandas, Matplotlib.
+Tầng 2 (Học máy cổ điển): Thư viện Scikit-Learn.
+Tầng 3 (Học sâu cốt lõi): TensorFlow và Keras.
+Tầng 4 (Môi trường huấn luyện): Google Colab để tận dụng GPU đám mây miễn phí, tối ưu thời gian huấn luyện."
+
+---
+**Slide 16: Tri Thức Cốt Lõi & Mở Rộng Tư Duy**
+"Tài liệu gối đầu giường của chúng ta là cuốn sách giáo trình 'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow' của tác giả Aurélien Géron - được mệnh danh là 'kinh thánh' thực hành cho kỹ sư AI. Bên cạnh đó, thầy khuyến khích các bạn mở rộng tư duy bằng cách theo dõi các Kênh Nghe Nhìn hàng đầu thế giới như Lex Fridman Podcast để nghe các bộ óc vĩ đại bàn về triết học AI, và kênh ML Street Talk (MLST) để cập nhật các nghiên cứu khoa học (papers) mới nhất."
+
+---
+**Slide 17: Từ Con Số 0 Đến Kỹ Sư AI**
+"Khóa học này được thiết kế không phải để cưỡi ngựa xem hoa. Nó là một 'lò luyện' cường độ cao. Từ những khái niệm lý thuyết khô khan, các bạn sẽ được trang bị vũ khí để trở thành những kỹ sư kiến tạo tương lai. Hãy tận dụng tối đa thời gian trên lớp, kết nối với đồng đội để xây dựng những giải pháp thực tế. Giống như câu nói: 'Tương lai không được dự đoán, tương lai do chính bạn lập trình.' "
+
+---
+**Slide 18: Khóa Học Này Mở Ra Chân Trời Nào?**
+"Sau khi hoàn thành xuất sắc môn học này, chân trời nghề nghiệp của các bạn rất rộng mở. Các bạn có thể định hướng trở thành:
+- Machine Learning Engineer: Kỹ sư xây dựng và đưa các hệ thống AI quy mô lớn vào sản xuất tại các tập đoàn công nghệ.
+- Data Scientist: Nhà Khoa học dữ liệu, người tìm ra các câu chuyện và giá trị kinh doanh đằng sau những con số khổng lồ.
+- AI Researcher hoặc chuyên gia MLOps: Tập trung nghiên cứu kiến trúc mới hoặc quản lý vòng đời triển khai mô hình AI."
+
+---
+**Slide 19: Hành Trang Cần Chuẩn Bị**
+"Để sống sót và tỏa sáng trong khóa học, các bạn cần chuẩn bị hành trang gì?
+Về Nền tảng toán học: Cần ôn lại Đại số tuyến tính (Ma trận, Vector) và Giải tích cơ bản (Đạo hàm, Tích phân) để hiểu tối ưu hóa.
+Về Kỹ năng lập trình: Cần thành thạo Python cơ bản.
+Nếu bạn nào lỡ quên, đừng quá lo lắng! Thầy sẽ cung cấp các tài liệu bổ trợ (Cheat-sheets) ngắn gọn, súc tích để các bạn lấy lại gốc nhanh chóng ngay trong tuần học đầu tiên."
+
+---
+**Slide 20: Q & A (Hỏi & Đáp)**
+"Đó là toàn bộ bức tranh tổng quan về môn học của chúng ta. Bạn đã sẵn sàng để trở thành một kỹ sư AI chưa? 
+Bây giờ, thầy sẽ dành thời gian để giải đáp mọi thắc mắc của các bạn. 
+Nếu có bất kỳ câu hỏi nào sau buổi học, các bạn có thể liên hệ với thầy qua email `lienhe@donga.edu.vn`, gặp trực tiếp tại Văn phòng Khoa Công nghệ Thông tin & AI, hoặc thảo luận trên kênh hỗ trợ sinh viên Microsoft Teams. Xin cảm ơn các bạn!"
