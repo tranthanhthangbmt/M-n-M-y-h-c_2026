@@ -1,0 +1,49 @@
+Slide 1: TRÍ TUỆ NHÂN TẠO: CÁCH TIẾP CẬN HIỆN ĐẠI
+Người 1: Chào các bạn sinh viên. Chào mừng các em đến với bài giảng đầu tiên chuẩn bị cho môn học Học Máy (Machine Learning). Trước khi chúng ta đắm mình vào các thuật toán, chúng ta cần một nền tảng tư duy vững chắc. Chủ đề hôm nay là "Trí tuệ nhân tạo: Cách tiếp cận hiện đại".
+Người 2: Chào các bạn. Trong bài giảng này, chúng ta sẽ tập trung vào nền tảng Nhận thức và Hành vi của AI. Nội dung được đúc kết từ cuốn giáo trình được coi là "kinh thánh" của ngành AI do Stuart J. Russell và Peter Norvig chắp bút. Việc hiểu rõ gốc rễ của AI sẽ là kim chỉ nam giúp các em không bị lạc lối giữa rừng công nghệ Học máy phức tạp sau này.
+
+Slide 2: HÀNH TRÌNH NHẬP MÔN TRÍ TUỆ NHÂN TẠO
+Người 1: Hành trình hôm nay của chúng ta sẽ đi qua 3 trạm dừng chân chính. Trạm đầu tiên, chúng ta phải trả lời được câu hỏi cốt lõi: AI thực chất là gì? Có 4 hướng tiếp cận chính để định nghĩa AI, nhưng chúng ta sẽ tập trung vào "Mô hình chuẩn", nơi các hệ thống được thiết kế để "Hành động hợp lý". Các em cũng sẽ phân biệt được bức tranh tổng thể: AI là toàn bộ vũ trụ bao la, còn Machine Learning chỉ là một nhánh nhỏ bên trong giúp hệ thống tự cải thiện từ kinh nghiệm.
+Người 2: Ở trạm thứ hai, chúng ta sẽ làm quen với khái niệm "Tác tử thông minh" (Intelligent Agents) - các thực thể biết nhận thông tin từ môi trường (Percepts) và ra quyết định hành động (Actions). Trạm cuối cùng, chúng ta sẽ thấy AI không hề đứng đơn độc, nó là sự hội tụ tinh hoa từ Triết học, Toán học đến Khoa học thần kinh. Khi so sánh tốc độ và kiến trúc giữa não bộ con người và máy tính, các em sẽ hiểu tại sao chúng ta lại có những hệ thống đột phá như xe tự lái hay AlphaGo đánh bại kỳ thủ cờ vây.
+
+Slide 3: BỐN HƯỚNG TIẾP CẬN CỐT LÕI CỦA AI
+Người 1: Cùng đi sâu vào 4 hướng tiếp cận AI. Các nhà khoa học đã chia định nghĩa AI thành một ma trận với 2 trục: Trục ngang là Tư duy so với Hành động, trục dọc là Giống con người so với Hợp lý. Đầu tiên là "Suy nghĩ giống con người" - đây là góc nhìn của Khoa học nhận thức, cố gắng mô phỏng cách não bộ làm việc.
+Người 2: Góc nhìn thứ hai là "Hành động giống con người", với minh chứng kinh điển là Phép thử Turing. Góc nhìn thứ ba là "Suy nghĩ hợp lý", tức là tiếp cận bằng các quy luật logic toán học tuyệt đối. Tuy nhiên, hướng đi thứ tư, cũng là đích đến thực tế nhất của AI hiện đại, chính là ô "Hành động hợp lý" (Acting Rationally). 
+Người 1: Chính xác! Chúng ta thiết kế các Tác tử sao cho chúng đưa ra quyết định tốt nhất để tối đa hóa lợi ích kỳ vọng, dù cách chúng suy nghĩ có giống con người hay không. Đây chính là "Mô hình chuẩn" (Standard Model) đang chi phối thiết kế AI ngày nay.
+
+Slide 4: KHUNG KIẾN TRÚC TÁC TỬ & MÔI TRƯỜNG (PEAS)
+Người 2: Khi đã xác định được mục tiêu là xây dựng Tác tử hợp lý, làm sao để định hình chúng? Chìa khóa nằm ở khung kiến trúc PEAS. Lấy ví dụ về một chiếc xe tự lái, yếu tố đầu tiên là P (Performance - Hiệu suất). Tác tử phải được đánh giá qua sự an toàn, tuân thủ luật lệ và tiết kiệm thời gian.
+Người 1: Yếu tố thứ hai là E (Environment - Môi trường), xe tự lái phải hoạt động trên đường phố phức tạp với người đi bộ và thời tiết thay đổi liên tục. Tiếp theo là A (Actuators - Cơ cấu chấp hành), xe sẽ tương tác với thế giới qua vô lăng, chân ga và phanh. Cuối cùng là S (Sensors - Cảm biến), xe thu thập dữ liệu bằng Camera, Radar và GPS. Mọi hệ thống AI đều vận hành không ngừng nghỉ qua vòng lặp: Cảm nhận môi trường, ra quyết định và thực thi hành động.
+
+Slide 5: PHÂN CẤP TÁC TỬ THÔNG MINH
+Người 1: Không phải hệ thống AI nào cũng đạt mức độ thông minh như nhau. Sự thông minh tiến hóa qua 4 cấp độ. Cấp độ thấp nhất là "Tác tử Phản xạ đơn giản", hoạt động hoàn toàn theo các quy tắc Nếu-Thì, phản ứng tức thời với những gì nó nhìn thấy hiện tại mà không có ký ức.
+Người 2: Lên cao hơn là "Tác tử Dựa trên mô hình". Ở cấp độ này, AI đã bắt đầu có bộ nhớ nội tại, ghi nhận lại quá khứ để hiểu thế giới đang thay đổi ra sao. Cấp độ 3 là "Tác tử Dựa trên mục tiêu", AI có thể nhìn về tương lai, khảo sát các kịch bản và lập kế hoạch đường đi để đạt đích. 
+Người 1: Và đỉnh cao nhất là "Tác tử Dựa trên tiện ích" (Utility-based Agent). Nó không chỉ mù quáng hoàn thành mục tiêu, mà còn biết đánh giá để chọn con đường tối ưu nhất, tiết kiệm chi phí và mang lại mức độ hài lòng cao nhất.
+
+Slide 6: GIẢI QUYẾT VẤN ĐỀ BẰNG TÌM KIẾM & LẬP KẾ HOẠCH
+Người 2: Thế nhưng, làm thế nào một tác tử có thể tìm ra con đường tốt nhất đó? Lời giải nằm ở bài toán Tìm kiếm và Lập kế hoạch. Bước đầu tiên, AI mô hình hóa thế giới phức tạp thành một "Không gian trạng thái" dạng đồ thị lưới với điểm bắt đầu và điểm kết thúc.
+Người 1: Ở bước thứ 2, nếu thử mò mẫm từng con đường thì hệ thống sẽ quá tải. Vậy nên AI dùng "Tìm kiếm Heuristic" - ví dụ như thuật toán A* - sử dụng một hàm ước lượng để dẫn đường thẳng tiến tới đích nhanh nhất. Bước 3 là Lập kế hoạch tự động, AI sẽ tự cắt nhỏ một mục tiêu khổng lồ thành chuỗi các hành vi vi mô và sắp xếp thứ tự thực hiện, giống như cách não bộ ra lệnh cho cánh tay robot di chuyển từng khớp xương một cách nhịp nhàng.
+
+Slide 7: TRI THỨC VÀ LẬP LUẬN LOGIC
+Người 1: Để ra quyết định, AI cần có tri thức. Trước đây, AI biểu diễn tri thức bằng Logic Mệnh đề (Propositional Logic) - rất cơ bản, chỉ có Đúng hoặc Sai. Dù rất chắc chắn nhưng nó lại quá cứng nhắc và hoàn toàn thiếu khả năng tổng quát hóa các tình huống phức tạp.
+Người 2: Khắc phục điểm yếu đó, AI chuyển sang sử dụng Logic Bậc nhất (First-Order Logic). Uyển chuyển hơn rất nhiều, nó biểu diễn thế giới qua Đối tượng, Thuộc tính và các mối Quan hệ, kết hợp với lượng từ "Tất cả" hoặc "Tồn tại". 
+Người 1: Dựa trên nền tảng này, AI xây dựng "Bản thể học" (Ontology) - một siêu mạng lưới phân loại mọi khái niệm trong thế giới (từ đồ vật, sự kiện đến không gian và thời gian) để máy tính thực sự "hiểu" cách thế giới vận hành.
+
+Slide 8: QUYẾT ĐỊNH DƯỚI SỰ BẤT ĐỊNH
+Người 2: Tuy nhiên, một vấn đề lớn xuất hiện: Thế giới thực không hề có logic tuyệt đối trắng đen. Nó luôn chứa đựng sự bất định và rủi ro. Quyết định luôn nằm trên bàn cân với xác suất sai số. Đó là lý do AI phải dùng các công cụ toán học dựa trên Xác suất.
+Người 1: Cụ thể, "Mạng Bayes" (Bayesian Networks) giúp hệ thống chuyển từ suy luận chắc chắn sang biểu diễn tri thức dưới dạng xác suất, từ đó liên tục cập nhật niềm tin khi có dữ liệu mới - một nền tảng tuyệt vời cho chẩn đoán y khoa. Còn đối với các hành động diễn ra liên tiếp mà kết quả không thể lường trước, "Quá trình Quyết định Markov" (MDP) sẽ là công cụ hoàn hảo giúp AI vạch ra chuỗi hành động tối ưu hóa lợi ích lâu dài dù vấp phải rủi ro.
+
+Slide 9: ĐIỂM BÙNG PHÁT: TỪ LOGIC ĐẾN HỌC MÁY
+Người 1: Đây là thời khắc lịch sử tạo ra bước nhảy vọt cho AI! Ở AI Cổ điển, chúng ta đi theo hướng "Diễn dịch" (Deduction): Con người tự viết ra các quy tắc logic cứng nhắc, nạp quy tắc và dữ liệu vào máy tính để nó tính ra kết quả. Phương pháp này nhanh chóng bế tắc vì ta không thể viết luật cho mọi vấn đề phức tạp trên đời.
+Người 2: Đúng vậy. Và rồi sự thay đổi đã đến: Học Máy (Machine Learning) xuất hiện, chuyển đổi phương pháp sang "Quy nạp" (Induction). Giờ đây, chúng ta chỉ cần nạp cho máy tính khối lượng Dữ liệu lớn cùng với Kết quả mong muốn. Máy tính sẽ tự động đào xới, phân tích và sinh ra Mô hình hay Quy luật hoạt động. Máy móc đã vượt ra khỏi giới hạn được lập trình sẵn và chính thức biết tự học!
+
+Slide 10: KIẾN TRÚC HỌC MÁY & HỌC SÂU
+Người 1: Lịch sử đã xây dựng nên một kiến trúc AI vô cùng bề thế dựa trên 3 trụ cột cốt lõi. Trụ cột đầu tiên là Học có giám sát (Supervised Learning), nơi máy móc học từ dữ liệu đã gán nhãn, giải quyết các bài toán Dự đoán số liệu (Regression) và Phân loại (Classification).
+Người 2: Trụ cột ở giữa, vững chãi nhất hiện nay là Học Sâu (Deep Learning). Bằng cách mô phỏng cấu trúc nơ-ron sinh học, Học sâu tạo ra mạng nơ-ron đa tầng (CNN cho hình ảnh, RNN cho chuỗi). Sức mạnh vô song của nó nằm ở chỗ tự động trích xuất các đặc trưng tiềm ẩn từ dữ liệu thô mà con người không cần phải chỉ dạy thủ công.
+Người 1: Trụ cột thứ ba là Học Tăng cường (Reinforcement Learning) - lấy cảm hứng từ tâm lý học hành vi. AI thực hiện các hành động "Thử và Sai" trong một môi trường biến động, tự điều chỉnh hành vi để tối đa hóa điểm thưởng. Đây là chìa khóa tạo ra các hệ thống robot thông minh và AI đánh bại con người trong game.
+
+Slide 11: ỨNG DỤNG & HƯỚNG TỚI TƯƠNG LAI
+Người 2: Khi bộ não AI hội tụ đủ các sức mạnh này, tiềm năng ứng dụng mở ra vô tận. Trong lĩnh vực Xử lý Ngôn ngữ Tự nhiên (NLP), kiến trúc Transformers đang dẫn dắt cuộc cách mạng giúp máy tính hiểu, dịch thuật và tạo văn bản tự nhiên đến ngỡ ngàng. 
+Người 1: Cùng với đó, Thị giác Máy tính (Computer Vision) mang lại đôi mắt cho máy móc để nhận diện và tái tạo không gian 3D. Còn Robot học (Robotics) thì kết nối trí tuệ ấy với điều khiển cơ học tinh vi để thay đổi diện mạo ngành công nghiệp.
+Người 2: Hành trang tri thức nền tảng của các bạn đã rất đầy đủ. Những khái niệm cốt lõi về Tác tử, Môi trường, Học Máy, Học Sâu sẽ là hành trang vô giá cho các bạn.
+Người 1: Chào mừng các bạn sinh viên chính thức bước qua ngưỡng cửa và bước vào kỷ nguyên thực hành lập trình của môn học Học Máy! Cảm ơn các bạn đã lắng nghe.
