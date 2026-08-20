@@ -1,0 +1,81 @@
+Slide 1: MÁY HỌC - 3 TÍN CHỈ
+Người 1: Chào các bạn sinh viên. Chào mừng các em đã chính thức bước vào học phần "Máy học" (Machine Learning). Đây là một trong những môn học cốt lõi và mang tính thời sự nhất của khoa học máy tính hiện nay. Môn học này có thời lượng 3 tín chỉ, với khẩu hiệu định hướng xuyên suốt: "Làm chủ thuật toán - Dẫn đầu tương lai công nghệ".
+Người 2: Chào các bạn! Thầy đại diện cho Khoa Công nghệ Thông tin & AI, Đại học Đông Á, sẽ đồng hành cùng các em trong chặng đường sắp tới. Chúng ta không chỉ học cách sử dụng các công cụ có sẵn, mà mục tiêu thực sự là đào sâu vào bản chất, "bộ não" đằng sau sự thông minh của trí tuệ nhân tạo.
+
+Slide 2: MỤC TIÊU CỐT LÕI
+Người 1: Để định hướng rõ ràng ngay từ đầu, khóa học này được thiết kế xoay quanh 3 mục tiêu cốt lõi. Đầu tiên là "Hiểu Sâu Khái Niệm". Nghĩa là chúng ta không học vẹt các dòng code. Các em phải nắm vững nền tảng toán học, tư duy đằng sau và cơ chế hoạt động chi tiết của các thuật toán Machine Learning cũng như Deep Learning.
+Người 2: Mục tiêu thứ hai là "Xây Dựng Mô Hình". Lý thuyết phải đi đôi với thực hành. Các em sẽ tự tay lập trình, thực hiện tối ưu hóa các siêu tham số và tinh chỉnh kiến trúc mạng nơ-ron phức tạp thông qua các framework mạnh mẽ nhất thế giới như TensorFlow và Keras. 
+Người 1: Và mục tiêu cuối cùng, cũng là điểm khác biệt của khóa học: "Triển Khai Thực Tế". Học xong không thể để mô hình nằm chết trên máy cá nhân. Các em sẽ biết cách đóng gói sản phẩm AI, đưa nó lên môi trường thực tế (Scalable AI) để sẵn sàng phục vụ hàng triệu người dùng.
+
+Slide 3: THANG ĐIỂM ĐÁNH GIÁ MÔN HỌC
+Người 2: Về phương pháp đánh giá, môn học này tập trung rất mạnh vào thực hành và giải quyết vấn đề. Đáng chú ý nhất là Dự Án Cuối Môn chiếm 50% số điểm. Đây là trọng tâm của toàn bộ khóa học, nơi các em làm việc nhóm để xây dựng một ứng dụng AI hoàn chỉnh (End-to-End), giải quyết trực tiếp một bài toán kinh doanh hoặc kỹ thuật thực tế.
+Người 1: Ngoài ra, 25% điểm Thường Xuyên sẽ đến từ các bài tập Lab, bài tập về nhà và các thử thách lập trình (Coding tasks) hàng tuần. Chúng ta cũng có 15% dành cho bài thi Giữa Kỳ nhằm kiểm tra lý thuyết và mức độ hiểu sâu về cấu trúc thuật toán. Cuối cùng, 10% là điểm Chuyên Cần & Tương Tác, thầy rất khuyến khích tinh thần thảo luận, phản biện và đóng góp xây dựng bài tại lớp.
+
+Slide 4: CHẶNG 1 | NỀN TẢNG MACHINE LEARNING CỔ ĐIỂN
+Người 1: Bố cục chương trình được chia thành 5 chặng. Chặng 1, kéo dài từ Chương 1 đến Chương 7, là nơi chúng ta chinh phục các thuật toán nền móng trước khi bước vào kỷ nguyên Học sâu. 
+Người 2: Cụ thể, chúng ta sẽ bắt đầu với Phân loại và Hồi quy, từ Linear đến Polynomial và Softmax Regression. Tiếp theo là thuật toán Máy học Vector Hỗ trợ (SVM) mạnh mẽ với khả năng tối ưu hóa ranh giới tuyến tính và phi tuyến. Sau đó, ta sẽ trực quan hóa logic thông qua Cây Quyết Định (Decision Trees) và cuối cùng là kết hợp sức mạnh của nhiều mô hình yếu thành một cỗ máy dự đoán xuất sắc qua phương pháp Học Tập Hợp (Ensemble Learning) như Random Forests.
+
+Slide 5: MODULE 1 - CLASSICAL ML FOUNDATIONS (CHI TIẾT)
+Người 2: Đi sâu hơn vào Module 1, chúng ta sẽ định nghĩa lại Machine Learning là gì. Thay vì lập trình rõ ràng từng dòng lệnh 'If-Then', chúng ta dạy máy tính tự học quy luật từ dữ liệu. 
+Người 1: Các em sẽ làm quen với hai nhánh lớn của Học có giám sát: Phân loại để dự đoán các nhãn rời rạc (như nhận diện chó/mèo) và Hồi quy để dự đoán giá trị số liên tục (như dự báo giá nhà). Một khái niệm ám ảnh mọi kỹ sư AI cũng sẽ được mổ xẻ là Overfitting (Quá khớp) - khi mô hình học thuộc lòng dữ liệu huấn luyện nhưng lại thất bại trên dữ liệu mới.
+Người 2: Các hình ảnh trực quan trên slide cũng cho thấy sự khác biệt về thuật toán: SVM tìm "con đường" rộng nhất để phân tách dữ liệu, trong khi Cây quyết định linh hoạt bẻ nhánh, và khi tập hợp lại (Ensemble) sẽ tạo ra Rừng ngẫu nhiên đầy sức mạnh.
+
+Slide 6: CHẶNG 2 | TIỀN XỬ LÝ DỮ LIỆU & HỌC KHÔNG GIÁM SÁT
+Người 1: Ở Chặng 2 (Chương 8, 9 và 13), chúng ta chuyển sang nghệ thuật khám phá cấu trúc ẩn giấu trong dữ liệu thô - Học không giám sát. Đầu tiên là Giảm chiều dữ liệu bằng PCA và t-SNE, giúp loại bỏ nhiễu và nén không gian đặc trưng phức tạp thành dạng dễ xử lý.
+Người 2: Tiếp đến là Phân cụm dữ liệu với các thuật toán nổi tiếng như K-Means và Gaussian Mixture Models (GMM) để gom nhóm tự động dữ liệu chưa được gắn nhãn. Nhưng đặc biệt nhất ở chặng này là việc xây dựng "Đường ống dữ liệu" (Data Pipelines) với kiến trúc `tf.data`. Các em sẽ học cách xây dựng luồng nạp dữ liệu tốc độ cực cao, chuẩn bị sẵn sàng cho các mô hình lớn.
+
+Slide 7: MODULE 2 - PREPROCESSING & UNSUPERVISED LEARNING (CHI TIẾT)
+Người 1: Tại Module 2, chúng ta sẽ so sánh chi tiết: PCA thiên về nén và tăng tốc, trong khi t-SNE là bậc thầy trong việc trực quan hóa cụm dữ liệu. Với phân cụm, K-Means cắt ranh giới rõ ràng (Hard clustering), còn GMM cung cấp xác suất mượt mà (Soft clustering), rất hiệu quả trong việc phát hiện điểm bất thường (Anomaly Detection).
+Người 2: Quay lại với `tf.data`, bức tranh bên phải chỉ ra cách chúng ta "Chaining Transformations": từ `list_files`, đến `interleave`, `map` xử lý ảnh, `batch`, và `prefetch`. Lệnh `prefetch` mang tính sống còn để tối ưu hóa hiệu năng, giúp CPU chuẩn bị mẻ dữ liệu tiếp theo trong khi GPU vẫn đang huấn luyện, nhờ vậy hệ thống không bao giờ bị thắt cổ chai ở khâu đọc dữ liệu.
+
+Slide 8: CHẶNG 3 | HỌC SÂU & CHINH PHỤC TENSORFLOW
+Người 1: Chặng 3 từ Chương 10 đến 12 sẽ đưa chúng ta tiến vào kỷ nguyên của Mạng Nơ-ron (Neural Networks) và khai phá framework hàng đầu thế giới: TensorFlow. 
+Người 2: Ở đây, chúng ta sẽ mổ xẻ Mạng Nơ-ron Nhân tạo (ANNs), từ kiến trúc mạng sâu đến các hàm kích hoạt và kỹ thuật tinh chỉnh siêu tham số. Nhưng cốt lõi thực sự nằm ở Tự Động Vi Phân (Autodiff) và thuật toán Lan truyền ngược (Backpropagation) - nguyên lý tối thượng giúp mạng nơ-ron có thể tự điều chỉnh trọng số để học hỏi. Cuối cùng, chúng ta sẽ phá vỡ mọi ranh giới bằng việc tự tùy chỉnh các lớp (layers) và hàm suy hao (loss functions) đặc thù.
+
+Slide 9: MODULE 3 - DEEP LEARNING & TENSORFLOW (CHI TIẾT)
+Người 1: Bức tranh toàn cảnh Module 3 thực sự rất đồ sộ. Chương 10 bắt đầu từ mạng Perceptron cơ bản đến MLP, hướng dẫn các em 3 phương pháp xây dựng mô hình Keras: Sequential (đơn giản), Functional (linh hoạt cho các đồ thị phức tạp), và Subclassing (động, hoàn toàn tùy biến).
+Người 2: Chương 11 là nghệ thuật Tinh chỉnh. Các em sẽ đối mặt với vấn đề nan giải "Gradient biến mất", giải quyết bằng kỹ thuật khởi tạo trọng số He/Glorot và các hàm kích hoạt tiên tiến như ReLU hay Swish. Công cụ giám sát như Early Stopping và TensorBoard sẽ là trợ thủ đắc lực. Tới Chương 12, các em sẽ hiểu cách TensorFlow hoạt động như "NumPy trên Steroids", hỗ trợ song song hóa trên GPU, và nắm bắt cơ chế "Reverse-mode Autodiff" của GradientTape để tự động tính đạo hàm hiệu quả nhất.
+
+Slide 10: CHẶNG 4 | AI NÂNG CAO & MÔ HÌNH SINH
+Người 1: Sau khi đã rèn luyện vững chắc kỹ năng Học Sâu, Chặng 4 (Chương 14 - 18) sẽ nâng tầm các bạn. Chúng ta bắt đầu với Thị giác máy tính, khai thác Mạng tích chập (CNN) để phân tích và nhận diện hình ảnh. Tiếp theo là Xử lý ngôn ngữ tự nhiên, làm chủ dữ liệu dạng chuỗi với quyền năng của kiến trúc Transformers và cơ chế Attention.
+Người 2: Chưa dừng lại ở đó, khóa học đưa các em đến ranh giới của sáng tạo với Mô Hình Sinh (Generative Models), khám phá GANs, Autoencoders, và đặc biệt là Diffusion Models - công nghệ đằng sau các hệ thống tạo ảnh nổi tiếng. Cuối cùng là Học Tăng cường (Reinforcement Learning), dạy cho AI cách tự đưa ra quyết định tối ưu trong môi trường luôn biến động, từ trò chơi điện tử đến điều khiển robot.
+
+Slide 11: MODULE 4 - ADVANCED AI & GENERATIVE MODELS (CHI TIẾT)
+Người 1: Đi sâu vào Module 4, các em sẽ hiểu tại sao CNN lại tối ưu cho thị giác máy qua cơ chế trường tiếp nhận cục bộ (Sliding window convolution) giúp giảm triệt để số lượng tham số. Đối với NLP, RNN từng là nữ hoàng xử lý chuỗi thời gian, nhưng giờ đây cơ chế "Multi-Head Attention" của Transformers mới thực sự là bước đột phá, giúp mô hình nắm bắt chính xác sự liên quan giữa các từ vựng xa nhau trong ngữ cảnh.
+Người 2: Về Mô hình sinh, sự đối đầu giữa Generator và Discriminator trong GANs tạo ra hình ảnh sắc nét nhưng rủi ro "Mode Collapse" cao, trong khi Diffusion Models khử nhiễu dần dần (Denoising) cho ra kết quả đa dạng và thuyết phục hơn nhiều dù tốc độ chậm hơn. Với Học Tăng Cường, bài toán hóc búa nhất sẽ là sự cân bằng giữa Khám phá (Explore) và Khai thác (Exploit), cùng bài toán Phân bổ tín nhiệm cực kỳ phức tạp.
+
+Slide 12: CHẶNG 5 | VẬN HÀNH Ở QUY MÔ LỚN & MLOPS
+Người 1: Chặng 5 (Chương 19) chính là điểm chốt chặn phân biệt một sinh viên làm đồ án và một Kỹ sư AI chuyên nghiệp. Đưa mô hình từ phòng Lab ra thế giới thực (MLOps).
+Người 2: Các em sẽ làm quen với Môi trường Đám mây, thực hiện huấn luyện phân tán trên nền tảng Google Vertex AI. Khi mô hình đã sẵn sàng, chúng ta dùng TensorFlow Serving để cung cấp API sản xuất. Đặc biệt, để AI chạy mượt trên thiết bị cấu hình thấp, kỹ thuật "Lượng tử hóa sau huấn luyện" (Quantization) là bắt buộc, từ đó triển khai đa nền tảng như ứng dụng di động với TFLite hay chạy trực tiếp trên trình duyệt web với TF.js.
+
+Slide 13: MODULE 5 - PRODUCTION SCALING & MLOPS (CHI TIẾT)
+Người 1: Trong môi trường sản xuất thực tế, mô hình của các bạn phải được xuất ra định dạng chuẩn SavedModel. Đối với TF Serving, các em sẽ phải cân nhắc giữa giao thức REST (phổ biến, định dạng JSON) và gRPC (hiệu suất cao, truyền dữ liệu nhị phân, độ trễ cực thấp).
+Người 2: Ở mảng di động và web, Post-training Quantization đóng vai trò phép màu: nó chuyển đổi các trọng số từ số thực 32-bit (float) sang số nguyên 8-bit (integer), giảm tới 4 lần dung lượng mô hình mà gần như không giảm độ chính xác. Nhờ đó, TensorFlow Lite có thể chạy cục bộ trên điện thoại tiết kiệm pin, và TensorFlow.js tận dụng được WebGL để suy luận ngay trên trình duyệt mà không cần gửi dữ liệu nhạy cảm về máy chủ.
+
+Slide 14: ĐỒ ÁN CUỐI MÔN | KIẾN TẠO ỨNG DỤNG END-TO-END
+Người 1: Đã đến lúc nhắc lại về khối lượng 50% điểm số khổng lồ: Đồ án cuối môn. Các em sẽ hiện thực hóa mọi kiến thức học được để tự tay thiết kế và vận hành một sản phẩm AI hoàn chỉnh (End-to-End). Quá trình này chia làm 4 bước.
+Người 2: Bước 1: Xác định Mục tiêu bài toán kinh doanh hoặc nhu cầu thực tiễn rõ ràng. Bước 2: Tự thu thập, làm sạch và áp dụng kỹ thuật phân tích khám phá (EDA) trên tập dữ liệu. Bước 3: Huấn luyện, thiết kế kiến trúc và thử nghiệm, tinh chỉnh siêu tham số để ra mô hình tốt nhất. Bước 4: Triển khai đóng gói mô hình thành một Live API hoặc Web Service hoàn chỉnh cho người dùng cuối tương tác.
+
+Slide 15: HỆ SINH THÁI CÔNG NGHỆ (TECH STACK)
+Người 1: Để hoàn thành được khối lượng công việc trên, chúng ta cần làm chủ Hệ sinh thái công nghệ tiêu chuẩn công nghiệp (Industry-Standard Tech Stack), được thiết kế dưới dạng kim tự tháp 4 tầng. Tầng nền tảng nhất là xử lý mảng và ma trận dữ liệu thô với Python, NumPy, Pandas và Matplotlib.
+Người 2: Bước lên Tầng 2, các em sẽ triển khai các thuật toán Machine Learning truyền thống thông qua thư viện Scikit-Learn rất mạnh mẽ và chuẩn mực. Ở Tầng 3, xây dựng các Neural Networks cốt lõi sẽ do TensorFlow và Keras đảm nhiệm. Và Tầng 4 bao bọc tất cả là Môi trường Google Colab, cung cấp Cloud GPU miễn phí giúp chúng ta có đủ sức mạnh toán toán để tối ưu thời gian huấn luyện.
+
+Slide 16: TRI THỨC CỐT LÕI & MỞ RỘNG TƯ DUY
+Người 1: Tài liệu học tập chính thức và cũng là cuốn "kinh thánh" thực hành của mọi kỹ sư AI chính là cuốn sách "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow" của tác giả Aurélien Géron. Nó sẽ cung cấp cho các em tư duy giải quyết vấn đề vô cùng sắc bén.
+Người 2: Tuy nhiên, tri thức không chỉ nằm trong sách. Để mở rộng tư duy và bắt nhịp với thế giới, thầy khuyên các em nên theo dõi các kênh nghe nhìn hàng đầu. Lex Fridman Podcast sẽ mang đến những cuộc đối thoại sâu sắc cùng những bộ óc vĩ đại nhất về triết học và tương lai AI. Cùng với đó, ML Street Talk (MLST) là sân chơi học thuật mổ xẻ những bài báo nghiên cứu (papers) đột phá mới nhất, giúp các em luôn dẫn đầu sóng công nghệ.
+
+Slide 17: TỪ CON SỐ 0 ĐẾN KỸ SƯ AI
+Người 1: Như tiêu đề của slide này đã khẳng định: Khóa học này không chỉ truyền đạt lý thuyết suông. Nó thực sự là một lò luyện tạo ra những kỹ sư có đủ năng lực kiến tạo tương lai. Đòi hỏi của khóa học là rất lớn, nhưng thành quả mang lại hoàn toàn xứng đáng.
+Người 2: Hãy tham gia lớp học thật nhiệt huyết, kết nối chặt chẽ cùng đồng đội, và dồn tâm sức để xây dựng những giải pháp có thể giải quyết các thách thức của thế giới thực. Luôn nhớ rằng: "Tương lai không được dự đoán, tương lai do chính bạn lập trình."
+
+Slide 18: KHÓA HỌC NÀY MỞ RA CHÂN TRỜI NÀO?
+Người 1: Rất nhiều bạn thắc mắc, sau khi cày ải qua ngần ấy kiến thức, cơ hội nghề nghiệp của mình ở đâu? Câu trả lời là vô cùng rộng mở. Các em có thể đi theo con đường Machine Learning Engineer - Những kỹ sư thực chiến xây dựng, đưa vào sản xuất và duy trì hiệu năng các hệ thống quy mô lớn tại các tập đoàn công nghệ.
+Người 2: Hoặc các em có thể trở thành Data Scientist - Nhà khoa học dữ liệu, dùng AI như một công cụ kể chuyện bằng những con số để khai phá giá trị kinh doanh chiến lược. Một ngã rẽ khác sâu hơn là AI Researcher nghiên cứu thuật toán mới, hoặc chuyên gia MLOps chuyên biệt hóa trong việc tự động hóa và tối ưu chu trình vòng đời vận hành của mô hình AI.
+
+Slide 19: HÀNH TRANG CẦN CHUẨN BỊ
+Người 1: Cơ hội lớn thì hành trang cũng phải đủ đầy. Để học tốt môn này, 60% nền tảng đầu vào là Toán học. Các em cần xem lại Đại số tuyến tính, cụ thể là thao tác cơ bản với Ma trận và Vector. Kế đến là Giải tích cơ bản, nắm vững Đạo hàm và Tích phân để hiểu nguyên lý tối ưu hóa hàm suy hao.
+Người 2: 80% còn lại đến từ Kỹ năng lập trình, đặc biệt là Python cơ bản. Các em cần thành thạo vòng lặp, hàm và các cấu trúc dữ liệu. Nhưng đừng quá áp lực nếu lỡ quên kiến thức. Trong tuần đầu tiên, thầy sẽ cung cấp các tài liệu bổ trợ dạng Cheat-sheets, cô đọng nhất để các em ôn tập và lấy lại gốc nhanh chóng!
+
+Slide 20: Q & A (HỎI & ĐÁP)
+Người 1: Đó là toàn bộ bức tranh tổng quan hùng vĩ về môn học "Máy học" của chúng ta. Bạn đã sẵn sàng để trở thành một kỹ sư AI thực thụ chưa? Bây giờ là thời gian dành cho các bạn. Có phần nào trong cấu trúc điểm, hay nội dung học các bạn cảm thấy thắc mắc không?
+Người 2: Các em cứ mạnh dạn đặt câu hỏi nhé. Nếu sau buổi hôm nay các em cần hỗ trợ, đừng ngần ngại gửi email đến `lienhe@donga.edu.vn`, ghé thăm văn phòng Khoa Công nghệ Thông tin & AI, hoặc thảo luận trực tiếp trên kênh hỗ trợ Microsoft Teams của lớp. Chúc các em một học kỳ đầy năng lượng và đột phá! Cảm ơn các em đã lắng nghe!
