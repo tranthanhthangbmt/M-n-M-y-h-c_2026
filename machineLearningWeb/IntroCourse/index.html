@@ -759,7 +759,7 @@
     closeVideoBtn.addEventListener('click', closeVideo);
 
     /* ================= LOGIC CHÍNH ================= */
-    async function showSlide(index) {
+    async function showSlide(index, autoPlay = true) {
       // Validate index
       if (index < 1) index = 1;
       if (index > TOTAL_SLIDES) index = TOTAL_SLIDES;
@@ -788,12 +788,16 @@
         showLoading(false);
 
         // 4. Phát audio & Auto-scroll
-        try {
-          await slideAudio.play();
-          startAutoScrollIfNeeded();
-        } catch (err) {
-          console.log("Autoplay blocked or waiting for interaction", err);
-          playPauseBtn.innerHTML = '▶️'; // Hiển thị nút play
+        if (autoPlay) {
+          try {
+            await slideAudio.play();
+            startAutoScrollIfNeeded();
+          } catch (err) {
+            console.log("Autoplay blocked or waiting for interaction", err);
+            playPauseBtn.innerHTML = '▶️'; // Hiển thị nút play
+          }
+        } else {
+          playPauseBtn.innerHTML = '▶️';
         }
 
         // 5. Preload các slide tiếp theo (Chiến lược thông minh)
@@ -1012,7 +1016,7 @@
       syncAutoscrollUI();
       checkOrientation(); // Kiểm tra hướng ngay khi tải
       // Bắt đầu
-      showSlide(currentSlideIndex);
+      showSlide(currentSlideIndex, false);
     });
   </script>
 </body>
