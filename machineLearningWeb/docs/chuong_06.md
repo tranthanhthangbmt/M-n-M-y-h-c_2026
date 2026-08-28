@@ -633,6 +633,13 @@ chính xác cao hơn một chút so với mô hình đầu tiên của bạn (ca
 đến 1.5%). Chúc mừng, bạn đã huấn luyện một bộ phân loại rừng ngẫu nhiên! Các
 giải pháp cho các bài tập này có sẵn ở cuối sổ tay của chương này, tại https://homl.info/colab3 .
 
+#### ** 🇻🇳 Tiếng Việt (pdf) **
+
+<object data="TaiLieu/pdf_chapter/Chapter_06_VN.pdf#view=FitH" type="application/pdf" class="pdf-container">
+    <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/pdf_chapter/Chapter_06_VN.pdf" target="_blank">Nhấn vào đây để tải tài liệu tiếng Việt</a>.</p>
+</object>
+<p style="text-align: right;"><a href="TaiLieu/pdf_chapter/Chapter_06_VN.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về tài liệu Tiếng Việt (PDF)</a></p>
+
 #### ** 🎦 Slide Bài Giảng **
 <object data="TaiLieu/slideML/Slide_ML_Chap06.pdf#view=FitH" type="application/pdf" class="pdf-container">
     <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/slideML/Slide_ML_Chap06.pdf" target="_blank">Nhấn vào đây để tải Slide Bài Giảng</a>.</p>

@@ -1131,6 +1131,13 @@ sao?
 Các giải pháp cho các bài tập này có sẵn ở cuối sổ
 tay của chương này, tại https://homl.info/colab3 .
 
+#### ** 🇻🇳 Tiếng Việt (pdf) **
+
+<object data="TaiLieu/pdf_chapter/Chapter_07_VN.pdf#view=FitH" type="application/pdf" class="pdf-container">
+    <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/pdf_chapter/Chapter_07_VN.pdf" target="_blank">Nhấn vào đây để tải tài liệu tiếng Việt</a>.</p>
+</object>
+<p style="text-align: right;"><a href="TaiLieu/pdf_chapter/Chapter_07_VN.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về tài liệu Tiếng Việt (PDF)</a></p>
+
 #### ** 🎦 Slide Bài Giảng **
 <object data="TaiLieu/slideML/Slide_ML_Chap07.pdf#view=FitH" type="application/pdf" class="pdf-container">
     <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/slideML/Slide_ML_Chap07.pdf" target="_blank">Nhấn vào đây để tải Slide Bài Giảng</a>.</p>

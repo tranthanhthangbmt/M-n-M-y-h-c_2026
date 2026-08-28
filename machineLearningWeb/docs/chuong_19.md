@@ -3977,6 +3977,13 @@ Các công thức trên là những suy luận toán học từ
 các nguyên tắc được mô tả trong văn bản, chứ không phải là công thức tường
 minh.
 
+#### ** 🇻🇳 Tiếng Việt (pdf) **
+
+<object data="TaiLieu/pdf_chapter/Chapter_19_VN.pdf#view=FitH" type="application/pdf" class="pdf-container">
+    <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/pdf_chapter/Chapter_19_VN.pdf" target="_blank">Nhấn vào đây để tải tài liệu tiếng Việt</a>.</p>
+</object>
+<p style="text-align: right;"><a href="TaiLieu/pdf_chapter/Chapter_19_VN.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về tài liệu Tiếng Việt (PDF)</a></p>
+
 #### ** 🎦 Slide Bài Giảng **
 <object data="TaiLieu/slideML/Slide_ML_Chap19.pdf#view=FitH" type="application/pdf" class="pdf-container">
     <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/slideML/Slide_ML_Chap19.pdf" target="_blank">Nhấn vào đây để tải Slide Bài Giảng</a>.</p>

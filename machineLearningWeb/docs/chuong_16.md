@@ -3276,6 +3276,13 @@ arxiv:2204.14198 (2022).
 Scott Reed et al., “A
 Generalist Agent”, arXiv preprint arxiv:2205.06175 (2022).
 
+#### ** 🇻🇳 Tiếng Việt (pdf) **
+
+<object data="TaiLieu/pdf_chapter/Chapter_16_VN.pdf#view=FitH" type="application/pdf" class="pdf-container">
+    <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/pdf_chapter/Chapter_16_VN.pdf" target="_blank">Nhấn vào đây để tải tài liệu tiếng Việt</a>.</p>
+</object>
+<p style="text-align: right;"><a href="TaiLieu/pdf_chapter/Chapter_16_VN.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về tài liệu Tiếng Việt (PDF)</a></p>
+
 #### ** 🎦 Slide Bài Giảng **
 <object data="TaiLieu/slideML/Slide_ML_Chap16.pdf#view=FitH" type="application/pdf" class="pdf-container">
     <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/slideML/Slide_ML_Chap16.pdf" target="_blank">Nhấn vào đây để tải Slide Bài Giảng</a>.</p>

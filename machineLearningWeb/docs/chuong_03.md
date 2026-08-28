@@ -1642,6 +1642,13 @@ biết thêm chi tiết.
 ·        
 Bạn có thể sử dụng hàm shift() từ mô-đun scipy.ndimage.interpolation. Ví dụ, shift(image, [2, 1], cval=0) dịch chuyển hình ảnh xuống hai pixel và sang phải một pixel.
 
+#### ** 🇻🇳 Tiếng Việt (pdf) **
+
+<object data="TaiLieu/pdf_chapter/Chapter_03_VN.pdf#view=FitH" type="application/pdf" class="pdf-container">
+    <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/pdf_chapter/Chapter_03_VN.pdf" target="_blank">Nhấn vào đây để tải tài liệu tiếng Việt</a>.</p>
+</object>
+<p style="text-align: right;"><a href="TaiLieu/pdf_chapter/Chapter_03_VN.pdf" target="_blank" style="font-weight: bold; color: #1a73e8;">📥 Tải về tài liệu Tiếng Việt (PDF)</a></p>
+
 #### ** 🎦 Slide Bài Giảng **
 <object data="TaiLieu/slideML/Slide_ML_Chap03.pdf#view=FitH" type="application/pdf" class="pdf-container">
     <p>Trình duyệt của bạn không hỗ trợ xem PDF nhúng. <a href="TaiLieu/slideML/Slide_ML_Chap03.pdf" target="_blank">Nhấn vào đây để tải Slide Bài Giảng</a>.</p>
