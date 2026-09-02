@@ -42,6 +42,23 @@
       padding: 2rem 15px;
     }
   
+    /* Cấu hình hiển thị ảnh vừa phải */
+    .markdown-section img {
+      max-height: 350px;
+      max-width: 100%;
+      width: auto;
+      margin: 0 auto;
+      display: block;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    
+    .markdown-section img:hover {
+      transform: scale(1.02);
+    }
+  
     /* ===== DOCSIFY TABS: PILL DESIGN ===== */
     .docsify-tabs {
       display: grid !important;
@@ -179,6 +196,7 @@
 
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
 </head>
 
 <body>
@@ -206,6 +224,54 @@
           hook.beforeEach(function (html) {
             return html + '\n\n----\n\n*Tài liệu môn học - Đại học Đông Á*';
           });
+        },
+        function (hook, vm) {
+          hook.doneEach(function () {
+            // Cho phép kéo thả (drag-to-scroll) trên thanh Tabs
+            const tabsContainers = document.querySelectorAll('.docsify-tabs');
+            tabsContainers.forEach(tabs => {
+              let isDown = false;
+              let startX;
+              let scrollLeft;
+
+              let isDragging = false;
+
+              tabs.addEventListener('mousedown', (e) => {
+                isDown = true;
+                isDragging = false;
+                tabs.style.cursor = 'grabbing';
+                startX = e.pageX - tabs.offsetLeft;
+                scrollLeft = tabs.scrollLeft;
+              });
+              tabs.addEventListener('mouseleave', () => {
+                isDown = false;
+                tabs.style.cursor = 'pointer';
+              });
+              tabs.addEventListener('mouseup', () => {
+                isDown = false;
+                tabs.style.cursor = 'pointer';
+              });
+              tabs.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault(); // Ngăn chọn text khi đang kéo
+                const x = e.pageX - tabs.offsetLeft;
+                const walk = (x - startX) * 1.5; // Tốc độ cuộn
+                if (Math.abs(walk) > 5) {
+                  isDragging = true; // Đánh dấu là đang kéo để chặn click
+                }
+                tabs.scrollLeft = scrollLeft - walk;
+              });
+              
+              // Chặn sự kiện click nếu người dùng đang kéo chuột
+              tabs.addEventListener('click', (e) => {
+                if (isDragging) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  isDragging = false;
+                }
+              }, true);
+            });
+          });
         }
       ]
     }
@@ -213,6 +279,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script><!-- Docsify Core -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+  <!-- Docsify KaTeX -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-katex@1/dist/docsify-katex.js"></script>
 
   <!-- Search Plugin -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
@@ -351,6 +420,30 @@
 
   <!-- Teacher Login Button (Discreet) -->
   <button onclick="teacherLogin()" style="position: fixed; top: 15px; right: 20px; background: transparent; border: none; cursor: pointer; opacity: 0.15; font-size: 24px; z-index: 1000; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='0.15'" title="Teacher Login">🎓</button>
+
+  <!-- Exclusive Accordion JS -->
+  <script>
+    document.addEventListener('click', function(e) {
+      const summary = e.target.closest('summary');
+      if (summary) {
+        const currentDetails = summary.closest('details');
+        if (currentDetails && !currentDetails.open) {
+          const allDetails = currentDetails.parentElement.querySelectorAll('details');
+          allDetails.forEach(details => {
+            if (details !== currentDetails && details.open) {
+              details.removeAttribute('open');
+            }
+          });
+          
+          // Cuộn lên đầu
+          setTimeout(() => {
+            currentDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      }
+    });
+  </script>
+
 </body>
 
 </html>
