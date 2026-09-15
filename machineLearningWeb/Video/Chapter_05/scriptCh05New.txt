@@ -1,0 +1,139 @@
+Slide 1: Chương 5: Máy học Véc-tơ Hỗ trợ (Support Vector Machines)
+Người 1: Chào các em sinh viên. Hôm nay chúng ta sẽ bắt đầu Chương 5, tìm hiểu về một trong những mô hình Học máy truyền thống mạnh mẽ nhất: Máy học véc-tơ hỗ trợ, gọi tắt là SVM.
+Người 2: Dạ chào thầy. Em có nghe nói SVM rất nổi tiếng và được ứng dụng rất nhiều trước khi Deep Learning bùng nổ, đúng không ạ?
+
+Slide 2: Mục tiêu của Chương
+Người 1: Chính xác. Trong chương này, mục tiêu của chúng ta là hiểu khái niệm cốt lõi của SVM, phân biệt Biên cứng và Biên mềm, tìm hiểu cách xử lý dữ liệu phi tuyến với Kernel Đa thức và Gaussian RBF. Chúng ta cũng sẽ khám phá Hồi quy SVM và đi sâu vào toán học tối ưu phía sau nó.
+
+Slide 3: Mục lục
+Người 1: Nội dung bài học sẽ gồm 5 phần chính: Phân loại SVM Tuyến tính, Phân loại SVM Phi tuyến, Lớp SVM & Hồi quy SVM, Toán học bên trong thuật toán, và cuối cùng là Tổng kết chương.
+
+Slide 4: 1.1 Ý tưởng cơ bản của SVM
+Người 1: Bắt đầu với phần 1. SVM là mô hình cực kỳ linh hoạt, giải quyết tốt cả bài toán phân loại tuyến tính, phi tuyến và hồi quy. Nó cực kỳ hiệu quả cho dữ liệu vừa và nhỏ nhưng phức tạp. Ý tưởng cốt lõi của nó là: Tìm ra một đường thẳng chia tách các lớp sao cho khoảng cách tới các điểm gần nhất của mỗi lớp là lớn nhất có thể.
+
+Slide 5: 1.2 Mô hình Phân loại Biên Lớn (Large Margin Classification)
+Người 1: Nhìn lên hình, thay vì một đường mỏng manh chia hai lớp, SVM kẻ một "con đường" với hai lề (Margin) rộng nhất có thể. Các điểm dữ liệu nằm ngay trên rìa của lề này có vai trò chống đỡ con đường, ta gọi chúng là các Véc-tơ Hỗ trợ (Support Vectors).
+
+Slide 6: 1.2 Mô hình Phân loại Biên Lớn (Large Margin Classification)
+Người 1: Đồ thị này so sánh các mô hình trên dữ liệu hoa Iris. Các đường nét đứt và nét mảnh bên trái tuy chia tách được dữ liệu nhưng nằm quá sát các điểm. Trong khi đó, đường nét liền màu đen của SVM ở bên phải tạo ra một khoảng lề rộng rãi, giúp mô hình an toàn và tổng quát hóa tốt hơn với dữ liệu mới.
+
+Slide 7: 1.3 Tính nhạy cảm với Tỉ lệ Đặc trưng (Feature Scaling)
+Người 1: Một quy tắc cực kỳ quan trọng: SVM rất nhạy cảm với thang đo đặc trưng. Như hình bên trái, khi tỉ lệ các trục chênh lệch, ranh giới quyết định gần như nằm ngang. Nhưng khi chuẩn hóa bằng StandardScaler (hình phải), lề trở nên rộng và cân đối hơn nhiều.
+Người 2: Vậy bước StandardScaler là bắt buộc trước khi đưa dữ liệu vào SVM đúng không thầy?
+Người 1: Hoàn toàn chính xác, hãy luôn ghi nhớ điều này.
+
+Slide 8: 1.4 Phân loại Biên Cứng (Hard Margin Classification)
+Người 1: Nếu chúng ta ép buộc mọi điểm dữ liệu phải nằm hoàn toàn bên ngoài vùng lề và ở đúng phía của lớp, ta có Phân loại Biên Cứng. Nó có 2 vấn đề lớn: Một là chỉ hoạt động nếu dữ liệu có thể phân tách tuyến tính tuyệt đối. Hai là vô cùng nhạy cảm với Điểm bất thường (Outliers).
+
+Slide 9: 1.5 Tác động của Điểm bất thường (Outliers)
+Người 1: Slide này minh họa rõ ràng tác động của Outliers. Ở hình trái, chỉ một điểm xanh rơi vào vùng lớp đỏ, thuật toán Biên cứng bó tay không thể vẽ được đường thẳng. Ở hình phải, một outlier làm cho lề bị co hẹp lại một cách cực đoan, mô hình hoàn toàn mất đi tính tổng quát.
+
+Slide 10: 1.6 Phân loại Biên Mềm (Soft Margin Classification)
+Người 1: Để khắc phục những nhược điểm trên, ta dùng mô hình linh hoạt hơn gọi là Phân loại Biên Mềm. Mục tiêu mới là tìm sự cân bằng giữa việc giữ cho lề rộng nhất có thể, đồng thời hạn chế tối đa các điểm vi phạm lề (Margin Violations).
+Người 2: Tức là ta chấp nhận cho phép một vài điểm lọt vào trong con đường để đổi lấy sự mạnh mẽ trên tập dữ liệu tổng quát ạ?
+
+Slide 11: 1.7 Siêu tham số C trong Scikit-Learn
+Người 1: Đúng thế. Trong thư viện Scikit-Learn, sự cân bằng này được điều khiển bởi siêu tham số C. Nếu em đặt C nhỏ, lề sẽ rộng hơn nhưng cho phép nhiều điểm vi phạm, dễ bị Underfitting. Ngược lại, C lớn thì lề hẹp lại, hạn chế vi phạm lề, nhưng dễ dẫn tới Overfitting.
+
+Slide 12: 1.8 Triển khai LinearSVM bằng Python
+Người 1: Về phần code, chúng ta thường dùng cấu trúc Pipeline để kết hợp bước StandardScaler và lớp LinearSVC. Tham số C được chỉ định tại đây, và hàm mất mát loss thường được đặt là "hinge".
+
+Slide 13: 2.1 Giới thiệu SVM Phi tuyến
+Người 1: Ta chuyển sang phần 2. Rất nhiều bộ dữ liệu thực tế lộn xộn và không thể cắt bằng một đường thẳng. Một giải pháp đơn giản để xử lý tập dữ liệu phi tuyến là bổ sung thêm các đặc trưng mới, chẳng hạn như đặc trưng đa thức (Polynomial).
+
+Slide 14: 2.2 Minh họa Thêm đặc trưng đa thức
+Người 1: Ví dụ trên trục 1D bên trái, các điểm xanh và đỏ nằm xen kẽ nhau. Nhưng khi ta thêm đặc trưng x2 bằng bình phương của x1, dữ liệu tạo thành hình Parabol trên không gian 2D. Lúc này, dữ liệu đã trở nên phân tách tuyến tính bằng một đường thẳng nét đứt màu đỏ.
+
+Slide 15: 2.3 Phân tách Dataset "Moons" (Hai nửa vành trăng)
+Người 1: Lấy ví dụ tập dữ liệu Make Moons hình hai vành khuyên lồng vào nhau. Ta kết hợp PolynomialFeatures, StandardScaler và LinearSVC. Kết quả là mô hình đã tạo ra được ranh giới quyết định uốn lượn linh hoạt phân loại chính xác các điểm dữ liệu.
+
+Slide 16: 2.4 Kernel Trick (Thủ thuật Kernel)
+Người 1: Việc thêm đặc trưng đa thức bậc cao rất hiệu quả nhưng sinh ra vô số đặc trưng, gây ra "Khủng hoảng chiều không gian" làm chậm thuật toán. May mắn thay, SVM sở hữu một phép màu toán học gọi là Thủ thuật Kernel (Kernel Trick). Nó giúp SVM tính ra kết quả phân loại giống y hệt như khi thêm hàng tỉ đặc trưng đa thức, nhưng thực tế không hề thêm một đặc trưng nào! Do đó không làm chậm thuật toán.
+Người 2: Không sinh ra đặc trưng mới mà vẫn tính toán được ạ? Thật kỳ diệu!
+
+Slide 17: 2.5 Kernel Đa thức (Polynomial Kernel)
+Người 1: Về thực hành, em chỉ cần dùng lớp SVC với tham số kernel='poly' và chỉ định bậc degree. Ngoài ra, tham số coef0 giúp ta kiểm soát mức độ ảnh hưởng của đa thức bậc cao so với đa thức bậc thấp. Đồ thị cho thấy sự khác biệt của đường biên khi dùng bậc 3 so với bậc 10.
+
+Slide 18: 2.6 Đặc trưng tương tự (Similarity Features)
+Người 1: Một kỹ thuật bổ sung khác là sử dụng Hàm tương tự. Ta đo lường mức độ mỗi mẫu giống với các Điểm mốc (Landmarks) đến mức nào. Hàm phổ biến nhất là Gaussian Radial Basis Function (RBF), tạo ra các giá trị dạng hình chuông.
+
+Slide 19: 2.7 Minh họa Hàm Gaussian RBF
+Người 1: Nhìn vào minh họa, bằng cách đặt mốc tại x1=-2 và x2=1, sau đó tính khoảng cách tới mốc thông qua hàm Gaussian RBF, tập dữ liệu từ 1D xen kẽ lộn xộn đã được đưa lên không gian đặc trưng mới và có thể dễ dàng phân tách tuyến tính bằng một đường thẳng.
+
+Slide 20: 2.8 Gaussian RBF Kernel
+Người 1: Tương tự như Kernel đa thức, ta dùng Kernel RBF trong lớp SVC (với kernel='rbf') để hưởng lợi từ vô vàn điểm mốc mà không phải tính toán chi phí cao.
+Người 2: Thầy ơi, tham số gamma ở đây đóng vai trò gì vậy ạ?
+
+Slide 21: 2.9 Điều chỉnh siêu tham số Gamma và C
+Người 1: Tham số gamma kiểm soát độ hẹp/rộng của "quả chuông". Gamma lớn làm quả chuông nhọn hẹp, ranh giới quyết định uốn lượn sát theo từng điểm dữ liệu gây Overfitting. Ngược lại, Gamma nhỏ làm quả chuông rộng, ranh giới mượt mà hơn. Chiến lược là: Nếu bị Overfitting, hãy giảm Gamma (tương tự như với C).
+
+Slide 22: 3.1 Các Lớp của Scikit-Learn cho SVM
+Người 1: Trong Phần 3, thầy tổng kết các lớp SVM của Scikit-Learn. Ta có LinearSVC tối ưu tốc độ cho dữ liệu cực lớn nhưng chỉ chạy tuyến tính. Lớp SVC hỗ trợ Kernel Trick nhưng độ phức tạp rất cao, sẽ quá chậm nếu dữ liệu trên 100,000 mẫu. Còn SGDClassifier dùng để huấn luyện Gradient Descent ngẫu nhiên, hữu ích cho tập dữ liệu khổng lồ (Out-of-core learning).
+
+Slide 23: 3.2 Ý tưởng Hồi quy bằng SVM
+Người 1: Thuật toán SVM rất đa năng, nó còn làm hồi quy rất xuất sắc. Mục tiêu của phân loại SVM là dải lề rộng nhất nhưng KHÔNG chứa điểm vi phạm. Ngược lại, mục tiêu của Hồi quy SVM là đưa CÀNG NHIỀU ĐIỂM VÀO BÊN TRONG dải lề càng tốt, hạn chế điểm rơi ra ngoài.
+Người 2: Ồ, tư duy bị đảo ngược hoàn toàn. Độ rộng lề này kiểm soát ra sao thầy?
+
+Slide 24: 3.3 Minh họa SVM Regression Tuyến tính
+Người 1: Độ rộng lề được kiểm soát bởi siêu tham số Epsilon. Việc thêm nhiều điểm dữ liệu nằm bên trong lề không làm ảnh hưởng đến dự đoán của mô hình. Như hình minh họa, Epsilon lớn tạo ra lề rộng, và Epsilon nhỏ tạo lề hẹp. Ta dùng lớp LinearSVR cho bài toán này.
+
+Slide 25: 3.4 Hồi quy SVM Phi tuyến (Nonlinear SVR)
+Người 1: Tương tự, hồi quy SVM phi tuyến cũng hỗ trợ Kernel Trick thông qua lớp SVR. Nó có thể khớp được các đường cong phức tạp bám theo dữ liệu. Tham số C kiểm soát mức độ regularization: C nhỏ cho mô hình linh hoạt, C lớn giúp mô hình sát dữ liệu hơn, ít sai số.
+
+Slide 26: 4.1 Hàm Quyết định (Decision Function)
+Người 1: Chuyển sang Phần 4, ta sẽ đi sâu vào Toán học của SVM. SVM tuyến tính dự đoán bằng cách tính hàm quyết định f(x) bằng w^T nhân x cộng b. Quy tắc dự đoán: nếu kết quả dương thì dự đoán lớp 1, nếu âm thì dự đoán lớp 0.
+
+Slide 27: 4.2 Đồ thị Không gian Hàm quyết định
+Người 1: Trong không gian 3 chiều, hàm quyết định là trục Z. Mặt phẳng cắt tại Z=0 tạo thành ranh giới quyết định. Các đường viền tương ứng với mặt cắt Z=1 và Z=-1 chính là đường lề (Margins) tạo nên "con đường".
+
+Slide 28: 4.3 Mối liên hệ giữa Vector Trọng số (w) và Biên
+Người 1: Về cơ chế, kích thước của véc-tơ trọng số w xác định độ dốc của mặt phẳng hàm. Tính chất nghịch đảo rất thú vị: Nếu ta chia đôi độ dốc w, thì độ rộng của lề (Margin) sẽ nhân đôi!
+Người 2: Suy ra, để có Margin cực đại, mục tiêu của ta là phải tối thiểu hóa độ lớn của véc-tơ w đúng không ạ?
+
+Slide 29: 4.4 Hàm Mục Tiêu của Phân loại Biên Cứng
+Người 1: Rất chuẩn xác! Nhìn vào bài toán tối ưu hóa của Phân loại Biên cứng, ta thấy hàm mục tiêu chính là Cực tiểu hóa 1/2 nhân w^T nhân w (chính là độ lớn của w), với điều kiện mọi điểm dữ liệu đều có giá trị lớn hơn hoặc bằng 1, tức là nằm đúng phía ngoài lề.
+
+Slide 30: 4.5 Hàm Mục Tiêu của Phân loại Biên Mềm
+Người 1: Đối với Biên mềm, ta định nghĩa thêm biến Slack zeta để đo lường mức độ một mẫu được phép vi phạm lề. Hàm mục tiêu giờ đây có mâu thuẫn: vừa muốn tối thiểu hóa w, vừa muốn tối thiểu hóa tổng zeta. Siêu tham số C chính là sự đánh đổi (trade-off) quyết định trọng số giữa hai mục tiêu này.
+
+Slide 31: 4.6 Trình giải Bài toán (Solvers)
+Người 1: Bản chất hàm mục tiêu này là các bài toán Quy hoạch Toàn phương (QP). Máy tính sử dụng các Solver phổ biến như SMO, thư viện LIBLINEAR hoặc LIBSVM để tìm lời giải tối ưu toàn cục. Hoặc cách tiếp cận thay thế là dùng Gradient Descent để cực tiểu hóa Hinge Loss như lớp SGDClassifier.
+
+Slide 32: 4.7 Hinge Loss
+Người 1: Hàm Hinge Loss có công thức là max(0, 1 - t). Hàm này bằng 0 khi điểm dữ liệu nằm an toàn đúng phần, và tăng tuyến tính tạo ra hình dạng cái bản lề.
+Người 2: Hàm này bị gãy tại t=1, vậy ta không có đạo hàm để dùng Gradient Descent phải không thầy?
+Người 1: Chính xác, nhưng trong thực tế ta vẫn tính toán tối ưu bằng Subgradient (đạo hàm dưới).
+
+Slide 33: 4.8 Bài toán Đối ngẫu (Dual Problem)
+Người 1: Về lý thuyết tối ưu hóa, bất kỳ bài toán có ràng buộc (Primal) nào cũng có một bài toán song sinh đi kèm gọi là Đối ngẫu (Dual Problem). Giải Dual dễ hơn Primal khi số lượng quan sát m bé hơn số lượng đặc trưng n.
+Người 2: Điểm quan trọng nhất của bài toán đối ngẫu đối với SVM là gì ạ?
+Người 1: Nhờ dạng Đối ngẫu mà phép màu Kernel trick mới có thể thực hiện được! Dạng Primal gốc không làm được điều này.
+
+Slide 34: 4.9 Đẳng thức Kernel (Mercer's Theorem)
+Người 1: Nhờ định lý Mercer, thay vì phải ánh xạ điểm x qua một hàm biến đổi khổng lồ, ta chỉ cần tìm một hàm Kernel K tính ra trực tiếp tích vô hướng một cách cực kì nhanh gọn. Các hàm Kernel phổ biến là Tuyến tính, Đa thức, Gaussian RBF, và Sigmoid.
+
+Slide 35: 5.1 Ôn tập: Kiến trúc của SVM
+Người 1: Sang Phần 5, chúng ta cùng nhìn lại kiến trúc của SVM. Nó là mô hình phân loại dựa trên khoảng cách của lề phân cách, với 2 biến thể tuyến tính và phi tuyến. Cơ chế lề cứng/mềm được kiểm soát bằng tham số C, và mọi bài toán đều được mô hình hóa toán học chặt chẽ dựa trên Quy hoạch Toàn phương.
+
+Slide 36: 5.2 Ứng dụng phổ biến của SVM
+Người 1: SVM được ứng dụng rất rộng rãi, từ phân loại văn bản (Text Categorization), nhận dạng hình ảnh như MNIST, phân loại gen sinh học, cho đến hồi quy dự đoán tài chính.
+
+Slide 37: 5.3 Ưu điểm của SVM
+Người 1: Điểm mạnh của SVM là hiệu quả với dữ liệu có chiều cao (số lượng đặc trưng n lớn hơn mẫu m), tiết kiệm bộ nhớ vì quyết định chỉ phụ thuộc vào một nhóm Support Vectors, và bảo đảm hội tụ tới tối ưu toàn cục nhờ nền tảng tối ưu lồi.
+
+Slide 38: 5.4 Nhược điểm của SVM
+Người 1: Nhược điểm của nó là thời gian huấn luyện cực chậm nếu bộ dữ liệu quá lớn (trên 100,000 dòng). Nó cực kỳ nhạy cảm với việc Scale dữ liệu, không sinh ra xác suất một cách tự nhiên và tương đối khó diễn giải như một hộp đen (Black-box model).
+
+Slide 39: 5.5 Bài tập Thực hành: Phân loại Ảnh Chữ Số
+Người 1: Bài tập thực hành của chương này: Xây dựng bộ phân loại SVM trên tập dữ liệu MNIST. Đây là tập hợp các ảnh xám 28x28 pixel của các chữ số viết tay từ 0 đến 9. Các em nhớ SVM mặc định là nhị phân, nó sẽ tự động dùng chiến lược OvR hoặc OvO bên dưới.
+
+Slide 40: 5.6 Code Gợi ý Huấn luyện MNIST bằng SVM
+Người 1: Gợi ý code: Đầu tiên dùng fetch_openml tải dữ liệu, và nhớ Scale giá trị pixel từ 0-255 về đoạn 0-1. Sau đó khởi tạo mô hình SVC với kernel RBF mặc định. Em có thể chỉ dùng 10,000 mẫu để huấn luyện cho nhanh trước khi áp dụng trên toàn tập.
+
+Slide 41: 5.7 Lựa chọn Mô hình phù hợp
+Người 1: Lời khuyên cuối cùng: Trong dự án thực tế, đừng vội vàng lao vào Deep Learning. Hãy luôn thử Logistic Regression hoặc Random Forest trước làm Baseline. Sau đó thử SVM. Dù tốc độ đào tạo chậm, nhưng khả năng phân loại của SVM thường vượt trội với tập dữ liệu dạng bảng.
+
+Slide 42: Hỏi & Đáp
+Người 1: Chương 5 của chúng ta đến đây là kết thúc. Các em có thắc mắc gì không?
+Người 2: Bài học hôm nay về toán học tối ưu rất sâu sắc và lý thú, giúp em hiểu rõ bản chất của thuật toán ạ. Em cảm ơn thầy!
+Người 1: Rất tốt, các em nhớ làm bài tập nhé. Chào các em!

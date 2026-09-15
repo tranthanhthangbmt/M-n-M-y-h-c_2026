@@ -1,0 +1,187 @@
+Slide 1: DỰ ÁN HỌC MÁY TỪ ĐẦU ĐẾN CUỐI. Chương 4 - Huấn luyện Mô hình (Training Models)
+Người 1: Chào các em. Ở các chương trước, ta đã xem máy học như một "hộp đen", chỉ ném dữ liệu vào và lấy kết quả ra. Trong Chương 4 này, chúng ta sẽ mở cái hộp đen đó ra, đi sâu vào toán học cốt lõi để xem các thuật toán thực sự học như thế nào.
+Người 2: Việc hiểu toán học bên trong sẽ giúp ta chọn đúng mô hình và tinh chỉnh siêu tham số dễ hơn phải không thầy?
+
+Slide 2: Nội dung Chương trình
+Người 1: Đúng vậy. Chương 4 gồm 4 phần chính. Thứ nhất: Hồi quy tuyến tính và Phương trình chuẩn tắc. Thứ hai: Thuật toán Hạ Gradient (Gradient Descent). Thứ ba: Hồi quy đa thức, Đường cong học tập và Chính quy hóa. Thứ tư: Hồi quy Logistic và Softmax.
+
+Slide 3: Mục tiêu bài học (1/2)
+Người 1: Mục tiêu của bài học hôm nay trước tiên là giúp các em hiểu rõ cách hoạt động bên trong của mô hình thay vì coi chúng là hộp đen. Các em sẽ tìm hiểu và áp dụng các phương pháp giải Hồi quy tuyến tính như Phương trình chuẩn tắc, SVD, Gradient Descent. Đồng thời, phân biệt được các loại Gradient Descent là Batch, Stochastic, Mini-batch và hiểu ảnh hưởng của Tốc độ học (Learning Rate).
+
+Slide 4: Mục tiêu bài học (2/2)
+Người 1: Tiếp theo, các em sẽ hiểu cách xử lý dữ liệu phi tuyến tính bằng Hồi quy đa thức, phát hiện hiện tượng Quá khớp thông qua Đường cong học tập và các kỹ thuật Chính quy hóa như Ridge, Lasso, Elastic Net, Early Stopping. Cuối cùng, chúng ta sẽ tìm hiểu Hồi quy Logistic cho phân loại nhị phân và Hồi quy Softmax cho đa lớp.
+
+Slide 5: 1. Hồi quy tuyến tính & Phương trình chuẩn tắc
+Người 1: Ta bắt đầu phần 1 với mô hình đơn giản nhất: Hồi quy tuyến tính. Nguyên lý hoạt động của nó là mô hình sẽ đưa ra dự đoán bằng cách tính tổng trọng số của các đặc trưng đầu vào, cộng với một hằng số gọi là số hạng độ lệch (bias term) hay hệ số chặn (intercept term).
+
+Slide 6: Hồi quy tuyến tính: Dạng toán học
+Người 1: Về mặt toán học, mô hình dự đoán là y mũ bằng theta 0 cộng theta 1 nhân x1, cộng theta 2 nhân x2, v.v... Viết gọn lại dưới dạng vector thì y mũ bằng tích vô hướng của vector tham số theta và vector đặc trưng x.
+Người 2: Vector theta chính là các tham số mà mô hình cần phải "học" đúng không ạ?
+Người 1: Chính xác.
+
+Slide 7: Hàm chi phí MSE (Mean Squared Error)
+Người 1: Để huấn luyện mô hình, ta cần tìm giá trị cho vector theta nhằm tối thiểu hóa sai số. Thước đo phổ biến nhất là Hàm chi phí Lỗi Bình phương Trung bình (MSE). Mục tiêu của quá trình huấn luyện là tìm ra theta để MSE đạt giá trị nhỏ nhất.
+
+Slide 8: Phương trình chuẩn tắc (Normal Equation)
+Người 1: Để tìm điểm cực tiểu đó, toán học cung cấp một nghiệm dạng đóng (closed-form solution), gọi là Phương trình chuẩn tắc. Công thức là: theta mũ bằng ma trận X chuyển vị nhân X, tất cả lấy nghịch đảo, rồi nhân với X chuyển vị, cuối cùng nhân với y.
+Người 2: Nghe có vẻ phức tạp, nhưng về bản chất nó là một phương trình tính ra ngay kết quả trực tiếp mà không cần lặp đi lặp lại ạ?
+Người 1: Rất chuẩn.
+
+Slide 9: Minh họa: Tập dữ liệu tuyến tính ngẫu nhiên
+Người 1: Ở đây thầy tạo ra một tập dữ liệu ngẫu nhiên y bằng 4 cộng 3x, cộng thêm một chút nhiễu Gauss. Đồ thị cho thấy các điểm dữ liệu phân bố theo chiều hướng tuyến tính đi lên, rất phù hợp để khớp mô hình.
+
+Slide 10: Minh họa: Dự đoán của Hồi quy tuyến tính
+Người 1: Sau khi tính toán được theta mũ từ Phương trình chuẩn tắc, ta vẽ được đường thẳng dự đoán màu đỏ. Đường này đi qua trung tâm của các điểm dữ liệu, cho thấy mô hình đã học được xu hướng chung rất tốt.
+
+Slide 11: Thực hiện với Scikit-Learn và SVD
+Người 1: Tuy nhiên, trong thực tế Scikit-Learn sử dụng Phân rã giá trị số ít (SVD) thay vì tính trực tiếp Phương trình chuẩn tắc. Lý do là phương trình gốc yêu cầu ma trận X chuyển vị nhân X phải khả nghịch, điều này không phải lúc nào cũng đúng. Phương pháp SVD tính thông qua ma trận giả nghịch đảo nên luôn an toàn và xử lý được các trường hợp này.
+
+Slide 12: Độ phức tạp tính toán
+Người 1: Mặc dù vậy, cả phương trình chuẩn tắc và SVD đều trở nên rất chậm khi số lượng đặc trưng tăng lên đáng kể, độ phức tạp của nó từ O(n^2) đến O(n^3). Ưu điểm của chúng là xử lý tập huấn luyện lớn rất tốt miễn là dữ liệu vừa với bộ nhớ.
+
+Slide 13: 2. Hạ Gradient (Gradient Descent)
+Người 1: Khi có quá nhiều đặc trưng, ta bước sang Phần 2, tìm hiểu về thuật toán Hạ Gradient. Ý tưởng chung là tinh chỉnh các tham số theo vòng lặp để giảm thiểu hàm chi phí. Tưởng tượng em bị lạc trên núi trong sương mù, chiến lược tốt nhất để xuống thung lũng là bước xuống dốc theo hướng dốc nhất.
+
+Slide 14: Nguyên lý hoạt động của Gradient Descent
+Người 1: Bắt đầu với một giá trị theta ngẫu nhiên, thuật toán sẽ đi theo hướng giảm của gradient để dần tiến đến điểm cực tiểu toàn cục. Kích thước bước nhảy được quyết định bởi siêu tham số tốc độ học (learning rate).
+
+Slide 15: Phân tích ảnh hưởng của Tốc độ học (Learning Rate)
+Người 1: Tốc độ học là siêu tham số quan trọng nhất. Nếu tốc độ học quá nhỏ, thuật toán sẽ đi như rùa, trải qua rất nhiều vòng lặp mới tới đích. Còn nếu tốc độ học quá cao, thuật toán có thể "nhảy cóc" văng qua lại thung lũng, dẫn đến phân kỳ và không bao giờ tìm được điểm tối ưu.
+
+Slide 16: Minh họa: Tốc độ học quá nhỏ và quá cao (Tốc độ nhỏ)
+Người 1: Slide này cho thấy rõ khi tốc độ học quá nhỏ, thuật toán nhích từng chút một chậm chạp dọc theo sườn dốc.
+
+Slide 17: Minh họa: Tốc độ học quá nhỏ và quá cao (Tốc độ lớn)
+Người 1: Ngược lại ở slide này, tốc độ học quá lớn làm cho các bước nhảy nảy lên nảy xuống, văng xa khỏi cực tiểu và hàm chi phí ngày càng tăng cao.
+
+Slide 18: Các cạm bẫy của Gradient Descent
+Người 1: Thực tế, không phải hàm chi phí nào cũng đẹp như cái bát. Nhiều hàm có "cực tiểu cục bộ" (đáy giả), nơi thuật toán có thể bị kẹt lại. Hoặc có những vùng "cao nguyên" đi ngang làm thuật toán mất rất nhiều thời gian. Rất may, hàm MSE của Hồi quy tuyến tính là hàm lồi nên chỉ có một cực tiểu toàn cục duy nhất.
+
+Slide 19: Tầm quan trọng của việc điều chỉnh đặc trưng (Scaling)
+Người 1: Khi dùng Gradient Descent, em phải luôn đảm bảo các đặc trưng có thang đo tương tự nhau bằng cách dùng StandardScaler. Nếu không, hàm chi phí sẽ có dạng cái bát kéo dài, đường đi của thuật toán sẽ ngoằn ngoèo mất rất nhiều thời gian như hình bên phải. Khi đã chia tỷ lệ, nó lao thẳng về đích như hình bên trái.
+
+Slide 20: Hạ Gradient theo lô (Batch Gradient Descent)
+Người 1: Thuật toán GD đầu tiên là Batch Gradient Descent. Tại mỗi bước lặp, nó tính đạo hàm sử dụng toàn bộ tập dữ liệu huấn luyện. Dù nó sẽ tính toán chậm trên tập dữ liệu rất lớn, nhưng nó lại chia tỷ lệ rất tốt với số lượng đặc trưng lớn so với Phương trình chuẩn tắc.
+
+Slide 21: Minh họa: Batch GD với các tốc độ học khác nhau
+Người 1: Đây là minh họa 10 bước đầu tiên của Batch GD với 3 tốc độ học khác nhau. Em thấy tốc độ học 0.1 ở giữa cho kết quả đường dự đoán hội tụ nhanh chóng nhất chỉ trong vài bước.
+
+Slide 22: Hạ Gradient ngẫu nhiên (Stochastic Gradient Descent - SGD)
+Người 1: Vấn đề chính của Batch GD là quá chậm với dữ liệu khổng lồ. Stochastic GD (SGD) ngược lại, chỉ chọn ngẫu nhiên đúng 1 trường hợp trong tập huấn luyện tại mỗi bước để tính gradient. Điều này làm cho thuật toán cực kỳ nhanh và hỗ trợ huấn luyện các mô hình rất lớn do mỗi lần lặp chỉ cần 1 mẫu vào bộ nhớ (Out-of-core learning).
+
+Slide 23: Đặc điểm đường đi của Stochastic Gradient Descent
+Người 1: Tuy nhiên vì tính chất ngẫu nhiên, SGD rất thất thường. Thay vì giảm nhẹ nhàng, hàm chi phí sẽ dao động lên xuống. Khi tới gần cực tiểu, nó vẫn tiếp tục dao động chứ chưa phải tối ưu tuyệt đối. Nhưng ưu điểm là sự ngẫu nhiên này giúp nó nhảy ra khỏi các cực tiểu cục bộ tốt hơn Batch GD.
+
+Slide 24: Minh họa: 20 bước đầu tiên của SGD
+Người 1: Slide này cho thấy các bước của SGD nhấp nhô không đều đặn. Để giúp SGD hội tụ sát hơn vào cực tiểu, ta áp dụng kỹ thuật lịch học (learning schedule): Tốc độ học lớn lúc đầu, sau đó giảm dần khi tiến về gần đích để ổn định tại đáy.
+
+Slide 25: Hạ Gradient theo Mini-Batch
+Người 1: Nằm giữa hai phương pháp trên là Mini-Batch. Ở mỗi bước, nó tính gradient trên các tập con nhỏ ngẫu nhiên gọi là mini-batch.
+Người 2: Thuật toán này có kết hợp được ưu điểm phần cứng không thầy?
+Người 1: Rất chuẩn. Ưu điểm lớn nhất là nó tối ưu hóa phần cứng tốt, đặc biệt là khi tính toán ma trận trên GPU. Sự tiến bộ của nó cũng ổn định, ít thất thường hơn SGD.
+
+Slide 26: So sánh đường đi của 3 thuật toán Gradient Descent
+Người 1: Đồ thị này minh họa đường đi trong không gian tham số. Đường màu xanh đậm (Batch GD) mượt mà đi thẳng đến cực tiểu. Đường màu đỏ (SGD) nhảy loạn xạ. Và đường màu xanh lục (Mini-Batch) nằm ở giữa, ít dao động hơn SGD và tiến gần đích hơn.
+
+Slide 27: Bảng so sánh tổng hợp các thuật toán hồi quy tuyến tính
+Người 1: Đây là bảng tổng hợp rất quan trọng, so sánh các phương pháp theo khả năng xử lý lượng dữ liệu lớn m, số lượng đặc trưng lớn n, khả năng huấn luyện ngoài lõi, có cần Scaling không và hàm tương ứng trong Scikit-Learn. Các em nhớ lưu lại để sử dụng.
+
+Slide 28: 3. Hồi quy đa thức, Đường cong học tập & Chính quy hóa
+Người 1: Chúng ta sang Phần 3. Điều gì sẽ xảy ra nếu dữ liệu của em phức tạp hơn một đường thẳng? Thật đáng ngạc nhiên, ta vẫn có thể sử dụng mô hình tuyến tính để khớp với dữ liệu phi tuyến tính.
+
+Slide 29: Hồi quy đa thức (Polynomial Regression)
+Người 1: Kỹ thuật này gọi là Hồi quy đa thức. Bằng cách thêm các lũy thừa của mỗi đặc trưng làm đặc trưng mới, rồi huấn luyện mô hình tuyến tính trên tập đặc trưng mở rộng này. Ta dùng hàm PolynomialFeatures trong Scikit-Learn để tạo ra các biến bậc cao và kết hợp biến.
+Người 2: Tức là thay vì chỉ có biến x, ta cấp thêm x bình phương vào để mô hình có thể bẻ cong đường thẳng thành parabol ạ?
+
+Slide 30: Minh họa: Khớp Hồi quy đa thức trên dữ liệu phi tuyến
+Người 1: Chuẩn xác. Hình 4-13 cho thấy khi áp dụng Hồi quy đa thức, mô hình học được một đường parabol bám rất sát tập dữ liệu phi tuyến ban đầu.
+
+Slide 31: Machine Learning: Đánh Giá Mô Hình & Chính Quy Hóa
+Người 1: Tuy nhiên, việc tăng bậc của đa thức cũng đem lại rủi ro, chúng ta cần phải đánh giá mô hình cẩn thận.
+
+Slide 32: Hiện tượng Quá khớp (Overfitting) với đa thức bậc cao
+Người 1: Nếu thực hiện hồi quy đa thức với bậc quá cao (ví dụ bậc 300), mô hình sẽ khớp dữ liệu huấn luyện cực kỳ tốt bằng cách vẽ ra một đường uốn lượn dữ dội đi qua từng điểm. Đây là hiện tượng Quá khớp nghiêm trọng. Trong trường hợp này, mô hình bậc 2 mới là mô hình tổng quát hóa tốt nhất. Để nhận biết điều này, ta dùng Đường cong học tập.
+
+Slide 33: Đánh giá mô hình bằng Đường cong học tập (Learning Curves)
+Người 1: Đường cong học tập thể hiện lỗi trên tập Huấn luyện (Train) và tập Xác thực (Validation). Nếu mô hình bị Dưới khớp (Underfitting), cả hai đường đều đạt cao nguyên, lỗi cao và sát nhau. Còn nếu Quá khớp (Overfitting), lỗi trên tập huấn luyện thấp, nhưng xuất hiện một khoảng cách (gap) lớn giữa hai đường. Tức là học vẹt rất giỏi nhưng thực hành rất tệ.
+
+Slide 34: Minh họa: Đường cong học tập (Dưới khớp)
+Người 1: Nhìn vào hình minh họa Dưới khớp, hai đường tiệm cận nhau ở một mức sai số khá cao. Việc thêm dữ liệu cũng không mang lại sự cải thiện.
+
+Slide 35: Minh họa: Đường cong học tập (Quá khớp)
+Người 1: Còn ở minh họa Quá khớp, khoảng cách rõ ràng giữa đường màu đỏ và màu xanh cho thấy mô hình xử lý dữ liệu mới kém hơn hẳn so với dữ liệu huấn luyện.
+
+Slide 36: Sự đánh đổi giữa Độ chệch (Bias) và Phương sai (Variance)
+Người 1: Trong học máy có sự đánh đổi giữa Độ chệch (Bias) và Phương sai (Variance). Bias cao là do giả định sai (mô hình quá đơn giản). Variance cao là do mô hình quá nhạy cảm với biến động nhỏ (mô hình quá phức tạp). Khi tăng độ phức tạp mô hình, ta sẽ tăng variance nhưng giảm bias, và ngược lại.
+
+Slide 37: Chính quy hóa (Regularization): Hồi quy Ridge
+Người 1: Để giảm Quá khớp, cách phổ biến là Chính quy hóa (ràng buộc) các trọng số. Phương pháp đầu tiên là Hồi quy Ridge, thêm số hạng phạt l2 vào hàm chi phí MSE. Siêu tham số alpha sẽ kiểm soát mức độ chính quy hóa này.
+
+Slide 38: Minh họa: Hồi quy Ridge
+Người 1: Khi alpha tăng, các trọng số bị ép nhỏ lại, đường dự đoán trở nên phẳng hơn. Đồ thị bên phải cho thấy, Hồi quy Ridge giúp một đường cong đa thức uốn lượn mạnh mẽ trở thành một đường cong êm ái hơn nhiều, giảm overfitting đáng kể.
+
+Slide 39: Chính quy hóa (Regularization): Hồi quy Lasso
+Người 1: Phương pháp thứ hai là Hồi quy Lasso. Lasso sử dụng chuẩn l1 làm số hạng phạt. Điểm đặc biệt nhất của Lasso là nó có xu hướng hoàn toàn loại bỏ các đặc trưng ít quan trọng bằng cách đặt trọng số của chúng bằng 0.
+Người 2: Nghĩa là Lasso tự động thực hiện tính năng Lựa chọn đặc trưng (feature selection) để tạo ra một mô hình thưa ạ? Tuyệt vời.
+
+Slide 40: Minh họa: Hồi quy Lasso
+Người 1: Đúng vậy, giống như việc vứt các hệ số không quan trọng vào thùng rác. Với dữ liệu đa thức, các tham số bậc cao sẽ bị đưa về 0, biến đường dự đoán đa thức thành một đường thẳng bậc thấp.
+
+Slide 41: Minh họa: Hồi quy Lasso trên mô hình tuyến tính và đa thức
+Người 1: Đồ thị này minh họa tác dụng đó. Khi alpha lớn (bằng 1), đường màu đỏ thẳng tắp ở cả mô hình tuyến tính và đa thức, cho thấy các trọng số đã bị loại trừ nghiêm ngặt.
+
+Slide 42: Điểm khác biệt giữa Lasso và Ridge trong không gian tham số
+Người 1: Về cơ bản, Ridge làm trọng số giảm dần nhưng không bao giờ bằng 0 hoàn toàn. Trong khi đó, Lasso với chuẩn l1 khiến hàm chi phí giảm tuyến tính khi tiến tới các trục, hạ gradient nhanh chóng ép một tham số về 0, tạo ra mô hình thưa.
+
+Slide 43: Minh họa: Lasso vs Ridge trong Không gian tham số
+Người 1: Hình học cho thấy rõ điều đó. Hàm phạt Lasso có dạng hình thoi, khi hàm chi phí chạm vào, nó dễ dàng lao thẳng về góc nhọn trên trục tọa độ. Trong khi Ridge là hình tròn mượt mà, đường đi hướng dần về tâm.
+
+Slide 44: Hồi quy Elastic Net & Khi nào nên dùng?
+Người 1: Elastic Net kết hợp cả chuẩn l1 và l2 thông qua tỷ lệ trộn r. Nguyên tắc lựa chọn là: Luôn ưu tiên dùng một ít chính quy hóa, nên Ridge là lựa chọn mặc định tốt nhất. Dùng Lasso hoặc Elastic Net khi nghi ngờ chỉ có vài đặc trưng là hữu ích. Đặc biệt, Elastic Net được ưa chuộng hơn Lasso khi số lượng đặc trưng lớn hơn số trường hợp.
+
+Slide 45: Dừng sớm (Early Stopping)
+Người 1: Kỹ thuật chống quá khớp cực kỳ hiệu quả tiếp theo là Dừng sớm. Ta dừng quá trình huấn luyện thuật toán lặp (như GD) ngay khi Lỗi xác thực đạt đến cực tiểu trước khi nó quay đầu tăng trở lại. Kỹ thuật này đơn giản và hiệu quả đến mức Geoffrey Hinton gọi nó là "bữa trưa miễn phí tuyệt vời".
+
+Slide 46: Hồi quy Logistic & Softmax
+Người 1: Chúng ta sang Phần 4. Áp dụng các khái niệm trên, ta tìm hiểu về Hồi quy Logistic và Softmax để giải quyết bài toán Phân loại Nhị phân và Đa lớp.
+
+Slide 47: Bản chất của Hồi quy Logistic
+Người 1: Mặc dù tên là Hồi quy, thuật toán này dùng để phân loại. Nó ước tính xác suất một trường hợp thuộc về một lớp. Quy tắc rất đơn giản: nếu xác suất lớn hơn 50% thì thuộc Lớp 1 (Dương), ngược lại thuộc Lớp 0 (Âm). Hoạt động toán học của nó giống hồi quy tuyến tính nhưng kết quả được đưa qua hàm logistic.
+
+Slide 48: Hàm Logistic (Sigmoid)
+Người 1: Hàm Logistic hay Sigmoid có hình chữ S, nhận đầu vào là số thực và xuất đầu ra giới hạn trong khoảng từ 0 đến 1. Khi tham số t tiến về vô cùng lớn, xác suất tiến về 1.
+
+Slide 49: Hàm chi phí (Cho một trường hợp)
+Người 1: Hàm chi phí sử dụng hàm logarit. Ý nghĩa toán học của nó là tạo ra một án phạt (Penalty) khổng lồ tiến tới vô cùng nếu mô hình dự đoán xác suất gần 0 cho một trường hợp thực sự thuộc lớp 1. Nó ép mô hình không được quá tự tin nếu đoán sai.
+
+Slide 50: Hàm chi phí Log Loss (Toàn tập)
+Người 1: Lấy trung bình hàm chi phí trên toàn tập dữ liệu, ta được hàm Log Loss. Đây là một hàm lồi. Vì không có phương trình dạng đóng để giải trực tiếp, ta sẽ áp dụng thuật toán Gradient Descent để tìm tham số tối ưu.
+
+Slide 51: Minh họa Thực tế: Tập dữ liệu hoa Diên vĩ
+Người 1: Ta sẽ thử nghiệm Hồi quy Logistic trên bộ dữ liệu Iris Dataset. Nó gồm 150 bông hoa với các đặc trưng như chiều dài, chiều rộng đài hoa và cánh hoa. Bài toán là phân biệt loài Virginica dựa trên chiều rộng cánh hoa.
+
+Slide 52: Ranh giới quyết định (Decision Boundaries)
+Người 1: Điểm mà mô hình thay đổi quyết định (tại xác suất 50%) gọi là Ranh giới quyết định. Trong Hồi quy Logistic, ranh giới này luôn tuyến tính. Nếu có 1 đặc trưng thì nó là 1 điểm, 2 đặc trưng là 1 đường thẳng, và nhiều hơn là 1 siêu mặt phẳng.
+
+Slide 53: Ranh giới quyết định (Decision Boundaries) (Xác suất)
+Người 1: Đồ thị này biểu diễn hai đường cong xác suất. Tại mức chiều rộng cánh hoa khoảng 1.6cm (đường nét đứt), mô hình lưỡng lự ở mức 50%. Đó chính là ranh giới quyết định.
+
+Slide 54: Ranh giới quyết định (Decision Boundaries) (2 đặc trưng)
+Người 1: Nếu sử dụng cả 2 đặc trưng (chiều rộng và chiều dài cánh hoa), ranh giới quyết định trở thành đường thẳng nét đứt chia đôi mặt phẳng. Các đường song song hai bên biểu thị các mức độ xác suất khác nhau (ví dụ: 15%, 30%, 90%).
+
+Slide 55: Hồi quy Softmax (Bước 1: Tính điểm)
+Người 1: Để mô hình hỗ trợ phân loại trực tiếp đa lớp (như 3 loài hoa) mà không cần kết hợp nhiều bộ phân loại nhị phân (OvR), ta mở rộng thành Hồi quy Softmax. Bước 1, nó sẽ tính điểm số s cho từng lớp k.
+
+Slide 56: Hàm Softmax (Bước 2: Biến đổi Xác suất)
+Người 1: Ở Bước 2, các điểm số thô s này được đưa qua phễu Hàm Softmax. Hàm này tính cấp số nhân và chuẩn hóa chúng thành các xác suất ước tính có tổng phân phối luôn bằng 1.
+
+Slide 57: Dự đoán & Hàm chi phí Cross Entropy
+Người 1: Mô hình sẽ dự đoán nhãn lớp có xác suất cao nhất. Hàm chi phí được sử dụng là Cross Entropy. Nó sẽ phạt nặng mô hình khi ước lượng xác suất quá thấp cho lớp đúng (mục tiêu). Điểm lưu ý là khi chỉ có 2 lớp, hàm Cross Entropy tương đương chính xác với Log Loss.
+
+Slide 58: Ranh giới quyết định của Hồi quy Softmax
+Người 1: Đồ thị minh họa ranh giới quyết định của Hồi quy Softmax cho 3 loài hoa. Các đường thẳng cắt nhau chia mặt phẳng thành 3 khu vực phân loại màu vàng, lục và lam rõ rệt. Những đường viền cong là các mốc xác suất tự tin của mô hình.
+
+Slide 59: Tổng kết Chương 4: Bản đồ Tư duy
+Người 1: Hôm nay chúng ta đã đi hết Chương 4. Nhìn vào bản đồ tư duy này, các em có thể thấy cốt lõi nằm ở Hồi quy Tuyến tính. Để giải nó ta dùng PT Chuẩn tắc, SVD hoặc tối ưu hóa bằng Gradient Descent. Để tăng độ phức tạp xử lý đa thức ta dùng Hồi quy đa thức. Và để kiểm soát nó khỏi Quá khớp, ta dùng các kỹ thuật Chính quy hóa. Cuối cùng là bài toán Phân loại với Hồi quy Logistic & Softmax.
+Người 2: Bản đồ này hệ thống kiến thức rất rõ ràng ạ. Việc hiểu toán học thực sự giúp em hiểu bản chất của các mô hình học máy.
+Người 1: Rất tốt. Cảm ơn các em, xin chào và hẹn gặp lại ở bài sau!
