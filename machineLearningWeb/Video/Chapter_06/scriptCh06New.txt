@@ -1,0 +1,186 @@
+Slide 1: Chương 6: Cây Quyết định (Decision Trees)
+Người 1: Chào các em. Nếu ở chương trước, chúng ta học về SVM - một thuật toán thiên về hình học và tối ưu hóa toán học, thì hôm nay chúng ta sẽ tìm hiểu một thuật toán hoạt động hoàn toàn dựa trên tư duy logic của con người: Cây Quyết Định.
+Người 2: Nghe tên "Cây Quyết Định" giống như sơ đồ nhánh if-else mà tụi em hay dùng khi lập trình đúng không thầy?
+Người 1: Đúng vậy! Chúng ta cùng bước vào bài học để khám phá thuật toán thú vị này nhé.
+
+Slide 2: Mục tiêu của Chương
+Người 1: Trong chương này, chúng ta sẽ có các mục tiêu chính sau: Hiểu thuật toán Cây Quyết định và khả năng dự đoán của nó, nắm bắt thuật toán CART dùng để huấn luyện.
+Người 2: Em thấy còn có tìm hiểu về độ vẩn đục Gini, Entropy và các kỹ thuật Chính quy hóa nữa đúng không ạ?
+Người 1: Rất chính xác. Ngoài ra, ta cũng sẽ đi sâu phân tích hai điểm yếu lớn nhất của Cây Quyết định là Phương sai cao và Nhạy cảm với hướng trục.
+
+Slide 3: Mục lục
+Người 1: Bài học của chúng ta được chia làm 8 phần chính, đi từ khái quát về Cây Quyết định, cách huấn luyện, đưa ra dự đoán, đến thuật toán CART và chính quy hóa.
+Người 2: Nửa sau của chương sẽ là phần Hồi quy, phân tích điểm yếu và cuối cùng là tổng kết phải không thầy?
+Người 1: Đúng thế. Lộ trình khá dài nên chúng ta sẽ bắt đầu ngay với phần đầu tiên.
+
+Slide 4: 1.1 Sức mạnh của Decision Trees
+Người 1: Cây Quyết định là một thuật toán vô cùng đa năng. Nó có thể thực hiện cả Phân loại, Hồi quy và học nhiều đầu ra.
+Người 2: Em thấy trên slide ghi nó xử lý xuất sắc dữ liệu phức tạp phi tuyến tính và còn là thành phần cơ bản cho các thuật toán mạnh hơn như Random Forest?
+Người 1: Chuẩn! Nó chính là nền tảng (building block) để xây dựng nên những thuật toán hàng đầu như Random Forest hay Gradient Boosting.
+
+Slide 5: 1.2 Mô hình Hộp Trắng (White Box Model)
+Người 1: Một điểm sáng giá nhất của Cây Quyết Định là nó được gọi là Mô hình Hộp Trắng. Ta có thể theo dõi chính xác cách mô hình đi đến kết luận.
+Người 2: Trái ngược với Hộp Đen như Mạng Nơ-ron, ta khó giải thích vì sao nó đưa ra dự đoán như vậy đúng không ạ?
+Người 1: Đúng. Trong các lĩnh vực như y tế hay tài chính, nơi cần giải trình rõ ràng lý do ra quyết định, thì Cây Quyết Định luôn được ưu tiên.
+
+Slide 6: 2.1 Code: Huấn luyện cây quyết định
+Người 1: Hãy xem cách huấn luyện. Bằng Scikit-Learn, ta dùng lớp DecisionTreeClassifier. Ở đây ta dùng bộ dữ liệu Iris và chỉ lấy 2 đặc trưng là chiều dài và chiều rộng cánh hoa.
+Người 2: Rất ngắn gọn, chỉ cần khai báo mô hình, giới hạn max_depth bằng 2, và gọi hàm fit là xong.
+
+Slide 7: 2.2 Code: Xuất biểu đồ cây
+Người 1: Để xem bên trong nó học ra cái "cây" thế nào, Scikit-Learn cung cấp hàm export_graphviz. Hàm này xuất mô hình ra một file chấm dot.
+Người 2: Sau đó ta dùng phần mềm Graphviz để chuyển file dot đó thành ảnh PNG hoặc PDF để trực quan hóa phải không thầy?
+Người 1: Chính xác. Rất dễ dàng để ta nhìn thấy cấu trúc của cây.
+
+Slide 8: 2.3 Trực quan hóa Cây Iris
+Người 1: Và đây chính là kết quả, Cây Quyết Định phân loại hoa Iris. Nút trên cùng gọi là Nút gốc. Các nút trung gian hiển thị điều kiện chia, số samples, phân bố value và nhãn class.
+Người 2: Còn các nút ở cuối cùng không có con gọi là Nút lá (Leaf Node) đúng không ạ?
+Người 1: Rất chuẩn. Đó là nơi đưa ra dự đoán cuối cùng.
+
+Slide 9: 3.1 Quá trình đưa ra dự đoán
+Người 1: Giả sử em có một mẫu mới. Quá trình dự đoán bắt đầu duyệt từ Nút gốc, kiểm tra điều kiện.
+Người 2: Nếu Đúng (True) thì đi sang nhánh Trái, nếu Sai (False) thì đi sang nhánh Phải, lặp lại cho đến khi gặp Nút lá ạ?
+Người 1: Đúng vậy! Và lớp có số lượng mẫu đông nhất trong nút lá đó sẽ là dự đoán cuối cùng cho mẫu dữ liệu. Cực kỳ nhanh và trực quan.
+
+Slide 10: 3.2 Hiểu về Gini Impurity (Độ vẩn đục Gini)
+Người 1: Nhìn kỹ vào mỗi nút, em thấy tham số gini. Nó đo lường độ vẩn đục hay sự lộn xộn của nút. Một nút thuần khiết (gini = 0) khi mọi mẫu trong nút đều thuộc 1 lớp.
+Người 2: Công thức tính là G_i = 1 trừ đi tổng bình phương của p_i,k đúng không thầy?
+Người 1: Đúng thế, trong đó p_i,k là tỷ lệ phần trăm mẫu thuộc lớp k nằm trong nút i.
+
+Slide 11: 3.3 Ví dụ tính toán Gini Impurity
+Người 1: Ví dụ ở một nút có 54 mẫu, trong đó có 0 mẫu setosa, 49 mẫu versicolor và 5 mẫu virginica. Ta sẽ tính tỷ lệ p tương ứng.
+Người 2: Áp dụng công thức Gini, ta lấy 1 trừ đi bình phương của (0/54) cộng bình phương của (49/54) cộng bình phương của (5/54).
+Người 1: Kết quả xấp xỉ 0.168, hoàn toàn trùng khớp với thông số hiển thị trên biểu đồ cây Iris lúc nãy!
+
+Slide 12: 3.4 Ranh giới Quyết định (Decision Boundaries)
+Người 1: Về mặt hình học, mỗi điều kiện trên cây tạo ra một ranh giới chia cắt dữ liệu. Đường nét đậm ở độ sâu 0 chia dữ liệu tại 2.45 cm trên trục tung.
+Người 2: Ở nhánh tiếp theo, đường đứt nét ở 1.75 cm trên trục hoành tiếp tục chia không gian. Nghĩa là cây luôn tạo ra các đường ranh giới vuông góc với trục tọa độ.
+
+Slide 13: 3.5 Không cần Chuẩn hóa (Scaling) dữ liệu!
+Người 1: Một ưu điểm tuyệt vời của Cây Quyết Định là nó gần như không yêu cầu tiền xử lý hay chuẩn hóa dữ liệu.
+Người 2: Tức là ta không cần dùng StandardScaler hay MinMaxScaler luôn ạ?
+Người 1: Đúng. Việc một đặc trưng chạy từ 0 đến 1, còn đặc trưng khác từ 0 đến 1000 không hề ảnh hưởng. Thuật toán chỉ đơn giản là tìm điểm ngưỡng cắt t_k phù hợp.
+
+Slide 14: 3.6 Ước tính Xác suất Lớp (Class Probabilities)
+Người 1: Cây quyết định cũng có thể ước tính xác suất lớp. Giả sử ta có bông hoa dài 5cm, rộng 1.5cm, đi từ gốc xuống sẽ rơi vào nút lá màu xanh lục.
+Người 2: Nút lá đó có 49 Versicolor và 5 Virginica. Vậy xác suất là 49 chia 54, tức khoảng 90.7% cho Versicolor.
+Người 1: Rất thông minh. Xác suất của lớp k chính là tỉ lệ mẫu của lớp k trên tổng số mẫu tại nút lá đó.
+
+Slide 15: 3.7 Code: Dự đoán Xác suất
+Người 1: Trong mã nguồn, ta có thể dùng hàm predict_proba để lấy ra mảng xác suất cho bông hoa trên. Kết quả in ra đúng bằng 90.7% cho Versicolor.
+Người 2: Và hàm predict sẽ trả về lớp có xác suất cao nhất, ở đây là lớp 1, tương ứng với Versicolor. Rất rõ ràng!
+
+Slide 16: Thuật toán CART là gì?
+Người 1: Scikit-Learn sử dụng thuật toán CART (Classification and Regression Tree) để huấn luyện cây. Nó trải qua 4 bước cơ bản.
+Người 2: Đầu tiên là phân chia tập huấn luyện bằng đặc trưng k và ngưỡng t_k, sao cho 2 tập con sinh ra thuần khiết nhất.
+Người 1: Sau đó nó đệ quy lặp lại quá trình này, và chỉ dừng lại khi đạt độ sâu max_depth hoặc không thể giảm thêm độ vẩn đục.
+
+Slide 17: Hàm Chi phí của CART (Phân loại)
+Người 1: Đây là Hàm Chi phí J của thuật toán CART cho phân loại. Nó là trung bình có trọng số của độ vẩn đục Gini ở tập con bên trái và bên phải.
+Người 2: Có lưu ý là "Thuật toán Tham lam". Tức là nó chỉ tìm mức phân tách tốt nhất tại hiện tại, mà không quan tâm đến tương lai.
+Người 1: Đúng, nên nó không bảo đảm tìm ra cây tối ưu cục bộ hoàn hảo, nhưng tốc độ huấn luyện lại rất nhanh.
+
+Slide 18: Gini Impurity hay Information Entropy?
+Người 1: Mặc định CART dùng Gini Impurity. Nhưng ta có thể đổi sang dùng Entropy. Entropy đo lường mức độ hỗn loạn, bằng 0 khi tập hợp hoàn toàn thuần khiết.
+Người 2: Công thức Shannon's Entropy là tổng của p_i,k nhân logarit cơ số 2 của p_i,k. Trông có vẻ tính toán sẽ nặng hơn Gini.
+
+Slide 19: So sánh: Gini vs. Entropy
+Người 1: Chính xác. Gini tính toán nhanh hơn vì không dùng phép Logarit, và có xu hướng cắt ra nhánh lớn nhất. Trong khi Entropy tính toán chậm hơn.
+Người 2: Entropy có xu hướng tạo ra các cây cân bằng hơn (balanced trees). Vậy ta nên dùng cái nào ạ?
+Người 1: Trong hầu hết mọi trường hợp, Gini và Entropy tạo ra những cây rất giống nhau, nên Gini vẫn là lựa chọn mặc định tốt.
+
+Slide 20: Độ phức tạp Thời gian (Time Complexity)
+Người 1: Về độ phức tạp, quá trình suy luận dự đoán là cực nhanh. Do phải duyệt từ gốc đến lá, độ phức tạp chỉ là O(log2 m), độc lập với số lượng đặc trưng!
+Người 2: Thế còn quá trình huấn luyện thì sao thầy?
+Người 1: Quá trình huấn luyện lại rất chậm, độ phức tạp là O(n * m * log2 m). Nếu tập dữ liệu có hàng triệu dòng, việc huấn luyện sẽ tốn khá nhiều thời gian.
+
+Slide 21: Tại sao phải Chính quy hóa?
+Người 1: Bản chất Cây Quyết định là mô hình Non-parametric, số tham số không được ấn định trước nên nó phát triển tự do theo dữ liệu.
+Người 2: Nếu không giới hạn, nó sẽ cố phân nhánh cho đến khi mỗi chiếc lá chỉ có 1 điểm duy nhất, tương đương việc ghi nhớ học vẹt bộ dữ liệu!
+Người 1: Hậu quả cuối cùng là gây ra hiện tượng Overfitting cực kỳ nghiêm trọng, ranh giới quyết định sẽ rất nát.
+
+Slide 22: Các Siêu tham số Chính quy hóa
+Người 1: Để khắc phục, ta dùng các siêu tham số để kìm hãm sự phát triển của cây. Tiêu biểu là max_depth để giới hạn độ sâu tối đa.
+Người 2: Ngoài ra còn có min_samples_split (số lượng mẫu tối thiểu một nút phải có trước khi phân chia), min_samples_leaf (số mẫu tối thiểu ở nút lá), max_features và max_leaf_nodes nữa.
+
+Slide 23: Hiệu ứng của Chính quy hóa
+Người 1: Nhìn vào hình 6-3, bên trái là cây không giới hạn với min_samples_leaf bằng 1. Ranh giới ngoằn ngoèo bám sát từng nhiễu, Overfitting nặng nề.
+Người 2: Bên phải là cây bị ràng buộc với min_samples_leaf bằng 4. Ranh giới mượt mà hơn, khả năng tổng quát hóa trên dữ liệu mới chắc chắn sẽ tốt hơn.
+
+Slide 24: Lớp DecisionTreeRegressor (Hồi quy)
+Người 1: Không chỉ Phân loại, Cây quyết định cũng giải quyết xuất sắc các bài toán Hồi quy bằng lớp DecisionTreeRegressor.
+Người 2: Sự khác biệt cốt lõi là nút lá không dự đoán nhãn lớp nữa, mà dự đoán một giá trị liên tục bằng trung bình cộng của tất cả các mẫu nằm trong lá đó phải không ạ?
+Người 1: Rất chuẩn. Và hàm mục tiêu tối ưu sẽ sử dụng MSE (Mean Squared Error) để thay thế cho Gini.
+
+Slide 25: Code Python: Hồi quy dữ liệu Quadratic
+Người 1: Đây là đoạn code huấn luyện cây hồi quy. Ta tạo ra một dữ liệu mô phỏng hàm bậc 2 có thêm nhiễu.
+Người 2: Khai báo DecisionTreeRegressor với max_depth bằng 2 và fit dữ liệu. Nó cũng đơn giản y như Phân loại thầy nhỉ.
+
+Slide 26: Trực quan hóa Cây Hồi quy
+Người 1: Biểu đồ dự đoán của Cây Hồi quy mang dạng các bậc thang. Nút lá hiển thị "value" chính là giá trị trung bình y, và "mse" là sai số tại nút đó.
+Người 2: Bản chất dự đoán dạng bậc thang (step-wise) là vì trong cùng một khoảng phân chia của lá, mọi giá trị x đều trả ra cùng 1 mức giá trị y duy nhất đúng không thầy?
+
+Slide 27: Các Ranh giới Hồi quy (Bậc thang)
+Người 1: Chính xác! Hình 6-5 cho thấy với max_depth = 2, mô hình tạo ra 4 bậc thang lớn. Nhưng nếu tăng max_depth = 3, mô hình sẽ chẻ nhỏ hơn thành 8 bậc thang.
+Người 2: Nếu ta tăng độ sâu lên tiếp thì số bậc thang sẽ càng nhiều và bám sát vào từng điểm dữ liệu hơn.
+
+Slide 28: Overfitting trong Hồi quy
+Người 1: Đúng, nhưng nếu để cây tự do (Hình trái), nó sẽ uốn éo đứt đoạn để đi qua toàn bộ các nhiễu dữ liệu. Đây là vấn đề Overfitting.
+Người 2: Vậy ta lại dùng Regularization. Ở hình phải, thiết lập min_samples_leaf=10 sẽ ép mô hình mượt mà hơn và tránh được việc học vẹt nhiễu.
+
+Slide 29: Hàm Chi phí CART cho Hồi quy
+Người 1: Với Hồi quy, thuật toán CART tối thiểu hóa sai số MSE ở hai nửa trái phải thay vì độ vẩn đục Gini. Công thức J bây giờ tính dựa trên MSE_left và MSE_right.
+Người 2: Trong đó y_hat_node luôn là giá trị trung bình cộng của các mẫu rơi vào nút đó. Thuật toán vẫn giữ nguyên tính chất tối ưu tham lam.
+
+Slide 30: Hạn chế: Trục chia vuông góc
+Người 1: Chúng ta phân tích các nhược điểm. Hạn chế đầu tiên: Cây quyết định yêu thích sự đơn giản nên luôn phân chia dữ liệu bằng các đường vuông góc với trục tọa độ (Orthogonal splits).
+Người 2: Hạn chế này dẫn đến việc nó không thể vẽ được đường chéo hay đường cong, gây ra sự nhạy cảm cực độ đối với Hướng xoay của dữ liệu (Axis Orientation).
+
+Slide 31: Máy học đại học - Chương 6 (Phần 3)
+Người 1: Chúng ta tiếp tục với phần Phân tích chuyên sâu Cây Quyết Định và mở đường cho Khu Rừng Ngẫu Nhiên (Random Forest).
+Người 2: Em rất tò mò làm sao để khắc phục được các điểm yếu chí mạng của Cây Quyết định.
+
+Slide 32: Nhạy cảm với Xoay trục tọa độ
+Người 1: Hãy nhìn hình 6-6. Hình trái, dữ liệu phân tách tuyệt đẹp chỉ bằng 1 đường thẳng ngang, cây chỉ sâu 1 tầng.
+Người 2: Nhưng ở hình phải, khi xoay dữ liệu 45 độ, cây buộc phải tạo ra vô vàn đường cầu thang ziczac dốc để xấp xỉ một đường chéo. Cây trở nên rườm rà và tổng quát hóa kém.
+
+Slide 33: Khắc phục Bằng PCA
+Người 1: Để khắc phục nhược điểm nhạy cảm với hướng trục, ta có thể dùng thuật toán PCA (Phân tích Thành phần Chính) để tiền xử lý dữ liệu.
+Người 2: Áp dụng PCA sẽ xoay dữ liệu về trạng thái phương sai lớn nhất dọc theo các trục. Từ đó cây bị giới hạn khả năng bóp méo thành đường cầu thang.
+Người 1: Một sự kết hợp rất tuyệt vời!
+
+Slide 34: Vấn đề Cốt lõi: Phương sai cao (High Variance)
+Người 1: Vấn đề lớn nhất của Cây Quyết Định là Phương sai cao, tức là Tính không ổn định cực lớn.
+Người 2: Là do bản chất tham lam của nó đúng không ạ? Một thay đổi vô cùng nhỏ ở dữ liệu huấn luyện có thể tạo ra một cây hoàn toàn khác biệt.
+Người 1: Đúng. Hiệu ứng dây chuyền xảy ra, một nhiễu loạn ngẫu nhiên nhỏ xíu ở nút gốc sẽ làm toàn bộ các nút con ở dưới thay đổi sạch sành sanh.
+
+Slide 35: Ví dụ Thực tế về High Variance (Dữ liệu Iris)
+Người 1: Nhìn vào hình 6-8. Ta chỉ thực hiện một thao tác cực nhỏ: Xóa đúng 1 bông hoa Versicolor to nhất ở bộ dữ liệu Iris.
+Người 2: Hậu quả là cây mới học được đã chia cắt dữ liệu theo ranh giới khác hoàn toàn so với cây ban đầu. Quá nhạy cảm luôn thầy ạ!
+
+Slide 36: Ngẫu nhiên tính trong Huấn luyện
+Người 1: Thậm chí, ngay cả khi không xóa dữ liệu, Scikit-Learn mặc định vẫn chọn đặc trưng ngẫu nhiên ở mỗi bước để tăng tốc phân chia.
+Người 2: Tức là nếu ta huấn luyện 2 lần cùng một tập dữ liệu (mà không set random_state), ta có thể ra 2 kết quả mô hình khác nhau?
+Người 1: Chính xác. Sự bất ổn định này thoạt nghe có vẻ là điểm yếu chí mạng, không thể tin cậy được.
+
+Slide 37: Từ Điểm yếu trở thành Siêu Vị Thần
+Người 1: Thế nhưng, có một cách biến sự bất ổn đó thành sức mạnh siêu việt. Đó là kết hợp hàng nghìn cây phương sai cao và độc lập lại với nhau.
+Người 2: Á, thay vì dùng 1 cái cây không ổn định, ta trung bình hóa dự đoán của một Khu Rừng Ổn Định (Random Forest)!
+Người 1: Đúng vậy! Sự kết hợp đó đã tạo ra một trong những thuật toán ML vĩ đại nhất lịch sử. Ta sẽ đào sâu ở Chương 7.
+
+Slide 38: Tổng kết: Ưu điểm của Cây Quyết Định
+Người 1: Tổng kết lại, Cây Quyết Định có ưu điểm là rất dễ hiểu, dễ giải thích bằng quy tắc If-Else. Không yêu cầu chuẩn hóa dữ liệu.
+Người 2: Ngoài ra nó còn xử lý dữ liệu phi tuyến tính cực tốt và xử lý rất nhanh ở khâu Dự đoán với tốc độ O(log2 m).
+
+Slide 39: Tổng kết: Nhược điểm của Cây Quyết Định
+Người 1: Bù lại, nó có 3 nhược điểm lớn: Dễ Overfitting nặng nề nếu không kìm hãm bằng Regularization.
+Người 2: Nhược điểm thứ hai là Nhạy cảm với Xoay trục, có thể khắc phục bằng PCA. Và cuối cùng là Bất ổn (Variance Cao), sẽ được khắc phục bằng Ensemble Learning.
+
+Slide 40: Thực hành - Bài tập 1: Phân loại Moons
+Người 1: Bài tập thực hành 1 cho các em: Dùng hàm make_moons tạo 10.000 điểm dữ liệu nhiễu 0.4. Sau đó dùng GridSearchCV để dò tìm tham số max_leaf_nodes tốt nhất.
+Người 2: Dạ, sau khi tìm xong tụi em sẽ huấn luyện mô hình tối ưu đó và tính Accuracy Score trên tập Test ạ.
+
+Slide 41: Thực hành - Bài tập 2: Tự xây dựng Khu rừng (Forest)
+Người 1: Bài tập 2 mang tính thử thách hơn: Các em hãy chia Train set thành 1000 tập con. Huấn luyện 1000 Cây Quyết Định cấu hình tốt nhất từ Bài 1 lên mỗi tập con đó.
+Người 2: Xong rồi tụi em áp dụng Mode, tức lấy dự đoán số đông vote nhiều nhất từ 1000 cây này để dự đoán Test set. Độ chính xác chắc chắn sẽ tăng hơn ít nhất 0.5 – 1.5% so với 1 cây.
+Người 1: Rất tốt, em nắm bài rất vững. Chương 6 đến đây là kết thúc. Hẹn gặp lại các em vào chuyên đề Random Forest nhé! Chào các em.
