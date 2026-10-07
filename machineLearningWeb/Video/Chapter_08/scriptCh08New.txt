@@ -1,0 +1,268 @@
+Slide 1: Học Máy (Machine Learning)
+Người 1: Chào các em. Sau khi tìm hiểu về các thuật toán trước, hôm nay chúng ta bước sang một vùng đất quan trọng của Học máy: Giảm chiều dữ liệu (Dimensionality Reduction).
+Người 2: Giảm chiều dữ liệu có phải là cắt bớt số lượng đặc trưng đi đúng không thầy/cô?
+Người 1: Đúng vậy. Nó giống như việc nén một tập dữ liệu khổng lồ thành một phiên bản tinh gọn hơn mà vẫn giữ được những thông tin cốt lõi.
+
+Slide 2: Nội dung Chương trình
+Người 1: Trong chương 8 này, chúng ta sẽ đi qua 3 nội dung chính. Đầu tiên là khái quát về giảm chiều dữ liệu. Thứ hai là Phân tích thành phần chính, viết tắt là PCA. Và cuối cùng là Phép chiếu ngẫu nhiên cùng thuật toán LLE.
+Người 2: Em thấy PCA luôn được nhắc đến nhiều nhất khi nói về giảm chiều.
+Người 1: Chính xác. PCA là "ngôi sao" của chương này. Ta sẽ tìm hiểu kỹ về nó.
+
+Slide 3: Giới thiệu Giảm chiều dữ liệu
+Người 1: Tại sao chúng ta cần giảm chiều? Nhiều bài toán thực tế chứa hàng ngàn, thậm chí hàng triệu đặc trưng. Khối lượng dữ liệu khổng lồ này khiến việc huấn luyện cực kỳ chậm chạp và làm mô hình khó tìm ra giải pháp tốt.
+Người 2: Nghĩa là nếu có 1 triệu đặc trưng, máy tính sẽ phải giải một bài toán phương trình 1 triệu ẩn số ạ?
+Người 1: Đúng thế. Vấn đề này thường được gọi là "lời nguyền của số chiều" (the curse of dimensionality). Kỹ thuật giảm chiều sẽ giúp biến bài toán phức tạp thành bài toán dễ giải quyết hơn bằng cách loại bỏ các đặc trưng dư thừa.
+
+Slide 4: Lợi ích 1: Tăng tốc quá trình huấn luyện
+Người 1: Lợi ích thiết thực nhất của việc giảm số lượng đặc trưng là giúp thuật toán học máy chạy nhanh hơn đáng kể, đồng thời tốn ít bộ nhớ hơn.
+Người 2: Nó giống như một tên lửa được tháo bớt trọng lượng thừa để bay nhanh hơn vậy.
+
+Slide 5: Ví dụ (Ảnh MNIST)
+Người 1: Hãy lấy ví dụ về bộ dữ liệu ảnh MNIST gồm các chữ số viết tay. Các pixel ở đường biên hình ảnh hầu như luôn luôn trắng. Ta có thể loại bỏ hoàn toàn các pixel này khỏi tập huấn luyện mà không làm mất thông tin hữu ích.
+Người 2: Hơn nữa, hai pixel lân cận thường có tương quan cao với nhau, nên ta có thể hợp nhất chúng lại để giảm bớt dữ liệu nữa ạ!
+Người 1: Rất chuẩn xác! Bằng cách đó, ta giảm đáng kể số chiều dữ liệu.
+
+Slide 6: Lợi ích 2: Trực quan hóa dữ liệu
+Người 1: Ngoài ra, giảm chiều dữ liệu còn vô cùng hữu ích cho việc Trực quan hóa dữ liệu. Rất khó để vẽ một đồ thị có hơn 3 chiều.
+Người 2: Dạ đúng, con người chúng ta chỉ quan sát tốt nhất trên mặt phẳng 2D hoặc không gian 3D.
+Người 1: Chính vì thế, giảm số lượng chiều xuống 2 hoặc 3 giúp ta vẽ biểu đồ trực quan, từ đó dễ dàng quan sát và phát hiện ra các mẫu dữ liệu, chẳng hạn như các cụm (clusters) tương đồng.
+
+Slide 7: Lời nguyền của số chiều
+Người 1: Bây giờ hãy đi sâu vào "Lời nguyền của số chiều". Trực giác của chúng ta ở không gian 3D thường bị sai lệch khi áp dụng cho không gian chiều cao.
+Người 2: Cụ thể là sao thưa thầy/cô?
+Người 1: Nếu em chọn một điểm ngẫu nhiên trong hình vuông 2D đơn vị, xác suất nó nằm cách viền dưới 0.001 chỉ là 0.4%. Nhưng trong một siêu hình lập phương 10,000 chiều, xác suất này lớn hơn 99.999999%!
+
+Slide 8: Lời nguyền của số chiều (Tiếp theo)
+Người 1: Kết luận rút ra là: Hầu hết các điểm trong một không gian có chiều cao đều nằm rất gần đường biên.
+Người 2: Em thấy trên hình, khi số chiều tăng lên thì các đỉnh của hình đa diện ngày càng nhiều lên, làm cho phần lớn không gian bị đẩy ra phía các rìa.
+Người 1: Chính xác. Không gian đó trở nên vô cùng rộng lớn tới mức khủng khiếp.
+
+Slide 9: Sự khác biệt khoảng cách trong không gian chiều cao
+Người 1: Hệ quả là khoảng cách giữa các điểm cũng thay đổi. Trong hình vuông 2D đơn vị, khoảng cách trung bình giữa 2 điểm ngẫu nhiên là khoảng 0.52. Trong không gian 3D là 0.66. Nhưng ở 1 triệu chiều, con số này vọt lên tới khoảng 408.25!
+Người 2: Tức là có rất nhiều khoảng trống trong các chiều cao, dẫn đến dữ liệu vô cùng thưa thớt (sparse).
+
+Slide 10: Nguy cơ quá khớp do thưa thớt
+Người 1: Khi dữ liệu quá thưa thớt, hầu hết các trường hợp huấn luyện cách rất xa nhau. Điều này dẫn đến nguy cơ quá khớp (overfitting) rất lớn.
+Người 2: Vì một trường hợp mới có thể sẽ cách xa bất kỳ trường hợp huấn luyện nào đã biết, nên dự đoán sẽ kém tin cậy hơn nhiều do phải dựa trên phép ngoại suy lớn đúng không ạ?
+Người 1: Tóm lại, tập huấn luyện càng có nhiều chiều, nguy cơ quá khớp càng cao.
+
+Slide 11: Các cách tiếp cận chính để giảm chiều
+Người 1: Để giải quyết bài toán này, thay vì cố gắng thu thập lượng dữ liệu khổng lồ bằng số nguyên tử trong vũ trụ để lấp đầy không gian, chúng ta dùng các thuật toán giảm chiều.
+Người 2: Có 2 hướng tiếp cận chính là Phép chiếu (Projection) và Học đa tạp (Manifold Learning) đúng không thầy/cô?
+Người 1: Chính xác. Chúng ta sẽ tìm hiểu từng phương pháp một.
+
+Slide 12: Cách tiếp cận 1: Phép chiếu (Projection)
+Người 1: Trong thực tế, các trường hợp huấn luyện không phân bổ đều trên tất cả các chiều. Mọi điểm huấn luyện thường nằm gọn trong (hoặc rất gần) một không gian con (subspace) có số chiều thấp hơn nhiều so với không gian gốc.
+Người 2: Giống như việc ánh sáng rọi các điểm lơ lửng xuống một mặt kính bên dưới vậy ạ?
+Người 1: Hình ảnh so sánh rất hay, chúng ta cùng xem minh họa nhé.
+
+Slide 13: Minh họa Phép chiếu
+Người 1: Nhìn vào biểu đồ này. Các điểm dữ liệu 3D thực chất gần như nằm hoàn toàn trên một mặt phẳng 2D.
+Người 2: Mặt phẳng màu xanh đó chính là một không gian con 2D. Nếu ta "chiếu" vuông góc tất cả các điểm đó xuống mặt phẳng, ta sẽ loại bỏ được không gian 3D.
+Người 1: Hoàn toàn chính xác.
+
+Slide 14: Kết quả Phép chiếu
+Người 1: Và đây là kết quả của tập dữ liệu 2D mới sau phép chiếu vuông góc. Các điểm lúc này nằm trọn trên mặt phẳng với hai trục z1 và z2.
+Người 2: Dữ liệu đã được giảm từ 3 chiều xuống còn 2 chiều một cách gọn gàng!
+Người 1: Đúng vậy, đó là nguyên lý hoạt động cơ bản của Phép chiếu.
+
+Slide 15: Cách tiếp cận 2: Học đa tạp (Manifold Learning)
+Người 1: Tuy nhiên, Phép chiếu không phải lúc nào cũng là cách tiếp cận tốt nhất, đặc biệt khi không gian con bị xoắn và uốn cong. Ví dụ điển hình nhất là Tập dữ liệu Swiss roll (Cuộn bánh Thụy Sĩ).
+Người 2: Nó giống như một tờ giấy bị cuộn tròn lại trong không gian 3D.
+Người 1: Đúng vậy. Nó là một đa tạp 2D bị uốn cong bên trong không gian 3D.
+
+Slide 16: Làm dẹt (Phép chiếu) vs Mở cuộn (Đa tạp)
+Người 1: Nếu chúng ta dùng phép chiếu vuông góc để làm dẹt cuộn bánh từ trên xuống, ta sẽ mắc sai lầm! Dữ liệu ở các vòng cuộn bị chồng chéo, đè bẹp lên nhau như biểu đồ bên trái.
+Người 2: Các mảng màu bị trộn lẫn lộn. Trong khi đó, nếu dùng thuật toán mở cuộn ở hình bên phải, dữ liệu được trải phẳng một cách hoàn hảo, tách biệt rõ ràng!
+Người 1: Đó chính là điểm vượt trội của Học đa tạp so với Phép chiếu thông thường.
+
+Slide 17: Giả định đa tạp (Manifold Hypothesis)
+Người 1: Các thuật toán học đa tạp dựa trên "Giả định đa tạp": hầu hết các tập dữ liệu thực tế có chiều cao đều nằm gần một đa tạp có chiều thấp hơn nhiều.
+Người 2: Nghĩa là nếu ta trải phẳng cái đa tạp đó ra thì bài toán sẽ trở nên đơn giản hơn nhiều?
+Người 1: Rất xuất sắc! Các tác vụ học máy như phân loại hay hồi quy thường sẽ đơn giản hơn nếu được biểu diễn trong không gian đa tạp (sau khi được mở cuộn).
+
+Slide 18: Lưu ý về Giả định đa tạp
+Người 1: Tuy nhiên, cần chú ý: đường biên quyết định không phải lúc nào cũng đơn giản hơn với không gian chiều thấp. Như ở hình ảnh phía dưới, khi mở cuộn ra, ranh giới phân loại lại trở nên phức tạp hơn so với khi để ở không gian 3D nguyên bản.
+Người 2: Dạ vâng, vậy là giảm chiều giúp mô hình huấn luyện nhanh hơn, nhưng không đảm bảo sẽ cho kết quả chính xác hơn, tuỳ thuộc vào phân bố dữ liệu cụ thể.
+Người 1: Rất đúng!
+
+Slide 19: Phân tích thành phần chính (PCA)
+Người 1: Giờ ta sẽ đi vào thuật toán giảm chiều phổ biến nhất: Phân tích thành phần chính (PCA). Đây là một phương pháp thuộc nhóm Phép chiếu.
+Người 2: PCA thực hiện như thế nào ạ?
+Người 1: Có 2 bước. Đầu tiên, xác định siêu phẳng (hyperplane) nằm gần dữ liệu nhất. Sau đó chiếu toàn bộ dữ liệu lên mặt phẳng đó.
+
+Slide 20: Bảo toàn phương sai (Preserving Variance)
+Người 1: Khi chọn một siêu phẳng để chiếu, mục tiêu của PCA là chọn trục sao cho bảo toàn được lượng phương sai lớn nhất của dữ liệu.
+Người 2: Nghĩa là dữ liệu khi chiếu xuống sẽ dàn trải ra xa nhau nhất có thể, tránh việc các điểm bị đè lên nhau, giúp giữ lại nhiều thông tin nhất ạ?
+Người 1: Hoàn toàn đúng! Việc này cũng tương đương với việc chọn trục làm giảm thiểu khoảng cách bình phương trung bình giữa tập dữ liệu gốc và điểm chiếu.
+
+Slide 21: Các thành phần chính (Principal Components - PC)
+Người 1: Các siêu phẳng hay các trục này được gọi là Thành phần chính. PC1 là trục có phương sai lớn nhất. PC2 là trục thứ 2 trực giao (vuông góc) với trục 1 và chứa nhiều phương sai nhất từ phần còn lại.
+Người 2: Quá trình này tiếp diễn tối đa bằng số chiều của không gian gốc, để tìm ra các trục PC tiếp theo. Trục thứ i được gọi là thành phần chính thứ i.
+Người 1: Chính xác. Trên hình, trục liền nét c1 là PC1 bảo toàn phương sai tối đa, trục đứt nét c2 là PC2.
+
+Slide 22: Toán học PCA: Phân tách giá trị số ít (SVD)
+Người 1: Về mặt toán học, làm sao để tìm các trục PC này? Ta sử dụng kỹ thuật phân tách ma trận tiêu chuẩn gọi là Phân tách giá trị số ít (SVD).
+Người 2: SVD phân tách ma trận huấn luyện X thành ba ma trận: U, Sigma, và V chuyển vị (V^T).
+Người 1: Đúng vậy! Ma trận V chuyển vị chính là nơi chứa tất cả các thành phần chính mà ta cần tìm, chúng là các vector đơn vị trực giao.
+
+Slide 23: Tính toán PCA bằng NumPy (Phần 1)
+Người 1: Chúng ta hoàn toàn có thể tự code PCA dùng thư viện NumPy. Dùng hàm svd() của NumPy để lấy ra ma trận V chuyển vị (Vt).
+Người 2: Có một điểm lưu ý là trước khi gọi hàm SVD, ta cần phải căn giữa dữ liệu (centered) xung quanh gốc tọa độ bằng cách trừ đi giá trị trung bình.
+Người 1: Rất tốt, đó là một lưu ý quan trọng. c1 và c2 thu được từ Vt chính là các thành phần chính PC1 và PC2.
+
+Slide 24: Chiếu dữ liệu xuống d chiều
+Người 1: Sau khi có các thành phần chính, ta có thể giảm kích thước không gian bằng cách chiếu tập dữ liệu lên siêu phẳng tạo bởi d thành phần chính đầu tiên.
+Người 2: Tức là ta sẽ định nghĩa một ma trận W_d chứa d cột đầu tiên của V, rồi đem ma trận gốc X nhân với W_d để thực hiện phép chiếu ạ?
+Người 1: Chính xác! Phép chiếu X_d_proj bằng X nhân với W_d.
+
+Slide 25: Thực hiện phép chiếu bằng NumPy
+Người 1: Áp dụng vào code NumPy, ta chọn 2 thành phần chính đầu tiên và chuyển vị để có ma trận W2.
+Người 2: Sau đó ta lấy ma trận X_centered nhân ma trận với W2 bằng toán tử @. Kết quả X2D thu được chính là dữ liệu đã giảm xuống còn 2 chiều!
+Người 1: Rất trực quan và dễ hiểu phải không nào.
+
+Slide 26: Kết quả: Dữ liệu 2D sau giảm chiều
+Người 1: Bây giờ, X2D chính là tập dữ liệu 2D đã được giảm chiều, bảo toàn được tối đa lượng phương sai có thể từ tập X ban đầu.
+Người 2: Mọi thứ trông thật gọn gàng và bây giờ có thể đưa dữ liệu nhẹ nhàng này vào các thuật toán học máy phía sau.
+
+Slide 27: Sử dụng Scikit-Learn cho PCA
+Người 1: Mặc dù tự viết bằng NumPy giúp hiểu rõ thuật toán, nhưng trong thực tế, Scikit-Learn cung cấp lớp PCA tự động xử lý mọi thứ, đặc biệt là tự động căn giữa dữ liệu.
+Người 2: Tức là ta không cần trừ đi trung bình thủ công nữa. Chỉ cần khai báo PCA(n_components=2) rồi gọi hàm fit_transform(X) là xong!
+Người 1: Rất tiện lợi. Thuộc tính pca.components_ sẽ chứa các thành phần chính đã tìm thấy.
+
+Slide 28: Tỷ lệ phương sai giải thích (Explained Variance Ratio)
+Người 1: Một chỉ số cực kỳ quan trọng sau khi huấn luyện PCA là Tỷ lệ phương sai giải thích (Explained Variance Ratio).
+Người 2: Thuộc tính explained_variance_ratio_ này cho ta biết điều gì thưa thầy/cô?
+Người 1: Nó cho biết tỷ lệ phương sai của tập dữ liệu phân bố dọc theo từng thành phần chính, tức là mỗi trục giữ lại được bao nhiêu phần trăm thông tin.
+
+Slide 29: Đánh giá tỷ lệ phương sai giải thích
+Người 1: Lấy ví dụ, nếu mảng kết quả là 0.75 và 0.15. Điều này có nghĩa là ~76% phương sai của dữ liệu nằm dọc theo trục PC1, và ~15% nằm trên trục PC2.
+Người 2: Tổng cộng PC1 và PC2 giải thích được hơn 90% phương sai. Kết luận là những PC tiếp theo (PC3, PC4...) chứa rất ít thông tin hữu ích, chỉ còn khoảng 9%.
+Người 1: Chính xác, ta có thể tự tin loại bỏ các PC sau đó.
+
+Slide 30: Chọn số chiều phù hợp như thế nào?
+Người 1: Vậy câu hỏi là: Chọn số chiều d bao nhiêu là phù hợp? Quy tắc chung là trừ khi giảm xuống 2D hoặc 3D để vẽ biểu đồ, hãy chọn số chiều d sao cho tổng phương sai được giữ lại đủ lớn.
+Người 2: Ví dụ một mốc thường dùng là 95%. Nghĩa là ta sẽ thêm lần lượt PC1, PC2... cho đến khi tổng tỷ lệ phương sai giải thích vượt qua mức 95%?
+Người 1: Chuẩn xác.
+
+Slide 31: Tìm số chiều để giữ 95% phương sai (Phương pháp thủ công)
+Người 1: Phương pháp thủ công bằng NumPy là chạy PCA mà không giảm chiều, sau đó tính toán lũy kế phương sai bằng hàm np.cumsum.
+Người 2: Ta dùng argmax để đếm số phần tử cần thiết đạt ngưỡng 0.95. Trong tập dữ liệu MNIST, số chiều d cần thiết là 154 chiều thay vì 784 chiều ban đầu.
+Người 1: Hoàn toàn đúng!
+
+Slide 32: Cách Scikit-Learn giải quyết: Truyền thẳng tỷ lệ phần trăm
+Người 1: Tuy nhiên, Scikit-Learn có một cách giải quyết nhàn hơn rất nhiều. Bạn truyền thẳng mức độ phương sai muốn bảo toàn dưới dạng một số thập phân từ 0.0 đến 1.0 cho tham số n_components.
+Người 2: Nghĩa là chỉ cần điền n_components=0.95, Scikit-learn sẽ tự tính toán số chiều tối thiểu cần thiết cho chúng ta! Quá tuyệt vời!
+
+Slide 33: Xác định điểm uốn: Vẽ biểu đồ phương sai giải thích
+Người 1: Một cách tiếp cận khác giúp người phân tích dễ dàng quyết định bằng mắt là vẽ biểu đồ phương sai giải thích tích lũy theo số chiều.
+Người 2: Em thấy trên biểu đồ có một điểm uốn (Elbow point), nơi mà đường cong bắt đầu đi ngang. Tại đó, việc tăng thêm số chiều không mang lại thêm nhiều giá trị thông tin.
+Người 1: Đúng vậy. Chọn số chiều ở vị trí điểm uốn cũng là một chiến lược rất phổ biến và trực quan.
+
+Slide 34: Tối ưu hóa: Điều chỉnh số chiều như một Siêu tham số
+Người 1: Trong một hệ thống học máy, ta thường đưa bước tiền xử lý giảm chiều này vào trong một Pipeline. Lúc này, ta có thể coi số chiều d như một Siêu tham số (Hyperparameter).
+Người 2: Và mình có thể sử dụng GridSearchCV hoặc RandomizedSearchCV để tự động dò tìm cấu hình số chiều d tốt nhất cho toàn bộ Pipeline đúng không ạ?
+Người 1: Hoàn toàn chính xác, hãy xem cách cài đặt ở slide tiếp theo.
+
+Slide 35: Cài đặt RandomizedSearchCV cho Pipeline PCA
+Người 1: Ở đây, ta tạo một Pipeline gồm PCA và mô hình RandomForest. Tham số pca__n_components được tìm kiếm ngẫu nhiên trong khoảng từ 10 đến 80.
+Người 2: Ồ, kết quả thật bất ngờ! Số chiều tối ưu tìm thấy chỉ là 23 thay vì 154 như khi ta tự chọn mức 95%.
+Người 1: Đúng thế. Điều này cho thấy mô hình Random Forest phía sau lại hoạt động tốt hơn với dữ liệu được nén chặt hơn!
+
+Slide 36: Bản chất của PCA: Cỗ máy nén dữ liệu
+Người 1: Như em thấy, bản chất của PCA đóng vai trò như một cỗ máy nén dữ liệu rất mạnh mẽ. Dữ liệu gốc 784 đặc trưng (100% kích thước) được nén xuống 154 đặc trưng (chỉ còn khoảng 20% kích thước).
+Người 2: Mà chúng ta chỉ mất đi 5% thông tin! Việc này giúp tiết kiệm bộ nhớ RAM tuyệt vời và tăng tốc độ thuật toán học máy phía sau vượt trội.
+
+Slide 37: Tái tạo dữ liệu: Nén có hao hụt (Lossy Compression)
+Người 1: Quá trình nén PCA là quá trình nén có hao hụt (Lossy Compression). Tuy nhiên, ta vẫn có thể giải nén (tái tạo) dữ liệu từ 154 chiều ngược trở lại 784 chiều.
+Người 2: Quá trình giải nén sẽ không nhận lại được 100% pixel gốc, hình ảnh sẽ bị mờ nhẹ nhưng phần lớn nội dung vẫn nguyên vẹn.
+Người 1: Khoảng cách bình phương trung bình giữa dữ liệu gốc và dữ liệu giải nén được gọi là Sai số tái tạo (Reconstruction Error).
+
+Slide 38: Phép biến đổi ngược (inverse_transform)
+Người 1: Trong code, ta sử dụng hàm inverse_transform trên đối tượng PCA để khôi phục dữ liệu X_recovered. Em nhìn hình ảnh đối chiếu xem.
+Người 2: Mặc dù hình ảnh ở dữ liệu tái tạo mờ đi một chút do thiếu 5% phương sai, nhưng mắt người và cả thuật toán vẫn dễ dàng nhận diện đó là chữ số nào.
+Người 1: Đúng vậy, sự đánh đổi này cực kỳ xứng đáng.
+
+Slide 39: Vượt qua giới hạn tốc độ với Randomized PCA
+Người 1: PCA tiêu chuẩn sử dụng SVD Đầy đủ có thể khá chậm chạp như một chú rùa. Để vượt qua giới hạn tốc độ, ta có Randomized PCA, sử dụng kỹ thuật ngẫu nhiên hóa để xấp xỉ tìm d thành phần chính.
+Người 2: Nó giống như một tên lửa, nhanh hơn đáng kể khi số chiều cần giảm xuống (d) nhỏ hơn nhiều so với số chiều ban đầu (n) ạ.
+Người 1: Chính xác.
+
+Slide 40: Kích hoạt Randomized PCA trong Scikit-Learn
+Người 1: Để dùng Randomized PCA trong Scikit-Learn, em chỉ việc thêm tham số svd_solver="randomized" khi khởi tạo PCA. Điểm mấu chốt nằm ở đó.
+Người 2: Rất đơn giản, chỉ một tham số nhưng mang lại sức mạnh xử lý vô cùng lớn.
+
+Slide 41: PCA Tăng dần (Incremental PCA): Xử lý dữ liệu khổng lồ
+Người 1: Vấn đề tiếp theo của PCA thông thường là nó yêu cầu toàn bộ tập dữ liệu khổng lồ phải nằm gọn trong bộ nhớ RAM cùng lúc, rất dễ gây tràn RAM (Out of Memory). Giải pháp là Incremental PCA (IPCA).
+Người 2: Incremental PCA chia nhỏ tập huấn luyện thành các mini-batch và đẩy vào mô hình từng lô một. Đó là xử lý luồng Online Processing đúng không ạ?
+Người 1: Hoàn toàn chính xác, nó là cứu cánh cho những dữ liệu khổng lồ (Out-of-core learning).
+
+Slide 42: Cài đặt IPCA bằng cách chia mảng (array_split)
+Người 1: Ta có thể dùng hàm array_split của numpy để chia nhỏ dữ liệu thành các lô nhỏ. Vòng lặp for sẽ nạp từng lô này vào mô hình.
+Người 2: Em lưu ý điểm này: thay vì gọi hàm fit() như PCA thông thường, ta phải gọi hàm partial_fit() ở từng bước của vòng lặp nhỏ.
+Người 1: Rất chuẩn. Sau khi duyệt xong, hàm transform() có thể áp dụng cho toàn bộ dữ liệu.
+
+Slide 43: Tối ưu tối đa: Incremental PCA kết hợp memmap
+Người 1: Để tối ưu tối đa việc đọc ghi, ta có thể dùng kỹ thuật memmap của numpy. Nó tạo một tệp nhị phân trên đĩa và giả lập như một mảng trong RAM, chỉ tải từng khối batch_size vào RAM khi cần.
+Người 2: Nhờ vậy, lúc này có thể gọi thẳng hàm fit() trực tiếp vì IPCA đã tự động hiểu cấu trúc luồng của memmap và tự lấy từng đoạn! Rất là thanh lịch!
+Người 1: Đúng vậy, không cần viết vòng lặp thủ công nữa.
+
+Slide 44: Phương pháp thay thế: Phép chiếu ngẫu nhiên (Random Projection)
+Người 1: Nếu số chiều ban đầu lên tới hàng chục nghìn, PCA vẫn sẽ trở nên chậm chạp. Một phương pháp thay thế hoàn hảo là Phép chiếu ngẫu nhiên (Random Projection). Ta sẽ chiếu dữ liệu xuống không gian thấp bằng một ma trận ngẫu nhiên.
+Người 2: Lạ thật, chiếu ngẫu nhiên mà vẫn bảo toàn khoảng cách giữa các điểm dữ liệu sao ạ? Mà đặc biệt là KHÔNG CẦN HUẤN LUYỆN!
+Người 1: Nghe có vẻ kỳ diệu, nhưng nó rất nhẹ và cực nhanh cho dữ liệu có hàng chục nghìn features, và hoàn toàn có cơ sở toán học vững chắc.
+
+Slide 45: Cơ sở Toán học: Định lý Johnson-Lindenstrauss (JL)
+Người 1: Cơ sở đó là Định lý Johnson-Lindenstrauss (JL). Nó phát biểu rằng: có thể chiếu m điểm từ không gian chiều cao xuống không gian d chiều sao cho khoảng cách bình phương giữa mọi cặp điểm chỉ bị méo mó tối đa là một sai số epsilon.
+Người 2: Điều đáng kinh ngạc là nó KHÔNG quan tâm đến số chiều gốc n. Cho dù n là 1 triệu chiều, định lý này vẫn phá vỡ rào cản tính toán truyền thống!
+
+Slide 46: Tìm số chiều tối thiểu bảo toàn khoảng cách
+Người 1: Scikit-Learn cung cấp hàm johnson_lindenstrauss_min_dim để tính toán số chiều d tối thiểu theo định lý JL này.
+Người 2: Ví dụ với 5000 mẫu và dung sai 0.1, máy tính ra được 7300 chiều. Ta chỉ cần ánh xạ xuống số chiều này là đủ an toàn.
+Người 1: Đúng thế.
+
+Slide 47: Phép chiếu ngẫu nhiên thủ công
+Người 1: Phép chiếu ngẫu nhiên thủ công rất đơn giản. Tạo một ma trận P lấy mẫu từ phân phối chuẩn và nhân trực tiếp với ma trận dữ liệu gốc X.
+Người 2: Vâng, chỉ 1 dòng code X nhân P chuyển vị (P.T) là chúng ta đã hoàn thành việc giảm chiều mà không cần huấn luyện gì phức tạp.
+
+Slide 48: Scikit-Learn Random Projections
+Người 1: Tất nhiên, Scikit-Learn cũng cung cấp sẵn các lớp để làm việc này dễ dàng hơn: GaussianRandomProjection và SparseRandomProjection.
+Người 2: SparseRandomProjection tạo ma trận chiếu hình thành chủ yếu bằng số 0. Việc này giúp tiết kiệm RAM cực mạnh so với Gaussian, ví dụ chỉ tốn 25MB thay vì 1.2GB. Thật lợi hại!
+
+Slide 49: Nhúng tuyến tính cục bộ (Locally Linear Embedding - LLE)
+Người 1: Cuối cùng, chúng ta tìm hiểu thuật toán mạnh mẽ của nhóm Học đa tạp: Nhúng tuyến tính cục bộ (LLE). Đây là kỹ thuật Giảm chiều phi tuyến tính (NLDR), không sử dụng phép chiếu như PCA.
+Người 2: Cơ chế của LLE là đo lường cách mỗi điểm liên kết tuyến tính với các láng giềng gần nhất, rồi tìm biểu diễn ở chiều thấp sao cho khoảng cách cục bộ này được bảo toàn tốt nhất.
+Người 1: Chính xác. Nhờ đó, nó vô cùng tuyệt vời để "mở cuộn" các đa tạp bị xoắn như Swiss roll.
+
+Slide 50: Sử dụng LocallyLinearEmbedding cho Swiss roll
+Người 1: Hãy xem kết quả chạy lớp LocallyLinearEmbedding trên tập Swiss Roll 3D.
+Người 2: Dữ liệu Swiss Roll 3D đã được "mở cuộn" thành một mặt phẳng 2D thành công rực rỡ, duy trì nguyên vẹn các mối quan hệ giữa các điểm bên cạnh nhau!
+
+Slide 51: Thuật toán LLE: Bước 1 (Mô hình hóa cục bộ)
+Người 1: Thuật toán LLE có hai bước. Bước 1: Mô hình hóa cục bộ. Đối với mỗi điểm, nó tìm k láng giềng gần nhất, sau đó cố gắng tái tạo điểm đó như một hàm tuyến tính (tổng có trọng số) của k láng giềng.
+Người 2: Kết thúc bước 1, ta thu được một ma trận trọng số W phản ánh chính xác cấu trúc hình học cục bộ của tập dữ liệu trong không gian gốc (chiều cao).
+
+Slide 52: Thuật toán LLE: Bước 2 (Giảm chiều bảo toàn khoảng cách)
+Người 1: Bước 2: Giảm chiều. Ta ánh xạ các điểm vào không gian d chiều, nhưng giữ nguyên ma trận trọng số W đã tìm ở Bước 1. Nhiệm vụ là tìm các tọa độ mới ở không gian d chiều sao cho chúng vẫn thỏa mãn ma trận trọng số đó càng gần càng tốt.
+Người 2: Thuật toán này rất tinh tế, nhưng em thấy có điểm yếu là nó mở rộng kém cho tập dữ liệu rất lớn.
+Người 1: Đúng vậy, LLE chạy khá nặng với khối lượng dữ liệu khổng lồ.
+
+Slide 53: Các kỹ thuật giảm chiều khác: MDS & Isomap
+Người 1: Bên cạnh đó, có một số kỹ thuật giảm chiều khác em có thể tham khảo. MDS (Multidimensional Scaling) cố gắng giảm chiều trong khi bảo toàn khoảng cách vật lý giữa các trường hợp như ở không gian gốc. Nó làm phẳng thay vì mở cuộn.
+Người 2: Còn Isomap thì sao ạ?
+Người 1: Isomap xây dựng đồ thị nối các láng giềng, rồi giảm chiều trong khi bảo toàn "khoảng cách trắc địa" (geodesic distance). Rất thích hợp để mở cuộn đa tạp.
+
+Slide 54: Các kỹ thuật giảm chiều khác: t-SNE & LDA
+Người 1: t-SNE giảm chiều bằng cách giữ các điểm tương đồng ở gần nhau, nhưng đẩy các điểm dị biệt ra thật xa. Đặc biệt tốt để phát hiện cụm trực quan như vẽ bản đồ MNIST 2D.
+Người 2: LDA (Linear Discriminant Analysis) vốn là thuật toán phân loại, trong quá trình huấn luyện nó sẽ học trục phân biệt rõ rệt nhất giữa các lớp.
+Người 1: Đúng. Bạn dùng trục này để chiếu dữ liệu, giúp tiền xử lý tuyệt vời cho các thuật toán phân loại khác.
+
+Slide 55: Tổng kết Chương 8
+Người 1: Tóm tắt lại, giảm chiều dữ liệu là công cụ đắc lực giúp phòng tránh "Lời nguyền số chiều", tăng tốc mô hình và khả năng trực quan hóa. PCA với SVD là kỹ thuật mặc định ưu tiên số một. Nếu dữ liệu lớn, ta dùng Incremental PCA hoặc Randomized PCA.
+Người 2: Còn dữ liệu siêu lớn thì Random Projection vô địch về tốc độ và tiết kiệm RAM. Để "mở cuộn" cấu trúc đa tạp phi tuyến tính phức tạp, Manifold Learning như LLE hay Isomap là sự lựa chọn tối ưu.
+Người 1: Em tóm tắt rất tốt!
+
+Slide 56: Cảm ơn các bạn đã lắng nghe! Q & A
+Người 1: Bài học của chúng ta về Giảm Chiều Dữ Liệu đến đây là kết thúc. Các em có câu hỏi gì không?
+Người 2: Dạ không ạ. Cảm ơn thầy/cô vì những kiến thức rất bổ ích. Chào thầy/cô ạ!
+Người 1: Hẹn gặp lại các em vào chương tiếp theo.
