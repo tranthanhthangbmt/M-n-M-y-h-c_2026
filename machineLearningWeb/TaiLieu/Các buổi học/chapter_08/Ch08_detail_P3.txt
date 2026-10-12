@@ -1,0 +1,31 @@
+Dưới đây là giải thích đơn giản cùng ví dụ trực quan về hai cách tiếp cận giảm chiều dữ liệu trong Chương 8:
+
+---
+
+### 1. Phép chiếu (Projection) — "Chụp bóng" dữ liệu
+
+* **Cách hoạt động**: Phép chiếu lấy tất cả các điểm dữ liệu trong không gian nhiều chiều và **chiếu vuông góc** chúng lên một mặt phẳng (hoặc không gian con) có số chiều thấp hơn.
+* **Ví dụ minh họa dễ hiểu**:
+  * Hãy tưởng tượng một đàn chim đang bay trên bầu trời (không gian 3D: chiều dài, chiều rộng, chiều cao). Nếu có ánh nắng mặt trời chiếu thẳng từ trên xuống, bóng của đàn chim sẽ in trên mặt đất phẳng (không gian 2D).
+  * Dựa vào vị trí bóng của đàn chim trên mặt đất, bạn vẫn nắm được phân bố vị trí tương đối giữa các con chim mà chỉ cần dùng 2 tọa độ thay vì 3. Đó chính là phép chiếu.
+* **Hạn chế của Phép chiếu (Ví dụ Bánh cuộn Thụy Sĩ - Swiss Roll)**:
+  * Tưởng tượng một dải giấy phẳng (2D) được cuộn tròn lại thành chiếc **bánh cuộn Thụy Sĩ (Swiss roll)** đặt trong không gian 3D.
+  * Nếu bạn cố tình dùng đèn pin chiếu thẳng từ trên xuống để ép dẹt chiếc bánh cuộn này thành một mặt phẳng, các lớp bánh ở trên và các lớp bánh ở dưới sẽ **bị đè chồng lên nhau**. Hậu quả là hai điểm dữ liệu vốn nằm rất xa nhau dọc theo dải giấy cuộn nay lại dính chặt vào nhau trên hình chiếu phẳng, làm mất hoàn toàn cấu trúc dữ liệu.
+
+---
+
+### 2. Học đa tạp (Manifold Learning) — "Mở cuộn" dữ liệu
+
+* **Cách hoạt động**: Thay vì đẫm đạp hay làm dẹt dữ liệu, thuật toán Học đa tạp nhận ra cấu trúc bị uốn cong của dữ liệu và tìm cách **trải phẳng (mở cuộn - unroll)** nó ra không gian chiều thấp.
+* **Khái niệm Đa tạp & Giả định đa tạp (Manifold Hypothesis)**:
+  * **Đa tạp \\(d\\)-chiều**: Là một hình dạng \\(d\\)-chiều nằm uốn lượn trong không gian \\(n\\)-chiều lớn hơn (\\(d < n\\)), nhưng nếu bạn nhìn vào một góc nhỏ cục bộ thì nó nhìn giống như một mặt phẳng \\(d\\)-chiều. *(Ví dụ: Chiếc bánh cuộn Swiss roll là một đa tạp 2D cuộn trong không gian 3D; hoặc Trái Đất là quả cầu 3D nhưng tại nơi bạn đứng thì mặt đất nhìn phẳng như 2D)*.
+  * **Giả định đa tạp**: Hầu hết các tập dữ liệu thực tế có số chiều rất cao đều nằm gần một đa tạp có số chiều thấp hơn nhiều.
+* **Ví dụ minh họa dễ hiểu (Tập dữ liệu ảnh chữ số viết tay MNIST)**:
+  * Mỗi bức ảnh \\(28 \times 28\\) pixel có 784 đặc trưng (784 chiều). Nếu chọn màu ngẫu nhiên cho 784 pixel này, bạn chỉ thu được các bức ảnh nhiễu hạt tivi.
+  * Tuy nhiên, các bức ảnh chữ số viết tay thật luôn tuân theo các quy tắc khắt khe: nét viết nối liền, viền xung quanh màu trắng và hình nằm ở trung tâm.
+  * Nhờ các ràng buộc này, "số bậc tự do" thực tế của chữ số viết tay ít hơn 784 chiều rất nhiều. Toàn bộ tập ảnh chữ số chỉ nằm gọn trên một "dải đa tạp" chiều thấp uốn lượn trong không gian 784 chiều.
+  * Thuật toán Học đa tạp sẽ nắn thẳng dải uốn lượn này ra để nén và xử lý dữ liệu một cách tự nhiên mà không làm biến dạng khoảng cách giữa các điểm.
+
+---
+
+💡 Bạn có muốn chuyển sang **Phần 2: Phân tích thành phần chính (PCA)** — thuật toán giảm chiều phổ biến nhất đại diện cho phương pháp Phép chiếu không?

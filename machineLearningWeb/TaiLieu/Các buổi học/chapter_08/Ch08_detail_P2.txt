@@ -1,0 +1,26 @@
+Dưới đây là cách hình dung **đơn giản và gần gũi nhất** thông qua các ví dụ đời sống:
+
+### 1. "Lời nguyền của số chiều" là gì?
+
+Hãy tưởng tượng **mỗi đặc trưng (feature)** là một chiều không gian:
+* **Không gian 1D – 3D (Dễ tìm kiếm)**: Nếu bạn giấu một chiếc chìa khóa trên một đoạn đường thẳng (1D) hoặc trong một căn phòng (3D), việc tìm kiếm rất nhanh vì diện tích nhỏ và các điểm dữ liệu nằm gần nhau.
+* **Không gian 1.000 chiều (Lời nguyền số chiều)**: Nếu giấu chìa khóa trong một không gian 1.000 chiều, không gian đó trở nên cực kỳ mênh mông. Dữ liệu bị **rải rác thưa thớt**, các điểm dữ liệu nằm cách xa nhau hàng cây số.
+
+**Hai hậu quả nghiêm trọng**:
+1. **Máy tính chạy rất chậm**: Vì phải tính toán và xử lý quá nhiều thông tin dư thừa.
+2. **Mô hình dễ bị quá khớp (Overfitting)**: Do các điểm dữ liệu nằm quá xa nhau trong không gian bao la, mô hình giống như một người "học vẹt"—nó cố thuộc lòng từng điểm dữ liệu lẻ tẻ thay vì rút ra quy luật chung.
+
+---
+
+### 2. Ba mục đích của giảm chiều dữ liệu (Ví dụ thực tế)
+
+* **Tăng tốc huấn luyện (Lọc bỏ chi tiết thừa)**:
+  * *Ví dụ*: Một bức ảnh chữ số viết tay cỡ 28×28 pixel có 784 đặc trưng. Các pixel ở 4 góc viền xung quanh luôn là màu trắng trống. Giảm chiều sẽ bỏ đi các pixel trắng thừa thãi đó, chỉ giữ lại phần nét chữ chính để máy học nhanh gấp nhiều lần.
+* **Trực quan hóa dữ liệu (Vẽ biểu đồ cho mắt người xem)**:
+  * *Ví dụ*: Mắt con người chỉ nhìn và hiểu được đồ thị **2D** (trên mặt phẳng) hoặc **3D** (trong không gian). Giảm dữ liệu từ 1.000 chiều về 2 chiều giúp ta vẽ biểu đồ chấm (scatterplot) để "nhìn thấy" các nhóm dữ liệu phân bố ra sao.
+* **Nén dữ liệu (Tiết kiệm bộ nhớ)**:
+  * *Ví dụ*: Giống như việc bạn chuyển một file ảnh thô (RAW) rất nặng thành file nén **JPG**: dung lượng nhẹ hơn rất nhiều, tiết kiệm bộ nhớ lưu trữ mà mắt người nhìn vào vẫn nhận ra đầy đủ nội dung bức ảnh.
+
+---
+
+💡 Bạn có muốn đi tiếp vào **Phần 1: Phép chiếu (Projection)** để xem cách người ta "biến" một không gian 3D thành 2D như chụp một bức ảnh không?

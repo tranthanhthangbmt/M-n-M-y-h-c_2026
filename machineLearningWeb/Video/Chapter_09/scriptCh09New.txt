@@ -1,0 +1,211 @@
+Slide 1: Học Máy (Machine Learning) Chương 9: Các kỹ thuật Học không giám sát
+Người 1: Chào các em. Ở 8 chương trước, chúng ta đã học cách xây dựng mô hình trên dữ liệu có nhãn. Tức là ta biết trước đáp án để dạy máy tính. Trong chương 9 này, ta sẽ tìm hiểu về các kỹ thuật Học không giám sát.
+Người 2: Dạ, vậy học không giám sát là khi chúng ta làm việc với những dữ liệu mà chưa hề có nhãn đúng không thầy?
+
+Slide 2: Nội dung Chương trình
+Người 1: Đúng vậy. Nội dung chương trình hôm nay gồm 4 phần chính: Giới thiệu Học không giám sát và K-Means; Điểm Silhouette cùng các ứng dụng của K-Means và DBSCAN; Mô hình Hỗn hợp Gaussian (GMM); và cuối cùng là Mô hình Hỗn hợp Gaussian Bayes.
+Người 2: Em thấy chương trình trải dài từ những thuật toán kinh điển như K-Means cho đến những mô hình xác suất phức tạp hơn như GMM.
+
+Slide 3: Giới thiệu Học không giám sát
+Người 1: Mặc dù đa số các ứng dụng học máy ngày nay dựa trên Học có giám sát, nhưng phần lớn dữ liệu trong thực tế lại không được gắn nhãn. Tức là chúng ta có các đặc trưng đầu vào X, nhưng không có nhãn y. Giám đốc AI của Meta, Yann LeCun, từng nói: "Nếu trí thông minh là một chiếc bánh, thì học không giám sát sẽ là chiếc bánh, học có giám sát sẽ là lớp kem trên bánh".
+Người 2: Câu nói này cho thấy tiềm năng của học không giám sát là vô cùng lớn, vì lượng dữ liệu không nhãn ngoài đời thực phong phú hơn rất nhiều so với dữ liệu có nhãn.
+
+Slide 4: Phân cụm (Clustering) là gì?
+Người 1: Tác vụ quan trọng nhất của học không giám sát là Phân cụm. Phân cụm là xác định các trường hợp tương tự nhau và gán chúng vào các "cụm" (clusters). Thuật toán sẽ tự động tìm ra cấu trúc ẩn bên trong dữ liệu dựa trên sự tương đồng của các đặc trưng.
+Người 2: Giống như việc máy tính tự động gom các viên bi có màu sắc hoặc hình dáng giống nhau lại thành từng nhóm mà không cần ta phải chỉ trước nhóm nào là nhóm nào ạ.
+
+Slide 5: Phân loại so với phân cụm
+Người 1: Để hiểu rõ hơn, ta hãy so sánh Phân loại và Phân cụm trên tập dữ liệu hoa Iris. Ở hình bên trái, dữ liệu đã có nhãn lớp với các màu và hình dáng khác nhau. Đây là bài toán phân loại. Còn ở bên phải, dữ liệu chỉ là các điểm đen chưa có nhãn. Nhiệm vụ của phân cụm là tự tìm ra các nhóm này.
+Người 2: Dạ, nhìn vào biểu đồ bên phải, con người cũng tự thấy có vẻ dữ liệu chia làm 2 hoặc 3 nhóm. Thuật toán phân cụm cũng sẽ làm công việc "nhìn nhận" tương tự như vậy.
+
+Slide 6: Ứng dụng của Phân cụm
+Người 1: Phân cụm có rất nhiều ứng dụng trong thực tế. Ví dụ như Phân khúc khách hàng để điều chỉnh chiến dịch tiếp thị, Phân tích dữ liệu để hiểu sâu hơn về từng nhóm, Giảm chiều dữ liệu, hoặc Phân đoạn hình ảnh.
+Người 2: Các hệ thống gợi ý sản phẩm mà em hay thấy trên mạng cũng dùng phân cụm khách hàng đúng không thầy?
+Người 1: Đúng vậy, họ gom những người có chung sở thích lại để gợi ý chéo cho nhau.
+
+Slide 7: Thuật toán K-Means
+Người 1: Thuật toán đầu tiên ta tìm hiểu là K-Means. K-Means là một thuật toán phân cụm đơn giản, phổ biến, có khả năng phân mảnh dữ liệu rất nhanh chóng thành k cụm. Nó được đề xuất từ năm 1957.
+Người 2: Chữ k ở đây có nghĩa là người dùng phải định nghĩa trước số lượng cụm mình mong muốn đúng không ạ?
+Người 1: Chính xác, đó là một tham số quan trọng mà ta phải cung cấp cho K-Means.
+
+Slide 8: Tập dữ liệu chưa gán nhãn gồm 5 khối
+Người 1: Hãy xem một ví dụ. Đây là một tập dữ liệu gồm các điểm phân bố thành 5 khối (blob) khá rõ rệt trên trục tọa độ x1, x2.
+Người 2: Nhìn bằng mắt thường thì rất dễ thấy 5 đám mây điểm. Mục tiêu của chúng ta là dùng K-Means để máy tính cũng nhận ra 5 đám mây này.
+
+Slide 9: Phép phân vùng Voronoi của K-Means
+Người 1: Khi ta chạy thuật toán K-Means với k=5, nó sẽ tìm ra 5 tâm cụm (các dấu x màu trắng) và chia không gian thành các vùng màu khác nhau. Phép chia này gọi là phân vùng Voronoi.
+Người 2: Rất trực quan. Mỗi điểm dữ liệu sẽ thuộc về cụm có tâm gần với nó nhất, ranh giới giữa các cụm chính là đường trung trực giữa các tâm.
+
+Slide 10: Cách thuật toán K-Means hoạt động
+Người 1: Vậy thuật toán tìm tâm cụm bằng cách nào? Ban đầu nó sẽ đặt k tâm cụm ngẫu nhiên. Sau đó lặp lại 2 bước: Gán mỗi điểm dữ liệu cho tâm cụm gần nhất, rồi Cập nhật lại vị trí tâm cụm về trung bình của các điểm vừa được gán.
+Người 2: Nó cứ lặp đi lặp lại như vậy, tâm cụm sẽ dần dần dịch chuyển về đúng giữa trung tâm của đám dữ liệu. Quá trình này rất hợp lý và dễ hiểu.
+
+Slide 11: Vấn đề khởi tạo tâm cụm ngẫu nhiên
+Người 1: Tuy nhiên, vì các tâm cụm ban đầu được đặt ngẫu nhiên, K-Means có thể bị kẹt ở "điểm tối ưu cục bộ". Nếu xui xẻo, 2 tâm cụm rơi vào cùng một khối dữ liệu, nó sẽ chia khối đó làm đôi một cách vô lý.
+Người 2: Dạ, như hình trên, có cụm thì bị chia làm đôi, có hai cụm lại bị gộp làm một vì tâm ban đầu đặt quá lệch. Vậy làm sao khắc phục được ạ?
+
+Slide 12: Quán tính (Inertia) là gì?
+Người 1: Để khắc phục, ta chạy thuật toán nhiều lần với các khởi tạo ngẫu nhiên khác nhau, và dùng chỉ số "Quán tính" (Inertia) để so sánh. Quán tính là tổng khoảng cách bình phương từ mỗi điểm đến tâm cụm gần nhất. Mô hình tốt là mô hình có Quán tính nhỏ nhất.
+Người 2: Em hiểu rồi. Ngoài ra em thấy ghi giải pháp K-Means++ được dùng mặc định trong Scikit-Learn.
+Người 1: Đúng, K-Means++ sẽ tính toán để cố tình đặt các tâm ban đầu cách xa nhau nhất có thể, tránh việc chúng dẫm chân lên nhau.
+
+Slide 13: Quán tính giảm theo các vòng lặp
+Người 1: Biểu đồ này cho thấy Quán tính giảm rất nhanh qua các vòng lặp của thuật toán. Thông thường, K-Means hội tụ rất nhanh, chỉ cần vài vòng lặp là Quán tính ổn định ở mức thấp nhất.
+Người 2: Thời gian huấn luyện cũng rất nhỏ, chỉ khoảng không phẩy mấy giây. Đúng là một thuật toán cực kỳ tốc độ.
+
+Slide 14: Hậu quả của việc chọn số lượng cụm (k) sai
+Người 1: Một vấn đề lớn nữa là chọn k. Nếu chọn k=3 cho dữ liệu có 5 cụm thực tế, nó sẽ gộp các cụm lại. Nếu chọn k=8, nó lại chia cắt quá mức các cụm thực. Cả hai trường hợp đều không tốt.
+Người 2: Giống như cắt một chiếc bánh, nếu cắt quá ít thì phần quá to, cắt quá nhiều thì lại nát bét. Vậy ta dựa vào đâu để chọn k thưa thầy?
+
+Slide 15: Lựa chọn số cụm bằng phương pháp khuỷu tay (Elbow)
+Người 1: Cách đơn giản nhất là vẽ biểu đồ Quán tính theo số lượng cụm k. Ta sẽ thấy đường cong đi xuống. Hãy tìm điểm "khuỷu tay" (Elbow) - nơi tốc độ giảm của Quán tính bắt đầu chậm lại rõ rệt.
+Người 2: Nhìn vào hình thì em thấy chỗ k=4 hoặc k=5 là điểm uốn của cái khuỷu tay. Nghĩa là chọn k=4 hoặc 5 là tối ưu nhất.
+
+Slide 16: Đánh giá chất lượng bằng điểm Silhouette
+Người 1: Tuy nhiên phương pháp khuỷu tay khá thô sơ. Một cách chính xác hơn là dùng điểm Silhouette. Nó đo lường sự gắn kết của điểm trong nội bộ cụm (a) so với độ tách biệt với cụm hàng xóm gần nhất (b).
+Người 2: Điểm này dao động từ -1 đến +1. Càng gần +1 thì điểm dữ liệu càng nằm sâu và chính xác trong cụm của mình, còn nếu âm là có thể bị gán sai cụm đúng không ạ?
+
+Slide 17: Biểu đồ điểm Silhouette theo k
+Người 1: Đúng. Bằng cách tính trung bình điểm Silhouette cho mọi điểm trong mô hình, ta có thể so sánh giữa các k khác nhau. Trên biểu đồ này, đỉnh cao nhất nằm ở k=4.
+Người 2: Vậy là k=4 mang lại cấu trúc cụm rõ ràng và tách biệt nhất. Biểu đồ này cho ta quyết định dứt khoát hơn là nhìn bằng phương pháp khuỷu tay.
+
+Slide 18: Phân tích biểu đồ dao (Silhouette plots)
+Người 1: Ta còn có thể phân tích chi tiết hơn bằng biểu đồ hình dao. Trục dọc là từng cụm, trục ngang là điểm Silhouette của các điểm trong cụm đó. Lưỡi dao càng rộng, chứng tỏ cụm càng nhiều điểm.
+Người 2: Ranh giới đứt nét màu đỏ là điểm trung bình. Nếu tất cả các lưỡi dao đều vượt qua vạch đỏ và có độ rộng tương đương nhau, thì đó là cấu hình phân cụm hoàn hảo.
+
+Slide 19: Giới hạn của K-Means
+Người 1: K-Means có những giới hạn nhất định. Nhược điểm lớn nhất là nó hoạt động rất kém khi các cụm có kích thước khác nhau nhiều, mật độ khác nhau, hoặc hình dạng không phải hình cầu.
+Người 2: Lý do là vì K-Means chỉ dựa trên khoảng cách Euclide tới tâm cụm để gán nhãn, nên nó luôn có xu hướng tạo ra các ranh giới phân chia là các vùng không gian lồi.
+
+Slide 20: K-Means gặp khó khăn với các cụm hình elip
+Người 1: Đây là một ví dụ. Dữ liệu thực chất là hai khối hình elip nghiêng song song nhau. K-Means đã cắt ngang một cách sai lầm thay vì tách dọc theo chiều dài của elip.
+Người 2: Dạ, vì nó dùng khoảng cách vòng tròn tỏa ra từ tâm, nên nó không thể "hiểu" được hình dạng kéo dài của đám dữ liệu.
+
+Slide 21: Ứng dụng: Phân đoạn hình ảnh (Image Segmentation)
+Người 1: Dù vậy, K-Means vẫn rất hữu dụng. Ví dụ như trong Phân đoạn màu sắc hình ảnh. Bằng cách gom các pixel có màu giống nhau vào cùng một cụm K-Means, ta có thể giảm số lượng màu của bức ảnh xuống k màu.
+Người 2: Nghĩa là thay thế giá trị màu của mọi pixel bằng màu của tâm cụm tương ứng. Kết quả sẽ ra hiệu ứng giống như tranh vẽ (Posterization) ạ?
+
+Slide 22: Phân đoạn màu sắc hình ảnh bọ rùa
+Người 1: Đúng. Em nhìn bức ảnh con bọ rùa này. Khi dùng K-Means giảm dần k từ 10 xuống 2, hình ảnh bị mất dần chi tiết nhưng vẫn giữ được các mảng màu chính.
+Người 2: Ứng dụng này rất hay khi ta muốn nén dung lượng ảnh, hoặc khi muốn bóc tách vật thể ra khỏi nền trong bài toán thị giác máy tính.
+
+Slide 23: Ứng dụng: Tiền xử lý để học bán giám sát
+Người 1: Một ứng dụng tuyệt vời khác là Học bán giám sát. Giả sử em có rất nhiều ảnh chữ số nhưng chỉ gắn nhãn được 50 tấm. Thay vì gán ngẫu nhiên, ta dùng K-Means chia toàn bộ dữ liệu thành 50 cụm.
+Người 2: Rồi mình tìm 50 hình ảnh nằm gần 50 tâm cụm nhất để gán nhãn, và truyền lan cái nhãn đó cho toàn bộ các ảnh cùng cụm đúng không thầy?
+
+Slide 24: Lấy 50 hình ảnh đại diện bằng K-Means
+Người 1: Hoàn hảo! Em nhìn vào 50 hình ảnh đại diện (mỗi ảnh cho một cụm). Việc gán nhãn cho chúng sẽ mang lại ý nghĩa bao quát hơn rất nhiều so với chọn 50 tấm ngẫu nhiên, vì đây là những mẫu tiêu biểu nhất của từng cụm.
+Người 2: Một cách mượn sức mạnh của Học không giám sát để hỗ trợ cho Học có giám sát cực kỳ thông minh!
+
+Slide 25: Thuật toán phân cụm DBSCAN
+Người 1: Để giải quyết bài toán cụm có hình dạng bất kỳ, ta đến với thuật toán DBSCAN. Tên của nó có nghĩa là Phân cụm Không gian dựa trên Mật độ với Nhiễu.
+Người 2: Dựa trên mật độ nghĩa là nó sẽ đi tìm những khu vực có các điểm tụ tập đông đúc để tạo thành cụm, phân tách nhau bởi các khu vực thưa thớt đúng không ạ?
+
+Slide 26: Cơ chế hoạt động của DBSCAN
+Người 1: Thuật toán yêu cầu bán kính epsilon và số điểm tối thiểu min_samples. Một điểm được coi là Điểm Lõi nếu trong vùng lân cận epsilon của nó có chứa ít nhất min_samples điểm. Bất kỳ điểm nào nằm trong vùng lân cận đó cũng thuộc cùng một cụm.
+Người 2: Và các điểm Lõi gần nhau sẽ tiếp tục kết hợp tạo thành cụm lớn lan rộng ra. Những điểm bơ vơ không thuộc vùng của điểm Lõi nào sẽ bị đánh dấu là Dị thường (Anomaly).
+
+Slide 27: DBSCAN với 2 bán kính vùng lân cận khác nhau
+Người 1: Khả năng bắt hình dạng của DBSCAN rất tốt. Ở ví dụ 2 vành trăng khuyết lồng vào nhau, với epsilon nhỏ (hình trái), nó tạo ra nhiều cụm nhỏ đứt gãy. Nhưng với epsilon lớn hơn một chút (hình phải), nó tách hoàn hảo 2 vành trăng.
+Người 2: Hình dạng lưỡi liềm thế này K-Means chắc chắn sẽ bó tay, nhưng DBSCAN lại giải quyết vô cùng mượt mà.
+
+Slide 28: Ưu điểm và nhược điểm của DBSCAN
+Người 1: Ưu điểm của DBSCAN là không cần khai báo trước số cụm k, tự động tìm được hình dạng phức tạp và kháng nhiễu cực tốt. Nhược điểm là nó không có hàm predict để tự gán cụm cho điểm mới, và kém hiệu quả nếu các cụm có mật độ khác biệt nhau quá lớn.
+Người 2: Nghĩa là nếu em có dữ liệu mới đưa vào, DBSCAN không thể tự nói cho em biết điểm đó thuộc cụm nào ạ?
+
+Slide 29: Dự đoán với DBSCAN (Kết hợp KNN)
+Người 1: Đúng vậy, vì DBSCAN không có hàm predict(). Nhưng ta có thể lách luật bằng cách huấn luyện một thuật toán phân loại KNN trên tập các điểm Lõi mà DBSCAN vừa tìm được.
+Người 2: À, mượn KNN làm nhiệm vụ dự đoán thay cho DBSCAN. Mình gán cho mỗi điểm dữ liệu mới cái nhãn của k láng giềng Lõi gần nó nhất.
+
+Slide 30: Đường biên quyết định của phân loại KNN trên tập DBSCAN
+Người 1: Hình ảnh này cho thấy đường biên quyết định mới được tạo ra bởi mô hình KNN dựa trên các cụm của DBSCAN. Nhờ vậy ta có thể phân loại dữ liệu mới một cách linh hoạt.
+Người 2: Rất hay ạ. Biến một thuật toán phân cụm thành một mô hình phân loại dự đoán thông qua một "cầu nối".
+
+Slide 31: Mô hình Hỗn hợp Gaussian (GMM) là gì?
+Người 1: Thuật toán thứ ba trong chương là Mô hình Hỗn hợp Gaussian (GMM). Đây là một mô hình xác suất, giả định rằng dữ liệu được sinh ra từ một hỗn hợp của nhiều phân phối chuẩn (Gaussian).
+Người 2: Phân phối chuẩn tức là các hình dạng dạng quả chuông đó ạ. GMM khắc phục được nhược điểm của K-Means là nó cực kỳ linh hoạt, có thể tạo ra các cụm dẹt, nghiêng, xoay chứ không chỉ là hình cầu cứng nhắc.
+
+Slide 32: Thuật toán Cực đại hóa Kỳ vọng (EM)
+Người 1: K-Means gán "cứng" (Hard assignment) một điểm vào một cụm duy nhất. GMM dùng thuật toán EM để gán "mềm" (Soft assignment). Thuật toán xen kẽ giữa bước Kỳ vọng tính xác suất điểm thuộc về cụm, và bước Cực đại hóa cập nhật tham số cụm.
+Người 2: Và tham số của GMM không chỉ là tâm cụm, mà còn có ma trận hiệp phương sai quy định kích thước, độ dẹt, góc nghiêng, cùng với trọng số xác suất của từng cụm nữa.
+
+Slide 33: Khởi tạo GMM trong Scikit-Learn
+Người 1: Trong Scikit-Learn, ta dùng lớp GaussianMixture, cũng cần chỉ định trước số cụm k. Vì thuật toán EM có thể kẹt ở tối ưu cục bộ, nó cũng chạy nhiều lần (n_init) để chọn ra mô hình tốt nhất.
+Người 2: Sau khi fit xong, ta có thể trích xuất được trọng số (weights_), trung bình tâm cụm (means_) và ma trận hiệp phương sai (covariances_) của các Gaussian.
+
+Slide 34: Các giá trị trung bình và đường biên quyết định của GMM
+Người 1: Đây là biểu đồ thể hiện các cụm mà GMM tìm được. Nó nhận diện cực kỳ chính xác các cụm hình elip bị kéo dẹt và nằm nghiêng chéo.
+Người 2: Đường biên giữa các cụm không phải là đường thẳng đơn giản nữa, mà là các đường cong uốn lượn phản ánh xác suất thuộc về từng cụm.
+
+Slide 35: Hạn chế dạng ma trận hiệp phương sai
+Người 1: Tuy nhiên, GMM có quá nhiều tham số. Với dữ liệu lớn nhiều chiều, ma trận hiệp phương sai sẽ phình to khủng khiếp. Ta có thể hạn chế hình dáng cụm bằng tham số covariance_type.
+Người 2: Dạ, mặc định là "full" (elip tự do). Ta có thể buộc chúng phải có hình dạng giống hệt nhau (tied), hoặc bắt buộc là hình cầu (spherical), hoặc ép trục elip song song với tọa độ (diag) để tiết kiệm sức mạnh tính toán.
+
+Slide 36: Trực quan hóa GMM với các cụm liên kết và hình cầu
+Người 1: Đây là hình ảnh so sánh. Bên trái là kiểu "tied", cả 3 cụm đều phải có cùng một hình dạng elip và góc xoay. Bên phải là "spherical", các cụm bắt buộc phải là hình tròn.
+Người 2: Khi bị giới hạn, nó sẽ cố gắng tìm ra cách phân chia tối ưu nhất trong khuôn khổ đó, tuy không thật sự "vừa vặn" như kiểu "full".
+
+Slide 37: Ước tính mật độ sinh ngẫu nhiên (Generative process)
+Người 1: GMM là một mô hình sinh ngẫu nhiên (Generative Model). Nghĩa là sau khi mô hình hóa được hàm mật độ xác suất của dữ liệu gốc, ta có thể dùng hàm sample() để tự động "đẻ" ra các điểm dữ liệu mới toanh!
+Người 2: Thú vị thật! Dữ liệu mới này trông sẽ rất tự nhiên vì nó tuân theo đúng phân phối xác suất mà mô hình đã học được từ dữ liệu thật.
+
+Slide 38: Phát hiện dị thường (Anomaly Detection) bằng GMM
+Người 1: Nhờ khả năng ước lượng hàm mật độ, GMM là công cụ đắc lực để Phát hiện dị thường. Mọi điểm nằm ở khu vực có mật độ xác suất quá thấp sẽ bị coi là dị thường (Outlier).
+Người 2: Ta dùng hàm score_samples để đánh giá mức độ mật độ (log-likelihood) tại mỗi vị trí điểm dữ liệu. Chỗ nào giá trị quá thấp tức là rất hiếm khi xảy ra.
+
+Slide 39: Cách tính ngưỡng mật độ phát hiện dị thường
+Người 1: Để lọc dị thường, ta có thể lấy một ngưỡng, ví dụ 4% điểm có mật độ thấp nhất. Bước 1: đánh giá mật độ. Bước 2: dùng hàm percentile để tìm ranh giới phân vị 4%. Bước 3: lọc các điểm có mật độ nhỏ hơn ngưỡng đó.
+Người 2: Mã code python dùng numpy rất đơn giản và gọn gàng để trích xuất ra tập hợp các điểm dị thường này.
+
+Slide 40: Trực quan hóa Phát hiện dị thường
+Người 1: Hình ảnh này hiển thị kết quả. Các điểm dữ liệu nằm xa trung tâm của các phân phối Gaussian, rơi vào vùng nền màu xanh nhạt (mật độ thấp) đều bị đánh dấu bằng các ngôi sao màu đỏ.
+Người 2: Đây chính là những giao dịch lừa đảo, hoặc những sản phẩm lỗi trên băng chuyền sản xuất cần được loại bỏ.
+
+Slide 41: Hàm tham số của mô hình
+Người 1: (Mở rộng thêm) Làm sao GMM biết được đâu là tham số tốt nhất? Nó dựa trên việc cực đại hóa hàm Likelihood (Khả năng xảy ra). Tức là tìm bộ tham số sao cho xác suất dữ liệu quan sát được sinh ra từ mô hình là lớn nhất.
+Người 2: Dạ, giống như rà đài radio tìm tần số vậy, xoay núm điều chỉnh tham số cho đến khi tín hiệu nhận được (Likelihood) là to và rõ nhất.
+
+Slide 42: Lựa chọn số lượng cụm trong GMM
+Người 1: Trở lại vấn đề chọn k, nhưng cho GMM. Quán tính hay Silhouette không còn đáng tin cậy vì chúng thiên vị các cụm hình cầu. Thay vào đó, ta sử dụng Tiêu chí Thông tin (Information Criteria) như BIC hoặc AIC.
+Người 2: Các tiêu chí này đánh giá dựa trên cả cấu trúc thống kê của mô hình và sự phù hợp với dữ liệu đúng không thầy?
+
+Slide 43: Công thức tính toán AIC và BIC
+Người 1: Đúng vậy. Cả AIC và BIC đều có 2 phần: phần Thưởng cho mô hình nếu nó khớp tốt với dữ liệu (dựa trên Likelihood L), và phần Phạt (Penalty) nếu mô hình có quá nhiều tham số (p).
+Người 2: Giống như một cái cân. Nó cố gắng tìm sự cân bằng giữa độ chính xác và tính đơn giản của mô hình. Mô hình tốt nhất là mô hình có AIC hoặc BIC nhỏ nhất.
+
+Slide 44: Biểu đồ AIC và BIC cho các k khác nhau
+Người 1: Vẽ biểu đồ AIC và BIC theo số k, ta thấy cả hai đường đều chạm đáy ở giá trị k = 3.
+Người 2: Điều này xác nhận rõ ràng rằng 3 cụm là cấu trúc tối ưu nhất cho tập dữ liệu này. Nó tránh việc ta chia thành quá nhiều cụm không cần thiết.
+
+Slide 45: Mô hình Hỗn hợp Gaussian Bayes (BGM)
+Người 1: Nếu em thấy việc thử thủ công nhiều giá trị k quá mất công, thì ta có Mô hình Hỗn hợp Gaussian Bayes (BGM). Thuật toán này có khả năng tự động khám phá số lượng cụm thực tế.
+Người 2: Tự động như thế nào ạ?
+Người 1: Em cứ khởi tạo k dư dả (ví dụ k=10). BGM sẽ tự động gán trọng số (weights) của các cụm dư thừa bằng 0, chỉ giữ lại số cụm thực tế.
+
+Slide 46: Sử dụng BGM bằng Scikit-Learn
+Người 1: Trong Scikit-Learn, ta dùng lớp BayesianGaussianMixture. Sau khi fit với k=10, ta in mảng weights_ ra.
+Người 2: Em thấy kết quả chỉ có 3 cụm đầu tiên là có trọng số lớn hơn 0, còn 7 cụm kia đều bằng 0 hoặc xấp xỉ 0. BGM đã tự động dập tắt 7 cụm vô dụng! Quá thông minh!
+
+Slide 47: Tiên nghiệm Dirichlet (Dirichlet Prior)
+Người 1: Sức mạnh này có được là nhờ BGM sử dụng phân phối tiên nghiệm Dirichlet trong quá trình cập nhật Bayes. Thông qua tham số weight_concentration_prior, ta có thể điều chỉnh xu hướng của mô hình.
+Người 2: Nếu đặt tỷ lệ này nhỏ, nó sẽ có xu hướng "keo kiệt", cố gắng dồn dữ liệu vào càng ít cụm càng tốt. Nếu đặt số lớn, nó lại cố giữ lại nhiều cụm. Ta có thể tinh chỉnh hành vi của nó bằng tham số này.
+
+Slide 48: Lưu ý khi dùng BGM với dữ liệu hình dạng tùy ý
+Người 1: Cần lưu ý, BGM và GMM vẫn dựa trên giả định cụm là hình elip (Gaussian). Khi gặp dữ liệu hình cong như 2 nửa vành trăng (Moons), BGM sẽ chia một vành trăng thành nhiều cụm elip nhỏ để khớp vào.
+Người 2: Dạ, mô hình nào cũng có điểm mù. Với dữ liệu cong queo bất định thế này thì DBSCAN vẫn là "chân ái".
+
+Slide 49: Các thuật toán phát hiện dị thường khác
+Người 1: Bên cạnh GMM, để phát hiện dị thường ta còn có các thuật toán chuyên biệt khác như PCA (dùng sai số tái tạo), Fast-MCD (dọn dẹp điểm nhiễu cực tốt).
+Người 2: Và cả Isolation Forest (Rừng cô lập) chuyên trị dữ liệu nhiều chiều, cùng với LOF (Dựa trên mật độ cục bộ) nữa. Có rất nhiều công cụ mạnh mẽ.
+
+Slide 50: Tóm tắt Chương 9: K-Means & Ứng dụng
+Người 1: Chúng ta cùng tóm tắt lại. Học không giám sát là chìa khóa để khai thác dữ liệu chưa gán nhãn khổng lồ. K-Means là ông vua tốc độ, dựa trên quán tính để gom cụm hình cầu. Nó rất hữu ích cho Phân đoạn hình ảnh và Tiền xử lý cho học bán giám sát.
+Người 2: Nó rất phù hợp khi ta biết hòm hòm dữ liệu có dạng khối tròn và muốn xử lý nhanh.
+
+Slide 51: Tóm tắt Chương 9: DBSCAN & GMM
+Người 1: DBSCAN thì lợi hại trong việc dò tìm cụm có hình thù kỳ dị và kháng nhiễu. Còn GMM thì mô hình hóa phân phối xác suất, linh hoạt với hình elip và là bậc thầy trong Phát hiện dị thường. Cuối cùng BGM giúp ta tự động hóa việc tìm số cụm k.
+Người 2: Mỗi thuật toán có một thế mạnh riêng biệt, bổ sung cho nhau rất tuyệt vời.
+
+Slide 52: Cảm ơn các bạn đã lắng nghe!
+Người 1: Đúng vậy. Bài học về các kỹ thuật Học không giám sát đến đây là kết thúc.
+Người 2: Chúng em cảm ơn thầy ạ! Một chương học với nhiều kiến thức mới mẻ.

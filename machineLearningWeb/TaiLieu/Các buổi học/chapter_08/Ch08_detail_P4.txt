@@ -1,0 +1,52 @@
+Dưới đây là giải thích chi tiết và trực quan về **Phân tích thành phần chính (PCA) & Các biến thể** trong Chương 8:
+
+---
+
+### **Phần 2: Phân tích thành phần chính (PCA) & Các biến thể**
+
+#### **1. Cơ chế cốt lõi: Bảo toàn phương sai tối đa**
+* **Giải thích đơn giản**: Tưởng tượng bạn muốn chụp ảnh một đám đông người đang đứng rải rác trong sân. Nếu bạn chọn góc chụp làm mọi người đứng thành một hàng dọc thẳng hàng với ống kính, hình ảnh thu được sẽ bị đè lên nhau (mất nhiều thông tin). Nhưng nếu bạn chọn góc chụp rộng nhất, dàn trải nhất, bạn sẽ giữ lại được nhiều chi tiết nhất. PCA hoạt động theo nguyên lý này: nó tìm đường/trục sao cho dữ liệu **dàn trải nhiều nhất (phương sai lớn nhất)**.
+* **Hai mặt của một vấn đề**: Việc chọn trục bảo toàn phương sai tối đa cũng đồng nghĩa với việc **giảm thiểu khoảng cách bình phương trung bình** từ các điểm dữ liệu gốc đến điểm chiếu của chúng lên trục đó (sai số chiếu nhỏ nhất).
+* **Các thành phần chính (Principal Components - PC)**:
+  * Trục đầu tiên chứa lượng phương sai lớn nhất gọi là **PC1**.
+  * Trục thứ hai (**PC2**) phải **trực giao (vuông góc)** với PC1 và chiếm phần lớn phương sai còn lại.
+  * Quá trình tiếp tục để tìm PC3, PC4... cho đến khi bằng số chiều ban đầu.
+
+---
+
+#### **2. Nền tảng toán học: Phân tách giá trị số ít (SVD)**
+* **Chuẩn hóa trung tâm (Mean-Centering)**: Trước khi tính toán, PCA bắt buộc dữ liệu phải được căn giữa xung quanh gốc tọa độ bằng cách trừ đi giá trị trung bình của từng đặc trưng (`X - X.mean(axis=0)`).
+* **Phân tách SVD**: Thuật toán đại số tuyến tính SVD sẽ phân tách ma trận dữ liệu đã căn giữa thành tích 3 ma trận \\(U \cdot \Sigma \cdot V^T\\). Trong đó, ma trận \\(V^T\\) chứa tất cả các vector đơn vị định nghĩa các thành phần chính (PC).
+* **Phép chiếu**: Khi chọn \\(d\\) thành phần chính đầu tiên, ta lấy \\(d\\) cột đầu tiên của ma trận \\(V\\) để tạo thành ma trận \\(W_d\\). Phép chiếu hạ chiều được thực hiện đơn giản bằng phép nhân ma trận: \\(X_{d-proj} = X \cdot W_d\\).
+* **Lưu ý**: Lớp `PCA` của Scikit-Learn tự động xử lý toàn bộ bước căn giữa dữ liệu và phân tách SVD này.
+
+---
+
+#### **3. Tỷ lệ phương sai giải thích (`explained_variance_ratio_`)**
+* **Ý nghĩa**: Chỉ số này đo lường tỷ lệ phần trăm phương sai (lượng thông tin) mà mỗi thành phần chính nắm giữ.
+* **Ví dụ minh họa**: Nếu PC1 giải thích **76%** và PC2 giải thích **15%** phương sai, tổng cộng 2 chiều này đã giữ được **91%** thông tin của tập dữ liệu. Chiều PC3 chỉ còn giữ 9% nên ta có thể yên tâm loại bỏ.
+* **Cách chọn số chiều tối ưu**:
+  * Thay vì đoán mò số chiều \\(d\\), bạn có thể truyền tỷ lệ phương sai mong muốn (ví dụ 95%) trực tiếp vào Scikit-Learn: `PCA(n_components=0.95)`. Mô hình sẽ tự động tính toán số chiều tối thiểu cần thiết.
+  * Bạn cũng có thể vẽ biểu đồ phương sai tích lũy và tìm **điểm uốn (Elbow point)**—nơi đường cong bắt đầu đi ngang—để chọn số chiều hợp lý.
+
+---
+
+#### **4. Ứng dụng nén và giải nén dữ liệu (`inverse_transform`)**
+* **Nén dữ liệu (Compression)**: Với tập dữ liệu ảnh chữ số viết tay MNIST có 784 pixel (784 chiều), khi áp dụng PCA bảo toàn 95% phương sai, số chiều giảm xuống chỉ còn **154 chiều**. Kích thước dữ liệu giảm hơn 80%, giúp tiết kiệm bộ nhớ RAM và tăng tốc huấn luyện mô hình phân loại rất nhiều.
+* **Giải nén (Decompression)**: Bạn có thể tái tạo lại dữ liệu 784 chiều ban đầu bằng phương thức `pca.inverse_transform()` qua công thức \\(X_{recovered} = X_{d-proj} \cdot W_d^T\\).
+* **Sai số tái tạo (Reconstruction Error)**: Vì đã loại bỏ 5% phương sai, hình ảnh giải nén sẽ bị mờ đi một chút so với ảnh gốc. Khoảng cách bình phương trung bình giữa ảnh gốc và ảnh giải nén chính là sai số tái tạo.
+
+---
+
+#### **5. Các biến thể PCA quan trọng**
+* **Randomized PCA (`svd_solver="randomized"`)**:
+  * **Cơ chế**: Sử dụng thuật toán ngẫu nhiên xấp xỉ nhanh \\(d\\) thành phần chính đầu tiên.
+  * **Trường hợp sử dụng**: Dùng khi số chiều mục tiêu \\(d\\) nhỏ hơn rất nhiều so với số chiều gốc \\(n\\) (\\(d \ll n\\)) và dữ liệu nằm gọn trong RAM. Độ phức tạp tính toán là \\(O(m \times d^2) + O(d^3)\\), nhanh hơn nhiều so với SVD đầy đủ.
+* **Incremental PCA - IPCA (`IncrementalPCA`)**:
+  * **Cơ chế**: Chia tập dữ liệu thành các lô nhỏ (**mini-batches**) và cập nhật từng lô bằng phương thức `partial_fit()`.
+  * **Trường hợp sử dụng**: Dành cho tập dữ liệu khổng lồ không nằm gọn trong RAM (Out-of-core learning) hoặc các ứng dụng học trực tuyến (Online learning) khi dữ liệu liên tục đổ về.
+  * **Kết hợp `np.memmap`**: Cho phép ghi mảng dữ liệu lớn thành file nhị phân trên đĩa cứng và load từng phần vào RAM khi cần mà không lo tràn bộ nhớ.
+
+---
+
+💡 Bạn có muốn đi tiếp sang **Phần 3: Phép chiếu ngẫu nhiên (Random Projection)** để xem cách giảm chiều siêu nhanh cho dữ liệu hàng chục nghìn chiều mà không cần huấn luyện không?

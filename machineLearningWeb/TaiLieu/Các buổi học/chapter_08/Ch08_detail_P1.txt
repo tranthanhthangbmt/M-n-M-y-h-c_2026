@@ -1,0 +1,50 @@
+**Chương 8: Giảm chiều dữ liệu (Dimensionality Reduction)** tập trung vào việc giải quyết bài toán dữ liệu có quá nhiều đặc trưng (chiều).
+
+---
+
+### 1. Giải thích Chương 8 một cách đơn giản nhất
+
+* **Vấn đề "Lời nguyền của số chiều" (Curse of Dimensionality)**: Khi một tập dữ liệu có hàng nghìn hoặc hàng triệu đặc trưng (như các pixel trong ảnh), không gian dữ liệu trở nên cực kỳ thưa thớt. Điều này làm cho thuật toán huấn luyện chạy rất chậm và làm tăng mạnh nguy cơ mô hình bị quá khớp (overfitting).
+* **Mục đích của việc giảm chiều dữ liệu**:
+  1. **Tăng tốc huấn luyện**: Loại bỏ các đặc trưng dư thừa hoặc thông tin nhiễu không quan trọng.
+  2. **Trực quan hóa dữ liệu**: Đưa dữ liệu nhiều chiều về không gian 2D hoặc 3D để quan sát các mẫu và cụm dữ liệu bằng mắt thường.
+  3. **Nén dữ liệu**: Tiết kiệm dung lượng lưu trữ bộ nhớ mà vẫn giữ lại phần lớn thông tin cốt lõi.
+
+---
+
+### 2. Nội dung cần học để tìm hiểu sâu vào từng phần
+
+Để làm chủ Chương 8, bạn nên tìm hiểu sâu theo lộ trình 5 phần sau:
+
+#### **Phần 1: Hai cách tiếp cận giảm chiều cơ bản**
+* **Phép chiếu (Projection)**: Chiếu vuông góc các điểm dữ liệu từ không gian chiều cao xuống một không gian con (subspace) có số chiều thấp hơn. *Hạn chế*: Không hiệu quả nếu dữ liệu bị xoắn hoặc uốn cong (như tập dữ liệu cuộn Swiss roll).
+* **Học đa tạp (Manifold Learning)**: Dựa trên **Giả định đa tạp (Manifold Hypothesis)** rằng dữ liệu chiều cao thực chất nằm dọc theo một đa tạp chiều thấp bị uốn cong. Thuật toán sẽ tìm cách "mở cuộn" đa tạp này thay vì làm bẹp nó.
+
+#### **Phần 2: Phân tích thành phần chính (PCA) & Các biến thể**
+* **Cơ chế cốt lõi**: Tìm siêu phẳng giúp **bảo toàn phương sai tối đa** (hoặc giảm thiểu khoảng cách bình phương trung bình từ điểm gốc tới điểm chiếu).
+* **Nền tảng toán học**: Sử dụng kỹ thuật **Phân tách giá trị số ít (SVD - Singular Value Decomposition)** trên ma trận dữ liệu đã được căn giữa.
+* **Tỷ lệ phương sai giải thích (`explained_variance_ratio_`)**: Đo lượng thông tin mà mỗi thành phần chính (PC) nắm giữ. Bạn cần học cách chọn số chiều tối thiểu bảo toàn mức phương sai mục tiêu (ví dụ: 95%).
+* **Ứng dụng nén và giải nén (`inverse_transform`)**: Học cách khôi phục lại dữ liệu gần với ban đầu và đánh giá **sai số tái tạo (reconstruction error)**.
+* **Các biến thể PCA quan trọng**:
+  * **Randomized PCA**: Dùng thuật toán ngẫu nhiên xấp xỉ nhanh các thành phần chính khi số chiều mục tiêu \\(d\\) nhỏ hơn nhiều số chiều ban đầu \\(n\\).
+  * **Incremental PCA (IPCA)**: Chia tập dữ liệu thành các mini-batch (kết hợp `partial_fit` hoặc `np.memmap`) dành cho tập dữ liệu khổng lồ không nằm gọn trong RAM.
+
+#### **Phần 3: Phép chiếu ngẫu nhiên (Random Projection)**
+* **Cơ chế**: Chiếu dữ liệu xuống không gian chiều thấp bằng một ma trận tuyến tính ngẫu nhiên **mà không cần huấn luyện**.
+* **Định lý Johnson-Lindenstrauss (JL)**: Cơ sở toán học chứng minh phép chiếu ngẫu nhiên bảo toàn khoảng cách giữa các điểm dữ liệu rất tốt với xác suất cao.
+* **Thực thi với Scikit-Learn**: Tìm hiểu sự khác biệt giữa `GaussianRandomProjection` và `SparseRandomProjection` (tiết kiệm bộ nhớ RAM và tính toán nhanh hơn).
+
+#### **Phần 4: Nhúng tuyến tính cục bộ (LLE - Locally Linear Embedding)**
+* **Khái niệm**: Kỹ thuật giảm chiều phi tuyến tính thuộc nhóm học đa tạp, không dựa vào phép chiếu.
+* **Quy trình 2 bước**:
+  1. Đo lường mối quan hệ tuyến tính cục bộ giữa mỗi điểm với \\(k\\) láng giềng gần nhất.
+  2. Ánh xạ dữ liệu sang không gian \\(d\\)-chiều sao cho các mối quan hệ cục bộ này được bảo toàn tốt nhất.
+* **Đặc điểm**: Mở cuộn các đa tạp xoắn (như Swiss roll) rất tốt nhưng mở rộng kém đối với các tập dữ liệu cực lớn.
+
+#### **Phần 5: Các kỹ thuật giảm chiều phổ biến khác**
+* **MDS (Multidimensional Scaling)**: Bảo toàn khoảng cách vật lý giữa các điểm dữ liệu gốc.
+* **Isomap**: Tạo đồ thị láng giềng và bảo toàn **khoảng cách trắc địa (geodesic distance)** giữa các điểm.
+* **t-SNE (t-distributed Stochastic Neighbor Embedding)**: Giữ các điểm tương đồng ở gần nhau và đẩy các điểm khác biệt ra xa; đặc biệt hiệu quả để **trực quan hóa các cụm dữ liệu**.
+* **LDA (Linear Discriminant Analysis)**: Kỹ thuật giảm chiều có giám sát, tìm các trục giúp phân biệt rõ nhất giữa các lớp dữ liệu.
+
+💡 Bạn có muốn thử nghiệm một ví dụ lập trình nhỏ bằng Python để so sánh hiệu năng giảm chiều của **PCA** và **t-SNE** trên tập dữ liệu ảnh MNIST không?

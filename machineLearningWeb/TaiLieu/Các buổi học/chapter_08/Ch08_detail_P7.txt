@@ -1,0 +1,62 @@
+Dưới đây là giải thích chi tiết, đơn giản và dễ hiểu kèm ví dụ minh họa cho **Phần 5: Các kỹ thuật giảm chiều phổ biến khác** trong Chương 8:
+
+---
+
+### **Phần 5: Các kỹ thuật giảm chiều phổ biến khác**
+
+#### **1. MDS (Multidimensional Scaling) — Bảo toàn khoảng cách vật lý**
+* **Giải thích đơn giản**: MDS giảm chiều dữ liệu bằng cách cố gắng giữ nguyên **khoảng cách Euclid vật lý ("đường chim bay")** giữa từng cặp điểm dữ liệu gốc trong không gian chiều thấp.
+* **Ví dụ minh họa dễ hiểu (Bản đồ khoảng cách thành phố)**:
+  * Tưởng tượng bạn có một bảng dữ liệu chứa khoảng cách tính bằng kilômét giữa các thành phố (Hà Nội, Đà Nẵng, TP.HCM, Nha Trang...). Bảng dữ liệu này không hề chứa tọa độ địa lý (vĩ độ, kinh độ).
+  * MDS sẽ tìm cách đặt các điểm đại diện cho mỗi thành phố lên một mặt phẳng 2D sao cho khoảng cách tính bằng centimet trên tờ giấy tỉ lệ thuận chính xác với khoảng cách kilômét thực tế giữa chúng.
+* **Đặc điểm**: MDS cố gắng làm phẳng tập dữ liệu mà vẫn bảo toàn độ cong tổng thể quy mô lớn của dữ liệu (như dải bánh cuộn Swiss roll).
+
+---
+
+#### **2. Isomap (Isometric Mapping) — Bảo toàn khoảng cách trắc địa (Geodesic Distance)**
+* **Giải thích đơn giản**: Isomap tạo một đồ thị bằng cách nối mỗi điểm dữ liệu với \\(k\\) láng giềng gần nhất của nó. Sau đó, nó tính toán **khoảng cách trắc địa (geodesic distance)**—tức là đường đi ngắn nhất nối giữa hai điểm qua các cạnh của đồ thị—và bảo toàn khoảng cách này khi hạ chiều.
+* **Ví dụ minh họa "Đường chim bay" vs "Đường đi bộ"**:
+  * Tưởng tượng hai người đứng ở hai phía đối diện của một quả núi hoặc một tờ giấy cuộn tròn (Swiss roll).
+  * **Khoảng cách Euclid (MDS)** tính bằng một đường thẳng xuyên qua lòng núi (đường chim bay).
+  * **Khoảng cách trắc địa (Isomap)** tính bằng con đường bạn thực sự phải bước đi men theo bề mặt quả núi để sang phía bên kia.
+* **Ưu điểm**: Nhờ đo theo bề mặt dữ liệu, Isomap có khả năng "mở cuộn" hoàn toàn các cấu trúc đa tạp cong/xoắn như Swiss roll.
+
+---
+
+#### **3. t-SNE (t-distributed Stochastic Neighbor Embedding) — Chuyên gia trực quan hóa cụm**
+* **Giải thích đơn giản**: t-SNE là thuật toán giảm chiều phi tuyến tính hoạt động theo nguyên lý: **giữ các điểm dữ liệu tương đồng (gần nhau) ở sát cạnh nhau, đồng thời đẩy các điểm dữ liệu khác biệt ra thật xa nhau**.
+* **Ví dụ minh họa (Trực quan hóa tập dữ liệu ảnh MNIST)**:
+  * Khi áp dụng t-SNE giảm 5.000 bức ảnh chữ số viết tay MNIST (784 chiều) xuống 2D, t-SNE tạo ra một biểu đồ phân tán tuyệt đẹp: các bức ảnh số 0 tự động gom thành một cụm màu riêng, số 1 một cụm, số 8 một cụm....
+  * Đặc biệt, những chữ số dễ viết nhầm với nhau như **số 3 và số 5** hoặc **số 4 và số 9** sẽ được t-SNE xếp nằm ở vùng mép tiếp giáp giữa hai cụm.
+* **Ứng dụng & Hạn chế**:
+  * **Công dụng hàng đầu**: Trực quan hóa dữ liệu nhiều chiều để phát hiện các cụm (clusters) bằng mắt thường.
+  * **Hạn chế**: Không có hàm giải nén (`inverse_transform`), chạy khá chậm trên tập dữ liệu lớn và khoảng cách giữa các cụm xa nhau không mang nhiều ý nghĩa hình học.
+
+---
+
+#### **4. LDA (Linear Discriminant Analysis) — Giảm chiều có giám sát (Supervised)**
+* **Giải thích đơn giản**: Trong khi PCA, MDS, Isomap hay t-SNE là các kỹ thuật **không giám sát** (chỉ nhìn vào dữ liệu \\(X\\)), LDA là kỹ thuật **có giám sát** (sử dụng thêm nhãn lớp \\(y\\)).
+* **Cơ chế**: Trong quá trình huấn luyện, LDA học các trục sao cho **khoảng cách giữa trung tâm các lớp là lớn nhất**, đồng thời **độ phân tán nội bộ bên trong từng lớp là nhỏ nhất**.
+* **Ví dụ minh họa (Góc chụp tách biệt hai đội bóng)**:
+  * Tưởng tượng có hai đội bóng mặc áo đỏ và xanh đang đứng xen kẽ nhau trên sân cỏ (không gian 3D).
+  * **PCA** sẽ chọn góc chụp sao cho diện tích sân bóng dàn trải nhất (có thể bóng đỏ và xanh vẫn đứng lẫn lộn).
+  * **LDA** sẽ tìm một góc chiếu sao cho toàn bộ cầu thủ áo đỏ dồn về phía bên trái, toàn bộ cầu thủ áo xanh dồn về phía bên phải, giúp đường ranh giới phân phân biệt hai đội trở nên rõ ràng nhất.
+* **Ứng dụng**: Kỹ thuật tiền xử lý lý tưởng để giảm chiều dữ liệu trước khi đưa vào các thuật toán phân loại khác.
+
+---
+
+### **Bảng tổng kết lộ trình lựa chọn thuật toán Giảm chiều dữ liệu:**
+
+| Thuật toán | Loại | Mục tiêu chính | Trường hợp sử dụng tốt nhất |
+| :--- | :--- | :--- | :--- |
+| **PCA** | Tuyến tính / Không giám sát | Bảo toàn phương sai tối đa | Lựa chọn mặc định đầu tiên để tăng tốc mô hình & nén dữ liệu |
+| **Random Projection** | Tuyến tính / Không huấn luyện | Bảo toàn khoảng cách ngẫu nhiên (JL Lemma) | Dữ liệu siêu lớn, nhiều chiều, cần tiết kiệm RAM tối đa |
+| **LLE / Isomap** | Phi tuyến / Học đa tạp | Bảo toàn mối quan hệ cục bộ & đường trắc địa | Mở cuộn dữ liệu bị uốn cong, xoắn ốc (Swiss roll) |
+| **t-SNE** | Phi tuyến / Học đa tạp | Giữ điểm giống nhau ở gần, điểm khác nhau ở xa | **Trực quan hóa các cụm dữ liệu** trong không gian 2D/3D |
+| **LDA** | Tuyến tính / Có giám sát | Tối đa hóa sự phân tách giữa các lớp | Tiền xử lý giảm chiều cho các bài toán phân loại |
+
+💡 **Mẹo thực tế (Xâu chuỗi thuật toán)**: Khi xử lý tập dữ liệu lớn, việc áp dụng t-SNE hay LLE ngay từ đầu có thể chạy rất chậm. Kỹ thuật phổ biến là dùng **PCA** để giảm số chiều từ 1.000 xuống khoảng 50 chiều trước, sau đó mới dùng **t-SNE** để giảm từ 50 chiều xuống 2D để trực quan hóa.
+
+---
+
+💡 Bạn có muốn thực hành viết một đoạn mã Python kết hợp **PCA + t-SNE** để trực quan hóa tập dữ liệu ảnh MNIST hoặc Fashion MNIST không?
