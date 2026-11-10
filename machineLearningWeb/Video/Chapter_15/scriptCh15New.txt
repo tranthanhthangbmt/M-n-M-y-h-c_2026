@@ -1,0 +1,212 @@
+Slide 1: Chương 15: Xử lý Chuỗi bằng RNN và CNN
+Người 1: Chào các em! Suốt từ đầu học phần Machine Learning đến nay, chúng ta chủ yếu làm việc với các dữ liệu tĩnh độc lập, như bảng giá nhà với các đặc trưng cố định, hay phân loại từng bức ảnh chữ số viết tay và hình ảnh con mèo. Nhưng các em hãy thử nghĩ xem: nếu đầu vào của mô hình không phải là một bức ảnh tĩnh, mà là một đoạn video chuyển động, một chuỗi giá cổ phiếu nhảy múa qua từng ngày, một câu văn trải dài trong dịch thuật, hay một đoạn ghi âm giọng nói thì sao?
+Người 2: Đó là những dữ liệu có tính chất thứ tự thời gian trước sau đúng không ạ? Ví dụ như trong một câu, nếu ta đảo lộn thứ tự các từ thì ngữ nghĩa sẽ hoàn toàn thay đổi, thậm chí trở nên vô nghĩa!
+Người 1: Rất chính xác! Đó chính là Dữ liệu Chuỗi (Sequence Data). Và trong Chương 15 này, chúng ta sẽ cùng nhau chinh phục dạng dữ liệu quan trọng bậc nhất của AI hiện đại bằng hai vũ khí tối thượng: Mạng Nơ-ron Hồi quy (viết tắt là R N N) và Mạng Tích chập Một chiều (C N N 1 D)!
+
+Slide 2: Nội dung Chương 15
+Người 1: Lộ trình bài học hôm nay của chúng ta được chia thành 6 phần chính rất mạch lạc: Phần 1, chúng ta tìm hiểu bản chất của Dữ liệu chuỗi và Kiến trúc cơ bản của mạng nơ-ron hồi quy R N N. Phần 2, khám phá cơ chế học tập độc đáo của R N N thông qua thuật toán Lan truyền ngược qua thời gian (B P T T). Phần 3, bắt tay vào bài toán thực tế kinh điển: Dự báo chuỗi thời gian lượng hành khách giao thông công cộng và các kỹ thuật tiền xử lý sai phân.
+Người 2: Em thấy trên slide phần 4 sẽ nâng cấp lên Mạng R N N Sâu (Deep RNNs), và phần 5 là các tế bào nhớ thông minh L S T M và G R U đúng không thầy?
+Người 1: Đúng vậy! Và ở phần 6, chúng ta sẽ khám phá một hướng tiếp cận đột phá bất ngờ: dùng mạng C N N một chiều với kiến trúc WaveNet tích chập giãn nở để xử lý chuỗi song song với tốc độ siêu nhanh. Cuối cùng, chúng ta sẽ đúc kết lại toàn bộ kiến thức của chương.
+
+Slide 3: Khái niệm: Dữ liệu Chuỗi (Sequence Data) là gì?
+Người 1: Chúng ta bắt đầu với câu hỏi nền tảng: Dữ liệu chuỗi là gì và nó khác biệt ra sao so với dữ liệu truyền thống? Ở các chương trước, ta luôn giả định các điểm dữ liệu là độc lập và có cùng phân phối chuẩn, ký hiệu là i.i.d. Nhưng với Dữ liệu chuỗi, tính thứ tự và mối tương quan phụ thuộc theo thời gian hoặc không gian là cốt lõi sống còn.
+Người 2: Thầy có thể lấy một số ví dụ điển hình trong thực tế được không ạ?
+Người 1: Nhìn vào 4 nhóm ví dụ trên slide nhé: Thứ nhất là Chuỗi thời gian kinh tế như giá cổ phiếu, tỷ giá hối đoái, hay GDP hàng năm; Thứ hai là Dữ liệu y tế như điện tâm đồ E C G, điện não đồ E E G ghi nhận nhịp tim và sóng não theo từng mili-giây; Thứ ba là Xử lý ngôn ngữ tự nhiên N L P, nơi một câu văn là chuỗi các từ tuân theo ngữ pháp chặt chẽ; và Thứ tư là Âm thanh, tiếng nói và video, bản chất là chuỗi sóng âm và hàng ngàn khung hình nối tiếp nhau theo thời gian.
+
+Slide 4: Giới hạn của Mạng Truyền thẳng (Feedforward Networks)
+Người 1: Nếu đem một chuỗi dữ liệu ném vào mạng truyền thẳng như M L P đa tầng hay mạng C N N hai chiều truyền thống thì điều gì sẽ xảy ra? Mạng truyền thẳng có 3 điểm yếu chí mạng: Thứ nhất, kích thước đầu vào bị cố định cứng nhắc; Thứ hai, mạng hoàn toàn không có bộ nhớ (memoryless), mỗi lần nhận đầu vào mới nó sẽ quên sạch những gì đã xử lý trước đó; Thứ ba, nó không thể nắm bắt được sự phụ thuộc dài hạn trừ khi ta nhồi nhét một lượng dữ liệu khổng lồ cùng lúc.
+Người 2: Tức là giống như một người đọc sách mà chữ nào biết chữ nấy, cứ đọc sang từ tiếp theo là quên mất các từ đứng trước, nên không thể nào hiểu được nghĩa của cả câu văn đúng không thầy?
+Người 1: Một hình ảnh so sánh cực kỳ xuất sắc! Chính vì mạng truyền thẳng không có trạng thái lưu giữ quá khứ, nên chúng ta bắt buộc phải có một kiến trúc mạng nơ-ron hoàn toàn mới: Mạng Nơ-ron Hồi quy R N N.
+
+Slide 5: Giải pháp: Mạng Nơ-ron Hồi quy (RNN)
+Người 1: Nhìn vào Hình 15-1 trên slide, đây là một nơ-ron hồi quy cơ bản và phiên bản mở rộng của nó qua thời gian. Điểm mấu chốt nằm ở vòng lặp phản hồi: tại mỗi bước thời gian t, nơ-ron không chỉ nhận véc-tơ đầu vào x tại bước t, mà nó còn nhận lại đầu ra của chính nó từ bước trước đó, ký hiệu là y mũ tại bước t trừ 1, hoặc trạng thái ẩn h tại bước t trừ 1.
+Người 2: Tức là đầu ra của quá khứ quay ngược trở lại làm đầu vào cho hiện tại ạ?
+Người 1: Chính xác! Ở bước thời gian đầu tiên t bằng 0, do chưa có quá khứ nên trạng thái thường được khởi tạo bằng 0. Khi ta "trải phẳng" vòng lặp này ra theo trục thời gian sang bên phải, nơ-ron này thực hiện cùng một phép tính lặp lại ở mỗi bước. Nhờ cơ chế hồi quy này, mạng R N N sở hữu một "bộ nhớ nội tại" và có khả năng xử lý các chuỗi có độ dài tùy ý!
+
+Slide 6: Sơ đồ Mở rộng Lớp Nơ-ron Hồi quy qua Thời gian (Hình 15-2)
+Người 1: Slide này phóng to Hình 15-2 trong sách giáo khoa của tác giả Aurélien Géron để các em quan sát cấu trúc một lớp nơ-ron hồi quy hoàn chỉnh. Thay vì chỉ có một nơ-ron đơn lẻ, ở đây ta có một lớp gồm nhiều nơ-ron R N N xếp cạnh nhau. Bên trái là dạng vòng lặp thu gọn, bên phải là sơ đồ mở rộng xuyên suốt trục thời gian từ bước 0, bước 1 đến bước 2.
+Người 2: Em thấy ở đây đầu vào x tại bước t và đầu ra y mũ tại bước t đều là các véc-tơ nhiều chiều đúng không ạ?
+Người 1: Chuẩn xác! Mỗi nơ-ron trong lớp đều nhận toàn bộ véc-tơ đầu vào x tại bước t và toàn bộ véc-tơ trạng thái của cả lớp từ bước t trừ 1 truyền sang. Nhờ vậy, trạng thái ẩn của lớp tổng hợp được toàn diện bức tranh thông tin của chuỗi tính đến thời điểm hiện tại.
+
+Slide 7: Trạng thái Ẩn (Hidden State) và Tính toán Toán học
+Người 1: Bây giờ chúng ta đi vào công thức toán học cốt lõi của nơ-ron R N N tại bước thời gian t: Trạng thái ẩn h tại bước t bằng hàm kích hoạt phi tác động lên tổng của: ma trận trọng số W h x nhân với véc-tơ đầu vào x tại bước t, cộng với ma trận trọng số W h h nhân với trạng thái ẩn h tại bước t trừ 1, rồi cộng với véc-tơ độ lệch b.
+Người 2: Thưa thầy, hàm kích hoạt phi ở đây thường là hàm gì ạ? Có dùng hàm Re L U như mạng truyền thẳng thông thường không?
+Người 1: Trong các mạng R N N chuẩn, người ta hầu như luôn dùng hàm tanh thay vì Re L U! Lý do là hàm tanh giới hạn giá trị đầu ra nghiêm ngặt trong khoảng từ âm 1 đến dương 1. Do trạng thái ẩn liên tục bị nhân lặp lại qua hàng chục bước thời gian, nếu dùng Re L U không bị chặn trên, các giá trị kích hoạt sẽ rất dễ bùng nổ ra vô cùng lớn và phá vỡ mô hình.
+
+Slide 8: Cơ chế Chia sẻ Trọng số (Weight Sharing)
+Người 1: Đây là đặc điểm kiến trúc tinh tế và vĩ đại nhất của R N N: Cơ chế chia sẻ trọng số. Khác hoàn toàn với mạng M L P, nơi mỗi lớp có một bộ trọng số độc lập riêng, mạng R N N DÙNG CHUNG một bộ ma trận trọng số W h x, W h h và véc-tơ độ lệch b cho TẤT CẢ các bước thời gian t trong chuỗi!
+Người 2: Việc dùng chung một bộ trọng số duy nhất mang lại lợi ích gì thưa thầy?
+Người 1: Nó mang lại hai lợi ích vô cùng to lớn: Thứ nhất, số lượng tham số của mô hình cực kỳ nhỏ gọn, không hề bị phình to theo độ dài của chuỗi, giúp tiết kiệm bộ nhớ và chống hiện tượng quá khớp (overfitting); Thứ hai, nhờ cùng một bộ quy tắc học chuyển dịch qua thời gian, mô hình có khả năng tổng quát hóa, sẵn sàng xử lý những chuỗi có độ dài dài hơn hoặc ngắn hơn nhiều so với dữ liệu huấn luyện!
+
+Slide 9: Từ Nơ-ron đơn đến Lớp Nơ-ron (RNN Layer) và Xử lý Mini-batch
+Người 1: Khi triển khai thực tế trên máy tính, ta không xử lý từng điểm dữ liệu đơn lẻ mà tính toán theo từng nhóm Mini-batch gồm m chuỗi đồng thời. Lúc này, toàn bộ công thức được nâng cấp lên dạng ma trận: Ma trận trạng thái H tại bước t, kích thước m nhân số nơ-ron, sẽ bằng hàm tanh của ma trận đầu vào X bước t nhân với ma trận trọng số W x, cộng với ma trận H bước t trừ 1 nhân với W h, cộng với độ lệch b.
+Người 2: Nhờ biểu diễn dưới dạng nhân ma trận kích thước lớn, các thư viện như TensorFlow có thể tận dụng tối đa sức mạnh tính toán song song trên phần cứng G P U đúng không thầy?
+Người 1: Hoàn toàn chính xác! Và lưu ý rằng thông thường véc-tơ đầu ra y tại bước t chính là trạng thái ẩn h tại bước t, trừ trường hợp ta gắn thêm một lớp nơ-ron Dense ở trên cùng để biến đổi sang chiều không gian mục tiêu.
+
+Slide 10: Phân loại Bài toán Xử lý Chuỗi (Seq2Seq, Seq2Vec, Vec2Seq, Encoder-Decoder)
+Người 1: Với tính linh hoạt vượt trội, mạng R N N có thể được cấu hình để giải quyết 4 nhóm bài toán chuỗi cơ bản: Nhóm 1 là Chuỗi sang Chuỗi đồng bộ (Sequence-to-Sequence), đầu vào N bước thời gian thì đầu ra xuất ngay N bước tương ứng, ví dụ như dự báo thời tiết hay dự báo tiêu thụ điện liên tục mỗi ngày; Nhóm 2 là Chuỗi sang Véc-tơ (Sequence-to-Vector), đầu vào là chuỗi N từ nhưng đầu ra chỉ là 1 véc-tơ ở bước cuối cùng, điển hình là bài toán Phân loại cảm xúc văn bản hay dự đoán giá đóng cửa phiên cuối tuần.
+Người 2: Còn nhóm 3 và nhóm 4 thì sao ạ?
+Người 1: Nhóm 3 là Véc-tơ sang Chuỗi (Vector-to-Sequence), nhận vào 1 véc-tơ duy nhất ở đầu như một bức ảnh và xuất ra một chuỗi từ ngữ tạo chú thích cho ảnh (Image Captioning); Và Nhóm 4 là Bộ Mã hóa - Giải mã (Encoder-Decoder) hay Chuỗi sang Chuỗi có độ trễ, mạng đọc hết toàn bộ chuỗi đầu vào rồi mới bắt đầu giải mã sinh ra chuỗi kết quả, đây là nền móng của các hệ thống Dịch máy tự động!
+
+Slide 11: Minh họa 4 Dạng Kiến trúc RNN Cốt lõi (Hình 15-4)
+Người 1: Hãy quan sát Hình 15-4 trên slide để thấy trực quan luồng chảy dữ liệu của 4 cấu hình: Góc trên bên trái là Seq-to-Seq đồng bộ, các tế bào tính toán và xuất kết quả song hành ở mọi bước; Góc trên bên phải là Seq-to-Vec, ta hoàn toàn bỏ qua tất cả các đầu ra trung gian và chỉ lấy véc-tơ trạng thái ở bước thời gian cuối cùng; Góc dưới bên trái là Vec-to-Seq, véc-tơ đặc trưng ban đầu được nạp vào bước đầu tiên và tiếp tục kích thích mạng sinh ra chuỗi nối tiếp; và Góc dưới bên phải là cấu trúc Encoder-Decoder.
+Người 2: Ở mô hình Encoder-Decoder, mạng Encoder nén toàn bộ câu tiếng Anh thành một véc-tơ ngữ cảnh duy nhất, rồi truyền cho mạng Decoder sinh ra từng từ tiếng Việt đúng không ạ?
+Người 1: Đúng vậy! Việc tách thành hai pha Mã hóa và Giải mã giúp xử lý hoàn hảo các ngôn ngữ có độ dài câu khác nhau và trật tự ngữ pháp đảo lộn giữa hai thứ tiếng.
+
+Slide 12: Ứng dụng: Dự báo Chuỗi Thời gian (Time Series) & Seq2Seq Trễ (Hình 15-3)
+Người 1: Slide này minh họa chi tiết kiến trúc phổ biến nhất khi ứng dụng R N N vào bài toán Dự báo Chuỗi thời gian (Time Series Forecasting). Ta huấn luyện một mạng Chuỗi sang Chuỗi sao cho tại bước thời gian t, mạng nhận giá trị x tại bước t và kỳ vọng đầu ra y tại bước t chính là giá trị dự đoán cho bước tiếp theo x tại bước t cộng 1!
+Người 2: Tức là chuỗi nhãn mục tiêu bị dịch chuyển trễ một bước về tương lai so với chuỗi đầu vào đúng không thầy?
+Người 1: Chính xác! Ví dụ cho chuỗi nhiệt độ 30 ngày qua, tại ngày thứ 1 mô hình phải đoán ngày thứ 2, tại ngày thứ 2 phải đoán ngày thứ 3, và tại ngày thứ 30 mô hình xuất ra dự báo cho ngày mai. Bằng cách bắt mô hình phải dự báo liên tục ở mọi bước, mạng học được các quy luật biến thiên ngắn hạn và dài hạn trong toàn bộ chuỗi.
+
+Slide 13: Nền tảng: Huấn luyện Mạng Truyền thẳng (Nhắc lại Backpropagation)
+Người 1: Trước khi tìm hiểu cách huấn luyện R N N, chúng ta nhắc lại nền tảng của thuật toán Lan truyền ngược (Backpropagation) truyền thống trong mạng nơ-ron truyền thẳng. Quá trình gồm 3 bước: Bước 1, Lan truyền xuôi (Forward pass) truyền tín hiệu từ đầu vào qua các tầng ẩn đến đầu ra để tính hàm mất mát Loss; Bước 2, Lan truyền ngược (Backward pass) tính toán đạo hàm riêng của Loss theo từng trọng số bằng quy tắc chuỗi (Chain rule); Bước 3, Cập nhật trọng số bằng thuật toán tối ưu Gradient Descent.
+Người 2: Thưa thầy, với mạng truyền thẳng thì các tầng xếp thẳng hàng từ trái sang phải nên việc lùi đạo hàm rất rõ ràng. Nhưng R N N có vòng lặp thời gian thì đạo hàm chảy ngược kiểu gì ạ?
+Người 1: Câu hỏi rất hay! Để giải quyết vòng lặp đó, các nhà khoa học đã khai sinh ra một thuật toán kinh điển mang tên B P T T.
+
+Slide 14: BPTT - Lan truyền ngược qua Thời gian (Backpropagation Through Time)
+Người 1: Thuật toán mang tên Lan truyền ngược qua thời gian (Backpropagation Through Time, viết tắt là B P T T). Nguyên lý vô cùng thanh lịch: Trước tiên, ta "mở cuộn" (unroll) mạng R N N dọc theo toàn bộ chuỗi thời gian từ bước 1 đến bước T. Sau khi mở cuộn, mạng R N N có vòng lặp biến thành một mạng truyền thẳng khổng lồ có đúng T tầng nối tiếp nhau!
+Người 2: À, lúc này lan truyền xuôi sẽ chạy dọc từ bước thời gian quá khứ đến hiện tại để tính toán các trạng thái và hàm mất mát đúng không ạ?
+Người 1: Đúng vậy! Và bước tiếp theo, lan truyền ngược sẽ chảy ngược dòng thời gian từ tương lai quay trở về quá khứ, lội qua từng bước thời gian để tính đạo hàm. Vì tất cả các bước thời gian đều dùng chung bộ trọng số W, nên đạo hàm của trọng số W sẽ bằng tổng tích lũy các đạo hàm tính được tại từng bước thời gian!
+
+Slide 15: Cơ chế Hoạt động của BPTT (Minh họa Hình 15-5)
+Người 1: Hãy nhìn kỹ Hình 15-5 trên slide. Các đường nét đứt mỏng màu xanh biểu diễn luồng lan truyền xuôi tính toán trạng thái và đầu ra tại từng bước. Còn các mũi tên màu đỏ liền nét và đậm nét biểu thị luồng lan truyền ngược của Gradient. Gradient bắt đầu từ hàm mất mát tổng L, chảy ngược vào từng đầu ra y mũ tại các bước 2, 3, 4, rồi chảy lùi qua các kết nối hồi quy xuyên thời gian về tận bước 0.
+Người 2: Em thấy mũi tên gradient từ các bước thời gian khác nhau đều chỉ về các khối trọng số W và b ở dưới cùng!
+Người 1: Rất tinh tế! Do cơ chế chia sẻ trọng số, gradient tại mỗi bước thời gian đều đóng góp vào việc điều chỉnh bộ trọng số chung W. Nhờ đó, mô hình học được cách tinh chỉnh tham số để vừa dự đoán tốt cho hiện tại, vừa chuẩn bị trạng thái tối ưu cho tương lai.
+
+Slide 16: Giới hạn cốt lõi: Vấn đề Triệt tiêu Gradient (Vanishing Gradients)
+Người 1: Dù B P T T rất thanh lịch, nhưng nó lại vấp phải một thử thách nghiệt ngã: Hiện tượng Triệt tiêu Gradient (Vanishing Gradients). Hãy tưởng tượng chuỗi dữ liệu dài 100 bước thời gian, mạng mở cuộn ra sẽ tương đương một mạng nơ-ron sâu tới 100 tầng! Khi dòng gradient lội ngược 100 bước thời gian, theo quy tắc chuỗi, nó phải liên tục nhân với ma trận trọng số W h h chuyển vị và đạo hàm của hàm kích hoạt tanh.
+Người 2: Đạo hàm của hàm tanh luôn nhỏ hơn hoặc bằng 1, và nếu các giá trị riêng của ma trận trọng số cũng nhỏ hơn 1 thì việc nhân liên tiếp 100 lần sẽ làm gradient teo nhỏ về sát số 0 đúng không thầy?
+Người 1: Hoàn toàn chính xác! Khi lùi về đến những bước thời gian đầu tiên, gradient đã hoàn toàn tan biến thành số 0 tròn trĩnh. Hậu quả là mạng R N N cơ bản hoàn toàn bị "mất trí nhớ dài hạn", nó chỉ nhớ được khoảng 10 đến 20 bước gần nhất, còn thông tin ở xa trong quá khứ bị lãng quên vĩnh viễn!
+
+Slide 17: Hiện tượng Bùng nổ Gradient (Exploding Gradients) và Giải pháp Cắt cụt
+Người 1: Ngược lại với triệt tiêu gradient, nếu các trọng số được khởi tạo hơi lớn và giá trị riêng lớn nhất của ma trận W h h lớn hơn 1, thì qua 100 bước nhân dồn, gradient sẽ tăng theo cấp số nhân và bùng nổ thành những con số khổng lồ vô cực! Hiện tượng Bùng nổ Gradient (Exploding Gradients) khiến các trọng số dao động dữ dội, mô hình sụp đổ và phát sinh lỗi N a N trong quá trình huấn luyện.
+Người 2: Vậy làm sao để chúng ta chế ngự hiện tượng bùng nổ gradient này ạ?
+Người 1: Phương thuốc điều trị bùng nổ gradient cực kỳ đơn giản và hiệu quả: Kỹ thuật Cắt cụt Gradient (Gradient Clipping)! Khi biên dịch bộ tối ưu trong Keras, ta chỉ cần thiết lập tham số clipvalue hoặc clipnorm. Nếu độ lớn của gradient vượt qua ngưỡng quy định, TensorFlow sẽ tự động cắt ngắn nó lại, giữ cho quá trình cập nhật trọng số luôn trong tầm kiểm soát an toàn.
+
+Slide 18: Đặc trưng của Dữ liệu Chuỗi Thời gian (Nhiễu trắng, Thời vụ, Xu hướng)
+Người 1: Bây giờ chúng ta bước sang Phần 3: Ứng dụng mô hình vào dữ liệu chuỗi thời gian thực tế. Một chuỗi thời gian trong đời thực thường là sự cộng hưởng phức tạp của 3 thành phần chính: Thứ nhất là Nhiễu trắng (White noise), những biến động ngẫu nhiên không có quy luật; Thứ hai là Tính thời vụ (Seasonality), các mẫu hình lặp đi lặp lại đều đặn theo chu kỳ ngày, tuần hoặc năm; Thứ ba là Xu hướng dài hạn (Trend), sự tăng trưởng hoặc suy giảm chậm rãi qua nhiều năm.
+Người 2: Việc để nguyên một chuỗi hỗn độn cả xu hướng lẫn thời vụ nạp thẳng vào mạng nơ-ron có làm mạng khó học không ạ?
+Người 1: Rất khó học! Quy tắc vàng trong xử lý chuỗi thời gian là: Hãy dùng các kỹ thuật tiền xử lý toán học để bóc tách xu hướng và thời vụ ra trước, biến dữ liệu thành một chuỗi dừng ổn định (stationary). Khi dữ liệu đã sạch nhiễu và ổn định, mạng nơ-ron sẽ hội tụ nhanh hơn và dự báo chính xác hơn gấp nhiều lần.
+
+Slide 19: Phân tích Dữ liệu Thực tế: Lượng hành khách Chicago 2019 (Hình 15-6)
+Người 1: Trên slide là Hình 15-6 trích từ nghiên cứu thực tế về lượng hành khách đi xe buýt và tàu điện ngầm hàng ngày của thành phố Chicago trong năm 2019. Hãy quan sát đồ thị: trục hoành là các ngày trong năm, trục tung là số lượng hành khách, đường màu đỏ là xe buýt, màu xanh là tàu điện. Các em nhận thấy điều gì đặc biệt?
+Người 2: Em thấy đồ thị nhấp nhô theo từng đỉnh nhọn lặp đi lặp lại rất đều đặn, cứ khoảng một tuần lại có 5 ngày lượng khách rất cao rồi tụt sâu xuống 2 ngày ạ!
+Người 1: Rất tinh tế! 5 ngày đỉnh cao tương ứng với các ngày làm việc trong tuần khi người dân đi làm, còn 2 ngày sụt giảm mạnh chính là cuối tuần thứ bảy và chủ nhật. Đó chính là Tính thời vụ hàng tuần (Weekly Seasonality) điển hình của giao thông đô thị.
+
+Slide 20: Kỹ thuật Tiền xử lý: Khử tính Thời vụ Hàng tuần bằng Sai phân 7 ngày (Hình 15-7)
+Người 1: Để loại bỏ tính thời vụ 7 ngày này, ta áp dụng kỹ thuật Sai phân bậc 7 (7-day Differencing). Công thức cực kỳ giản dị: Lấy giá trị hành khách của ngày t trừ đi giá trị của chính ngày đó ở tuần trước, tức là bước t trừ 7.
+Người 2: Biểu đồ bên dưới thể hiện kết quả sau khi trừ sai phân đúng không thầy?
+Người 1: Đúng vậy! Hãy nhìn biểu đồ bên dưới ở Hình 15-7: Các dao động mạnh giữa ngày thường và cuối tuần đã biến mất hoàn toàn! Đường dữ liệu mới dao động rất êm quanh mốc số 0. Chuỗi trở nên có tính chất dừng (stationary), giúp mạng R N N không cần phải tốn công học lại quy luật thứ bảy chủ nhật nữa mà tập trung nắm bắt các tín hiệu dự báo sâu hơn.
+
+Slide 21: Biến động Vĩ mô & Nhu cầu về 'Trí nhớ Dài hạn' (Hình 15-8)
+Người 1: Tuy nhiên, câu chuyện chưa dừng lại ở đó! Khi ta mở rộng tầm nhìn dữ liệu ra suốt 18 năm từ năm 2001 đến 2019 như trong Hình 15-8, bức tranh vĩ mô xuất hiện: Vào các dịp lễ tạ ơn hay kỳ nghỉ đông cuối năm, lượng khách tụt dốc thê thảm hàng năm; bên cạnh đó là cuộc khủng hoảng kinh tế năm 2008 hay sự bùng nổ của dịch vụ gọi xe công nghệ Uber khiến lượng khách biến động dài hạn suốt nhiều năm.
+Người 2: Một chuỗi thời gian dài hàng ngàn ngày như vậy thì đòi hỏi mô hình phải có khả năng ghi nhớ vươn xa hàng trăm bước đúng không thầy?
+Người 1: Đúng vậy! Một mô hình Simple R N N cơ bản với trí nhớ ngắn hạn sẽ hoàn toàn bất lực trước những phụ thuộc dài hạn này. Đó là lý do thực tiễn cấp thiết thúc đẩy sự ra đời của các kiến trúc bộ nhớ dài hạn như L S T M mà chúng ta sẽ học ở phần sau.
+
+Slide 22: Kỹ thuật Tiền xử lý: Sai phân 12 tháng (Dài hạn) (Hình 15-9)
+Người 1: Để xử lý xu hướng năm và tính chu kỳ hàng năm, tương tự như sai phân 7 ngày, ta có thể lấy thêm Sai phân 12 tháng liên tục như Hình 15-9. Chuỗi thu được sau hai lần sai phân sẽ được cân bằng hoàn hảo quanh trục 0, triệt tiêu sạch sẽ cả chu kỳ tuần lẫn chu kỳ năm.
+Người 2: Sau khi mô hình R N N dự báo xong giá trị sai phân cho ngày mai, làm sao ta tính lại được lượng hành khách thực tế ạ?
+Người 1: Rất đơn giản! Ta chỉ việc thực hiện phép cộng nghịch đảo: lấy giá trị sai phân mô hình vừa dự đoán cộng bù lại với giá trị thực tế của ngày t trừ 7 và các thành phần đã trừ trước đó. Phép tái tạo này hoàn toàn chuẩn xác và khôi phục trọn vẹn quy mô thực tế của dữ liệu.
+
+Slide 23: Khởi tạo SimpleRNN với Keras (API Keras & Huấn luyện)
+Người 1: Bây giờ chúng ta chuyển sang phần thực hành lập trình: Xây dựng một mạng R N N cơ bản với Keras. Hãy nhìn vào đoạn mã nguồn trên slide: Đầu tiên, ta sử dụng mô hình tuần tự keras chấm Sequential. Bên trong, ta chỉ cần thêm một lớp duy nhất là keras chấm layers chấm SimpleRNN với tham số units bằng 1, và khai báo input_shape bằng danh sách gồm None và 1.
+Người 2: Sau đó ta chỉ việc gọi model chấm compile và model chấm fit với dữ liệu huấn luyện X train và y train là xong đúng không ạ?
+Người 1: Đúng vậy! Keras đã đóng gói toàn bộ cơ chế mở cuộn và thuật toán B P T T phức tạp bên dưới, người lập trình chỉ cần vài dòng lệnh thanh lịch là đã có một mạng nơ-ron hồi quy hoàn chỉnh sẵn sàng huấn luyện.
+
+Slide 24: Giải mã Tham số Keras (input_shape=[None, 1], Units, Hàm Loss)
+Người 1: Slide này giải mã chi tiết từng tham số trong câu lệnh Keras vừa rồi, đây là kiến thức các em phải nắm thật vững: Thứ nhất, trong SimpleRNN(1), con số 1 là số lượng nơ-ron trạng thái ẩn; ta chọn 1 vì ở đây ta muốn dự báo một giá trị vô hướng duy nhất cho bước tiếp theo; Thứ hai, input_shape=[None, 1]: giá trị None đại diện cho số bước thời gian (time steps), Keras dùng None để cho phép mô hình chấp nhận chuỗi có độ dài ngắn tùy ý; còn số 1 thứ hai là số đặc trưng (features) tại mỗi bước thời gian.
+Người 2: Em thấy hàm mất mát ở đây dùng mse hoặc mae đúng không ạ?
+Người 1: Đúng! Với bài toán hồi quy chuỗi thời gian, hàm mất mát sai số bình phương trung bình M S E hoặc sai số tuyệt đối trung bình M A E là những lựa chọn tiêu chuẩn hàng đầu.
+
+Slide 25: Kiến trúc Deep RNN (Mạng RNN Sâu - Stacking Layers)
+Người 1: Một mạng R N N cơ bản chỉ có 1 lớp nơ-ron hồi quy thì năng lực biểu diễn rất hạn chế. Để học được những đặc trưng chuỗi phức tạp và trừu tượng hơn ở nhiều tầng bậc, ta xếp chồng nhiều lớp R N N lên nhau tạo thành Mạng R N N Sâu (Deep RNN), tương tự như cách ta phát triển mạng M L P sâu.
+Người 2: Nguyên lý kết nối giữa các lớp R N N diễn ra như thế nào ạ?
+Người 1: Lớp R N N dưới cùng nhận dữ liệu đầu vào gốc của chuỗi. Tại mỗi bước thời gian t, trạng thái ẩn của lớp dưới được đẩy lên làm đầu vào cho lớp R N N ngay phía trên nó tại cùng bước thời gian t đó. Cứ như vậy, thông tin trừu tượng hóa dần qua từng tầng không gian chiều sâu.
+
+Slide 26: Sơ đồ Lan truyền trong Deep RNN (Hình 15-10: Chiều sâu và Chiều thời gian)
+Người 1: Hãy nhìn vào Hình 15-10, đây là sơ đồ mở cuộn của một Deep R N N gồm 3 lớp nơ-ron hồi quy. Kiến trúc này có 2 trục truyền tin trực giao: Trục ngang là Trục Thời gian (Time steps) từ quá khứ bước t trừ 1 đến hiện tại bước t; Trục dọc là Trục Không gian hay Chiều sâu (Space or Depth) từ Lớp 1, Lớp 2 lên Lớp 3.
+Người 2: Tức là thông tin vừa truyền ngang qua thời gian ở từng lớp, vừa truyền dọc từ tầng dưới lên tầng trên đúng không thầy?
+Người 1: Đúng vậy! Một mạng lưới hai chiều kỳ vĩ! Dòng thông tin ngang giúp bảo toàn ngữ cảnh lịch sử, còn dòng thông tin dọc giúp trích xuất các đặc trưng ngày càng trừu tượng.
+
+Slide 27: Keras Code: Xây dựng Deep RNN (return_sequences=True)
+Người 1: Khi viết mã Keras cho Deep R N N, có một quy tắc vàng sống còn mà mọi kỹ sư AI đều phải khắc cốt ghi tâm: Hãy nhìn dòng code thứ 3 trên slide: keras.layers.SimpleRNN(20, return_sequences=True)! Tham số return_sequences bắt buộc phải bật bằng True ở tất cả các lớp R N N trung gian phía dưới!
+Người 2: Thưa thầy, tại sao bắt buộc phải có return_sequences bằng True ạ? Nếu không bật thì sẽ bị lỗi gì?
+Người 1: Mặc định, một lớp SimpleRNN chỉ xuất ra véc-tơ trạng thái ở bước thời gian cuối cùng (dạng 2 D). Nếu em không bật True, lớp thứ nhất chỉ nhả ra 1 véc-tơ duy nhất, khiến lớp R N N thứ hai ở trên không có chuỗi 3 D để quét và Keras sẽ báo lỗi kích thước ngay lập tức! Bật return_sequences bằng True buộc lớp dưới phải xuất toàn bộ chuỗi trạng thái ở mọi bước thời gian lên cho lớp trên. Chỉ riêng lớp R N N trên cùng mới để mặc định False để xuất véc-tơ cuối cùng cho lớp Dense.
+
+Slide 28: Chiến lược Dự báo Đa bước (Multi-step Forecasting)
+Người 1: Từ đầu buổi đến giờ ta chỉ dự báo 1 bước tới (ngày mai). Nhưng trong thực tế, các doanh nghiệp thường yêu cầu Dự báo Đa bước (Multi-step Forecasting), ví dụ dự báo liên tiếp 14 ngày tới. Ta có 2 chiến lược chính: Chiến lược 1 là Tự hồi quy lặp (Autoregressive): dự đoán ngày 1, lấy kết quả ghép vào đuôi đầu vào để dự đoán ngày 2, lặp lại 14 lần. Nhược điểm là sai số tích lũy: đoán sai ngày đầu sẽ kéo theo sai lệch dây chuyền các ngày sau.
+Người 2: Vậy Chiến lược 2 là gì thưa thầy?
+Người 1: Chiến lược 2 là Dự báo đồng thời một lần: ta thay lớp cuối cùng bằng một lớp Dense(14), bắt mạng nơ-ron dự đoán thẳng một véc-tơ gồm cả 14 giá trị tương lai trong một lần tính duy nhất! Đồ thị trên slide cho thấy phương pháp dự báo đồng thời bám sát rất mượt mà đường đi thực tế của dữ liệu và hoạt động ổn định hơn hẳn.
+
+Slide 29: Hạn chế của SimpleRNN: Sự Phụ thuộc xa (Long-Term Dependencies)
+Người 1: Chúng ta quay lại vấn đề cốt tử của Simple R N N: Sự phụ thuộc xa (Long-Term Dependencies). Hãy xem câu ví dụ kinh điển trên slide: "Tôi sinh ra và lớn lên ở nước Pháp... sau hai mươi năm chuyển sang Mỹ định cư, tôi vẫn nói trôi chảy tiếng [trống]". Để điền được từ "Pháp" vào chỗ trống, mô hình bắt buộc phải nhớ được từ "nước Pháp" đã xuất hiện từ rất xa ở đầu đoạn văn.
+Người 2: Nhưng vì lời nguyền Triệt tiêu Gradient như thầy đã giải thích ở Slide 16, tín hiệu về từ "nước Pháp" đã bị pha loãng và triệt tiêu sạch sẽ sau vài chục bước thời gian rồi đúng không ạ?
+Người 1: Đúng vậy! Bộ nhớ ngắn hạn h của Simple R N N hoàn toàn bất lực trước những khoảng cách xa như thế. Để giải cứu nhân loại khỏi bế tắc này, một phát minh vĩ đại đã ra đời.
+
+Slide 30: Sự ra đời của Tế bào LSTM (Long Short-Term Memory)
+Người 1: Năm 1997, hai nhà khoa học Sepp Hochreiter và Jürgen Schmidhuber đã công bố phát minh chấn động: Tế bào nhớ L S T M (Long Short-Term Memory - Bộ nhớ Ngắn-Dài hạn). Ý tưởng đột phá là: thay vì chỉ có một trạng thái ẩn h duy nhất, L S T M thiết kế thêm một đường truyền độc lập thứ hai gọi là Trạng thái Tế bào c tại bước t (Cell State).
+Người 2: Trạng thái tế bào c t này hoạt động như thế nào ạ?
+Người 1: Nó giống hệt như một đường ray băng chuyền cao tốc chạy thẳng xuyên suốt mạng từ quá khứ đến tương lai! Thông tin quan trọng có thể trượt dọc trên đường ray c hàng trăm bước thời gian mà không hề bị suy giảm hay triệt tiêu gradient. Việc ghi thêm, xóa bỏ hay trích xuất thông tin trên đường ray này được điều khiển bởi các "Cánh cổng" (Gates) cực kỳ thông minh.
+
+Slide 31: Giải phẫu Cấu trúc Tế bào LSTM (Hình 15-12 & Đường ray Trạng thái c(t))
+Người 1: Hãy cùng giải phẫu cấu trúc tế bào L S T M qua Hình 15-12. Đường ray trên cùng là Trạng thái tế bào dài hạn c t. Đường ray phía dưới là Trạng thái ẩn ngắn hạn h t. Điểm mấu chốt là trên đường ray c t chỉ thực hiện hai phép toán tuyến tính cực kỳ êm dịu: Phép nhân từng phần tử ký hiệu dấu nhân trong vòng tròn, và Phép cộng véc-tơ ký hiệu dấu cộng trong vòng tròn.
+Người 2: Các hình hộp nhỏ có ký hiệu hàm xích-ma Sigmoid là các cánh cổng đúng không thầy?
+Người 1: Đúng vậy! Hàm Sigmoid xuất ra giá trị từ 0 đến 1. Nó hoạt động hệt như một chiếc van khóa nước: nhân với 0 nghĩa là đóng hoàn toàn không cho qua, nhân với 1 nghĩa là mở toang cho toàn bộ thông tin đi qua. L S T M sở hữu 3 chiếc van ma thuật như vậy.
+
+Slide 32: Phân tích 3 Cổng của LSTM (Phần 1: Cổng Quên f(t) và Cổng Vào i(t), g(t))
+Người 1: Chúng ta phân tích chi tiết từng cổng: Cổng thứ nhất là Cổng Quên (Forget Gate), ký hiệu f tại bước t. Nó nhận véc-tơ đầu vào x t và trạng thái ngắn hạn h t trừ 1, đưa qua hàm Sigmoid để quyết định xem: Mẩu ký ức dài hạn nào trong c t trừ 1 cần phải vứt bỏ! Ví dụ khi gặp một chủ ngữ mới trong đoạn văn, cổng quên sẽ đóng lại để xóa bỏ chủ ngữ cũ đã lỗi thời.
+Người 2: Còn Cổng thứ hai là Cổng Vào để nạp thông tin mới đúng không ạ?
+Người 1: Chính xác! Cổng Vào (Input Gate) gồm 2 nhánh phối hợp nhịp nhàng: Nhánh g tại bước t dùng hàm tanh để tạo ra một véc-tơ ứng viên mới chứa các thông tin hữu ích hiện tại; còn Nhánh i tại bước t dùng hàm Sigmoid để chấm điểm xem ứng viên nào thực sự xứng đáng được ghi vào bộ nhớ dài hạn!
+
+Slide 33: Phân tích 3 Cổng của LSTM (Phần 2: Cập nhật c(t) và Cổng Xuất o(t), h(t))
+Người 1: Sau khi có cổng quên và cổng vào, Trạng thái tế bào dài hạn c t được cập nhật theo công thức tuyệt đẹp: c t bằng f t nhân từng phần tử với c t trừ 1, cộng với i t nhân từng phần tử với g t. Nghĩa là: vứt bỏ ký ức cũ không cần thiết, và cộng thêm thông tin mới được chắt lọc!
+Người 2: Cuối cùng là Cổng Xuất (Output Gate) o t để tạo ra trạng thái ẩn h t đúng không thầy?
+Người 1: Đúng! Cổng Xuất o t dùng Sigmoid quyết định phần nào của bộ nhớ dài hạn sẽ được đọc ra. Bộ nhớ c t được đưa qua hàm tanh để chuẩn hóa, rồi nhân với o t để xuất ra Trạng thái ẩn h t vừa đóng vai trò kết quả dự đoán của bước này, vừa truyền sang bước tiếp theo. Quá hoàn hảo và chặt chẽ!
+
+Slide 34: Sử dụng LSTM trong Keras (Tối ưu cuDNN & Hiệu năng)
+Người 1: Toàn bộ hệ thống phương trình vi tích phân phức tạp đó khi lập trình với Keras lại dễ dàng đến kinh ngạc! Em chỉ cần thay lớp SimpleRNN bằng lớp keras.layers.LSTM(20, return_sequences=True). Dưới nền, TensorFlow tự động gọi các kernel c u D N N tối ưu hóa chuyên biệt của N V I D I A để tăng tốc tính toán trên G P U.
+Người 2: Hiệu năng thực tế của L S T M vượt trội so với Simple R N N như thế nào ạ?
+Người 1: Trong khi Simple R N N bắt đầu đuối sức và mất trí nhớ chỉ sau 10 đến 20 bước, thì L S T M có thể dễ dàng duy trì mối liên hệ phụ thuộc dài hạn lên tới hàng trăm bước thời gian, giải quyết xuất sắc các bài toán dịch máy và phân tích chuỗi phức tạp.
+
+Slide 35: Tế bào GRU (Gated Recurrent Unit - 2014)
+Người 1: Dù L S T M rất mạnh mẽ, nhưng cấu trúc 3 cổng và 2 trạng thái riêng biệt khiến nó có số lượng tham số lớn và tính toán khá nặng nề. Năm 2014, giáo sư Kyunghyun Cho cùng các cộng sự đã đề xuất một biến thể tinh giản đột phá mang tên G R U (Gated Recurrent Unit).
+Người 2: G R U đã tinh giản cấu trúc của L S T M như thế nào ạ?
+Người 1: Có hai điểm tinh giản cách mạng: Thứ nhất, G R U gộp chung Trạng thái dài hạn c và Trạng thái ngắn hạn h làm MỘT véc-tơ trạng thái ẩn h duy nhất; Thứ hai, nó gộp Cổng Quên và Cổng Vào thành một cổng duy nhất gọi là Cổng Cập nhật (Update Gate), ký hiệu là z tại bước t!
+
+Slide 36: Cấu tạo Tế bào GRU (Hình 15-13: Cổng Cập nhật và Cổng Đặt lại)
+Người 1: Nhìn vào Hình 15-13 trên slide, tế bào G R U chỉ có 2 cổng: Cổng Cập nhật z t và Cổng Đặt lại (Reset Gate) r t. Cổng Cập nhật z t hoạt động theo nguyên lý bù trừ rất thông minh: Nếu z t bằng 1, cổng quên đóng và cổng vào mở, mạng ghi nhận thông tin mới; nếu z t bằng 0, mạng giữ nguyên trạng thái cũ. Tức là quyết định nhớ cái mới đồng nghĩa với việc tự động xóa bỏ cái cũ tương ứng!
+Người 2: Còn Cổng Đặt lại r t có nhiệm vụ gì thưa thầy?
+Người 1: Cổng Đặt lại r t quyết định xem bao nhiêu phần của trạng thái ẩn quá khứ h t trừ 1 sẽ được kết hợp với đầu vào x t để tạo ra ứng viên trạng thái mới. Nhờ kiến trúc cô đọng này, số lượng phép tính giảm đi đáng kể.
+
+Slide 37: So sánh Chi tiết giữa LSTM và GRU
+Người 1: Bảng so sánh trên slide tổng kết những điểm khác biệt then chốt: L S T M ra đời năm 1997, duy trì 2 trạng thái h và c, có 3 cổng, huấn luyện chậm hơn và tốn nhiều R A M hơn; Trong khi G R U ra đời năm 2014, chỉ có 1 trạng thái h, 2 cổng, số lượng tham số ít hơn khoảng 25 phần trăm và huấn luyện nhanh hơn rõ rệt.
+Người 2: Về mặt độ chính xác thì mô hình nào chiếm ưu thế hơn ạ?
+Người 1: Trong hầu hết các bài toán thực tế, G R U cho hiệu quả ngang ngửa với L S T M. Lời khuyên vàng khi làm dự án thực chiến: Hãy luôn bắt đầu thử nghiệm với G R U trước vì tốc độ huấn luyện nhanh và nhẹ máy. Nếu thấy mô hình có dấu hiệu thắt nút cổ chai về khả năng ghi nhớ chuỗi siêu phức tạp, lúc đó mới chuyển sang L S T M để so sánh!
+
+Slide 38: Từ Tuần tự sang Song song (Điểm yếu của RNN và Đột phá CNN 1D)
+Người 1: Bây giờ chúng ta bước sang một bất ngờ thú vị ở Phần 6: Sử dụng Mạng Tích chập C N N cho Dữ liệu Chuỗi. Cả R N N, L S T M lẫn G R U đều mắc chung một điểm yếu cố hữu: Bản chất tính toán tuần tự theo thời gian. Em không thể nào tính bước t bằng 100 nếu chưa tính xong bước t bằng 99!
+Người 2: Điều đó có nghĩa là phần cứng G P U với hàng ngàn nhân xử lý song song bị lãng phí, không thể tăng tốc tối đa đúng không thầy?
+Người 1: Chuẩn xác! Và giải pháp đột phá là dùng Mạng Tích chập Một chiều (C N N 1 D). Các bộ lọc kernel của C N N 1 D trượt dọc theo trục thời gian hoàn toàn độc lập với nhau, cho phép tính toán song song 100 phần trăm trên G P U với tốc độ cực nhanh!
+
+Slide 39: Vượt qua Giới hạn bằng Tích chập Giãn nở (Dilated Convolutions)
+Người 1: Tuy nhiên, C N N 1 D truyền thống có một nhược điểm: Nếu bộ lọc kernel có kích thước là 3, thì mỗi nơ-ron chỉ nhìn thấy được 3 bước thời gian. Để nhìn được một ngữ cảnh dài 100 hay 1000 bước, ta phải xếp chồng hàng chục tầng C N N và Pooling, khiến mạng trở nên quá sâu, nặng nề và làm mất mát chi tiết vị trí của chuỗi.
+Người 2: Vậy làm sao để C N N vừa giữ được độ nông mà vừa có thể vươn tầm mắt nhìn xa hàng ngàn bước ạ?
+Người 1: Câu trả lời mang tính lịch sử đến từ DeepMind năm 2016 với kiến trúc WaveNet: Kỹ thuật Tích chập Giãn nở (Dilated Convolutions)!
+
+Slide 40: Tích chập Giãn nở trong WaveNet (Hình 15-14)
+Người 1: Hãy nhìn vào Hình 15-14, đây là kiệt tác của DeepMind! Ở tầng 1, tỷ lệ giãn nở dilation rate bằng 1, bộ lọc quét 2 điểm liền kề nhau như C N N bình thường. Nhưng ở tầng 2, dilation rate tăng lên 2, bộ lọc nhảy cóc bỏ qua 1 điểm xen kẽ. Lên tầng 3, dilation rate tăng lên 4, bộ lọc nhảy cóc bỏ qua 3 điểm. Tỷ lệ này tăng theo cấp số nhân lũy thừa của 2: 1, 2, 4, 8, 16...
+Người 2: Tuyệt vời quá! Trường thụ cảm (Receptive Field) của nơ-ron nở rộng ra theo cấp số nhân mà số lượng trọng số của bộ lọc vẫn giữ nguyên không hề tăng lên!
+Người 1: Đúng vậy! Chỉ cần 10 tầng tích chập giãn nở, một nơ-ron ở đỉnh đã có thể bao phủ trường thụ cảm lên tới 1024 bước thời gian! Nhờ vậy WaveNet có thể xử lý các chuỗi âm thanh dài tới 16.000 mẫu mỗi giây với tốc độ thần tốc.
+
+Slide 41: Code: Xây dựng WaveNet với Keras (padding='causal', dilation_rate)
+Người 1: Trong Keras, việc lập trình WaveNet được thực hiện cực kỳ trang nhã qua một vòng lặp for. Ta lặp qua các tỷ lệ dilation rate 1, 2, 4, 8 và thêm các lớp Conv1D với kernel_size bằng 2. Đặc biệt, hãy chú ý dòng ghi chú quan trọng: tham số padding bắt buộc phải đặt bằng 'causal'!
+Người 2: Tham số padding bằng 'causal' có ý nghĩa gì đặc biệt trong chuỗi thời gian ạ?
+Người 1: Trong tiếng Anh, 'causal' nghĩa là nhân quả. Đệm nhân quả đảm bảo rằng các số 0 chỉ được chèn vào phía bên trái của chuỗi, giúp bộ lọc khi trượt ở bước t chỉ nhìn thấy dữ liệu từ bước t trở về quá khứ, tuyệt đối không bao giờ được "nhìn lén" trước thông tin của tương lai!
+
+Slide 42: Tổng kết Kiến thức (Phần 1 - RNN cơ bản, BPTT & Tiền xử lý Chuỗi)
+Người 1: Chúng ta đã đi qua một hành trình tri thức rất đồ sộ. Hãy cùng nhìn lại bức tranh tổng kết Phần 1: Dữ liệu chuỗi đòi hỏi mô hình phải có bộ nhớ để duy trì thứ tự trước sau; Mạng R N N cơ bản giải quyết bài toán này nhờ cơ chế chia sẻ trọng số và truyền trạng thái ẩn h t qua các bước thời gian; Thuật toán B P T T mở cuộn mạng qua trục thời gian để tính gradient, nhưng chuỗi quá dài sẽ dẫn đến hiện tượng triệt tiêu hoặc bùng nổ gradient; Và kỹ thuật Tiền xử lý Sai phân (Differencing) là công cụ đắc lực để khử xu hướng và thời vụ, tạo chuỗi dừng ổn định.
+Người 2: Em đã nắm rất rõ nền tảng của mạng R N N truyền thống và hiểu sâu sắc vì sao ta cần các kỹ thuật tối ưu nâng cao!
+
+Slide 43: Tổng kết Kiến thức (Phần 2 - Các Kiến trúc Tiên tiến: LSTM, GRU, WaveNet)
+Người 1: Và ở Phần 2, chúng ta đã chinh phục các kiến trúc tiên tiến đỉnh cao: Tế bào nhớ L S T M và G R U với thiết kế các cánh cổng đóng mở bằng hàm Sigmoid, bảo toàn dòng chảy gradient và mang lại Trí nhớ Dài hạn siêu việt; Cuối cùng, hướng đi đột phá C N N 1 D và WaveNet tích chập giãn nở đã giải phóng mô hình khỏi điểm nghẽn tính toán tuần tự, cho phép xử lý song song thần tốc trên G P U cho những chuỗi dữ liệu khổng lồ. Các em hãy tự tay thực hành lại các đoạn code Keras này nhé. Chúc các em học tập thật tốt!
+Người 2: Bài học hôm nay thực sự quá sâu sắc và mở rộng tầm mắt cho chúng em! Em cảm ơn thầy rất nhiều ạ!
