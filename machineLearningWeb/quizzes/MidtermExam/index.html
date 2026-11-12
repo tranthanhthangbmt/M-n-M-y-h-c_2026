@@ -427,15 +427,9 @@
     <div class="card" style="padding: 32px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h2 style="font-size: 1.25rem; font-weight: 700;">Đăng ký thông tin làm bài</h2>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <a href="https://docs.google.com/spreadsheets/d/1jE5pqvoSDxC_NG6VmGULdFj6_Kj5miL1mInSCx4VrQc/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 6px 12px; font-size: 0.82rem; background: #0f9d58; color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="Mở trực tiếp CSDL Google Sheet của Giảng viên">
-                    📊 Google Sheet CSDL
-                </a>
-                <button type="button" class="btn btn-secondary" onclick="openTeacherModal()" title="Bảng điểm dành cho Giảng viên lưu trên trình duyệt" style="padding: 6px 12px; font-size: 0.82rem;">
-                    📋 Bảng điểm máy
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="openSettingsModal()" title="Cấu hình Google Sheet CSDL" style="padding: 6px 12px; font-size: 0.82rem;">
-                    ⚙️ CSDL Sheet
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-secondary" onclick="openTeacherModal()" title="Dành riêng cho Giảng viên (Yêu cầu mật khẩu)" style="padding: 6px 12px; font-size: 0.82rem;">
+                    🔐 Giảng viên
                 </button>
             </div>
         </div>
@@ -609,6 +603,12 @@
         
         <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
             <input type="text" id="teacher-search" placeholder="Tìm theo Họ tên, MSSV, Lớp..." oninput="renderTeacherTable()" style="flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem;">
+            <a href="https://docs.google.com/spreadsheets/d/1jE5pqvoSDxC_NG6VmGULdFj6_Kj5miL1mInSCx4VrQc/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 8px 14px; font-size: 0.85rem; background: #0f9d58; color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="Mở trực tiếp CSDL Google Sheet của Giảng viên">
+                📊 Mở Google Sheet CSDL
+            </a>
+            <button class="btn btn-secondary" onclick="openSettingsModal()" style="padding: 8px 14px; font-size: 0.85rem;" title="Cấu hình Google Sheet CSDL">
+                ⚙️ Cấu hình Sheet
+            </button>
             <button class="btn btn-primary" onclick="exportTeacherCSV()" style="padding: 8px 14px; font-size: 0.85rem;">
                 📥 Xuất file Excel (CSV)
             </button>
@@ -1169,7 +1169,7 @@
             syncBadge.style.background = '#f0fdf4';
             syncBadge.style.color = '#15803d';
             syncBadge.style.border = '1px solid #bbf7d0';
-            syncBadge.innerHTML = '✅ Đã ghi nhận điểm số vào <a href="https://docs.google.com/spreadsheets/d/1jE5pqvoSDxC_NG6VmGULdFj6_Kj5miL1mInSCx4VrQc/edit?gid=0#gid=0" target="_blank" style="color: #15803d; text-decoration: underline; font-weight: 700;">CSDL Google Sheet của Giảng viên</a> thành công!';
+            syncBadge.innerText = '✅ Đã ghi nhận điểm số vào cơ sở dữ liệu của Giảng viên thành công!';
         }).catch((err) => {
             syncBadge.style.background = '#fefce8';
             syncBadge.style.color = '#b45309';
