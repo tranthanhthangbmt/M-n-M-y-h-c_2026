@@ -207,6 +207,7 @@
       repo: '',
       loadSidebar: 'docs/_sidebar.md',
       autoHeader: true,
+      executeScript: true,
       subMaxLevel: 3,
       sidebarDisplayLevel: 1,
       search: 'auto',
@@ -343,6 +344,11 @@
               }
             }
           }
+
+          // Tự động kiểm tra trạng thái khóa đề thi giữa kỳ
+          if (typeof window.applyPracticalExamState === 'function') {
+            window.applyPracticalExamState();
+          }
         });
       },
       window.$docsify.plugins || []
@@ -442,6 +448,91 @@
         }
       }
     });
+  </script>
+
+  <!-- BẢO MẬT KHÓA 3 ĐỀ THI GIỮA KỲ (THỰC HÀNH COLAB & CANVAS) -->
+  <script>
+  (function() {
+    const PRACTICAL_PASSWORD = "Abcd1234";
+
+    window.togglePracticalPassVisibility = function() {
+      const inp = document.getElementById('practical-exam-pass');
+      if (inp) {
+        inp.type = (inp.type === 'password') ? 'text' : 'password';
+      }
+    };
+
+    window.clearPracticalExamErr = function() {
+      const err = document.getElementById('practical-exam-err');
+      const inp = document.getElementById('practical-exam-pass');
+      if (err) err.style.display = 'none';
+      if (inp) inp.style.borderColor = '#cbd5e1';
+    };
+
+    window.checkPracticalExamPass = function() {
+      const inp = document.getElementById('practical-exam-pass');
+      const err = document.getElementById('practical-exam-err');
+      if (!inp) return;
+      const val = inp.value.trim();
+      if (val === PRACTICAL_PASSWORD || val.toLowerCase() === PRACTICAL_PASSWORD.toLowerCase()) {
+        sessionStorage.setItem('ml_practical_exam_unlocked', 'true');
+        window.applyPracticalExamState();
+      } else {
+        if (err) err.style.display = 'block';
+        inp.style.borderColor = '#dc2626';
+        inp.focus();
+      }
+    };
+
+    window.lockPracticalExam = function() {
+      sessionStorage.removeItem('ml_practical_exam_unlocked');
+      window.applyPracticalExamState();
+    };
+
+    window.applyPracticalExamState = function() {
+      const isUnlocked = (sessionStorage.getItem('ml_practical_exam_unlocked') === 'true');
+      const lockBox = document.getElementById('practical-exam-lock');
+      const contentBox = document.getElementById('practical-exam-unlocked');
+      if (lockBox && contentBox) {
+        if (isUnlocked) {
+          lockBox.style.display = 'none';
+          contentBox.style.display = 'block';
+          setTimeout(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 150);
+        } else {
+          lockBox.style.display = 'block';
+          contentBox.style.display = 'none';
+          const inp = document.getElementById('practical-exam-pass');
+          if (inp) inp.value = '';
+          const err = document.getElementById('practical-exam-err');
+          if (err) err.style.display = 'none';
+        }
+      }
+    };
+
+    // Lắng nghe sự kiện click trên toàn document (Event delegation)
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.closest) {
+        if (e.target.closest('#btn-unlock-exam')) {
+          window.checkPracticalExamPass();
+        } else if (e.target.closest('#btn-lock-exam')) {
+          window.lockPracticalExam();
+        } else if (e.target.closest('#btn-toggle-exam-pwd')) {
+          window.togglePracticalPassVisibility();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const inp = document.getElementById('practical-exam-pass');
+        if (inp && document.activeElement === inp) {
+          window.checkPracticalExamPass();
+        }
+      }
+    });
+  })();
   </script>
 
 </body>

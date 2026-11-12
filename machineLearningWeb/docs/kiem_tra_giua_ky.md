@@ -38,6 +38,41 @@
 
 ### 📑 Đề Thi Giữa Kỳ (3 Đề Colab & Nộp Canvas)
 
+
+<div id="practical-exam-lock" style="background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 14px; padding: 36px 20px; text-align: center; max-width: 640px; margin: 30px auto; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+  <div style="font-size: 3.5rem; margin-bottom: 12px; line-height: 1;">🔒</div>
+  <h3 style="font-size: 1.45rem; font-weight: 800; color: #1e293b; margin-bottom: 10px;">KHU VỰC ĐỀ THI ĐÃ ĐƯỢC KHÓA BẢO MẬT</h3>
+  <p style="color: #64748b; font-size: 0.95rem; max-width: 520px; margin: 0 auto 24px; line-height: 1.6;">
+    Khu vực <strong>3 Đề thi thực hành giữa kỳ môn Máy học</strong> (Google Colab & Canvas) được bảo mật. Sinh viên vui lòng nhập <strong>Mật khẩu làm bài</strong> do Giảng viên công bố tại phòng thi để mở khóa đề thi.
+  </p>
+  <div style="display: flex; gap: 10px; justify-content: center; max-width: 440px; margin: 0 auto; flex-wrap: wrap;">
+    <div style="position: relative; flex: 1; min-width: 240px;">
+      <input type="password" id="practical-exam-pass" placeholder="Nhập mật khẩu mở đề thi..." onkeydown="if(event.key==='Enter') window.checkPracticalExamPass();" oninput="window.clearPracticalExamErr();" style="width: 100%; box-sizing: border-box; padding: 12px 42px 12px 14px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+      <button type="button" id="btn-toggle-exam-pwd" onclick="window.togglePracticalPassVisibility()" title="Ẩn/Hiện mật khẩu" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: #64748b; padding: 4px;">
+        👁️
+      </button>
+    </div>
+    <button type="button" id="btn-unlock-exam" onclick="window.checkPracticalExamPass()" style="background: #1a73e8; color: #ffffff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3); transition: background 0.2s;">
+      🔓 Mở Khóa Đề Thi
+    </button>
+  </div>
+  <div id="practical-exam-err" style="display: none; color: #dc2626; font-size: 0.9rem; font-weight: 700; margin-top: 14px;">
+    ❌ Mật khẩu không chính xác! Vui lòng nhập đúng mật khẩu do Giảng viên cung cấp tại phòng thi.
+  </div>
+</div>
+
+<div id="practical-exam-unlocked" style="display: none;">
+
+<div style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+  <div style="color: #15803d; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
+    <span>🔓</span> <span>Đã mở khóa toàn bộ 3 Đề thi giữa kỳ môn Máy học thành công!</span>
+  </div>
+  <button type="button" id="btn-lock-exam" onclick="window.lockPracticalExam()" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 12px; font-size: 0.82rem; font-weight: 600; color: #64748b; cursor: pointer;">
+    🔒 Khóa lại đề thi
+  </button>
+</div>
+
+
 > 📢 **DÀNH CHO SINH VIÊN:** Dưới đây là **3 Đề thi giữa kỳ môn Máy học** (thực hành trên Google Colab). Sinh viên xem ca thi / đề thi được Giảng viên phân công, nhấp vào tab đề thi tương ứng để mở đề trên Google Colab. Sau khi hoàn thành và chạy toàn bộ mã lệnh, sinh viên **kết xuất ra file PDF** và **nộp bài lên hệ thống Canvas**.
 
 <!-- tabs:start -->
@@ -327,6 +362,75 @@
 </div>
 
 <!-- tabs:end -->
+
+</div>
+
+
+<script>
+(function() {
+    const PRACTICAL_PASSWORD = "Abcd1234";
+
+    window.togglePracticalPassVisibility = function() {
+        const inp = document.getElementById('practical-exam-pass');
+        if (inp) {
+            inp.type = (inp.type === 'password') ? 'text' : 'password';
+        }
+    };
+
+    window.clearPracticalExamErr = function() {
+        const err = document.getElementById('practical-exam-err');
+        const inp = document.getElementById('practical-exam-pass');
+        if (err) err.style.display = 'none';
+        if (inp) inp.style.borderColor = '#cbd5e1';
+    };
+
+    window.checkPracticalExamPass = function() {
+        const inp = document.getElementById('practical-exam-pass');
+        const err = document.getElementById('practical-exam-err');
+        if (!inp) return;
+        const val = inp.value.trim();
+        if (val === PRACTICAL_PASSWORD || val === PRACTICAL_PASSWORD.toLowerCase()) {
+            sessionStorage.setItem('ml_practical_exam_unlocked', 'true');
+            window.applyPracticalExamState();
+        } else {
+            if (err) err.style.display = 'block';
+            inp.style.borderColor = '#dc2626';
+            inp.focus();
+        }
+    };
+
+    window.lockPracticalExam = function() {
+        sessionStorage.removeItem('ml_practical_exam_unlocked');
+        window.applyPracticalExamState();
+    };
+
+    window.applyPracticalExamState = function() {
+        const isUnlocked = (sessionStorage.getItem('ml_practical_exam_unlocked') === 'true');
+        const lockBox = document.getElementById('practical-exam-lock');
+        const contentBox = document.getElementById('practical-exam-unlocked');
+        if (lockBox && contentBox) {
+            if (isUnlocked) {
+                lockBox.style.display = 'none';
+                contentBox.style.display = 'block';
+                setTimeout(function() {
+                    window.dispatchEvent(new Event('resize'));
+                }, 100);
+            } else {
+                lockBox.style.display = 'block';
+                contentBox.style.display = 'none';
+                const inp = document.getElementById('practical-exam-pass');
+                if (inp) inp.value = '';
+                const err = document.getElementById('practical-exam-err');
+                if (err) err.style.display = 'none';
+            }
+        }
+    };
+
+    // Tự động kiểm tra trạng thái ngay khi trang nạp xong
+    setTimeout(window.applyPracticalExamState, 50);
+})();
+</script>
+
 
 ---
 
