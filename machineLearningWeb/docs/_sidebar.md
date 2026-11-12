@@ -1,4 +1,5 @@
 * [Trang chủ](/)
+* [📝 Kiểm tra giữa kỳ](docs/kiem_tra_giua_ky.md)
 
 * **Mục lục**
   * [CHƯƠNG 1. BỨC TRANH TỔNG QUAN VỀ HỌC MÁY](docs/chuong_01.md)
